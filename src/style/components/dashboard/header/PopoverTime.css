@@ -1,0 +1,66 @@
+/* Le conteneur principal (MUI Paper) */
+.popover-dates-container {
+    background-color: #3d3c3c !important;    
+    border: 1px solid #525252 !important;
+    border-radius: 15px !important;
+    min-width: 200px !important; /* Contrôle la largeur ici */
+}
+
+/* Le Box interne */
+
+.popover-content-box {
+    padding: 16px;
+    display: flex;    
+   
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.7rem;
+    height: 12rem;
+    width: 14rem;
+}
+
+
+/* Le titre */
+.popover-title {
+    color: #4093f1;
+    font-weight: bold;
+    font-size: 0.85rem;
+    margin-bottom: -5px;
+}
+
+.css-19y0qf7-MuiFormControl-root-MuiPickersTextField-root {
+    display: -webkit-inline-box;
+    display: -webkit-inline-flex;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    position: relative;
+    min-width: 0;
+    padding: 0;
+    margin: 0;
+    border: 0;
+ 
+    vertical-align: top;
+    width: 80% !important;
+    max-width: 100%;
+}
+
+.css-1hgcujo-MuiPickersInputBase-root-MuiPickersOutlinedInput-root{
+    direction: ltr;
+}
+/* Style des champs DatePicker */
+.date-picker-field .MuiInputBase-root {
+    color: #efeded !important;
+}
+
+.date-picker-field .MuiOutlinedInput-notchedOutline {
+    border-color: #525252 !important;
+    border-radius: 10px !important;
+}
+
+/* Hover sur les champs */
+.date-picker-field:hover .MuiOutlinedInput-notchedOutline {
+    border-color: #4093f1 !important;
+}

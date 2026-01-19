@@ -1,0 +1,68 @@
+.shibuts-card {
+    position: absolute;
+    background-color: rgb(1, 223, 1);
+    border-radius: 1.19rem;
+    overflow: hidden;
+    cursor: pointer;
+    height: 3rem; 
+    min-width: 0;
+
+   
+
+    /* On garde tes timings indépendants qui marchent bien */
+   transition: 
+        min-width 0.8s cubic-bezier(0.19, 1, 0.22, 1), 
+        height 0.4s ease-in-out,
+        inset-inline-start 0.8s cubic-bezier(0.19, 1, 0.22, 1),
+        inset-inline-end 0.8s cubic-bezier(0.19, 1, 0.22, 1),
+        transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    z-index: 1;
+}
+
+.shibuts-card:hover {
+    min-width: 40rem !important; 
+    height: 6rem !important; 
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    z-index: 100 !important;
+   
+}
+
+.shibuts-card.near-end:hover {
+    
+    
+}
+
+.div-up {
+    height: 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem;
+    color: white;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.div-down {
+    background-color: #4b4a4a; /* Ton gris/noir */
+    color: white;
+    height: 3rem; 
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+    font-size: 0.85rem;
+    
+    /* MODIFICATION ICI : On enlève le délai et on accélère l'opacité */
+    opacity: 0;
+    transition: opacity 0.2s ease-in; 
+    
+    /* Sécurité : on s'assure qu'il est bien calé en bas */
+    width: 100%;
+}
+
+.shibuts-card:hover .div-down {
+    /* Il devient noir dès que l'ouverture commence */
+    opacity: 1;
+}

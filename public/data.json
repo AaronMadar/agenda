@@ -1,0 +1,16 @@
+{
+        period: {
+            start: "2025-04-10",
+            end: "2025-07-10"
+        },
+        father: "גבעתי",
+        gdudim: {
+            "גדוד 1": [
+                { title: "מפלג10 טירונות", variationPastYear: "15%", ressource: ["אוכל", "מים"], dateBegin: "2025-01-10", dateEnd: "2025-04-10" },
+                { title: 'תדיר 82 תורן', variationPastYear: '25%', ressource: ["אופניים"], dateBegin: "2025-03-10", dateEnd: "2025-07-10" }
+            ],
+            "גדוד 2": [
+                { title: "מפשט סדיר", variationPastYear: "10%", ressource: ["מיטוט"], dateBegin: "2025-05-10", dateEnd: "2025-10-10" }
+            ]
+        }
+    }                           

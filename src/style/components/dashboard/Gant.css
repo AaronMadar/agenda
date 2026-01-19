@@ -1,0 +1,107 @@
+/* --- STRUCTURE PRINCIPALE --- */
+.gant {
+  min-height: calc(100vh - 3.5rem);
+  display: flex;
+  flex-direction: column;
+  /* Ton dégradé avec la barre de 1px */
+  background: linear-gradient(to left, 
+    #4b4a4a 9rem, 
+    rgb(99, 98, 98) 9rem, 
+    rgb(99, 98, 98) calc(9rem + 1px), 
+    rgba(0, 0, 0, 0.781) calc(9rem + 1px)
+  );
+  overflow-x: hidden;
+}
+
+/* --- LIGNES (TIMEZONE) --- */
+.timezone {
+  display: flex;
+  flex-direction: row; /* En RTL, le premier enfant sera à droite */
+  height: 4rem;
+  width: 100%;
+  border-bottom: 1.9px solid rgb(87, 82, 82);
+}
+
+/* Version spécifique pour les lignes de cartes (Gdudim) */
+.timezone.gdudim {
+  min-height: 6rem;
+  height: auto; /* Permet à la ligne de grandir selon le nombre de cartes */
+  padding-bottom: 2rem;
+  align-items: stretch; /* Important pour que la sidebar grise suive la hauteur */
+}
+
+/* --- SIDEBAR (LA PARTIE GRISE DE 9rem) --- */
+.div-side {
+  width: 9rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0; /* Verrouille la largeur à 9rem */
+  color: aliceblue;
+  font-weight: 500;
+  font-size: 1.06rem;
+}
+
+.div-side.sidebar {
+  justify-content: flex-start; /* Aligne le nom du Gdud en haut */
+  padding-top: 1rem;
+}
+
+/* --- CONTENU DES CARTES (LA PARTIE NOIRE) --- */
+/* C'est ici que ton padding bottom fonctionne enfin ! */
+.row-content-wrapper {
+  padding-top: 1rem;
+  padding-bottom: 1rem; /* Ton espace de 1rem à la fin de chaque Gdud */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; /* Espace entre les cartes ShibutsCard */
+}
+
+.gant-row {
+  position: relative;
+  width: 100%;
+  height: 3rem; /* Hauteur de chaque ligne de carte */
+}
+
+/* --- LA FRISE TEMPORELLE (TIMELINE) --- */
+.frise-wrapper {
+  display: flex;
+  flex-grow: 1;
+  justify-content: space-between;
+  height: 100%;
+  position: relative;
+  align-items: flex-end; 
+  padding-right: 0.3rem;
+}
+
+.frise-tick {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.date-text {
+  font-size: 0.85rem;
+  color: #efeded;
+  margin-bottom: 25px; 
+  white-space: nowrap;
+}
+
+.arrow-icon {
+  position: absolute;
+  bottom: 0.19rem; 
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.8rem !important;
+  line-height: 0 !important;
+  height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #7c7474;
+}

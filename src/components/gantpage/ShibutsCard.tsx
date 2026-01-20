@@ -1,4 +1,5 @@
-import "../style/components/ShibutsCard.css";
+import "@/style/components/gantpage/ShibutsCard.css";
+
 
 interface ShibutsCardProps {
     title: string;

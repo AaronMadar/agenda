@@ -1,18 +1,21 @@
-import "../../../style/components/dashboard/header/PopoverTime.css";
+import { useState } from 'react';
+
 import { Popover, Box, Typography, Button } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import 'dayjs/locale/he';
-import React, { useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
+import 'dayjs/locale/he';
+
+import "@/style/components/gantpage/header/PopoverTime.css";
+
 
 interface PopoverProps {
   anchorEl: HTMLElement | null;
   setAnchorEl: (el: HTMLElement | null) => void;
   setStartDate: (date: Dayjs | null) => void;
   setEndDate: (date: Dayjs | null) => void;
-  setViewMode: (value: string) => void;
+  setPeriodView: (value: string) => void;
 }
 
 export default function PopoverTime({
@@ -20,16 +23,16 @@ export default function PopoverTime({
   setAnchorEl,
   setStartDate,
   setEndDate,
-  setViewMode
+  setPeriodView
 }: PopoverProps) {
 
   const [selectedStart, setSelectedStart] = useState<Dayjs | null>(null);
   const [selectedEnd, setSelectedEnd] = useState<Dayjs | null>(null);
 
 
-// Récupère l'année actuelle (ex: 2026)
+  // Récupère l'année actuelle (ex: 2026)
   const currentYear = dayjs().year();
-// Calcule le 31 décembre d'il y a 2 ans (ex: 31/12/2024)
+  // Calcule le 31 décembre d'il y a 2 ans (ex: 31/12/2024)
   const dynamicMinDate = dayjs(`${currentYear - 2}-12-31`).add(1, 'day');
   const dynamicMaxDate = dayjs(`${currentYear + 2}-01-01`).subtract(1, 'day');
 
@@ -51,7 +54,7 @@ export default function PopoverTime({
     setEndDate(end);
 
     const dateString = `${start.format("DD/MM/YY")} - ${end.format("DD/MM/YY")}`;
-    setViewMode(dateString);
+    setPeriodView(dateString);
 
     handleClose();
   };
@@ -71,7 +74,7 @@ export default function PopoverTime({
 
           <DatePicker
             label="תאריך התחלה"
-            value={selectedStart}            
+            value={selectedStart}
             minDate={dynamicMinDate}
             maxDate={dynamicMaxDate}
             onChange={setSelectedStart}

@@ -1,29 +1,31 @@
-import "../../../style/components/dashboard/header/SelectTime.css";
-import "../../../style/index.css";
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { FormControl, Select, MenuItem } from "@mui/material";
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import dayjs, { Dayjs } from 'dayjs';
 
+import "@/style/index.css";
+import "@/style/components/gantpage/header/SelectTime.css";
+
+
 interface SelectTimeProps {
-  setViewMode: (value: string) => void;
-  viewMode: string  ;
+  setPeriodView: (value: string) => void;
+  periodView: string;
   setStartDate: (date: Dayjs | null) => void;
   setEndDate: (date: Dayjs | null) => void;
 }
 
 export default function SelectTime({
-  setViewMode,
-  viewMode,
+  setPeriodView,
+  periodView,
   setStartDate,
   setEndDate
 }: SelectTimeProps) {
 
   const year = new Date().getFullYear();
-  
 
-  const handleViewModeChange = (e: any) => {
-    let mode = e.target.value; 
-    setViewMode(mode)
+
+  const handlePeriodViewChange = (e: any) => {
+    let mode = e.target.value;
+    setPeriodView(mode)
 
     let start: Dayjs | null = null;
     let end: Dayjs | null = null;
@@ -69,8 +71,8 @@ export default function SelectTime({
   return (
     <FormControl variant="standard">
       <Select
-        value={viewMode}
-        onChange={handleViewModeChange}
+        value={periodView}
+        onChange={handlePeriodViewChange}
         className="select-timeview"
         disableUnderline
         IconComponent={KeyboardArrowDownIcon}
@@ -96,13 +98,13 @@ export default function SelectTime({
         }}
       >
 
-   {/* Renders the custom date range from the Popover as a selectable option.
+        {/* Renders the custom date range from the Popover as a selectable option.
   The condition prevents duplicating standard periods (Quarters, Semesters, Year) 
   that are already defined as fixed MenuItems below.
 */}
-{viewMode && !viewMode.startsWith('רבעון') && !viewMode.startsWith('חצי') && viewMode !== 'שנה' && (
-  <MenuItem value={viewMode}>{viewMode}</MenuItem>
-)}
+        {periodView && !periodView.startsWith('רבעון') && !periodView.startsWith('חצי') && periodView !== 'שנה' && (
+          <MenuItem value={periodView}>{periodView}</MenuItem>
+        )}
         <MenuItem value="רבעון1">ינו-מרץ {year}</MenuItem>
         <MenuItem value="רבעון2">אפר-יוני {year}</MenuItem>
         <MenuItem value="רבעון3">יולי-ספט {year}</MenuItem>

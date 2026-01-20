@@ -1,14 +1,16 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import dayjs, { Dayjs } from 'dayjs';
 import 'dayjs/locale/he';
 
-// Styles
-import "../../style/components/dashboard/Gant.css";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap-icons/font/bootstrap-icons.css';
-import ShibutsCard from "../ShibutsCard";
+import ShibutsCard from "./ShibutsCard";
 
-// --- CONSTANTES ---
+import "@/style/components/gantpage/Gant.css";
+
+
+// --- CONSTANT ---
 const MIN_WIDTH_PERCENT = 5;
 const NEAR_END_THRESHOLD = 75; // Seuil en % pour déclencher le centrage/ruban vers la gauche
 
@@ -141,7 +143,7 @@ export default function Gant({ startDate, endDate }: GantProps) {
                                                 position: 'absolute',
                                                 insetInlineStart: isNearEnd ? 'auto' : `${startPos}%`,
                                                 insetInlineEnd: isNearEnd ? `${100 - (startPos + width)}%` : 'auto',
-                                                 width: `${calculateWidth(item.dateBegin, item.dateEnd, sDate, eDate)}%`,
+                                                width: `${calculateWidth(item.dateBegin, item.dateEnd, sDate, eDate)}%`,
                                                 top: 0,
                                                 zIndex: 10 // Base z-index
                                             }}

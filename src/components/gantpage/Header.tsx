@@ -1,21 +1,23 @@
-import "../../style/components/dashboard/Header.css"
-import "../../style/index.css"
 import React, { useState } from 'react';
+import { Dayjs } from 'dayjs'; 
+
 import SelectTime from "./header/SelectTime";
 import PopoverTime from "./header/PopoverTime";
-import { Dayjs } from 'dayjs'; // Import type Dayjs pour les props
+import "@/style/components/gantpage/Header.css"
+import "@/style/index.css"
+
 
 // Interface des props : Ajout de setters pour startDate et endDate
 // Le parent (ex. Dashboard) doit passer ces setters pour que Header puisse les updater
 interface HeaderProps {
-    setViewMode: (value: string) => void;
-    viewMode: string ;
+    setPeriodView: (value: string) => void;
+    periodView: string ;
     setStartDate: (date: Dayjs | null) => void;
     setEndDate: (date: Dayjs | null) => void;
 }
 
 
-export default function Header({ setViewMode, viewMode, setStartDate, setEndDate }: HeaderProps) {
+export default function Header({ setPeriodView, periodView, setStartDate, setEndDate }: HeaderProps) {
     // AnchorEl contains the element where the popover will be anchored
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
@@ -57,10 +59,10 @@ export default function Header({ setViewMode, viewMode, setStartDate, setEndDate
                     setAnchorEl={setAnchorEl} 
                     setStartDate={setStartDate} 
                     setEndDate={setEndDate} 
-                    setViewMode={setViewMode} 
+                    setPeriodView={setPeriodView} 
                 />
-                
-                <SelectTime setViewMode={setViewMode} viewMode={viewMode} setStartDate={setStartDate} setEndDate={setEndDate} />
+
+                <SelectTime setPeriodView={setPeriodView} periodView={periodView} setStartDate={setStartDate} setEndDate={setEndDate} />
             </div>
         </header>
     )

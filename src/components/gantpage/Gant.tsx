@@ -5,7 +5,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import dayjs, { Dayjs } from 'dayjs';
 import 'dayjs/locale/he';
 
-import ShibutsCard from "./ShibutsCard";
+import ShibutsCard from "./gant/ShibutsCard";
 
 import "@/style/components/gantpage/Gant.css";
 

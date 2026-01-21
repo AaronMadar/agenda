@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
@@ -6,6 +6,10 @@ import dayjs, { Dayjs } from 'dayjs';
 import 'dayjs/locale/he';
 
 import ShibutsCard from "./gant/ShibutsCard";
+import { iconResources, iconServiceType } from "@/constants/icons";
+import { forceColors } from "@/constants/colors";
+import { translateKeyMap } from "@/constants/translation";
+
 
 import "@/style/components/gantpage/Gant.css";
 
@@ -15,22 +19,47 @@ const MIN_WIDTH_PERCENT = 5;
 const NEAR_END_THRESHOLD = 75; // Seuil en % pour déclencher le centrage/ruban vers la gauche
 
 // --- TYPES ---
-interface EventItem {
-    title: string;
-    variationPastYear: string;
-    ressource: string[];
-    dateBegin: string;
-    dateEnd: string;
-}
+// interface EventItem {
+//     title: string;
+//     variationPastYear: string;
+//     ressource: string[];
+//     dateBegin: string;
+//     dateEnd: string;
+// }
 
 interface GantProps {
     startDate: Dayjs | null;
     endDate: Dayjs | null;
 }
 
+interface ShibutsApi {
+  title: string;
+  variationPastYear: number;
+  dateBegin: string;
+  dateEnd: string;
+  ressource: Record<string, { quantity: number; price: number }>;
+}
+
+interface GdudApi {
+  forceType: string;
+  pikud: string;
+  shibutsim: ShibutsApi[];
+}
+
+interface ApiResponse {
+  unit: string;
+  period: {
+    start: string;
+    end: string;
+  };
+  gdudim: Record<string, GdudApi>;
+}
+
+
+
 // --- LOGIQUE (Savoir-faire utilitaire) ---
 
-const displayEventInRange = (items: EventItem[], rangeStart: Dayjs, rangeEnd: Dayjs): EventItem[] => {
+const displayEventInRange = (data: ApiResponse[], rangeStart: Dayjs, rangeEnd: Dayjs): ShibutsApi[] => {
     return items.filter(item => {
         const itemStart = dayjs(item.dateBegin);
         const itemEnd = dayjs(item.dateEnd);
@@ -85,21 +114,38 @@ const generateTicks = (start: Dayjs, end: Dayjs): string[] => {
 // --- COMPOSANT PRINCIPAL ---
 
 export default function Gant({ startDate, endDate }: GantProps) {
+    let dataRes = null
+    useEffect(() => {
+        fetch("/data.json")
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error("Erreur fetch");
+                }
+                return res.json();
+            }).then(data => {
+                dataRes = data;
+            })
+            .catch(err => console.error(err));
+    },[])
+
+
     const currentYear = dayjs().year();
     const unity = "גבעתי";
 
     const sDate = startDate || dayjs(`${currentYear}-01-01`);
     const eDate = endDate || dayjs(`${currentYear}-12-31`);
 
-    const data: Record<string, EventItem[]> = {
-        "גדוד 1": [
-            { title: "מפלג10 טירונות", variationPastYear: "15%", ressource: ["אוכל"], dateBegin: "2026-01-10", dateEnd: "2026-01-12" },
-            { title: 'תדיר 82 תורן', variationPastYear: '25%', ressource: ["אופניים"], dateBegin: "2026-03-10", dateEnd: "2026-07-10" }
-        ],
-        "גדוד 2": [
-            { title: "מפשט סדיר", variationPastYear: "10%", ressource: ["מיטוט"], dateBegin: "2026-05-10", dateEnd: "2026-10-10" }
-        ]
-    };
+    // const data: Record<string, EventItem[]> = {
+    //     "גדוד 1": [
+    //         { title: "מפלג10 טירונות", variationPastYear: "15%", ressource: ["אוכל"], dateBegin: "2026-01-10", dateEnd: "2026-01-12" },
+    //         { title: 'תדיר 82 תורן', variationPastYear: '25%', ressource: ["אופניים"], dateBegin: "2026-03-10", dateEnd: "2026-07-10" }
+    //     ],
+    //     "גדוד 2": [
+    //         { title: "מפשט סדיר", variationPastYear: "10%", ressource: ["מיטוט"], dateBegin: "2026-05-10", dateEnd: "2026-10-10" }
+    //     ]
+    // };
+
+
 
     const dates = useMemo(() => generateTicks(sDate, eDate), [sDate, eDate]);
 
@@ -121,7 +167,7 @@ export default function Gant({ startDate, endDate }: GantProps) {
             {/* BATTALIONS ROWS */}
             {Object.entries(data).map(([gdudName, items]) => {
                 const sortedItems = sortEventsByDate(displayEventInRange(items, sDate, eDate));
-
+                
 
                 return (
                     <div className="timezone gdudim" key={gdudName}>
@@ -158,3 +204,4 @@ export default function Gant({ startDate, endDate }: GantProps) {
         </div>
     );
 }
+

@@ -26,3 +26,6 @@ export default function ShibutsCard({ title, variation, resources, style, classN
         </div>
     );
 }
+
+
+

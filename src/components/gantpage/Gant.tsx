@@ -60,34 +60,38 @@ interface ApiResponse {
 
 // --- LOGIQUE (Savoir-faire utilitaire) ---
 
-const displayEventInRange = (data: ApiResponse[], rangeStart: Dayjs, rangeEnd: Dayjs): ShibutsApi[] => {
-    return items.filter(item => {
-        const itemStart = dayjs(item.dateBegin);
-        const itemEnd = dayjs(item.dateEnd);
+// On change les types pour correspondre à une liste de missions (ShibutsApi)
+const getFilteredShibutsim = (shibutsim: ShibutsApi[], rangeStart: Dayjs, rangeEnd: Dayjs): ShibutsApi[] => {
+    return shibutsim.filter(shibut => {
+        const itemStart = dayjs(shibut.dateBegin);
+        const itemEnd = dayjs(shibut.dateEnd);
+
+        // La logique de comparaison est parfaite ! 
         return (itemEnd.isAfter(rangeStart) || itemEnd.isSame(rangeStart, 'day')) &&
-            (itemStart.isBefore(rangeEnd) || itemStart.isSame(rangeEnd, 'day'));
+               (itemStart.isBefore(rangeEnd) || itemStart.isSame(rangeEnd, 'day'));
     });
 };
 
-const sortEventsByDate = (items: EventItem[]): EventItem[] => {
+const sortEventsByDate = (items: ShibutsApi[]): ShibutsApi[] => {
     return [...items].sort((a, b) => dayjs(a.dateBegin).unix() - dayjs(b.dateBegin).unix());
 };
 
-const calculatePosition = (start: string, rangeStart: Dayjs, rangeEnd: Dayjs): number => {
-    const totalDays = rangeEnd.diff(rangeStart, 'day');
-    const itemStart = dayjs(start);
+const calculatePosition = (shibuts: ShibutsApi, rangeStart: Dayjs, rangeEnd: Dayjs): number => {
+   // We add 1 to include the end day in the width calculation 
+    const totalDays = rangeEnd.diff(rangeStart, 'day') + 1;
+    const itemStart = dayjs(shibuts.dateBegin);
     const visualStart = itemStart.isBefore(rangeStart) ? rangeStart : itemStart;
     const diff = visualStart.diff(rangeStart, 'day');
     return (diff / totalDays) * 100;
 };
 
-const calculateWidth = (start: string, end: string, rangeStart: Dayjs, rangeEnd: Dayjs): number => {
-    const totalDays = rangeEnd.diff(rangeStart, 'day');
-    const itemStart = dayjs(start);
-    const itemEnd = dayjs(end);
+const calculateWidth = (shibuts: ShibutsApi, rangeStart: Dayjs, rangeEnd: Dayjs): number => {
+    const totalDays = rangeEnd.diff(rangeStart, 'day') + 1;
+    const itemStart = dayjs(shibuts.dateBegin);
+    const itemEnd = dayjs(shibuts.dateEnd);
     const visualStart = itemStart.isBefore(rangeStart) ? rangeStart : itemStart;
     const visualEnd = itemEnd.isAfter(rangeEnd) ? rangeEnd : itemEnd;
-    let width = (visualEnd.diff(visualStart, 'day') / totalDays) * 100;
+    let width = ((visualEnd.diff(visualStart, 'day')+1) / totalDays) * 100;
     return width < MIN_WIDTH_PERCENT ? MIN_WIDTH_PERCENT : width;
 };
 

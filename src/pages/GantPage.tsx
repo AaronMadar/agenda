@@ -42,8 +42,8 @@ export default function GantPage() {
     const [periodView, setPeriodView] = useState<string>(`כל ${currentYear}`);
 
     // The startDate and endDate are the values ​​of the start and end dates of the timeline.  
-    const [startDate, setStartDate] = useState<Dayjs | null>(null );
-    const [endDate, setEndDate] = useState<Dayjs | null>(dayjs(null));
+    const [startDate, setStartDate] = useState<Dayjs | null>(null);
+    const [endDate, setEndDate] = useState<Dayjs | null>(null);
 
     useEffect(() => {
         fetch("/data.json")
@@ -52,9 +52,8 @@ export default function GantPage() {
                 setData(jsonData);
                 // Si aucune date n'est encore fixée par l'utilisateur, 
                 // on initialise avec les dates du serveur
-                if (!startDate) setStartDate(dayjs(jsonData.period.start));
-                if (!endDate) setEndDate(dayjs(jsonData.period.end));
-                setLoading(false);
+                setStartDate(prev => prev || dayjs(jsonData.period.start));
+                setEndDate(prev => prev || dayjs(jsonData.period.end));
             })
             .catch(err => {
                 console.error(err);
@@ -62,7 +61,7 @@ export default function GantPage() {
             });
     }, []);
 
-        if (loading) return <div>loading...</div>;
+    if (loading) return <div>loading...</div>;
 
     return (
         <div className="gantpage-container">

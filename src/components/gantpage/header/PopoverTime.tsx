@@ -77,6 +77,7 @@ export default function PopoverTime({
             value={selectedStart}
             minDate={dynamicMinDate}
             maxDate={dynamicMaxDate}
+            className="date-picker-field"
             onChange={setSelectedStart}
             slotProps={{
               textField: {
@@ -92,6 +93,7 @@ export default function PopoverTime({
             value={selectedEnd}
             minDate={dynamicMinDate}
             maxDate={dynamicMaxDate}
+            className="date-picker-field"
             onChange={setSelectedEnd}
             slotProps={{
               textField: {
@@ -105,7 +107,7 @@ export default function PopoverTime({
           <Button
             variant="contained"
             onClick={handleApply}
-            sx={{ mt: 1, backgroundColor: '#4093f1', '&:hover': { backgroundColor: '#3376c2' } }}
+            className='apply-button'
           >
             החל
           </Button>

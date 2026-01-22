@@ -4,6 +4,7 @@
     border: 1px solid #525252 !important;
     border-radius: 15px !important;
     min-width: 200px !important; /* Contrôle la largeur ici */
+    color: white;
 }
 
 /* Le Box interne */
@@ -40,8 +41,7 @@
     min-width: 0;
     padding: 0;
     margin: 0;
-    border: 0;
- 
+    border: 0; 
     vertical-align: top;
     width: 80% !important;
     max-width: 100%;
@@ -63,4 +63,51 @@
 /* Hover sur les champs */
 .date-picker-field:hover .MuiOutlinedInput-notchedOutline {
     border-color: #4093f1 !important;
+}
+
+
+.MuiButton-root.apply-button {
+  margin-top: 8px;
+  background-color: #4093f1 !important;
+  border-radius: 1rem;
+}
+
+.MuiButton-root.apply-button:hover {
+  background-color: #3376c2 !important;
+}
+
+
+
+/* to style the datepicker */
+
+/* input text */
+.date-picker-field .MuiOutlinedInput-input {
+  color: rgb(255, 255, 255);
+}
+
+/* border */
+.date-picker-field .MuiOutlinedInput-root fieldset {
+  border-color: white;
+}
+
+.date-picker-field .MuiOutlinedInput-root:hover fieldset {
+  border-color: white;
+}
+
+.date-picker-field .MuiOutlinedInput-root.Mui-focused fieldset {
+  border-color: white;
+}
+
+/* label */
+.date-picker-field .MuiInputLabel-root {
+  color: white;
+}
+
+.date-picker-field .MuiInputLabel-root.Mui-focused {
+  color: white;
+}
+/* 
+calendar icon */
+.date-picker-field .MuiSvgIcon-root {
+  color: #4093f1;
 }

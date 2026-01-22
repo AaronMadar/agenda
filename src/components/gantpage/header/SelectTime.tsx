@@ -105,10 +105,10 @@ export default function SelectTime({
         {periodView && !periodView.startsWith('רבעון') && !periodView.startsWith('חצי') && periodView !== 'שנה' && (
           <MenuItem value={periodView}>{periodView}</MenuItem>
         )}
-        <MenuItem value="רבעון1">ינו-מרץ {year}</MenuItem>
-        <MenuItem value="רבעון2">אפר-יוני {year}</MenuItem>
-        <MenuItem value="רבעון3">יולי-ספט {year}</MenuItem>
-        <MenuItem value="רבעון4">אוקט-דצמ {year}</MenuItem>
+        <MenuItem value="רבעון1">ינו' {year} - מרץ' {year} </MenuItem>
+        <MenuItem value="רבעון2">אפר' {year} - יוני' {year}</MenuItem>
+        <MenuItem value="רבעון3">יולי' {year} - ספט' {year}</MenuItem>
+        <MenuItem value="רבעון4">אוק' {year} - דצמ' {year}</MenuItem>
         <MenuItem value="חצי-שנה1">חצי-ראשון {year}</MenuItem>
         <MenuItem value="חצי-שנה2">חצי-שני {year}</MenuItem>
         <MenuItem value="שנה">כל {year}</MenuItem>

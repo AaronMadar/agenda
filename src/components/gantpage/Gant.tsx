@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
@@ -28,31 +28,32 @@ const NEAR_END_THRESHOLD = 75; // Seuil en % pour déclencher le centrage/ruban 
 // }
 
 interface GantProps {
+    data: ApiResponse | null;
     startDate: Dayjs | null;
     endDate: Dayjs | null;
 }
 
 interface ShibutsApi {
-  title: string;
-  variationPastYear: number;
-  dateBegin: string;
-  dateEnd: string;
-  ressource: Record<string, { quantity: number; price: number }>;
+    title: string;
+    variationPastYear: number;
+    dateBegin: string;
+    dateEnd: string;
+    ressource: Record<string, { quantity: number; price: number }>;
 }
 
 interface GdudApi {
-  forceType: string;
-  pikud: string;
-  shibutsim: ShibutsApi[];
+    forceType: string;
+    pikud: string;
+    shibutsim: ShibutsApi[];
 }
 
 interface ApiResponse {
-  unit: string;
-  period: {
-    start: string;
-    end: string;
-  };
-  gdudim: Record<string, GdudApi>;
+    unit: string;
+    period: {
+        start: string;
+        end: string;
+    };
+    gdudim: Record<string, GdudApi>;
 }
 
 
@@ -111,39 +112,17 @@ const generateTicks = (start: Dayjs, end: Dayjs): string[] => {
     return ticks;
 };
 
-// --- COMPOSANT PRINCIPAL ---
-
-export default function Gant({ startDate, endDate }: GantProps) {
-    let dataRes = null
-    useEffect(() => {
-        fetch("/data.json")
-            .then(res => {
-                if (!res.ok) {
-                    throw new Error("Erreur fetch");
-                }
-                return res.json();
-            }).then(data => {
-                dataRes = data;
-            })
-            .catch(err => console.error(err));
-    },[])
 
 
+export default function Gant({ data, startDate, endDate }: GantProps) {
+
+    
     const currentYear = dayjs().year();
-    const unity = "גבעתי";
 
     const sDate = startDate || dayjs(`${currentYear}-01-01`);
     const eDate = endDate || dayjs(`${currentYear}-12-31`);
 
-    // const data: Record<string, EventItem[]> = {
-    //     "גדוד 1": [
-    //         { title: "מפלג10 טירונות", variationPastYear: "15%", ressource: ["אוכל"], dateBegin: "2026-01-10", dateEnd: "2026-01-12" },
-    //         { title: 'תדיר 82 תורן', variationPastYear: '25%', ressource: ["אופניים"], dateBegin: "2026-03-10", dateEnd: "2026-07-10" }
-    //     ],
-    //     "גדוד 2": [
-    //         { title: "מפשט סדיר", variationPastYear: "10%", ressource: ["מיטוט"], dateBegin: "2026-05-10", dateEnd: "2026-10-10" }
-    //     ]
-    // };
+
 
 
 
@@ -167,7 +146,7 @@ export default function Gant({ startDate, endDate }: GantProps) {
             {/* BATTALIONS ROWS */}
             {Object.entries(data).map(([gdudName, items]) => {
                 const sortedItems = sortEventsByDate(displayEventInRange(items, sDate, eDate));
-                
+
 
                 return (
                     <div className="timezone gdudim" key={gdudName}>

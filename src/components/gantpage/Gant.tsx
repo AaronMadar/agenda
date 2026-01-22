@@ -18,14 +18,6 @@ import "@/style/components/gantpage/Gant.css";
 const MIN_WIDTH_PERCENT = 5;
 const NEAR_END_THRESHOLD = 75; // Seuil en % pour déclencher le centrage/ruban vers la gauche
 
-// --- TYPES ---
-// interface EventItem {
-//     title: string;
-//     variationPastYear: string;
-//     ressource: string[];
-//     dateBegin: string;
-//     dateEnd: string;
-// }
 
 interface GantProps {
     data: ApiResponse | null;
@@ -126,17 +118,13 @@ export default function Gant({ data, startDate, endDate }: GantProps) {
     const sDate = startDate || dayjs(`${currentYear}-01-01`);
     const eDate = endDate || dayjs(`${currentYear}-12-31`);
 
-
-
-
-
     const dates = useMemo(() => generateTicks(sDate, eDate), [sDate, eDate]);
 
     return (
         <div className="gant">
             {/* TIMELINE HEADER */}
             <div className="timezone">
-                <div className="yehida div-side">{unity}</div>
+                <div className="yehida div-side">{data?.unit}</div>
                 <div className="frise-wrapper">
                     {dates.map((date, i) => (
                         <div className="frise-tick" key={i}>
@@ -147,14 +135,14 @@ export default function Gant({ data, startDate, endDate }: GantProps) {
                 </div>
             </div>
 
-            {/* BATTALIONS ROWS */}
-            {Object.entries(data).map(([gdudName, items]) => {
-                const sortedItems = sortEventsByDate(displayEventInRange(items, sDate, eDate));
+            
+            {/* {Object.entries(data?.gdudim || []).map(([gdud, index]) => {
+                const sortedItems = sortEventsByDate(getFilteredShibutsim(gdud, sDate, eDate));
 
 
                 return (
-                    <div className="timezone gdudim" key={gdudName}>
-                        <div className="div-side sidebar">{gdudName}</div>
+                    <div className="timezone gdudim" key={gdud}>
+                        <div className="div-side sidebar">{gdud}</div>
                         <div className="row-content-wrapper" style={{ overflow: 'visible' }}>
                             {sortedItems.map((item, idx) => {
                                 const startPos = calculatePosition(item.dateBegin, sDate, eDate);
@@ -183,7 +171,50 @@ export default function Gant({ data, startDate, endDate }: GantProps) {
                         </div>
                     </div>
                 );
-            })}
+            })} */}
+
+            {Object.entries(data?.gdudim || {}).map(([gdudName, gdudData]) => {
+    // 1. On passe le tableau des shibutsim à la fonction de filtrage
+    const filtered = getFilteredShibutsim(gdudData.shibutsim, sDate, eDate);
+    const sortedItems = sortEventsByDate(filtered);
+
+    return (
+        <div className="timezone gdudim" key={gdudName}>
+            <div className="div-side sidebar">{gdudName}</div>
+            <div className="row-content-wrapper" style={{ position: 'relative', minHeight: '60px' }}>
+                {sortedItems.map((item, idx) => {
+                    // On utilise nos fonctions avec l'objet "item" entier
+                    const startPos = calculatePosition(item, sDate, eDate);
+                    const width = calculateWidth(item, sDate, eDate);
+                    const isNearEnd = (startPos + width) > NEAR_END_THRESHOLD;
+
+                    // 2. Transformation des ressources (Objet -> String)
+                    const resourceString = item.ressource
+                        .map(r => `${r.item} (${r.quantity})`)
+                        .join(', ');
+
+                    return (
+                        <div key={idx} className="gant-row">
+                            <ShibutsCard
+                                title={item.title}
+                                variation={`${item.variationPastYear}%`}
+                                resources={resourceString}
+                                style={{
+                                    position: 'absolute',
+                                    // Utilisation de insetInline pour gérer le RTL/LTR proprement
+                                    insetInlineStart: isNearEnd ? 'auto' : `${startPos}%`,
+                                    insetInlineEnd: isNearEnd ? `${100 - (startPos + width)}%` : 'auto',
+                                    width: `${width}%`,
+                                    top: 0
+                                }}
+                            />
+                        </div>
+                    );
+                })}
+            </div>
+        </div>
+    );
+})}
         </div>
     );
 }

@@ -1,6 +1,7 @@
 .containerWrapper {
-    display: inline-block;
-    background-color: #51575acc;
+    display: flex;
+    flex-direction: column;
+    background-color: #3f4445;
     border-radius: 10px;
-    padding: 15px;
+    padding: 20px;
 }

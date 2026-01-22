@@ -1,5 +1,9 @@
 import style from "@/style/components/dashboard/Body.module.css"
 import { BaseBodyCard } from "./BaseBodyCard";
+import { Reports } from "./reports/Reports";
+import { BudgetResources } from "./budget-resources/BudgetResources";
+import { KeyIndicators } from "./key-indicators/KeyIndicators";
+import { QuantityAndCost } from "./quantity-and-cost/QuantityAndCost";
 
 
 export const DashboardBody = () => {
@@ -7,16 +11,16 @@ export const DashboardBody = () => {
         <div className={style.containerWrapper}>
             <div className={style.grid}>
                     <BaseBodyCard>
-                        <p>Body Component</p>
+                        <QuantityAndCost />
                     </BaseBodyCard>
                     <BaseBodyCard title="משאבים תקציב">
-                        <p>Body Component</p>
+                        <BudgetResources />
                     </BaseBodyCard>
                     <BaseBodyCard title="מדדים מרכזיים">
-                        <p>Body Component</p>
+                        <KeyIndicators />
                     </BaseBodyCard>
                     <BaseBodyCard title="דיווחים">
-                        <p>Body Component</p>
+                        <Reports />
                     </BaseBodyCard>
             </div>
         </div>

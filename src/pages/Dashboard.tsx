@@ -1,23 +1,31 @@
 import { useDateRange } from "@/contexts";
 import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
-import { Body } from "@/components/dashboard/Body";
+import { DashboardBody } from "@/components/dashboard/DashboardBody";
 
 
 export const Dashboard = () => {
-  const {
-    startDate,
-    endDate,
-    periodView,
-    setStartDate,
-    setEndDate,
-    setPeriodView,
-  } = useDateRange();
+    const style: React.CSSProperties = {
+    backgroundColor: "#050606cc",
+    minHeight: "100vh",
+    color: "white",
+    display: "flex",
+    flexDirection: "column",
+    };
+
+    const {
+        startDate,
+        endDate,
+        periodView,
+        setStartDate,
+        setEndDate,
+        setPeriodView,
+    } = useDateRange();
 
 
     return (
-        <div style={{backgroundColor: "#232525cc", minHeight: "100vh", color: "white"}}>
+        <div style={style}>
             <DashboardHeader setPeriodView={setPeriodView} periodView={periodView} setStartDate={setStartDate} setEndDate={setEndDate} />
-            <Body />
+            <DashboardBody />
         </div>
     );
 }

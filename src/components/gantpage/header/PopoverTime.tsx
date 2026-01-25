@@ -46,10 +46,20 @@ export default function PopoverTime({
       alert("תאריך התחלה חייב להיות לפני תאריך סיום");
       return;
     }
+<<<<<<< Updated upstream
 
     const start = selectedStart.startOf('day');
     const end = selectedEnd.endOf('day');
 
+=======
+   // set the begin and end date to minify error with hours
+   
+   
+   const start = selectedStart.startOf('day');
+   const end = selectedEnd.endOf('day');
+   
+    
+>>>>>>> Stashed changes
     setStartDate(start);
     setEndDate(end);
 

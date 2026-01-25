@@ -1,9 +1,11 @@
-export const forceColors = {
-  "ח”יר": "#007bff",
-  "חש”ן": "#28a745",
-  "חה”ן": "#ffc107",
-  "עורף": "#17a2b8",
-  "אס”ף": "#fd7e14",
-  "חת”ם": "#dc3545",
-  default: "#6c757d"
+
+
+export const forceColors: Record<string, string> = {
+  "חי\"ר": "#F1B8B8",
+  "חש\"ן": "#91E8C6",
+  "חה\"ן": "#9FC9FF",
+  "עורף": "#FFBD95",
+  "אס\"ף": "#B3BDFF",
+  "חת\"ם": "#FEEA9D",
+  default: "#929FAA"
 };

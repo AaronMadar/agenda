@@ -55,60 +55,61 @@ export default function PopoverTime({
     setPeriodView(dateString);
 
     handleClose();
-
-    return (
-      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="he">
-        <Popover
-          open={open}
-          anchorEl={anchorEl}
-          onClose={handleClose}
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-          transformOrigin={{ vertical: 'top', horizontal: 'left' }}
-          PaperProps={{ className: "popover-dates-container" }}
-        >
-          <Box className="popover-content-box">
-            <Typography className="popover-title">טווח תאריכים</Typography>
-
-            <DatePicker
-              label="תאריך התחלה"
-              value={selectedStart}
-              minDate={dynamicMinDate}
-              maxDate={dynamicMaxDate}
-              onChange={setSelectedStart}
-              slotProps={{
-                textField: {
-                  size: 'small',
-                  fullWidth: true,
-                  className: "date-picker-field"
-                }
-              }}
-            />
-
-            <DatePicker
-              label="תאריך סיום"
-              value={selectedEnd}
-              minDate={dynamicMinDate}
-              maxDate={dynamicMaxDate}
-              onChange={setSelectedEnd}
-              slotProps={{
-                textField: {
-                  size: 'small',
-                  fullWidth: true,
-                  className: "date-picker-field"
-                }
-              }}
-            />
-
-            <Button
-              variant="contained"
-              onClick={handleApply}
-              sx={{ mt: 1, backgroundColor: '#4093f1', '&:hover': { backgroundColor: '#3376c2' } }}
-            >
-              החל
-            </Button>
-          </Box>
-        </Popover>
-      </LocalizationProvider>
-    );
   }
+
+  return (
+    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="he">
+      <Popover
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+        PaperProps={{ className: "popover-dates-container" }}
+      >
+        <Box className="popover-content-box">
+          <Typography className="popover-title">טווח תאריכים</Typography>
+
+          <DatePicker
+            label="תאריך התחלה"
+            value={selectedStart}
+            minDate={dynamicMinDate}
+            maxDate={dynamicMaxDate}
+            onChange={setSelectedStart}
+            slotProps={{
+              textField: {
+                size: 'small',
+                fullWidth: true,
+                className: "date-picker-field"
+              }
+            }}
+          />
+
+          <DatePicker
+            label="תאריך סיום"
+            value={selectedEnd}
+            minDate={dynamicMinDate}
+            maxDate={dynamicMaxDate}
+            onChange={setSelectedEnd}
+            slotProps={{
+              textField: {
+                size: 'small',
+                fullWidth: true,
+                className: "date-picker-field"
+              }
+            }}
+          />
+
+          <Button
+            variant="contained"
+            onClick={handleApply}
+            sx={{ mt: 1, backgroundColor: '#4093f1', '&:hover': { backgroundColor: '#3376c2' } }}
+          >
+            החל
+          </Button>
+        </Box>
+      </Popover>
+    </LocalizationProvider>
+  );
 }
+

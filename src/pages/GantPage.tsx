@@ -8,27 +8,39 @@ import "@/style/index.css"
 
 dayjs.locale('he');
 
-interface ShibutsApi {
+export interface ResourceItem {
+    item: string | null;
+    quantity: number;
+    price: number;
+}
+
+export interface ShibutsApi {
+    codeShibuts: string;
+    directCost: number;
+    costOfItems: number;
+    mesima: string;
+    seviceType: string;
     title: string;
     variationPastYear: number;
     dateBegin: string;
     dateEnd: string;
-    ressource: Record<string, { quantity: number; price: number }>;
+    resource: ResourceItem[];
 }
 
-interface GdudApi {
+export interface GdudApi {
+    name: string;
     forceType: string;
     pikud: string;
     shibutsim: ShibutsApi[];
-}
+}[];
 
-interface ApiResponse {
+export interface ApiResponse {
     unit: string;
     period: {
         start: string;
         end: string;
     };
-    gdudim: Record<string, GdudApi>;
+    gdudim: GdudApi[];
 }
 
 

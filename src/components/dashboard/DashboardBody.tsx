@@ -29,6 +29,16 @@ const reports = [
     "גדוד 123456 באימון מפח”ט 3124 טירונות הוקצאה 50% פחות תחמושת",
 ];
 
+const resources = [
+    {name: "תחמושת", amount: 7, percentage: -12},
+    {name: "דלק", amount: 15, percentage: 8},
+    {name: "חיל רגלים", amount: 3, percentage: -5},
+    {name: "שריון", amount: 4, percentage: 10},
+    {name: "תחמושת", amount: 7, percentage: -12},
+    {name: "דלק", amount: 15, percentage: 8},
+    {name: "חיל רגלים", amount: 3, percentage: -5},
+    {name: "שריון", amount: 4, percentage: 10},
+]
 
 export const DashboardBody = () => {
     return (
@@ -38,7 +48,7 @@ export const DashboardBody = () => {
                         <QuantityAndCost />
                     </BaseBodyCard>
                     <BaseBodyCard title="משאבים תקציב">
-                        <BudgetResources />
+                        <BudgetResources resources={resources} />
                     </BaseBodyCard>
                     <BaseBodyCard title="מדדים מרכזיים">
                         <KeyIndicators />

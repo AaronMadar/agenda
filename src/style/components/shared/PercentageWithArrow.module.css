@@ -1,0 +1,12 @@
+.percentage {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 5px;
+    color: #00FF6F;
+    background-color: rgba(90, 105, 89, 0.2);
+}
+
+.minus {
+    color: #F97373;
+    background-color: rgba(118, 97, 97, 0.2);
+}

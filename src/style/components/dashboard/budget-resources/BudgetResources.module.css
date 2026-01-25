@@ -9,4 +9,7 @@
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, 1fr);
     gap: 20px;
+
+    max-height: 32vh;
+    overflow-y: auto;
 }

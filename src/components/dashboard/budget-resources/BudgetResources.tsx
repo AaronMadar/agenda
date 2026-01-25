@@ -2,16 +2,21 @@ import style from "@/style/components/dashboard/budget-resources/BudgetResources
 import { ResourceCard } from "./ResourceCard"
 
 
-export const BudgetResources = () => {
+interface BudgetResourcesProps {
+    resources?: {
+        name: string;
+        amount: number;
+        percentage: number;
+    }[];
+}
+
+export const BudgetResources = ({ resources }: BudgetResourcesProps) => {
     return(
         <div className={style.containerWrapper}>
             <div className={style.grid}>
-                <ResourceCard />
-                <ResourceCard />
-                <ResourceCard />
-                <ResourceCard />
-                <ResourceCard />
-                <ResourceCard />
+                {resources?.map((resource, index) => (
+                    <ResourceCard key={index} resource={resource} />
+                ))}
             </div>
         </div>
     )

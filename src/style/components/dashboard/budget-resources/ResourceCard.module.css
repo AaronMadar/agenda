@@ -1,6 +1,18 @@
 .containerWrapper {
-    display: inline-block;
     background-color: #474d4f;
     border-radius: 4px;
-    padding: 15px;
+    padding: 25px;
+    min-height: 140px;
+}
+
+.details {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.amount {
+    display: inline-block;
+    font-size: 1.7rem;
 }

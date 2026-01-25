@@ -35,6 +35,7 @@ interface ApiResponse {
 export default function GantPage() {
     const currentYear = new Date().getFullYear();
 
+
     const [data, setData] = useState<ApiResponse | null>(null);
     const [loading, setLoading] = useState(true);
 
@@ -54,6 +55,9 @@ export default function GantPage() {
                 // on initialise avec les dates du serveur
                 setStartDate(prev => prev || dayjs(jsonData.period.start));
                 setEndDate(prev => prev || dayjs(jsonData.period.end));
+
+                setLoading(false)
+
             })
             .catch(err => {
                 console.error(err);
@@ -62,6 +66,7 @@ export default function GantPage() {
     }, []);
 
     if (loading) return <div>loading...</div>;
+
 
     return (
         <div className="gantpage-container">

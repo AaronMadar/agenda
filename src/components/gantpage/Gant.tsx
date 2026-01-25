@@ -25,15 +25,22 @@ interface GantProps {
     endDate: Dayjs | null;
 }
 
+interface ResourceItem {
+    item: string | null;
+    quantity: number;
+    price: number;
+}
+
 interface ShibutsApi {
     title: string;
     variationPastYear: number;
     dateBegin: string;
     dateEnd: string;
-    ressource: Record<string, { quantity: number; price: number }>;
+    ressource: ResourceItem[];
 }
 
 interface GdudApi {
+    name: string;
     forceType: string;
     pikud: string;
     shibutsim: ShibutsApi[];
@@ -45,7 +52,7 @@ interface ApiResponse {
         start: string;
         end: string;
     };
-    gdudim: Record<string, GdudApi>;
+    gdudim: GdudApi[];
 }
 
 
@@ -69,8 +76,16 @@ const sortEventsByDate = (items: ShibutsApi[]): ShibutsApi[] => {
 };
 
 const calculatePosition = (shibuts: ShibutsApi, rangeStart: Dayjs, rangeEnd: Dayjs): number => {
-   // We add 1 to include the end day in the width calculation 
-    const totalDays = rangeEnd.diff(rangeStart, 'day') + 1;
+    const diffInRangeDays = rangeEnd.endOf("day").diff(rangeStart.startOf("day"), 'day');
+    if (diffInRangeDays <= 15) {
+        const totalDays = diffInRangeDays + 1;
+        const itemStart = dayjs(shibuts.dateBegin);
+        const visualStart = itemStart.isBefore(rangeStart) ? rangeStart : itemStart;
+        const diff = visualStart.diff(rangeStart, 'day');
+        return (diff / totalDays) * 100;
+    }
+    // We add 1 to include the end day in the width calculation 
+    const totalDays = rangeEnd.endOf('month').diff(rangeStart.startOf('month'), 'day') + 1;
     const itemStart = dayjs(shibuts.dateBegin);
     const visualStart = itemStart.isBefore(rangeStart) ? rangeStart : itemStart;
     const diff = visualStart.diff(rangeStart, 'day');
@@ -78,12 +93,23 @@ const calculatePosition = (shibuts: ShibutsApi, rangeStart: Dayjs, rangeEnd: Day
 };
 
 const calculateWidth = (shibuts: ShibutsApi, rangeStart: Dayjs, rangeEnd: Dayjs): number => {
-    const totalDays = rangeEnd.diff(rangeStart, 'day') + 1;
+    const diffInRangeDays = rangeEnd.endOf("day").diff(rangeStart.startOf("day"), 'day');
+    if (diffInRangeDays <= 15) {
+        const totalDays = diffInRangeDays + 1;
+        const itemStart = dayjs(shibuts.dateBegin);
+        const itemEnd = dayjs(shibuts.dateEnd);
+        const visualStart = itemStart.isBefore(rangeStart) ? rangeStart : itemStart;
+        const visualEnd = itemEnd.isAfter(rangeEnd) ? rangeEnd : itemEnd;
+        let width = ((visualEnd.diff(visualStart, 'day') + 1) / totalDays) * 100;
+        return width < MIN_WIDTH_PERCENT ? MIN_WIDTH_PERCENT : width;
+
+    }
+    const totalDays = rangeEnd.endOf('month').diff(rangeStart.startOf('month'), 'day') + 1;
     const itemStart = dayjs(shibuts.dateBegin);
     const itemEnd = dayjs(shibuts.dateEnd);
     const visualStart = itemStart.isBefore(rangeStart) ? rangeStart : itemStart;
     const visualEnd = itemEnd.isAfter(rangeEnd) ? rangeEnd : itemEnd;
-    let width = ((visualEnd.diff(visualStart, 'day')+1) / totalDays) * 100;
+    let width = ((visualEnd.diff(visualStart, 'day') + 1) / totalDays) * 100;
     return width < MIN_WIDTH_PERCENT ? MIN_WIDTH_PERCENT : width;
 };
 
@@ -112,7 +138,6 @@ const generateTicks = (start: Dayjs, end: Dayjs): string[] => {
 
 export default function Gant({ data, startDate, endDate }: GantProps) {
 
-    
     const currentYear = dayjs().year();
 
     const sDate = startDate || dayjs(`${currentYear}-01-01`);
@@ -135,34 +160,44 @@ export default function Gant({ data, startDate, endDate }: GantProps) {
                 </div>
             </div>
 
-            
-            {/* {Object.entries(data?.gdudim || []).map(([gdud, index]) => {
-                const sortedItems = sortEventsByDate(getFilteredShibutsim(gdud, sDate, eDate));
-
+            {data?.gdudim.map((gdudData, index) => {
+                // 1. On passe le tableau des shibutsim à la fonction de filtrage
+                const filtered = getFilteredShibutsim(gdudData.shibutsim, sDate, eDate);
+                if (filtered.length === 0) {
+                    return null; // Ne pas afficher les lignes vides (gdud sans shibuts dans la plage de dates)
+                }
+                const sortedItems = sortEventsByDate(filtered);
 
                 return (
-                    <div className="timezone gdudim" key={gdud}>
-                        <div className="div-side sidebar">{gdud}</div>
-                        <div className="row-content-wrapper" style={{ overflow: 'visible' }}>
+                    <div className="timezone gdudim" key={gdudData.name || index}>
+                        <div className="div-side sidebar">{gdudData.name}</div>
+                        <div className="row-content-wrapper" style={{ position: 'relative', minHeight: '60px' }}>
                             {sortedItems.map((item, idx) => {
-                                const startPos = calculatePosition(item.dateBegin, sDate, eDate);
-                                const width = calculateWidth(item.dateBegin, item.dateEnd, sDate, eDate);
-
+                                // On utilise nos fonctions avec l'objet "item" entier
+                                const startPos = calculatePosition(item, sDate, eDate);
+                                const width = calculateWidth(item, sDate, eDate);
                                 const isNearEnd = (startPos + width) > NEAR_END_THRESHOLD;
+
+                                // 2. Transformation des ressources (Array -> String, seulement les noms des items, séparées par ' | ')
+                                const resourceString = item.ressource
+                                    .map(r => r.item)
+                                    .join(' | ');
+
                                 return (
-                                    <div key={idx} className="gant-row" >
+                                    <div key={idx} className="gant-row">
                                         <ShibutsCard
                                             title={item.title}
-                                            variation={item.variationPastYear}
-                                            // On transforme le tableau en string pour ShibutsCard
-                                            resources={item.ressource.join(', ')}
+                                            variation={`${item.variationPastYear}%`}
+                                            dateBegin={item.dateBegin}
+                                            dateEnd={item.dateEnd}
+                                            resources={resourceString}
                                             style={{
                                                 position: 'absolute',
+                                                // Utilisation de insetInline pour gérer le RTL/LTR proprement
                                                 insetInlineStart: isNearEnd ? 'auto' : `${startPos}%`,
                                                 insetInlineEnd: isNearEnd ? `${100 - (startPos + width)}%` : 'auto',
-                                                width: `${calculateWidth(item.dateBegin, item.dateEnd, sDate, eDate)}%`,
-                                                top: 0,
-                                                zIndex: 10 // Base z-index
+                                                width: `${width}%`,
+                                                top: 0
                                             }}
                                         />
                                     </div>
@@ -171,7 +206,7 @@ export default function Gant({ data, startDate, endDate }: GantProps) {
                         </div>
                     </div>
                 );
-            })} */}
+            })} 
 
             {Object.entries(data?.gdudim || {}).map(([gdudName, gdudData]) => {
     // 1. On passe le tableau des shibutsim à la fonction de filtrage

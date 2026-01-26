@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
@@ -8,9 +8,8 @@ import 'dayjs/locale/he';
 import ShibutsCard from "./gant/ShibutsCard";
 import { iconResources, iconServiceType } from "@/constants/icons";
 import { forceColors } from "@/constants/colors";
-import { translateKeyMap } from "@/constants/translation";
 
-import type { ApiResponse, ShibutsApi, GdudApi } from '@/pages/GantPage';
+import type { ApiResponse, ShibutsApi } from '@/pages/GantPage';
 
 
 import "@/style/components/gantpage/Gant.css";
@@ -162,7 +161,9 @@ export default function Gant({ data, startDate, endDate }: GantProps) {
                                             dateBegin={shibuts.dateBegin}
                                             dateEnd={shibuts.dateEnd}
                                             resources={resourceString}
-                                            icon={iconServiceType[shibuts.seviceType] || iconServiceType.default}
+                                            icon={iconServiceType[
+                                                shibuts.seviceType as keyof typeof iconServiceType
+                                            ] ?? iconServiceType.default}
                                             style={{
                                                 position: 'absolute',
                                                 backgroundColor: forceColors[gdudData.forceType] as keyof typeof forceColors || forceColors.default,

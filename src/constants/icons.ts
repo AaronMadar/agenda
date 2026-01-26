@@ -13,4 +13,6 @@ export const iconServiceType = {
     "מילואים- תע\"ם": "bi bi-brightness-high-fill",
     "סדיר- תע”ם": "bi bi-circle-fill",
     default: "bi bi-question-circle"
-};    
+}  as const;
+
+export type ServiceType = keyof typeof iconServiceType;

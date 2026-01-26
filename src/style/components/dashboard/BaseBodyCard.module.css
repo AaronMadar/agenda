@@ -1,0 +1,6 @@
+.containerWrapper {
+    display: inline-block;
+    background-color: #51575acc;
+    border-radius: 10px;
+    padding: 15px;
+}

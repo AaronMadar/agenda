@@ -5,13 +5,33 @@
 html , body {
     margin: 0;
     padding: 0;
-
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 
-.dashboard-container {
-    min-height: 100vh ;
+.gantpage-container {
+    min-height: 100vh;
+}   
 
 
+
+/* ===== Global Scrollbar ===== */
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.25);
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.45);
 }

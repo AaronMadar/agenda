@@ -1,0 +1,16 @@
+.containerWrapper {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 15px;
+}
+
+.iconImage {
+  width: 40px;
+  height: auto;
+}
+
+.controlsContainer {
+    display: flex;
+    gap: 15px;
+}

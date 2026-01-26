@@ -1,5 +1,6 @@
-/* je ne met pas width 100% car la div prend toute la largeur par defaut et avec le padding ca peut poser des problemes de debordement */
 .header {
+  background-color: #4b4a4a;
+  color: #efeded;
   padding: 1rem;
   text-align: center;
   height: 3.5rem;
@@ -10,67 +11,7 @@
   flex-shrink: 0; /*pour eviter que la hauteur se modifie */
 }
 
-.div-header-right{
-    display: flex;
-    flex-direction: row;
-}
-
-.inner-right-right{
-    display: flex;
-    direction: row;
-    gap: 1.2rem;
-
-
-}
-
-
-.inner-right-left{
-    display: flex;
-    direction: row;
-    gap: 1.2rem;
-}
-
-
-
-
-.theme {
-  background-color: #4b4a4a;
-  color: #efeded;
-}
-
-.icone {
-    font-size: 1.5rem;
-    color: #4093f1;
-    
-    /* On prépare l'espace pour le rond */
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;  /* Ajuste selon la taille voulue */
-    height: 40px; /* Doit être identique à width pour un rond parfait */
-    
-    /* Transition douce pour un effet premium */
-    transition: all 0.2s ease-in-out;
-    cursor: pointer;
-    border-radius: 50%; /* Prépare la forme arrondie */
-}
-
-.icone:hover {
-    background-color: rgba(21, 22, 22, 0.1); /* Un bleu très léger qui rappelle l'icône */
-    color: #2a6dbd; /* L'icône fonce un peu au survol */    
-    border-radius: 50%; /* Force le rond parfait */
-    transform: scale(1.1); /* Petit effet de zoom subtil */
-}
-
-
-.vertical-line {
-  border-left: 2px solid #525252;
-  height: 2rem;
-  margin-left: 1rem;
-  margin-right: 1rem;
-}
-
-.div-header-right {
+.header-actions {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -78,14 +19,7 @@
   margin-left: auto;
 }
 
-.inner-div-header-right {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 1rem;
-  margin-right: auto;
-}
-.inner-div-header-left {
+.header-actions-primary {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -93,16 +27,57 @@
   margin-right: auto;
 }
 
-
-
-.div-header-left{
- display: flex;
- flex-direction: row;
-    align-items: center;
-    gap: 1rem;
+.header-actions-secondary {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  margin-right: auto;
 }
 
-.div-header-left i {
+.header-icon {
+  font-size: 1.5rem;
+  color: #4093f1;
+
+  /* On prépare l'espace pour le rond */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px; /* Ajuste selon la taille voulue */
+  height: 40px; /* Doit être identique à width pour un rond parfait */
+
+  /* Transition douce pour un effet premium */
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  border-radius: 50%; /* Prépare la forme arrondie */
+}
+
+.header-icon:hover {
+  background-color: rgba(
+    21,
+    22,
+    22,
+    0.1
+  ); /* Un bleu très léger qui rappelle l'icône */
+  color: #2a6dbd; /* L'icône fonce un peu au survol */
+  border-radius: 50%; /* Force le rond parfait */
+  transform: scale(1.1); /* Petit effet de zoom subtil */
+}
+
+.header-separator {
+  border-left: 2px solid #525252;
+  height: 2rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+.header-time-controls {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header-time-controls i {
   cursor: pointer;
 }
-              

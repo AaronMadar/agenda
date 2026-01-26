@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 
 import Gant from "@/components/gantpage/Gant";
@@ -8,16 +8,46 @@ import "@/style/index.css"
 
 dayjs.locale('he');
 
+export interface ResourceItem {
+    item: string | null;
+    quantity: number;
+    price: number;
+}
+
+export interface ShibutsApi {
+    codeShibuts: string;
+    directCost: number;
+    costOfItems: number;
+    mesima: string;
+    seviceType: string;
+    title: string;
+    variationPastYear: number;
+    dateBegin: string;
+    dateEnd: string;
+    resource: ResourceItem[];
+}
+
+export interface GdudApi {
+    name: string;
+    forceType: string;
+    pikud: string;
+    shibutsim: ShibutsApi[];
+}[];
+
+export interface ApiResponse {
+    unit: string;
+    period: {
+        start: string;
+        end: string;
+    };
+    gdudim: GdudApi[];
+}
+
+
 export default function GantPage() {
     const currentYear = new Date().getFullYear();
-   // Le viewMode represente l'affichage dans le select time 
-    const [periodView, setPeriodView] = useState<string>(`כל ${currentYear}`); //TODO change the name of the state 
 
-<<<<<<< Updated upstream
-    // Le startDate et endDate sont les valeurs des dates selectionnees dans le popover time mais par defaut elles affichent l'annee en cours   
-    const [startDate, setStartDate] = useState<Dayjs | null>(dayjs(`${currentYear}-01-01`));
-    const [endDate, setEndDate] = useState<Dayjs | null>(dayjs(`${currentYear}-12-31`));
-=======
+
     const [data, setData] = useState<ApiResponse | null>(null);
     const [loading, setLoading] = useState(true);
 
@@ -37,7 +67,9 @@ export default function GantPage() {
                 // on initialise avec les dates du serveur
                 setStartDate(prev => prev || dayjs(jsonData.period.start));
                 setEndDate(prev => prev || dayjs(jsonData.period.end));
+
                 setLoading(false)
+
             })
             .catch(err => {
                 console.error(err);
@@ -46,13 +78,12 @@ export default function GantPage() {
     }, []);
 
     if (loading) return <div>loading...</div>;
->>>>>>> Stashed changes
+
 
     return (
-        <div className="dashboard-container">
+        <div className="gantpage-container">
             <Header setPeriodView={setPeriodView} periodView={periodView} setStartDate={setStartDate} setEndDate={setEndDate} />
-            <Gant  startDate={startDate} endDate={endDate}/>
-            
+            <Gant data={data} startDate={startDate} endDate={endDate} />
         </div>
     );
 }

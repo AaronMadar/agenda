@@ -1,16 +1,159 @@
 {
-        period: {
-            start: "2025-04-10",
-            end: "2025-07-10"
+  "unit": "גבעתי",
+  "period": {
+    "start": "2026-01-01",
+    "end": "2026-12-31"
+  },
+  "gdudim": [
+    {
+      "name": "גדוד 888",
+      "forceType": "עורף",
+      "pikud": "מפקדת חטיבה 84",
+      "shibutsim": [
+        {
+          "title": "תדיר 82 תורן",
+          "codeShibuts": "12345678",
+          "directCost": 10000,
+          "costOfItems": 5000,
+          "mesima": "קורס מ”כים חי”ר",
+          "seviceType": "מילואים- אימונים",
+          "variationPastYear": -25,
+          "dateBegin": "2026-01-10",
+          "dateEnd": "2026-01-12",
+          "resource": [
+            { "item": "אוכל", "quantity": 1200, "price": 1.5 },
+            { "item": "מיטוט", "quantity": 300, "price": 5 },
+            { "item": "רכבים", "quantity": 500, "price": 2 },
+            { "item": "אופניים", "quantity": 200, "price": 3 }
+          ]
         },
-        father: "גבעתי",
-        gdudim: {
-            "גדוד 1": [
-                { title: "מפלג10 טירונות", variationPastYear: "15%", ressource: ["אוכל", "מים"], dateBegin: "2025-01-10", dateEnd: "2025-04-10" },
-                { title: 'תדיר 82 תורן', variationPastYear: '25%', ressource: ["אופניים"], dateBegin: "2025-03-10", dateEnd: "2025-07-10" }
-            ],
-            "גדוד 2": [
-                { title: "מפשט סדיר", variationPastYear: "10%", ressource: ["מיטוט"], dateBegin: "2025-05-10", dateEnd: "2025-10-10" }
-            ]
+        {
+          "title": "אימון הקמה",
+          "codeShibuts": "12345679",
+          "directCost": 15000,
+          "costOfItems": 6000,
+          "mesima": "אימון הקמה גדודי",
+          "seviceType": "מילואים- אימונים",
+          "variationPastYear": 5,
+          "dateBegin": "2026-03-01",
+          "dateEnd": "2026-03-10",
+          "resource": [
+            { "item": "אוכל", "quantity": 2500, "price": 1.5 },
+            { "item": "מיטוט", "quantity": 400, "price": 5 }
+          ]
+        },
+        {
+          "title": "תעסוקה מבצעית צפון",
+          "codeShibuts": "12345680",
+          "directCost": 45000,
+          "costOfItems": 20000,
+          "mesima": "אבטחת יישובים",
+          "seviceType":"סדיר- תע”ם",
+          "variationPastYear": 15,
+          "dateBegin": "2026-05-01",
+          "dateEnd": "2026-06-01",
+          "resource": [
+            { "item": "אוכל", "quantity": 8000, "price": 1.6 },
+            { "item": "אופניים", "quantity": 1000, "price": 3.5 }
+          ]
         }
-    }                           
+      ]
+    },
+    {
+      "name": "גדוד 100",
+      "forceType": "חש\"ן",
+      "pikud": "מפקדת חטיבה 84",
+      "shibutsim": [
+        {
+          "title": "טירונות פלוגה א'",
+          "codeShibuts": "23456789",
+          "directCost": 18000,
+          "costOfItems": 7200,
+          "mesima": "טירונות לוחמים",
+          "seviceType": "סדיר- אימונים",
+          "variationPastYear": 10,
+          "dateBegin": "2026-02-01",
+          "dateEnd": "2026-03-15",
+          "resource": [
+            { "item": "אוכל", "quantity": 2000, "price": 1.6 },
+            { "item": "מיטוט", "quantity": 450, "price": 5.2 },
+            { "item": "רכבים", "quantity": 600, "price": 2.1 },
+            { "item": "אופניים", "quantity": 350, "price": 3.1 }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "גדוד 1",
+      "forceType": "חת\"ם",
+      "pikud": "מפקדת חטיבה 55",
+      "shibutsim": [
+        {
+          "title": "אימון מתקדם",
+          "codeShibuts": "34567890",
+          "directCost": 22000,
+          "costOfItems": 9000,
+          "mesima": "אימון מחלקות",
+          "seviceType": "מילואים- אימונים",
+          "variationPastYear": -5,
+          "dateBegin": "2026-04-05",
+          "dateEnd": "2026-04-20",
+          "resource": [
+            { "item": "אוכל", "quantity": 1600, "price": 1.55 },
+            { "item": "מיטוט", "quantity": 380, "price": 5 },
+            { "item": "רכבים", "quantity": 540, "price": 2.3 },
+            { "item": "אופניים", "quantity": 260, "price": 3.4 }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "גדוד 2",
+      "forceType": "חי\"ר",
+      "pikud": "מפקדת חטיבה 55",
+      "shibutsim": [
+        {
+          "title": "קו מבצעי",
+          "codeShibuts": "45678901",
+          "directCost": 30000,
+          "costOfItems": 12500,
+          "mesima": "תעסוקה מבצעית",
+          "seviceType": "סדיר- אימונים",
+          "variationPastYear": 20,
+          "dateBegin": "2026-06-01",
+          "dateEnd": "2026-08-01",
+          "resource": [
+            { "item": "אוכל", "quantity": 2800, "price": 1.7 },
+            { "item": "מיטוט", "quantity": 600, "price": 5.5 },
+            { "item": "אופניים", "quantity": 900, "price": 2.4 },
+            { "item": "רכבים", "quantity": 420, "price": 3.6 }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "גדוד 3",
+      "forceType":  "אס\"ף",
+      "pikud": "מפקדת חטיבה 12",
+      "shibutsim": [
+        {
+          "title": "אימון חורף",
+          "codeShibuts": "56789012",
+          "directCost": 15000,
+          "costOfItems": 6800,
+          "mesima": "אימון פלוגתי",
+          "seviceType": "מילואים- אימונים",
+          "variationPastYear": -12,
+          "dateBegin": "2026-11-10",
+          "dateEnd": "2026-11-25",
+          "resource": [
+            { "item": "אוכל", "quantity": 1400, "price": 1.5 },
+            { "item": "מיטוט", "quantity": 340, "price": 5.1 },
+            { "item": "רכבים", "quantity": 480, "price": 2.2 },
+            { "item": "אופניים", "quantity": 230, "price": 3.2 }
+          ]
+        }
+      ]
+    }
+  ]
+}

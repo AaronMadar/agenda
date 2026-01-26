@@ -5,7 +5,12 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import dayjs, { Dayjs } from 'dayjs';
 import 'dayjs/locale/he';
 
-import ShibutsCard from "./ShibutsCard";
+import ShibutsCard from "./gant/ShibutsCard";
+import { iconResources, iconServiceType } from "@/constants/icons";
+import { forceColors } from "@/constants/colors";
+
+import type { ApiResponse, ShibutsApi } from '@/pages/GantPage';
+
 
 import "@/style/components/gantpage/Gant.css";
 
@@ -14,64 +19,30 @@ import "@/style/components/gantpage/Gant.css";
 const MIN_WIDTH_PERCENT = 5;
 const NEAR_END_THRESHOLD = 75; // Seuil en % pour déclencher le centrage/ruban vers la gauche
 
-// --- TYPES ---
-interface EventItem {
-    title: string;
-    variationPastYear: string;
-    ressource: string[];
-    dateBegin: string;
-    dateEnd: string;
-}
 
 interface GantProps {
+    data: ApiResponse | null;
     startDate: Dayjs | null;
     endDate: Dayjs | null;
-}
-
-interface ResourceItem {
-    item: string;
-    quantity: number;
-    price: number;
-}
-
-interface ShibutsApi {
-    title: string;
-    variationPastYear: number;
-    dateBegin: string;
-    dateEnd: string;
-    ressource: ResourceItem[];
-}
-
-interface GdudApi {
-    name: string;
-    forceType: string;
-    pikud: string;
-    shibutsim: ShibutsApi[];
-}
-
-interface ApiResponse {
-    unit: string;
-    period: {
-        start: string;
-        end: string;
-    };
-    gdudim: GdudApi[];
 }
 
 
 
 // --- LOGIQUE (Savoir-faire utilitaire) ---
 
-const displayEventInRange = (items: EventItem[], rangeStart: Dayjs, rangeEnd: Dayjs): EventItem[] => {
-    return items.filter(item => {
-        const itemStart = dayjs(item.dateBegin);
-        const itemEnd = dayjs(item.dateEnd);
+// On change les types pour correspondre à une liste de missions (ShibutsApi)
+const getFilteredShibutsim = (shibutsim: ShibutsApi[], rangeStart: Dayjs, rangeEnd: Dayjs): ShibutsApi[] => {
+    return shibutsim.filter(shibut => {
+        const itemStart = dayjs(shibut.dateBegin);
+        const itemEnd = dayjs(shibut.dateEnd);
+
+        // La logique de comparaison est parfaite ! 
         return (itemEnd.isAfter(rangeStart) || itemEnd.isSame(rangeStart, 'day')) &&
             (itemStart.isBefore(rangeEnd) || itemStart.isSame(rangeEnd, 'day'));
     });
 };
 
-const sortEventsByDate = (items: EventItem[]): EventItem[] => {
+const sortEventsByDate = (items: ShibutsApi[]): ShibutsApi[] => {
     return [...items].sort((a, b) => dayjs(a.dateBegin).unix() - dayjs(b.dateBegin).unix());
 };
 
@@ -134,27 +105,14 @@ const generateTicks = (start: Dayjs, end: Dayjs): string[] => {
     return ticks;
 };
 
-// --- COMPOSANT PRINCIPAL ---
 
 
 export default function Gant({ data, startDate, endDate }: GantProps) {
 
-
     const currentYear = dayjs().year();
-    const unity = "גבעתי";
 
     const sDate = startDate || dayjs(`${currentYear}-01-01`);
     const eDate = endDate || dayjs(`${currentYear}-12-31`);
-
-    const data: Record<string, EventItem[]> = {
-        "גדוד 1": [
-            { title: "מפלג10 טירונות", variationPastYear: "15%", ressource: ["אוכל"], dateBegin: "2026-01-10", dateEnd: "2026-01-12" },
-            { title: 'תדיר 82 תורן', variationPastYear: '25%', ressource: ["אופניים"], dateBegin: "2026-03-10", dateEnd: "2026-07-10" }
-        ],
-        "גדוד 2": [
-            { title: "מפשט סדיר", variationPastYear: "10%", ressource: ["מיטוט"], dateBegin: "2026-05-10", dateEnd: "2026-10-10" }
-        ]
-    };
 
     const dates = useMemo(() => generateTicks(sDate, eDate), [sDate, eDate]);
 
@@ -162,7 +120,7 @@ export default function Gant({ data, startDate, endDate }: GantProps) {
         <div className="gant">
             {/* TIMELINE HEADER */}
             <div className="timezone">
-                <div className="yehida div-side">{unity}</div>
+                <div className="yehida div-side">{data?.unit}</div>
                 <div className="frise-wrapper">
                     {dates.map((date, i) => (
                         <div className="frise-tick" key={i}>
@@ -175,37 +133,40 @@ export default function Gant({ data, startDate, endDate }: GantProps) {
 
             {data?.gdudim.map((gdudData, index) => {
                 // 1. On passe le tableau des shibutsim à la fonction de filtrage
-                const filtered = getFilteredShibutsim(gdudData.shibutsim, sDate, eDate);
-                if (filtered.length === 0) {
+                const filteredShibutsim = getFilteredShibutsim(gdudData.shibutsim, sDate, eDate);
+                if (filteredShibutsim.length === 0) {
                     return null; // Ne pas afficher les lignes vides (gdud sans shibuts dans la plage de dates)
                 }
-                const sortedItems = sortEventsByDate(filtered);
-
+                const sortedShibutsim = sortEventsByDate(filteredShibutsim);
                 return (
                     <div className="timezone gdudim" key={gdudData.name || index}>
                         <div className="div-side sidebar">{gdudData.name}</div>
-                        <div className="row-content-wrapper" style={{ position: 'relative', minHeight: '60px' }}>
-                            {sortedItems.map((item, idx) => {
+                        <div className="row-content-wrapper" >
+                            {sortedShibutsim.map((shibuts, idx) => {
                                 // On utilise nos fonctions avec l'objet "item" entier
-                                const startPos = calculatePosition(item, sDate, eDate);
-                                const width = calculateWidth(item, sDate, eDate);
+                                const startPos = calculatePosition(shibuts, sDate, eDate);
+                                const width = calculateWidth(shibuts, sDate, eDate);
                                 const isNearEnd = (startPos + width) > NEAR_END_THRESHOLD;
 
                                 // 2. Transformation des ressources (Array -> String, seulement les noms des items, séparées par ' | ')
-                                const resourceString = item.ressource
+                                const resourceString = shibuts.resource
                                     .map(r => r.item)
                                     .join(' | ');
 
                                 return (
                                     <div key={idx} className="gant-row">
                                         <ShibutsCard
-                                            title={item.title}
-                                            variation={`${item.variationPastYear}%`}
-                                            dateBegin={item.dateBegin}
-                                            dateEnd={item.dateEnd}
+                                            title={shibuts.title}
+                                            variation={`${shibuts.variationPastYear}%`}
+                                            dateBegin={shibuts.dateBegin}
+                                            dateEnd={shibuts.dateEnd}
                                             resources={resourceString}
+                                            icon={iconServiceType[
+                                                shibuts.seviceType as keyof typeof iconServiceType
+                                            ] ?? iconServiceType.default}
                                             style={{
                                                 position: 'absolute',
+                                                backgroundColor: forceColors[gdudData.forceType] as keyof typeof forceColors || forceColors.default,
                                                 // Utilisation de insetInline pour gérer le RTL/LTR proprement
                                                 insetInlineStart: isNearEnd ? 'auto' : `${startPos}%`,
                                                 insetInlineEnd: isNearEnd ? `${100 - (startPos + width)}%` : 'auto',
@@ -223,3 +184,4 @@ export default function Gant({ data, startDate, endDate }: GantProps) {
         </div>
     );
 }
+

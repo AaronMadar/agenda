@@ -1,0 +1,30 @@
+.containerWrapper {
+  display: flex;
+  flex-direction: column;
+  background-color: #474d4f;
+  border-radius: 4px;
+  padding: clamp(12px, 2vw, 25px);
+  min-width: 0;
+}
+
+.header {
+  color: #B2BFC4;
+  font-weight: 400;
+  font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+}
+
+.details {
+  display: flex;
+  align-items: center;
+  gap: clamp(8px, 2vw, 15px);
+  min-width: 0;
+}
+
+.amount {
+  display: inline-block;
+  font-size: clamp(1.2rem, 3vw, 1.7rem);
+}
+
+.noBackground {
+  background-color: transparent;
+}

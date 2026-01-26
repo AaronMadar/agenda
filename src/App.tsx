@@ -1,11 +1,16 @@
 import { Routes, Route } from "react-router-dom";
 import GantPage from '@/pages/GantPage'
+import { Dashboard } from '@/pages/Dashboard'
+import { DateRangeProvider } from "./contexts";
 
 
 export default function App() {
     return (
-        <Routes>
-            <Route path="/" element={<GantPage />} />
-        </Routes>
+        <DateRangeProvider>
+            <Routes>
+                <Route path="/" element={<GantPage />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+            </Routes>
+        </DateRangeProvider>
     )
 }

@@ -1,0 +1,27 @@
+.quantityAndCostGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  padding: clamp(12px, 2vw, 30px);
+  min-width: 0;
+  
+}
+
+.cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 0;
+  min-height: 0;
+}
+
+.cell:nth-child(1),
+.cell:nth-child(3) {
+  border-left: 2px solid #545B5C;
+}
+
+.cell:nth-child(1),
+.cell:nth-child(2) {
+  border-bottom: 2px solid #545B5C;
+}

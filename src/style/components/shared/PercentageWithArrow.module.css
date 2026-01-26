@@ -1,12 +1,21 @@
 .percentage {
-    display: inline-block;
-    padding: 3px 10px;
-    border-radius: 5px;
-    color: #00FF6F;
-    background-color: rgba(90, 105, 89, 0.2);
+  display: inline-flex;
+  align-items: center;
+  padding: clamp(2px, 0.5vw, 6px) clamp(6px, 1.5vw, 10px);
+  border-radius: 5px;
+
+  color: #00FF6F;
+  background-color: rgba(90, 105, 89, 0.2);
+
+  font-size: clamp(0.8rem, 1.5vw, 1rem);
 }
 
 .minus {
-    color: #F97373;
-    background-color: rgba(118, 97, 97, 0.2);
+  color: #F97373;
+  background-color: rgba(118, 97, 97, 0.2);
+}
+
+.percentage svg {
+  font-size: clamp(0.8rem, 1.5vw, 1rem);
+  margin-left: clamp(2px, 0.5vw, 4px);
 }

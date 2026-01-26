@@ -1,0 +1,14 @@
+.bodyGrid {
+  flex: 1;
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+
+  gap: clamp(12px, 2vw, 30px);
+
+  padding: clamp(12px, 2vw, 25px) clamp(16px, 4vw, 50px);
+
+  min-width: 0;
+}
+

@@ -1,7 +1,16 @@
-.containerWrapper {
-    display: flex;
-    flex-direction: column;
-    background-color: #3f4445;
-    border-radius: 10px;
-    padding: 20px;
+.basicBodyCard {
+  display: flex;
+  flex-direction: column;
+
+  background-color: #3f4445;
+  border-radius: 10px;
+
+  padding: clamp(12px, 1.5vw, 30px);
+  gap: clamp(8px, 1.5vw, 15px);
+
+  min-width: 0;
+
+  overflow: hidden;
+
+  max-height: clamp(250px, 40vh, 500px);
 }

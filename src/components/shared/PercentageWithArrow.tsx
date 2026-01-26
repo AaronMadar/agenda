@@ -11,12 +11,7 @@ export const PercentageWithArrow = ({ value }: PercentageWithArrowProps) => {
 
   return (
     <div className={`${style.percentage} ${isNegative ? style.minus : ""}`}>
-      {isNegative ? (
-        <TrendingDownIcon style={{ fontSize: "1rem", marginLeft: 4 }} />
-      ) : (
-        <TrendingUpIcon style={{ fontSize: "1rem", marginLeft: 4 }} />
-      )}
-
+      {isNegative ? <TrendingDownIcon /> : <TrendingUpIcon />}
       {Math.abs(value)}%
     </div>
   );

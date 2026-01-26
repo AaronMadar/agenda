@@ -1,14 +1,15 @@
 .list {
     list-style: disc inside;
-    padding-inline-start: 20px;
+    padding-inline-start: clamp(12px, 4%, 20px);
     margin: 0;
-    max-height: 33vh;
     overflow-y: auto;
+    min-width: 0;
 }
 
 .item {
-    padding: 8px 0;
+    padding: clamp(4px, 1.5vw, 8px) 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    word-break: break-word;
 }
 
 .item:hover {

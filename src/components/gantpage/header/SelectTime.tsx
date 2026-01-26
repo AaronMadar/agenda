@@ -1,3 +1,4 @@
+import { useDateRange } from "@/contexts";
 import { FormControl, Select, MenuItem } from "@mui/material";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import dayjs, { Dayjs } from 'dayjs';
@@ -6,21 +7,15 @@ import "@/style/index.css";
 import "@/style/components/gantpage/header/SelectTime.css";
 
 
-interface SelectTimeProps {
-  setPeriodView: (value: string) => void;
-  periodView: string;
-  setStartDate: (date: Dayjs | null) => void;
-  setEndDate: (date: Dayjs | null) => void;
-}
-
-export default function SelectTime({
-  setPeriodView,
-  periodView,
-  setStartDate,
-  setEndDate
-}: SelectTimeProps) {
+export default function SelectTime() {
 
   const year = new Date().getFullYear();
+  const {
+    periodView,
+    setStartDate,
+    setEndDate,
+    setPeriodView,
+} = useDateRange();
 
 
   const handlePeriodViewChange = (e: any) => {

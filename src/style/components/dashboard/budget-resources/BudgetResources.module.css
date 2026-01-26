@@ -1,0 +1,8 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: clamp(10px, 2vw, 20px);
+  max-height: 32vh;
+  overflow-y: auto;
+  min-width: 0;
+}

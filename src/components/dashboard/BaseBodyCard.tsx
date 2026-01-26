@@ -8,7 +8,7 @@ type BaseBodyCardProps = {
 
 export const BaseBodyCard = ({ children, title }: BaseBodyCardProps) => {
   return (
-    <div className={style.containerWrapper}>
+    <div className={style.basicBodyCard}>
       {title && <h3>{title}</h3>}
       {children}
     </div>

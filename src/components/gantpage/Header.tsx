@@ -52,7 +52,7 @@ export default function Header({ setPeriodView, periodView, setStartDate, setEnd
                     setPeriodView={setPeriodView}
                 />
 
-                <SelectTime setPeriodView={setPeriodView} periodView={periodView} setStartDate={setStartDate} setEndDate={setEndDate} />
+                <SelectTime />
             </div>
         </header>
     )

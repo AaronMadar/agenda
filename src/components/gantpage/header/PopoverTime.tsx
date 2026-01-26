@@ -29,16 +29,15 @@ export default function PopoverTime({
   const [selectedStart, setSelectedStart] = useState<Dayjs | null>(null);
   const [selectedEnd, setSelectedEnd] = useState<Dayjs | null>(null);
 
-
-  // Récupère l'année actuelle (ex: 2026)
   const currentYear = dayjs().year();
-  // Calcule le 31 décembre d'il y a 2 ans (ex: 31/12/2024)
+  // On cherche seulement a permettre toute l'anee derniere et toute l'annee prochaine
   const dynamicMinDate = dayjs(`${currentYear - 2}-12-31`).add(1, 'day');
   const dynamicMaxDate = dayjs(`${currentYear + 2}-01-01`).subtract(1, 'day');
 
   const handleClose = () => setAnchorEl(null);
   const open = Boolean(anchorEl);
 
+  // function to handle apply button click
   const handleApply = () => {
     if (!selectedStart || !selectedEnd) return;
 
@@ -49,7 +48,6 @@ export default function PopoverTime({
 
     const start = selectedStart.startOf('day');
     const end = selectedEnd.endOf('day');
-
     setStartDate(start);
     setEndDate(end);
 
@@ -57,7 +55,7 @@ export default function PopoverTime({
     setPeriodView(dateString);
 
     handleClose();
-  };
+  }
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="he">
@@ -116,3 +114,4 @@ export default function PopoverTime({
     </LocalizationProvider>
   );
 }
+

@@ -42,9 +42,10 @@ interface ShibutsCardProps {
     resources?: string; // C'est déjà une string grâce au .join() du parent
     style?: React.CSSProperties;
     className?: string;
+    icon?:string
 }
 
-export default function ShibutsCard({ title, variation, dateBegin, dateEnd, resources, style, className }: ShibutsCardProps) {
+export default function ShibutsCard({ title, variation, dateBegin, dateEnd, resources, style, className, icon }: ShibutsCardProps) {
     dayjs.locale('he');
     const formattedBegin = dateBegin ? dayjs(dateBegin).format('D MMM') : '';
     const formattedEnd = dateEnd ? dayjs(dateEnd).format('D MMM') : '';
@@ -52,13 +53,16 @@ export default function ShibutsCard({ title, variation, dateBegin, dateEnd, reso
     return (
         <div className={`shibuts-card ${className || ''}`} style={style}>
             <div className="div-up">
+                <div className="iconAndTitle">
+                <i className={`icon-card ${icon}`}></i>
                 <span className="card-title">{title}</span>
+                </div>
                 {/* On n'affiche la variation que si elle existe */}
                 {variation && <span className="card-variation">{variation}</span>}
             </div>
             <div className="div-down">
                 {/* Affichage des dates précises + ressources, séparées par un séparateur clair */}
-                {formattedBegin && formattedEnd && <span>{formattedBegin} - {formattedEnd}</span>}
+                {formattedBegin && formattedEnd && <span className="spanDate">{formattedBegin} - {formattedEnd}</span>}
                 {resources ? <span> | {resources}</span> : <span> | Aucune ressource</span>}
             </div>
         </div>

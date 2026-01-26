@@ -23,8 +23,8 @@
           "resource": [
             { "item": "אוכל", "quantity": 1200, "price": 1.5 },
             { "item": "מיטוט", "quantity": 300, "price": 5 },
-            { "item": "חךלחח", "quantity": 500, "price": 2 },
-            { "item": "וטא", "quantity": 200, "price": 3 }
+            { "item": "רכבים", "quantity": 500, "price": 2 },
+            { "item": "אופניים", "quantity": 200, "price": 3 }
           ]
         },
         {
@@ -48,13 +48,13 @@
           "directCost": 45000,
           "costOfItems": 20000,
           "mesima": "אבטחת יישובים",
-          "seviceType": "מילואים- מבצעי",
+          "seviceType":"סדיר- תע”ם",
           "variationPastYear": 15,
           "dateBegin": "2026-05-01",
           "dateEnd": "2026-06-01",
           "resource": [
             { "item": "אוכל", "quantity": 8000, "price": 1.6 },
-            { "item": "וטא", "quantity": 1000, "price": 3.5 }
+            { "item": "אופניים", "quantity": 1000, "price": 3.5 }
           ]
         }
       ]
@@ -77,8 +77,8 @@
           "resource": [
             { "item": "אוכל", "quantity": 2000, "price": 1.6 },
             { "item": "מיטוט", "quantity": 450, "price": 5.2 },
-            { "item": "חךלחח", "quantity": 600, "price": 2.1 },
-            { "item": "וטא", "quantity": 350, "price": 3.1 }
+            { "item": "רכבים", "quantity": 600, "price": 2.1 },
+            { "item": "אופניים", "quantity": 350, "price": 3.1 }
           ]
         }
       ]
@@ -101,8 +101,8 @@
           "resource": [
             { "item": "אוכל", "quantity": 1600, "price": 1.55 },
             { "item": "מיטוט", "quantity": 380, "price": 5 },
-            { "item": "חךלחח", "quantity": 540, "price": 2.3 },
-            { "item": "וטא", "quantity": 260, "price": 3.4 }
+            { "item": "רכבים", "quantity": 540, "price": 2.3 },
+            { "item": "אופניים", "quantity": 260, "price": 3.4 }
           ]
         }
       ]
@@ -118,15 +118,15 @@
           "directCost": 30000,
           "costOfItems": 12500,
           "mesima": "תעסוקה מבצעית",
-          "seviceType": "סדיר- מבצעי",
+          "seviceType": "סדיר- אימונים",
           "variationPastYear": 20,
           "dateBegin": "2026-06-01",
           "dateEnd": "2026-08-01",
           "resource": [
             { "item": "אוכל", "quantity": 2800, "price": 1.7 },
             { "item": "מיטוט", "quantity": 600, "price": 5.5 },
-            { "item": "חךלחח", "quantity": 900, "price": 2.4 },
-            { "item": "וטא", "quantity": 420, "price": 3.6 }
+            { "item": "אופניים", "quantity": 900, "price": 2.4 },
+            { "item": "רכבים", "quantity": 420, "price": 3.6 }
           ]
         }
       ]
@@ -149,8 +149,8 @@
           "resource": [
             { "item": "אוכל", "quantity": 1400, "price": 1.5 },
             { "item": "מיטוט", "quantity": 340, "price": 5.1 },
-            { "item": "חךלחח", "quantity": 480, "price": 2.2 },
-            { "item": "וטא", "quantity": 230, "price": 3.2 }
+            { "item": "רכבים", "quantity": 480, "price": 2.2 },
+            { "item": "אופניים", "quantity": 230, "price": 3.2 }
           ]
         }
       ]

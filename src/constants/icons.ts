@@ -8,9 +8,9 @@ export const iconResources = {
 };
 
 export const iconServiceType = {
-  "מילואים- אימונים": "bi bi-clock-history",
-  "סדיר- אימונים": "bi bi-calendar-check",
-  "מילואים- תע”ם": "bi bi-shield-lock",
-  "סדיר- תע”ם": "bi bi-shield-check",
-  default: "bi bi-question-circle"
-};
+    "מילואים- אימונים": "bi bi-brightness-high-fill",
+    "סדיר- אימונים": "bi bi-circle-fill",
+    "מילואים- תע\"ם": "bi bi-brightness-high-fill",
+    "סדיר- תע”ם": "bi bi-circle-fill",
+    default: "bi bi-question-circle"
+};    

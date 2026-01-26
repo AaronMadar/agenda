@@ -30,11 +30,15 @@
 }
 
 .shibuts-card.near-end:hover {
-    
+ margin-left: 1rem;
+ background-color: #3e3d3d;
+ border-radius: 1rem;
+ padding: 5px 9px;
     
 }
 
 .div-up {
+    flex-direction: row;
     height: 3rem;
     display: flex;
     justify-content: space-between;
@@ -45,6 +49,21 @@
     white-space: nowrap;
 }
 
+.iconAndTitle {
+    display: flex;
+    align-items: center;
+    justify-self: center;
+    flex-direction: row;
+    gap: 0.2em;
+}
+.bi-brightness-high-fill {
+    font-size: 1.1rem;
+}
+
+.bi-circle-fill{
+    font-size: 0.7rem;
+}
+
 .div-down {
     background-color: #4b4a4a; /* Ton gris/noir */
     color: white;
@@ -53,6 +72,8 @@
     align-items: center;
     padding: 0 1rem;
     font-size: 0.85rem;
+    flex-direction: row;
+    justify-content: start ;
     
     /* MODIFICATION ICI : On enlève le délai et on accélère l'opacité */
     opacity: 0;
@@ -60,6 +81,13 @@
     
     /* Sécurité : on s'assure qu'il est bien calé en bas */
     width: 100%;
+}
+
+.spanDate {
+    margin-left: 1rem;
+    background-color: #3e3d3d;
+    border-radius: 1rem;
+    padding: 5px 9px;
 }
 
 .shibuts-card:hover .div-down {

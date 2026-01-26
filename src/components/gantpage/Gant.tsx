@@ -142,7 +142,7 @@ export default function Gant({ data, startDate, endDate }: GantProps) {
                 return (
                     <div className="timezone gdudim" key={gdudData.name || index}>
                         <div className="div-side sidebar">{gdudData.name}</div>
-                        <div className="row-content-wrapper" style={{ position: 'relative', minHeight: '60px' }}>
+                        <div className="row-content-wrapper" >
                             {sortedShibutsim.map((shibuts, idx) => {
                                 // On utilise nos fonctions avec l'objet "item" entier
                                 const startPos = calculatePosition(shibuts, sDate, eDate);
@@ -162,6 +162,7 @@ export default function Gant({ data, startDate, endDate }: GantProps) {
                                             dateBegin={shibuts.dateBegin}
                                             dateEnd={shibuts.dateEnd}
                                             resources={resourceString}
+                                            icon={iconServiceType[shibuts.seviceType] || iconServiceType.default}
                                             style={{
                                                 position: 'absolute',
                                                 backgroundColor: forceColors[gdudData.forceType] as keyof typeof forceColors || forceColors.default,

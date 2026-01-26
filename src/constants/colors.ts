@@ -1,11 +1,11 @@
 
 
 export const forceColors: Record<string, string> = {
-  "חי\"ר": "#F1B8B8",
-  "חש\"ן": "#91E8C6",
+  "חי\"ר": "#fd8383",
+  "חש\"ן": "#19d38c",
   "חה\"ן": "#9FC9FF",
-  "עורף": "#FFBD95",
-  "אס\"ף": "#B3BDFF",
-  "חת\"ם": "#FEEA9D",
+  "עורף": "#ff9351",
+  "אס\"ף": "#a1adfa",
+  "חת\"ם": "#ffcc00",
   default: "#929FAA"
 };

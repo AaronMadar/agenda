@@ -8,6 +8,7 @@
 .iconImage {
   width: 40px;
   height: auto;
+  cursor: pointer;
 }
 
 .controlsContainer {

@@ -9,10 +9,11 @@ import ShibutsCard from "./gant/ShibutsCard";
 import { iconResources, iconServiceType } from "@/constants/icons";
 import { forceColors } from "@/constants/colors";
 
-import type { ApiResponse, ShibutsApi } from '@/pages/GantPage';
+import type { ShibutsApi } from '@/types/api-response';
 
 
 import "@/style/components/gantpage/Gant.css";
+import { useDateRange } from '@/contexts/DateRangeContext';
 
 
 // --- CONSTANT ---
@@ -20,11 +21,6 @@ const MIN_WIDTH_PERCENT = 5;
 const NEAR_END_THRESHOLD = 75; // Seuil en % pour déclencher le centrage/ruban vers la gauche
 
 
-interface GantProps {
-    data: ApiResponse | null;
-    startDate: Dayjs | null;
-    endDate: Dayjs | null;
-}
 
 
 
@@ -107,7 +103,14 @@ const generateTicks = (start: Dayjs, end: Dayjs): string[] => {
 
 
 
-export default function Gant({ data, startDate, endDate }: GantProps) {
+export default function Gant() {
+
+     const {
+        startDate,
+        endDate,   
+        data,     
+    } = useDateRange();
+    
 
     const currentYear = dayjs().year();
 

@@ -1,20 +1,45 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import dayjs, { Dayjs } from "dayjs";
+import type { ApiResponse } from "@/types/api-response";
+
 
 type DateRangeContextType = {
   startDate: Dayjs | null;
   endDate: Dayjs | null;
   periodView: string;
-
-  setStartDate: (date: Dayjs | null) => void;
-  setEndDate: (date: Dayjs | null) => void;
+  data: ApiResponse | null;
+  loading: boolean;
+  setStartDate: React.Dispatch<React.SetStateAction<Dayjs | null>>;
+  setEndDate: React.Dispatch<React.SetStateAction<Dayjs | null>>;
   setPeriodView: (value: string) => void;
 };
 
 const DateRangeContext = createContext<DateRangeContextType | null>(null);
 
 export const DateRangeProvider = ({ children }: { children: React.ReactNode }) => {
+
+  const [data, setData] = useState<ApiResponse | null>(null);
+  const [loading, setLoading] = useState(true);
+
+
+  useEffect(() => {
+    fetch("/data.json")
+      .then(res => res.json())
+      .then(jsonData => {
+        setData(jsonData);
+        setStartDate(prev => prev || dayjs(jsonData.period.start));
+        setEndDate(prev => prev || dayjs(jsonData.period.end));
+        setLoading(false)
+
+      })
+      .catch(err => {
+        console.error(err);
+        setLoading(false);
+      });
+  }, []);
+
   const currentYear = new Date().getFullYear();
+
 
   const [startDate, setStartDate] = useState<Dayjs | null>(
     dayjs(`${currentYear}-01-01`)
@@ -28,12 +53,16 @@ export const DateRangeProvider = ({ children }: { children: React.ReactNode }) =
     `כל ${currentYear}`
   );
 
+
+
   return (
     <DateRangeContext.Provider
       value={{
         startDate,
         endDate,
         periodView,
+        data,
+        loading,
         setStartDate,
         setEndDate,
         setPeriodView,

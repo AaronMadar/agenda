@@ -8,23 +8,27 @@ import dayjs, { Dayjs } from 'dayjs';
 import 'dayjs/locale/he';
 
 import "@/style/components/gantpage/header/PopoverTime.css";
+import { useDateRange } from '@/contexts/DateRangeContext';
 
 
 interface PopoverProps {
   anchorEl: HTMLElement | null;
   setAnchorEl: (el: HTMLElement | null) => void;
-  setStartDate: (date: Dayjs | null) => void;
-  setEndDate: (date: Dayjs | null) => void;
-  setPeriodView: (value: string) => void;
+
 }
 
 export default function PopoverTime({
   anchorEl,
   setAnchorEl,
-  setStartDate,
-  setEndDate,
-  setPeriodView
+
 }: PopoverProps) {
+
+
+  const {
+    setStartDate,
+    setEndDate,
+    setPeriodView,
+  } = useDateRange();
 
   const [selectedStart, setSelectedStart] = useState<Dayjs | null>(null);
   const [selectedEnd, setSelectedEnd] = useState<Dayjs | null>(null);

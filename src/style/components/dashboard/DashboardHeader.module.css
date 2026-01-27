@@ -1,8 +1,8 @@
 .containerWrapper {
     display: flex;
-    gap: 10px;
+    gap: clamp(8px, 1vw, 10px);
     align-items: center;
-    padding: 15px;
+    padding: clamp(10px, 1.5vw, 15px) clamp(10px, 1.5vw, 15px) 0px clamp(10px, 1.5vw, 15px);
 }
 
 .iconImage {
@@ -12,5 +12,5 @@
 
 .controlsContainer {
     display: flex;
-    gap: 15px;
+    gap: clamp(10px, 1.5vw, 15px);
 }

@@ -4,7 +4,7 @@
   grid-template-rows: 1fr 1fr;
   padding: clamp(12px, 2vw, 30px);
   min-width: 0;
-  
+  height: 100%;
 }
 
 .cell {

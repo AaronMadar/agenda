@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Dayjs } from 'dayjs';
 
 import SelectTime from "./header/SelectTime";
@@ -14,6 +15,7 @@ interface HeaderProps {
 }
 
 export default function Header({ setPeriodView, periodView, setStartDate, setEndDate }: HeaderProps) {
+    const navigate = useNavigate();
     // AnchorEl contains the HtmlElement where the popover will be anchored
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
@@ -26,6 +28,9 @@ export default function Header({ setPeriodView, periodView, setStartDate, setEnd
         <header className="header">
             <div className="header-actions">
                 <div className="header-actions-primary">
+                    <i className='bi bi-speedometer2 header-icon' 
+                    onClick={() => navigate('/dashboard')} 
+                    title="Dashboard" />
                     <i className='bi bi-funnel header-icon' />
                     <i className='bi bi-map header-icon' />
                     <i className='bi bi-bell header-icon' />

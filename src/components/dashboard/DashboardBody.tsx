@@ -1,67 +1,77 @@
-import style from "@/style/components/dashboard/DashboardBody.module.css"
+import { useEffect, useState } from "react";
+import style from "@/style/components/dashboard/DashboardBody.module.css";
+
 import { BaseBodyCard } from "./BaseBodyCard";
-import { Reports } from "./reports/Reports";
-import { BudgetResources } from "./budget-resources/BudgetResources";
-import { KeyIndicators } from "./key-indicators/KeyIndicators";
 import { QuantityAndCost } from "./quantity-and-cost/QuantityAndCost";
+import { BudgetResources } from "./budget-resources/BudgetResources";
+import { Reports } from "./reports/Reports";
+import { TrainingCalendar } from "./training-calendar/TrainingCalendar";
 
+import { extractCalendarEvents } from "@/utils/calendar/extractCalendarEvents";
+import type { CalendarEvent } from "./training-calendar/types";
 
-const reports = [ 
-    "גדוד 123456 באימון מפח”ט טירונות הוקצאה 50% פחות תחמושת", 
-    "גדוד 123456 באימון מפח”ט טירונות הוקצאה 10% יותר תחמושת", 
-    "גדוד 123456 באימון מפח”ט טירונות  iliuiuh oiuh oiuh oiuhjr6j6n7567n56k 46k4n67n467iu46ughu47u4h67u467uh467u467uh46u ;oh iuh oigyuho o iuhoi uh oiuh oiuh iouh oiuh oiuh oiuh oiu  oiuh oiuh הוקצאה 20% פחות הובלות", 
-    "גדוד 123456 באימון מפח”ט טירונות הוקצאה 15% פחות הכשרות",
-    "גדוד 123456 באימון מפח”ט 3124 טירונות הוקצאה 50% פחות תחמושת",
-    "גדוד 123456 באימון מפח”ט טירונות הוקצאה 50% פחות תחמושת", 
-    "גדוד 123456 באימון מפח”ט טירונות הוקצאה 10% יותר תחמושת", 
-    "גדוד 123456 באימון מפח”ט טירונות הוקצאה 20% פחות הובלות", 
-    "גדוד 123456 באימון מפח”ט טירונות הוקצאה 15% פחות הכשרות",
-    "גדוד 123456 באימון מפח”ט 3124 טירונות הוקצאה 50% פחות תחמושת",
-    "גדוד 123456 באימון מפח”ט טירונות הוקצאה 50% פחות תחמושת", 
-    "גדוד 123456 באימון מפח”ט טירונות הוקצאה 10% יותר תחמושת", 
-    "גדוד 123456 באימון מפח”ט טירונות הוקצאה 20% פחות הובלות", 
-    "גדוד 123456 באימון מפח”ט טירונות הוקצאה 15% פחות הכשרות",
-    "גדוד 123456 באימון מפח”ט 3124 טירונות הוקצאה 50% פחות תחמושת",
-    "גדוד 123456 באימון מפח”ט טירונות הוקצאה 50% פחות תחמושת", 
-    "גדוד 123456 באימון מפח”ט טירונות הוקצאה 10% יותר תחמושת", 
-    "גדוד 123456 באימון מפח”ט טירונות הוקצאה 20% פחות הובלות", 
-    "גדוד 123456 באימון מפח”ט טירונות הוקצאה 15% פחות הכשרות",
-    "גדוד 123456 באימון מפח”ט 3124 טירונות הוקצאה 50% פחות תחמושת",
-];
+/* -------- types -------- */
 
-const resources = [
-    {name: "תחמושת", amount: 7, percentage: -12},
-    {name: "דלק", amount: 15, percentage: 8},
-    {name: "חיל רגלים", amount: 3, percentage: -5},
-    {name: "שריון", amount: 4, percentage: 10},
-    {name: "תחמושת", amount: 7, percentage: -12},
-    {name: "דלק", amount: 15, percentage: 8},
-    {name: "חיל רגלים", amount: 3, percentage: -5},
-    {name: "שריון", amount: 4, percentage: 10},
-]
+type DashboardSummaryResponse = {
+  quantityAndCost: {
+    name: string;
+    amount: number;
+    percentage: number;
+  }[];
+  resources: {
+    name: string;
+    amount: number;
+    percentage: number;
+  }[];
+  reports: string[];
+};
 
-const quantityAndCost = [
-    { name: "עלות אימונים", amount: 1, percentage: 29 },
-    { name: "כמות אימונים", amount: 300, percentage: 29 },
-    { name: "עלות הכשרות", amount: 3, percentage: -25 },
-    { name: "כמות הכשרות", amount: 258, percentage: 23 },
-]
+/* -------- component -------- */
 
 export const DashboardBody = () => {
-    return (
-        <div className={style.bodyGrid}>
-            <BaseBodyCard>
-                <QuantityAndCost quantityAndCost={quantityAndCost} />
-            </BaseBodyCard>
-            <BaseBodyCard title="משאבים תקציב">
-                <BudgetResources resources={resources} />
-            </BaseBodyCard>
-            <BaseBodyCard title="מדדים מרכזיים">
-                <KeyIndicators />
-            </BaseBodyCard>
-            <BaseBodyCard title="דיווחים">
-                <Reports reports={reports} />
-            </BaseBodyCard>
-        </div>
-    );
+  const [summaryData, setSummaryData] = useState<DashboardSummaryResponse | null>(null);
+  const [calendarEvents, setCalendarEvents] = useState<CalendarEvent[]>([]);
+
+  /* KPI / cards data */
+  useEffect(() => {
+    fetch("/public/dashboardSummary.json")
+      .then(res => res.json())
+      .then(setSummaryData)
+      .catch(err => {
+        console.error("Failed to load dashboard summary", err);
+      });
+  }, []);
+
+  /* Calendar data */
+  useEffect(() => {
+    fetch("/data.json")
+      .then(res => res.json())
+      .then(data => {
+        const events = extractCalendarEvents(data);
+        setCalendarEvents(events);
+      })
+      .catch(err => {
+        console.error("Failed to load calendar data", err);
+      });
+  }, []);
+
+  return (
+    <div className={style.bodyGrid}>
+      <BaseBodyCard>
+        <QuantityAndCost quantityAndCost={summaryData?.quantityAndCost} />
+      </BaseBodyCard>
+
+      <BaseBodyCard title="משאבים תקציב">
+        <BudgetResources resources={summaryData?.resources} />
+      </BaseBodyCard>
+
+      <BaseBodyCard title="לוח אימונים">
+        <TrainingCalendar events={calendarEvents} />
+      </BaseBodyCard>
+
+      <BaseBodyCard title="דיווחים">
+        <Reports reports={summaryData?.reports} />
+      </BaseBodyCard>
+    </div>
+  );
 };

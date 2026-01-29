@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { useNavigate } from 'react-router-dom';
 import { SelectTime } from "./header/SelectTime";
 import { PopoverTime } from "./header/PopoverTime";
 
@@ -7,6 +8,7 @@ import "@/style/components/gantpage/Header.css";
 
 
 export function Header() {
+    const navigate = useNavigate();
     // AnchorEl contains the HtmlElement where the popover will be anchored
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
@@ -19,6 +21,9 @@ export function Header() {
         <header className="header">
             <div className="header-actions">
                 <div className="header-actions-primary">
+                    <i className='bi bi-speedometer2 header-icon' 
+                    onClick={() => navigate('/dashboard')} 
+                    title="Dashboard" />
                     <i className='bi bi-funnel header-icon' />
                     <i className='bi bi-map header-icon' />
                     <i className='bi bi-bell header-icon' />

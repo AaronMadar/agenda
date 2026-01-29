@@ -3,7 +3,7 @@
   flex-direction: column;
   background-color: #474d4f;
   border-radius: 4px;
-  padding: clamp(12px, 2vw, 25px);
+  padding: clamp(8px, 1vw, 25px);
   min-width: 0;
 }
 
@@ -15,6 +15,8 @@
 
 .details {
   display: flex;
+  justify-content: space-between;
+  padding-left: 30%;
   align-items: center;
   gap: clamp(8px, 2vw, 15px);
   min-width: 0;
@@ -22,7 +24,8 @@
 
 .amount {
   display: inline-block;
-  font-size: clamp(1.2rem, 3vw, 1.7rem);
+  font-size: clamp(0.1rem, 1.4vw, 10.9rem);
+  font-weight: 500;
 }
 
 .noBackground {

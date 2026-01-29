@@ -2,7 +2,7 @@ import style from "@/style/components/dashboard/quantity-and-cost/QuantityAndCos
 import { ResourceCard } from "../../shared/ResourceCard";
 
 interface QuantityAndCostProps {
-  quantityAndCost: {
+  quantityAndCost?: {
     name: string;
     amount: number;
     percentage: number;
@@ -12,7 +12,7 @@ interface QuantityAndCostProps {
 export const QuantityAndCost = ({ quantityAndCost }: QuantityAndCostProps) => {
   return (
     <div className={style.quantityAndCostGrid}>
-        {quantityAndCost.map(resource => (
+        {quantityAndCost?.map(resource => (
             <div className={style.cell} key={resource.name}>
                 <ResourceCard resource={resource} noBackground />
             </div>

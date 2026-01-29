@@ -1,4 +1,4 @@
-.bodyGrid {
+ .bodyGrid {
   flex: 1;
   display: grid;
 
@@ -7,8 +7,9 @@
 
   gap: clamp(12px, 2vw, 30px);
 
-  padding: clamp(12px, 2vw, 25px) clamp(16px, 4vw, 50px);
+  padding: clamp(5px, 1vw, 25px) clamp(16px, 2.5vw, 50px);
 
   min-width: 0;
+  min-height: 0;
+  overflow: hidden;
 }
-

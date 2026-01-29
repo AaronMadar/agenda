@@ -1,51 +1,77 @@
 import { useEffect, useState } from "react";
-import style from "@/style/components/dashboard/DashboardBody.module.css"
+import style from "@/style/components/dashboard/DashboardBody.module.css";
+
 import { BaseBodyCard } from "./BaseBodyCard";
-import { Reports } from "./reports/Reports";
-import { BudgetResources } from "./budget-resources/BudgetResources";
-import { KeyIndicators } from "./key-indicators/KeyIndicators";
 import { QuantityAndCost } from "./quantity-and-cost/QuantityAndCost";
+import { BudgetResources } from "./budget-resources/BudgetResources";
+import { Reports } from "./reports/Reports";
+import { TrainingCalendar } from "./training-calendar/TrainingCalendar";
 
+import { extractCalendarEvents } from "@/utils/calendar/extractCalendarEvents";
+import type { CalendarEvent } from "./training-calendar/types";
 
-type dataResponseType = {
-    quantityAndCost: {
-        name: string;
-        amount: number;
-        percentage: number;
-    }[];
-    resources: {
-        name: string;
-        amount: number;
-        percentage: number;
-    }[];
-    reports: string[];
-}
+/* -------- types -------- */
+
+type DashboardSummaryResponse = {
+  quantityAndCost: {
+    name: string;
+    amount: number;
+    percentage: number;
+  }[];
+  resources: {
+    name: string;
+    amount: number;
+    percentage: number;
+  }[];
+  reports: string[];
+};
+
+/* -------- component -------- */
 
 export const DashboardBody = () => {
-    const [data, setData] = useState<dataResponseType | null>(null);
+  const [summaryData, setSummaryData] = useState<DashboardSummaryResponse | null>(null);
+  const [calendarEvents, setCalendarEvents] = useState<CalendarEvent[]>([]);
 
-    useEffect(() => {
-        fetch('/public/dashboardSummary.json')
-            .then(res => res.json())
-            .then(data => {
-            setData(data);
-            });
-    }, []);
+  /* KPI / cards data */
+  useEffect(() => {
+    fetch("/public/dashboardSummary.json")
+      .then(res => res.json())
+      .then(setSummaryData)
+      .catch(err => {
+        console.error("Failed to load dashboard summary", err);
+      });
+  }, []);
 
-    return (
-        <div className={style.bodyGrid}>
-            <BaseBodyCard>
-                <QuantityAndCost quantityAndCost={data?.quantityAndCost} />
-            </BaseBodyCard>
-            <BaseBodyCard title="משאבים תקציב">
-                <BudgetResources resources={data?.resources} />
-            </BaseBodyCard>
-            <BaseBodyCard title="מדדים מרכזיים">
-                <KeyIndicators />
-            </BaseBodyCard>
-            <BaseBodyCard title="דיווחים">
-                <Reports reports={data?.reports} />
-            </BaseBodyCard>
-        </div>
-    );
+  /* Calendar data */
+  useEffect(() => {
+    fetch("/data.json")
+      .then(res => res.json())
+      .then(data => {
+        const events = extractCalendarEvents(data);
+        setCalendarEvents(events);
+      })
+      .catch(err => {
+        console.error("Failed to load calendar data", err);
+      });
+  }, []);
+
+  return (
+    <div className={style.bodyGrid}>
+      <BaseBodyCard>
+        <QuantityAndCost quantityAndCost={summaryData?.quantityAndCost} />
+      </BaseBodyCard>
+
+      <BaseBodyCard title="משאבים תקציב">
+        <BudgetResources resources={summaryData?.resources} />
+      </BaseBodyCard>
+
+      <BaseBodyCard title="לוח אימונים">
+        <TrainingCalendar events={calendarEvents} />
+      </BaseBodyCard>
+
+      <BaseBodyCard title="דיווחים">
+        <Reports reports={summaryData?.reports} />
+      </BaseBodyCard>
+    </div>
+  );
 };

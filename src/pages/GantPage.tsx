@@ -1,36 +1,22 @@
-import { useEffect, useState } from 'react';
-import dayjs, { Dayjs } from 'dayjs';
-
-import Gant from "@/components/gantpage/Gant";
-import Header from "@/components/gantpage/Header";
-import "@/style/index.css"
+import { Gant } from "@/components/gantpage/Gant";
+import { Header } from "@/components/gantpage/Header";
 import { useDateRange } from '@/contexts/DateRangeContext';
 
-
-dayjs.locale('he');
-
+import "@/style/index.css"
 
 
-export default function GantPage() {
+export function GantPage() {
 
     const {
-       loading
+        loading
     } = useDateRange();
-
-    
-
-
-
-
-   
 
     if (loading) return <div>loading...</div>;
 
-
     return (
         <div className="gantpage-container">
-            <Header  />
-            <Gant  />
+            <Header />
+            <Gant />
         </div>
     );
 }

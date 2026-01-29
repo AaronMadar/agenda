@@ -1,8 +1,14 @@
 import { Routes, Route } from "react-router-dom";
-import GantPage from '@/pages/GantPage'
-import { Dashboard } from '@/pages/Dashboard'
+import dayjs from "dayjs";
+import "dayjs/locale/he";
+
 import { DateRangeProvider } from "@/contexts/DateRangeContext";
 
+import { GantPage } from '@/pages/GantPage'
+import { Dashboard } from '@/pages/Dashboard'
+
+
+dayjs.locale("he");
 
 export default function App() {
     return (

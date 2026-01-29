@@ -1,4 +1,4 @@
-import SelectTime from '../gantpage/header/SelectTime';
+import {SelectTime} from '../gantpage/header/SelectTime';
 import style from "@/style/components/dashboard/DashboardHeader.module.css"
 
 

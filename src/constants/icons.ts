@@ -8,10 +8,10 @@ export const iconResources = {
 };
 
 export const iconServiceType = {
-    "מילואים- אימונים": "bi bi-brightness-high-fill",
-    "סדיר- אימונים": "bi bi-circle-fill",
+    "מילואים- אימונים": "bi bi-crosshair",
+    "סדיר- אימונים": "bi bi-shadows",
     "מילואים- תע\"ם": "bi bi-brightness-high-fill",
-    "סדיר- תע”ם": "bi bi-circle-fill",
+    "סדיר- תע”ם": "bi bi-flower2",
     default: "bi bi-question-circle"
 }  as const;
 

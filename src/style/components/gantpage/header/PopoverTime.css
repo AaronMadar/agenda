@@ -82,32 +82,39 @@
 
 /* input text */
 .date-picker-field .MuiOutlinedInput-input {
-  color: rgb(255, 255, 255);
+  color: rgb(255, 255, 255) !important;
 }
 
 /* border */
 .date-picker-field .MuiOutlinedInput-root fieldset {
-  border-color: white;
+  border-color: white !important;
 }
 
 .date-picker-field .MuiOutlinedInput-root:hover fieldset {
-  border-color: white;
+  border-color: rgb(255, 255, 255);
 }
 
 .date-picker-field .MuiOutlinedInput-root.Mui-focused fieldset {
-  border-color: white;
+  border-color: rgb(255, 255, 255) !important;
 }
 
 /* label */
 .date-picker-field .MuiInputLabel-root {
-  color: white;
+  color: rgb(255, 255, 255);
 }
 
 .date-picker-field .MuiInputLabel-root.Mui-focused {
-  color: white;
+  color: rgb(255, 255, 255) ;
 }
 /* 
 calendar icon */
 .date-picker-field .MuiSvgIcon-root {
   color: #4093f1;
+}
+
+
+.MuiPickersSectionList-sectionContent .MuiPickersInputBase-sectionContent .css-1jpopwz-MuiPickersSectionList-sectionContent-MuiPickersInputBase-sectionContent {
+
+  color: rgb(255, 0, 0) !important;
+
 }

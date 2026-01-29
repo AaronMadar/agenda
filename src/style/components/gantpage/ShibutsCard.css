@@ -44,8 +44,8 @@
     justify-content: space-between;
     align-items: center;
     padding: 0 1rem;
-    color: white;
-    font-weight: 700;
+    color: rgb(71, 71, 71);
+    font-weight: 500;
     white-space: nowrap;
 }
 
@@ -55,6 +55,7 @@
     justify-self: center;
     flex-direction: row;
     gap: 0.2em;
+    
 }
 .bi-brightness-high-fill {
     font-size: 1.1rem;
@@ -88,6 +89,8 @@
     background-color: #3e3d3d;
     border-radius: 1rem;
     padding: 5px 9px;
+    font-size: 0.9rem;
+    font-weight: 600;
 }
 
 .shibuts-card:hover .div-down {

@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
-import { Dayjs } from 'dayjs';
 
-import SelectTime from "./header/SelectTime";
-import PopoverTime from "./header/PopoverTime";
-import "@/style/components/gantpage/Header.css"
+import { SelectTime } from "./header/SelectTime";
+import { PopoverTime } from "./header/PopoverTime";
 
-
+import "@/style/components/gantpage/Header.css";
 
 
-export default function Header() {
+export function Header() {
     // AnchorEl contains the HtmlElement where the popover will be anchored
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 

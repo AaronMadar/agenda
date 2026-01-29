@@ -103,7 +103,7 @@ const generateTicks = (start: Dayjs, end: Dayjs): string[] => {
 
 
 
-export default function Gant() {
+export function Gant() {
 
      const {
         startDate,

@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import SelectTime from "../gantpage/header/SelectTime";
+import {SelectTime} from "../gantpage/header/SelectTime";
 import style from "@/style/components/dashboard/DashboardHeader.module.css";
 import { TreeDropdown } from "@/components/shared/tree-dropdown/TreeDropdown";
 

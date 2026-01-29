@@ -9,26 +9,16 @@ import ShibutsCard from "./gant/ShibutsCard";
 import { iconResources, iconServiceType } from "@/constants/icons";
 import { forceColors } from "@/constants/colors";
 
-import type { ApiResponse, ShibutsApi } from '@/pages/GantPage';
+import type { ShibutsApi } from '@/types/api-response';
 
 
 import "@/style/components/gantpage/Gant.css";
+import { useDateRange } from '@/contexts/DateRangeContext';
 
 
 // --- CONSTANT ---
 const MIN_WIDTH_PERCENT = 5;
-const NEAR_END_THRESHOLD = 75; // Seuil en % pour déclencher le centrage/ruban vers la gauche
-
-
-interface GantProps {
-    data: ApiResponse | null;
-    startDate: Dayjs | null;
-    endDate: Dayjs | null;
-}
-
-
-
-// --- LOGIQUE (Savoir-faire utilitaire) ---
+const NEAR_END_THRESHOLD = 75;
 
 // On change les types pour correspondre à une liste de missions (ShibutsApi)
 const getFilteredShibutsim = (shibutsim: ShibutsApi[], rangeStart: Dayjs, rangeEnd: Dayjs): ShibutsApi[] => {
@@ -107,7 +97,14 @@ const generateTicks = (start: Dayjs, end: Dayjs): string[] => {
 
 
 
-export default function Gant({ data, startDate, endDate }: GantProps) {
+export function Gant() {
+
+     const {
+        startDate,
+        endDate,   
+        data,     
+    } = useDateRange();
+    
 
     const currentYear = dayjs().year();
 
@@ -147,8 +144,9 @@ export default function Gant({ data, startDate, endDate }: GantProps) {
                                 const startPos = calculatePosition(shibuts, sDate, eDate);
                                 const width = calculateWidth(shibuts, sDate, eDate);
                                 const isNearEnd = (startPos + width) > NEAR_END_THRESHOLD;
+                                const displayVariation = width >=15 
+                                
 
-                                // 2. Transformation des ressources (Array -> String, seulement les noms des items, séparées par ' | ')
                                 const resourceString = shibuts.resource
                                     .map(r => r.item)
                                     .join(' | ');
@@ -165,9 +163,7 @@ export default function Gant({ data, startDate, endDate }: GantProps) {
                                                 shibuts.seviceType as keyof typeof iconServiceType
                                             ] ?? iconServiceType.default}
                                             style={{
-                                                position: 'absolute',
                                                 backgroundColor: forceColors[gdudData.forceType] as keyof typeof forceColors || forceColors.default,
-                                                // Utilisation de insetInline pour gérer le RTL/LTR proprement
                                                 insetInlineStart: isNearEnd ? 'auto' : `${startPos}%`,
                                                 insetInlineEnd: isNearEnd ? `${100 - (startPos + width)}%` : 'auto',
                                                 width: `${width}%`,

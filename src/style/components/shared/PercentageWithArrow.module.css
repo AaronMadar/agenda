@@ -19,3 +19,8 @@
   font-size: clamp(0.8rem, 1.5vw, 1rem);
   margin-left: clamp(2px, 0.5vw, 4px);
 }
+
+.gantMode {
+  background-color: rgba(43, 43, 43, 0.751);
+  border-radius: 9px; 
+}

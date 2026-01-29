@@ -37,7 +37,7 @@
 
 .header-icon {
   font-size: 1.5rem;
-  color: #4093f1;
+  color: #42adff;
 
   /* On prépare l'espace pour le rond */
   display: inline-flex;
@@ -53,12 +53,7 @@
 }
 
 .header-icon:hover {
-  background-color: rgba(
-    21,
-    22,
-    22,
-    0.1
-  ); /* Un bleu très léger qui rappelle l'icône */
+  background-color: rgba(197, 194, 194, 0.1); /* Un bleu très léger qui rappelle l'icône */
   color: #2a6dbd; /* L'icône fonce un peu au survol */
   border-radius: 50%; /* Force le rond parfait */
   transform: scale(1.1); /* Petit effet de zoom subtil */

@@ -1,20 +1,13 @@
 import React, { useState } from 'react';
+
 import { useNavigate } from 'react-router-dom';
-import { Dayjs } from 'dayjs';
+import { SelectTime } from "./header/SelectTime";
+import { PopoverTime } from "./header/PopoverTime";
 
-import SelectTime from "./header/SelectTime";
-import PopoverTime from "./header/PopoverTime";
-import "@/style/components/gantpage/Header.css"
+import "@/style/components/gantpage/Header.css";
 
 
-interface HeaderProps {
-    setPeriodView: (value: string) => void;
-    periodView: string;
-    setStartDate: (date: Dayjs | null) => void;
-    setEndDate: (date: Dayjs | null) => void;
-}
-
-export default function Header({ setPeriodView, periodView, setStartDate, setEndDate }: HeaderProps) {
+export function Header() {
     const navigate = useNavigate();
     // AnchorEl contains the HtmlElement where the popover will be anchored
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -49,14 +42,7 @@ export default function Header({ setPeriodView, periodView, setStartDate, setEnd
                 <i className="bi bi-calendar-date header-icon"
                     onClick={handleOpenPopover} />
 
-                <PopoverTime
-                    anchorEl={anchorEl}
-                    setAnchorEl={setAnchorEl}
-                    setStartDate={setStartDate}
-                    setEndDate={setEndDate}
-                    setPeriodView={setPeriodView}
-                />
-
+                <PopoverTime anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
                 <SelectTime />
             </div>
         </header>

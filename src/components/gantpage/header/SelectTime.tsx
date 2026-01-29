@@ -1,4 +1,4 @@
-import { useDateRange } from "@/contexts";
+import { useDateRange } from "@/contexts/DateRangeContext";
 import { FormControl, Select, MenuItem } from "@mui/material";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import dayjs, { Dayjs } from 'dayjs';
@@ -7,7 +7,7 @@ import "@/style/index.css";
 import "@/style/components/gantpage/header/SelectTime.css";
 
 
-export default function SelectTime() {
+export function SelectTime() {
 
   const year = new Date().getFullYear();
   const {

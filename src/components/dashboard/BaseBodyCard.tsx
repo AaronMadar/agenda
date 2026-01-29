@@ -1,5 +1,5 @@
-import type { ReactNode } from "react";
-import style from "@/style/components/dashboard/BaseBodyCard.module.css"
+import { useState, type ReactNode } from "react";
+import style from "@/style/components/dashboard/BaseBodyCard.module.css";
 
 type BaseBodyCardProps = {
   children: ReactNode;
@@ -7,10 +7,46 @@ type BaseBodyCardProps = {
 };
 
 export const BaseBodyCard = ({ children, title }: BaseBodyCardProps) => {
+  const [expanded, setExpanded] = useState(false);
+
   return (
-    <div className={style.basicBodyCard}>
-      {title && <h3>{title}</h3>}
-      {children}
-    </div>
+    <>
+      {expanded && (
+        <div
+          className={style.overlay}
+          onClick={() => setExpanded(false)}
+        />
+      )}
+
+      <div
+        className={`${style.basicBodyCard} ${
+          expanded ? style.expanded : ""
+        }`}
+      >
+        <div className={style.header}>
+          {title && <h3>{title}</h3>}
+
+          <button
+            className={style.expandBtn}
+            onClick={() => setExpanded(!expanded)}
+          >
+            {expanded ? "✕" : "⛶"}
+          </button>
+        </div>
+
+        <div className={style.content}>
+          {children}
+        </div>
+      </div>
+    </>
   );
 };
+
+
+
+
+
+
+
+
+

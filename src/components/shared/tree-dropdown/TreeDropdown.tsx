@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { TreeSelect } from "./TreeSelect";
-import { useTreeData } from "@/contexts";
+import { useTreeData } from "@/contexts/TreeDataContext";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import style from "@/style/components/shared/tree-dropdown/TreeDropdown.module.css"
 

@@ -11,7 +11,7 @@ export const iconServiceType = {
     "מילואים- אימונים": "bi bi-crosshair",
     "סדיר- אימונים": "bi bi-shadows",
     "מילואים- תע\"ם": "bi bi-brightness-high-fill",
-    "סדיר- תע”ם": "bi bi-flower2",
+    "סדיר- תע”ם": "bi bi-vinyl-fill",
     default: "bi bi-question-circle"
 }  as const;
 

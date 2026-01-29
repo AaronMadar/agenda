@@ -5,18 +5,14 @@
     overflow: hidden;
     cursor: pointer;
     height: 3rem; 
-    min-width: 0;
-
-   
-
-    /* On garde tes timings indépendants qui marchent bien */
+    min-width: 0; 
    transition: 
         min-width 0.8s cubic-bezier(0.19, 1, 0.22, 1), 
         height 0.4s ease-in-out,
         inset-inline-start 0.8s cubic-bezier(0.19, 1, 0.22, 1),
         inset-inline-end 0.8s cubic-bezier(0.19, 1, 0.22, 1),
         transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
-
+        ;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
     z-index: 1;
 }
@@ -47,7 +43,24 @@
     color: rgb(71, 71, 71);
     font-weight: 500;
     white-space: nowrap;
+    
 }
+
+.variation-container {
+    opacity: 0;
+    transform: translateX(100px); /* Légèrement décalé vers le bas */
+    transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+    pointer-events: none; /* Évite d'interférer avec la souris quand invisible */
+}
+
+/* État quand la carte est survolée */
+.variation-container.visible {
+    opacity: 1;
+    transform: translateX(0); /* Reprend sa place normale */
+    pointer-events: auto;
+}
+
+
 
 .iconAndTitle {
     display: flex;
@@ -57,6 +70,17 @@
     gap: 0.2em;
     
 }
+
+.card-title {
+    flex: 1; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+ 
+}
+
+
+
 .bi-brightness-high-fill {
     font-size: 1.1rem;
 }
@@ -66,7 +90,7 @@
 }
 
 .div-down {
-    background-color: #4b4a4a; /* Ton gris/noir */
+    background-color: #4b4a4a; 
     color: white;
     height: 3rem; 
     display: flex;
@@ -74,13 +98,9 @@
     padding: 0 1rem;
     font-size: 0.85rem;
     flex-direction: row;
-    justify-content: start ;
-    
-    /* MODIFICATION ICI : On enlève le délai et on accélère l'opacité */
+    justify-content: start ;    
     opacity: 0;
-    transition: opacity 0.2s ease-in; 
-    
-    /* Sécurité : on s'assure qu'il est bien calé en bas */
+    transition: opacity 0.2s ease-in;     
     width: 100%;
 }
 
@@ -94,6 +114,5 @@
 }
 
 .shibuts-card:hover .div-down {
-    /* Il devient noir dès que l'ouverture commence */
     opacity: 1;
 }

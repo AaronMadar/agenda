@@ -18,13 +18,7 @@ import { useDateRange } from '@/contexts/DateRangeContext';
 
 // --- CONSTANT ---
 const MIN_WIDTH_PERCENT = 5;
-const NEAR_END_THRESHOLD = 75; // Seuil en % pour déclencher le centrage/ruban vers la gauche
-
-
-
-
-
-// --- LOGIQUE (Savoir-faire utilitaire) ---
+const NEAR_END_THRESHOLD = 75;
 
 // On change les types pour correspondre à une liste de missions (ShibutsApi)
 const getFilteredShibutsim = (shibutsim: ShibutsApi[], rangeStart: Dayjs, rangeEnd: Dayjs): ShibutsApi[] => {
@@ -150,8 +144,9 @@ export function Gant() {
                                 const startPos = calculatePosition(shibuts, sDate, eDate);
                                 const width = calculateWidth(shibuts, sDate, eDate);
                                 const isNearEnd = (startPos + width) > NEAR_END_THRESHOLD;
+                                const displayVariation = width >=15 
+                                
 
-                                // 2. Transformation des ressources (Array -> String, seulement les noms des items, séparées par ' | ')
                                 const resourceString = shibuts.resource
                                     .map(r => r.item)
                                     .join(' | ');
@@ -168,9 +163,7 @@ export function Gant() {
                                                 shibuts.seviceType as keyof typeof iconServiceType
                                             ] ?? iconServiceType.default}
                                             style={{
-                                                position: 'absolute',
                                                 backgroundColor: forceColors[gdudData.forceType] as keyof typeof forceColors || forceColors.default,
-                                                // Utilisation de insetInline pour gérer le RTL/LTR proprement
                                                 insetInlineStart: isNearEnd ? 'auto' : `${startPos}%`,
                                                 insetInlineEnd: isNearEnd ? `${100 - (startPos + width)}%` : 'auto',
                                                 width: `${width}%`,

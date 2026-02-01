@@ -18,6 +18,12 @@
   height: 2.3rem;
 }
 
+.trigger:hover {
+  border-color: #4093f1;
+  transition: cubic-bezier(0.075, 0.82, 0.165, 1) 2s;
+}
+
+
 .selectedText {
   flex: 1;
 }

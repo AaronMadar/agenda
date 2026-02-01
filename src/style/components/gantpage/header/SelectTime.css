@@ -1,59 +1,129 @@
+/* .select-timeview {
+  width: 11rem;
+  height: 2.4rem;
 
-/* --- LE BOUTON SELECT (AU REPOS) --- */
-.select-timeview {
-    background-color: #3d3c3c;
-    border: 1px solid #525252;
-    border-radius: 25px !important;
-    height: 2.4rem;
-    width: 11rem;
-    min-width: 11rem; /* MODIFIE ICI POUR LA LARGEUR (réduite) */
-    transition: all 0.2s ease;
-    padding-left: 1rem;
+  background-color: #3d3c3c;
+  color: white;
+
+  border: 1px solid #525252;
+  border-radius: 25px;
+
+  padding-left: 15px;
+  padding-right: 36px;
+
+  font-size: 0.85rem;
+  cursor: pointer;
+
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  background-image: url("data:image/svg+xml;utf8,<svg fill='%23dbd9d9' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
 }
 
-/* --- LE TEXTE À L'INTÉRIEUR --- */
-.select-timeview .MuiSelect-select {
-    color: white !important; /* COULEUR DU TEXTE */
-    padding-right: 2rem !important;
-    
-    font-size: 0.85rem;      /* TAILLE DU TEXTE */
-    display: flex;
-    align-items: center;
-   
+.select-timeview:hover,
+.select-timeview:focus {
+  border-color: #4093f1;
 }
 
-/* --- LA FLÈCHE --- */
-.select-timeview .MuiSelect-icon {
-    color: #4093f1; /* COULEUR DE LA FLÈCHE */
-    right: 8px;     /* POSITION DE LA FLÈCHE */
-    
+.select-timeview option {
+  background-color: #3d3c3c;
+  color: #efeded;
+  font-size: 0.85rem;
 }
 
-/* --- LE DROPDOWN (LE CADRE QUI S'OUVRE) --- */
-.dropdown-menu-custom {
-    background-color: #3d3c3c !important; /* FOND DU MENU */
-    border-radius: 15px !important;       /* ARRONDI DU MENU */
-    margin-top: 5px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.5) !important; /* OMBRE */
-    width: 120px; /* DOIT ÊTRE IDEM À .select-timeview POUR L'ALIGNEMENT */
+
+.select-timeview option:checked {
+  background-color: #4093f1;
+  color: white;
+} */
+
+
+
+
+.select-container {
+  position: relative;
+  width: 12rem;
+  height: 2.4rem;
+  color: white;
+  font-size: 0.85rem;
+  
+  
 }
 
-/* --- LES OPTIONS INDIVIDUELLES --- */
-.dropdown-menu-custom .MuiMenuItem-root {
-    color: #efeded;
-    font-size: 0.85rem;
-    padding: 8px 12px;
-    margin: 2px 5px;     /* ESPACE ENTRE LES OPTIONS */
-    border-radius: 8px;  /* ARRONDI DE CHAQUE LIGNE */
+.select-container:hover {
+  border-color: #4093f1 ;
 }
 
-/* --- HOVER SUR LES OPTIONS --- */
-.dropdown-menu-custom .MuiMenuItem-root:hover {
-    background-color: rgba(64, 147, 241, 0.2) !important; /* COULEUR AU SURVOL */
+/* bouton */
+.select-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+
+  height: 2.3rem;
+  background: #3d3c3c;
+  border: 1px solid #525252;
+  border-radius: 25px;
+  cursor: pointer;
 }
 
-/* --- OPTION ACTUELLEMENT SÉLECTIONNÉE --- */
-.dropdown-menu-custom .Mui-selected {
-    background-color: #4093f1 !important; /* FOND OPTION CHOISIE */
-    color: white !important;
+.select-trigger:hover {
+  border-color: #4093f1;
+  transition: cubic-bezier(0.075, 0.82, 0.165, 1) 2s;
+}
+
+
+.select-text {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* flèche */
+.select-arrow {
+  color: #dbd9d9;
+  font-size: 18px;
+  transition: transform 0.2s ease;
+}
+
+.arrow-up {
+  transform: rotate(180deg);
+}
+
+/* dropdown */
+.select-dropdown {
+  position: absolute;
+  width: 100%;
+  margin-top: 4px;
+  background: #3d3c3c;
+  border: 1px solid #525252;
+  border-radius: 25px;
+  z-index: 20;
+  overflow: hidden;
+}
+
+.select-dropdown-content {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* options */
+.select-option {
+  padding: 8px 14px;
+  margin: 4px;
+  border-radius: 12px;
+  cursor: pointer;
+  color: #efeded;
+}
+
+.select-option:hover {
+  background: rgba(64, 147, 241, 0.2);
 }

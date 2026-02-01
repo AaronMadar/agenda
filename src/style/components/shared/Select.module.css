@@ -1,19 +1,18 @@
 .wrapper {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 5px;
   width: fit-content;
 }
 
 .label {
-  font-size: 0.85rem;
   color: #cfcfcf;
   white-space: nowrap;
 }
 
 .container {
   position: relative;
-  width: 13rem;
+  width: 12rem;
 }
 
 .trigger {

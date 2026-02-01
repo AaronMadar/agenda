@@ -1,8 +1,18 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  width: fit-content;
+}
+
+.label {
+  color: #cfcfcf;
+  white-space: nowrap;
+}
+
 .container {
   position: relative;
-  width: 11rem;
-  color: white;
-  height: 2.4rem;
+  width: 12rem;
 }
 
 .trigger {
@@ -22,7 +32,6 @@
   border-color: #4093f1;
   transition: cubic-bezier(0.075, 0.82, 0.165, 1) 2s;
 }
-
 
 .selectedText {
   flex: 1;

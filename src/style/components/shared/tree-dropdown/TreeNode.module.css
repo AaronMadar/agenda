@@ -2,8 +2,9 @@
   list-style: none;
 }
 
-.nodeItem:last-child > div {
-  border-bottom: none;
+.nodeItem:hover {
+  border-radius: 20px;
+  background: rgba(64, 153, 241, 0.2);
 }
 
 .nodeContent {
@@ -11,7 +12,6 @@
   align-items: center;
   gap: 8px;
   padding: 8px 12px;
-  border-bottom: 1px solid #676565;
   cursor: pointer;
 }
 

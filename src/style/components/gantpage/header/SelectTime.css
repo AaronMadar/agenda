@@ -1,57 +1,14 @@
-/* .select-timeview {
-  width: 11rem;
-  height: 2.4rem;
-
-  background-color: #3d3c3c;
-  color: white;
-
-  border: 1px solid #525252;
-  border-radius: 25px;
-
-  padding-left: 15px;
-  padding-right: 36px;
-
-  font-size: 0.85rem;
-  cursor: pointer;
-
-  outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-
-  background-image: url("data:image/svg+xml;utf8,<svg fill='%23dbd9d9' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
-  background-repeat: no-repeat;
-  background-position: right 14px center;
-}
-
-.select-timeview:hover,
-.select-timeview:focus {
-  border-color: #4093f1;
-}
-
-.select-timeview option {
-  background-color: #3d3c3c;
-  color: #efeded;
-  font-size: 0.85rem;
-}
-
-
-.select-timeview option:checked {
-  background-color: #4093f1;
-  color: white;
-} */
 
 
 
 
 .select-container {
   position: relative;
-  width: 12rem;
+  width: 13rem;
   height: 2.4rem;
   color: white;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
+  font-weight: 500;
   
   
 }
@@ -70,7 +27,7 @@
   height: 2.3rem;
   background: #3d3c3c;
   border: 1px solid #525252;
-  border-radius: 25px;
+  border-radius: 20px;
   cursor: pointer;
 }
 
@@ -105,7 +62,7 @@
   margin-top: 4px;
   background: #3d3c3c;
   border: 1px solid #525252;
-  border-radius: 25px;
+  border-radius: 20px;
   z-index: 20;
   overflow: hidden;
 }
@@ -119,11 +76,14 @@
 .select-option {
   padding: 8px 14px;
   margin: 4px;
-  border-radius: 12px;
+  border-radius: 20px;
+  
   cursor: pointer;
   color: #efeded;
 }
 
 .select-option:hover {
-  background: rgba(64, 147, 241, 0.2);
+  background: rgba(64, 153, 241, 0.2);
+  border-radius: 20px;
+
 }

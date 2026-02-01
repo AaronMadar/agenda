@@ -13,7 +13,7 @@
   justify-content: space-between;
   border: 1px solid #525252;
   cursor: pointer;
-  border-radius: 25px;
+  border-radius: 20px;
   background: #3d3c3c;
   height: 2.3rem;
 }
@@ -51,7 +51,7 @@
   max-height: 300px;
   z-index: 10;
   overflow: hidden;
-  border-radius: 25px;
+  border-radius: 20px;
   margin-top: 4px;
 }
 

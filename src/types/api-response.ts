@@ -14,7 +14,7 @@ export interface ShibutsApi {
   variationPastYear: number;
   dateBegin: string;
   dateEnd: string;
-  resource: ResourceItem[];
+  resource?: ResourceItem[] | ;
 }
 
 export interface GdudApi {

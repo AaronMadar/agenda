@@ -1,14 +1,13 @@
   import { useState } from 'react';
+  import dayjs, { Dayjs } from 'dayjs';
 
   import { Popover, Box, Typography, Button } from '@mui/material';
   import { DatePicker } from '@mui/x-date-pickers/DatePicker';
   import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
   import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-  import dayjs, { Dayjs } from 'dayjs';
-  import 'dayjs/locale/he';
 
-  import "@/style/components/gantpage/header/PopoverTime.css";
   import { useDateRange } from '@/contexts/DateRangeContext';
+  import "@/style/components/gantpage/header/PopoverTime.css";
 
 
   interface PopoverProps {
@@ -17,12 +16,7 @@
 
   }
 
-  export function PopoverTime({
-    anchorEl,
-    setAnchorEl,
-
-  }: PopoverProps) {
-
+  export function PopoverTime({anchorEl,setAnchorEl}: PopoverProps) {
 
     const {
       setStartDate,

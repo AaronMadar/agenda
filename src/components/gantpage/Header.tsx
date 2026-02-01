@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-
 import { useNavigate } from 'react-router-dom';
+
 import { SelectTime } from "./header/SelectTime";
 import { PopoverTime } from "./header/PopoverTime";
 
@@ -12,7 +12,6 @@ export function Header() {
     // AnchorEl contains the HtmlElement where the popover will be anchored
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
-    // Function to handle popover opening
     const handleOpenPopover = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget); // event.currentTarget is the element that was clicked
     };
@@ -20,10 +19,10 @@ export function Header() {
     return (
         <header className="header">
             <div className="header-actions">
-                <div className="header-actions-primary">
+                <div className="header-actions-primary"> 
                     <i className='bi bi-speedometer2 header-icon' 
                     onClick={() => navigate('/dashboard')} 
-                    title="Dashboard" />
+                    title="Dashboard" /> 
                     <i className='bi bi-funnel header-icon' />
                     <i className='bi bi-map header-icon' />
                     <i className='bi bi-bell header-icon' />
@@ -40,7 +39,7 @@ export function Header() {
             </div>
             <div className="header-time-controls">
                 <i className="bi bi-calendar-date header-icon"
-                    onClick={handleOpenPopover} />
+                    onClick={handleOpenPopover} />   {/*This Icon is the anchor of the popover */}
 
                 <PopoverTime anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
                 <SelectTime />

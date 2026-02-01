@@ -3,24 +3,21 @@ import { useMemo } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import dayjs, { Dayjs } from 'dayjs';
-import 'dayjs/locale/he';
 
-import ShibutsCard from "./gant/ShibutsCard";
-import { iconResources, iconServiceType } from "@/constants/icons";
+import {ShibutsCard} from "./gant/ShibutsCard";
+import { iconServiceType } from "@/constants/icons";
 import { forceColors } from "@/constants/colors";
-
 import type { ShibutsApi } from '@/types/api-response';
+import { useDateRange } from '@/contexts/DateRangeContext';
 
 
 import "@/style/components/gantpage/Gant.css";
-import { useDateRange } from '@/contexts/DateRangeContext';
 
 
 // --- CONSTANT ---
 const MIN_WIDTH_PERCENT = 5;
 const NEAR_END_THRESHOLD = 75;
 
-// On change les types pour correspondre à une liste de missions (ShibutsApi)
 const getFilteredShibutsim = (shibutsim: ShibutsApi[], rangeStart: Dayjs, rangeEnd: Dayjs): ShibutsApi[] => {
     return shibutsim.filter(shibut => {
         const itemStart = dayjs(shibut.dateBegin);
@@ -99,12 +96,12 @@ const generateTicks = (start: Dayjs, end: Dayjs): string[] => {
 
 export function Gant() {
 
-     const {
+    const {
         startDate,
-        endDate,   
-        data,     
+        endDate,
+        data,
     } = useDateRange();
-    
+
 
     const currentYear = dayjs().year();
 
@@ -129,10 +126,9 @@ export function Gant() {
             </div>
 
             {data?.gdudim.map((gdudData, index) => {
-                // 1. On passe le tableau des shibutsim à la fonction de filtrage
                 const filteredShibutsim = getFilteredShibutsim(gdudData.shibutsim, sDate, eDate);
                 if (filteredShibutsim.length === 0) {
-                    return null; // Ne pas afficher les lignes vides (gdud sans shibuts dans la plage de dates)
+                    return null; 
                 }
                 const sortedShibutsim = sortEventsByDate(filteredShibutsim);
                 return (
@@ -140,16 +136,12 @@ export function Gant() {
                         <div className="div-side sidebar">{gdudData.name}</div>
                         <div className="row-content-wrapper" >
                             {sortedShibutsim.map((shibuts, idx) => {
-                                // On utilise nos fonctions avec l'objet "item" entier
                                 const startPos = calculatePosition(shibuts, sDate, eDate);
                                 const width = calculateWidth(shibuts, sDate, eDate);
                                 const isNearEnd = (startPos + width) > NEAR_END_THRESHOLD;
-                                const displayVariation = width >=15 
-                                
 
-                                const resourceString = shibuts.resource
-                                    .map(r => r.item)
-                                    .join(' | ');
+
+                                const resourcesArray = shibuts.resource;
 
                                 return (
                                     <div key={idx} className="gant-row">
@@ -158,7 +150,7 @@ export function Gant() {
                                             variation={`${shibuts.variationPastYear}%`}
                                             dateBegin={shibuts.dateBegin}
                                             dateEnd={shibuts.dateEnd}
-                                            resources={resourceString}
+                                            resources={resourcesArray}
                                             icon={iconServiceType[
                                                 shibuts.seviceType as keyof typeof iconServiceType
                                             ] ?? iconServiceType.default}

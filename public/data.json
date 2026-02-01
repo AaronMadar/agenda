@@ -147,10 +147,7 @@
           "dateBegin": "2026-11-10",
           "dateEnd": "2026-11-25",
           "resource": [
-            { "item": "אוכל", "quantity": 1400, "price": 1.5 },
-            { "item": "מיטוט", "quantity": 340, "price": 5.1 },
-            { "item": "רכבים", "quantity": 480, "price": 2.2 },
-            { "item": "אופניים", "quantity": 230, "price": 3.2 }
+           
           ]
         }
       ]

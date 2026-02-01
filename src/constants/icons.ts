@@ -1,8 +1,8 @@
 export const iconResources = {
-  "אוכל": "bi bi-egg-fried",
-  "מיטוט": "bi bi-lamp-fill",
-  "חךלחח": "bi bi-droplet-half",
-  "וטא": "bi bi-wifi",
+  "אוכל": "bi bi-basket2",
+  "מיטוט": "bi bi-cloud-moon",
+  "רכבים": "bi bi-car-front",
+  "network": "bi bi-broadcast-pin",
   "אופניים": "bi bi-bicycle",
   default: "bi bi-question-circle"
 };

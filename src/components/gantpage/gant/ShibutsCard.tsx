@@ -1,21 +1,25 @@
-import { useState } from 'react';
-import { PercentageWithArrow } from "@/components/shared/PercentageWithArrow";
-import "@/style/components/gantpage/ShibutsCard.css";
+import React, { useState } from 'react';
 import dayjs from 'dayjs';
-import 'dayjs/locale/he';
+
+import { PercentageWithArrow } from "@/components/shared/PercentageWithArrow";
+import type { ResourceItem } from '@/types/api-response';
+import { iconResources } from '@/constants/icons';
+
+import "@/style/components/gantpage/ShibutsCard.css";
+
 
 interface ShibutsCardProps {
     title: string;
     variation?: string;
     dateBegin?: string;
     dateEnd?: string;
-    resources?: string;
+    resources?: ResourceItem[];
     style?: React.CSSProperties;
     className?: string;
     icon?: string;
 }
 
-export default function ShibutsCard({
+export function ShibutsCard({
     title, variation, dateBegin, dateEnd, resources, style, className, icon
 }: ShibutsCardProps) {
 
@@ -33,10 +37,12 @@ export default function ShibutsCard({
             onMouseLeave={() => setIsHovered(false)}
         >
             <div className="div-up">
+                
                 <div className="iconAndTitle">
                     <i className={`icon-card ${icon}`}></i>
                     <span className="card-title">{title}</span>
                 </div>
+                
 
                 <div className={`variation-container ${isHovered ? 'visible' : 'hidden'}`}>
                     <PercentageWithArrow
@@ -46,10 +52,35 @@ export default function ShibutsCard({
                 </div>
             </div>
             <div className="div-down">
-                {formattedBegin && formattedEnd && (
+              
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+                     {formattedBegin && formattedEnd && (
                     <span className="spanDate">{formattedBegin} - {formattedEnd}</span>
                 )}
-                {resources ? <span> | {resources}</span> : <span> | Aucune ressource</span>}
+
+                    {resources && resources.length > 0 ? (
+                        resources.map((res, index) => (
+                            <div
+                                key={index}
+                                style={{
+                                    paddingRight: index === 0 ? '0' : '10px',
+                                    borderRight: index === 0 ? 'none' : '1px solid #ccc',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    fontSize:'1.04rem',
+                                    gap: '5px'
+                                }}
+                            >
+                                <i className={iconResources[res.item as keyof typeof iconResources] ?? iconResources.default}></i>
+                                <span>{res.item}</span>
+                            </div>
+                        ))
+                    ) : (
+                        <span style={{ color: '#888', fontStyle: 'italic' }}>אין משאבים</span>
+                    )}
+                </div>
+                
+                 
             </div>
         </div>
     );

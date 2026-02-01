@@ -1,59 +1,89 @@
 
-/* --- LE BOUTON SELECT (AU REPOS) --- */
-.select-timeview {
-    background-color: #3d3c3c;
-    border: 1px solid #525252;
-    border-radius: 25px !important;
-    height: 2.4rem;
-    width: 11rem;
-    min-width: 11rem; /* MODIFIE ICI POUR LA LARGEUR (réduite) */
-    transition: all 0.2s ease;
-    padding-left: 1rem;
+
+
+
+.select-container {
+  position: relative;
+  width: 13rem;
+  height: 2.4rem;
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 500;
+  
+  
 }
 
-/* --- LE TEXTE À L'INTÉRIEUR --- */
-.select-timeview .MuiSelect-select {
-    color: white !important; /* COULEUR DU TEXTE */
-    padding-right: 2rem !important;
-    
-    font-size: 0.85rem;      /* TAILLE DU TEXTE */
-    display: flex;
-    align-items: center;
-   
+.select-container:hover {
+  border-color: #4093f1 ;
 }
 
-/* --- LA FLÈCHE --- */
-.select-timeview .MuiSelect-icon {
-    color: #4093f1; /* COULEUR DE LA FLÈCHE */
-    right: 8px;     /* POSITION DE LA FLÈCHE */
-    
+/* bouton */
+.select-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+
+  height: 2.3rem;
+  background: #3d3c3c;
+  border: 1px solid #525252;
+  border-radius: 20px;
+  cursor: pointer;
 }
 
-/* --- LE DROPDOWN (LE CADRE QUI S'OUVRE) --- */
-.dropdown-menu-custom {
-    background-color: #3d3c3c !important; /* FOND DU MENU */
-    border-radius: 15px !important;       /* ARRONDI DU MENU */
-    margin-top: 5px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.5) !important; /* OMBRE */
-    width: 120px; /* DOIT ÊTRE IDEM À .select-timeview POUR L'ALIGNEMENT */
+.select-trigger:hover {
+  border-color: #4093f1;
+  transition: cubic-bezier(0.075, 0.82, 0.165, 1) 2s;
 }
 
-/* --- LES OPTIONS INDIVIDUELLES --- */
-.dropdown-menu-custom .MuiMenuItem-root {
-    color: #efeded;
-    font-size: 0.85rem;
-    padding: 8px 12px;
-    margin: 2px 5px;     /* ESPACE ENTRE LES OPTIONS */
-    border-radius: 8px;  /* ARRONDI DE CHAQUE LIGNE */
+
+.select-text {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* --- HOVER SUR LES OPTIONS --- */
-.dropdown-menu-custom .MuiMenuItem-root:hover {
-    background-color: rgba(64, 147, 241, 0.2) !important; /* COULEUR AU SURVOL */
+/* flèche */
+.select-arrow {
+  color: #dbd9d9;
+  font-size: 18px;
+  transition: transform 0.2s ease;
 }
 
-/* --- OPTION ACTUELLEMENT SÉLECTIONNÉE --- */
-.dropdown-menu-custom .Mui-selected {
-    background-color: #4093f1 !important; /* FOND OPTION CHOISIE */
-    color: white !important;
+.arrow-up {
+  transform: rotate(180deg);
+}
+
+/* dropdown */
+.select-dropdown {
+  position: absolute;
+  width: 100%;
+  margin-top: 4px;
+  background: #3d3c3c;
+  border: 1px solid #525252;
+  border-radius: 20px;
+  z-index: 20;
+  overflow: hidden;
+}
+
+.select-dropdown-content {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* options */
+.select-option {
+  padding: 8px 14px;
+  margin: 4px;
+  border-radius: 20px;
+  
+  cursor: pointer;
+  color: #efeded;
+}
+
+.select-option:hover {
+  background: rgba(64, 153, 241, 0.2);
+  border-radius: 20px;
+
 }

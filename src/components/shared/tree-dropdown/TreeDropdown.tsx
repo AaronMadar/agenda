@@ -10,7 +10,7 @@ export const TreeDropdown = () => {
 
   if (loading) {
     return <div className={style.container}>טוען...</div>;
-  }
+  }   
 
   if (error) {
     return <div className={style.container}>שגיאה: {error}</div>;
@@ -21,6 +21,7 @@ export const TreeDropdown = () => {
       <div
         onClick={() => setOpen(!open)}
         className={style.trigger}
+        
       >
         <span className={style.selectedText}>
           {selectedNode?.label ?? "בחר ערך"}

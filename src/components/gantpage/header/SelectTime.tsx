@@ -1,114 +1,136 @@
+import { useState } from "react";
 import { useDateRange } from "@/contexts/DateRangeContext";
-import { FormControl, Select, MenuItem } from "@mui/material";
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from "dayjs";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
-import "@/style/index.css";
 import "@/style/components/gantpage/header/SelectTime.css";
 
-
 export function SelectTime() {
-
   const year = new Date().getFullYear();
+  const [open, setOpen] = useState(false);
+
   const {
     periodView,
     setStartDate,
     setEndDate,
     setPeriodView,
-} = useDateRange();
+  } = useDateRange();
 
+  const periodLabels: { [key: string]: string } = {
+    "רבעון1": `ינו' ${year} - מרץ' ${year}`,
+    "רבעון2": `אפר' ${year} - יוני' ${year}`,
+    "רבעון3": `יולי' ${year} - ספט' ${year}`,
+    "רבעון4": `אוק' ${year} - דצמ' ${year}`,
+    "חצי-שנה1": `חצי-ראשון ${year}`,
+    "חצי-שנה2": `חצי-שני ${year}`,
+    "שנה": `כל ${year}`,
+  };
 
-  const handlePeriodViewChange = (e: any) => {
-    let mode = e.target.value;
-    setPeriodView(mode)
+  const displayText = periodLabels[periodView] || periodView || "בחר תקופה";
 
+  const handleSelect = (mode: string) => {
     let start: Dayjs | null = null;
     let end: Dayjs | null = null;
 
     switch (mode) {
-      case 'רבעון1':
+      case "רבעון1":
         start = dayjs(`${year}-01-01`);
         end = dayjs(`${year}-03-31`);
         break;
-      case 'רבעון2':
+      case "רבעון2":
         start = dayjs(`${year}-04-01`);
         end = dayjs(`${year}-06-30`);
         break;
-      case 'רבעון3':
+      case "רבעון3":
         start = dayjs(`${year}-07-01`);
         end = dayjs(`${year}-09-30`);
         break;
-      case 'רבעון4':
+      case "רבעון4":
         start = dayjs(`${year}-10-01`);
         end = dayjs(`${year}-12-31`);
         break;
-      case 'חצי-שנה1':
+      case "חצי-שנה1":
         start = dayjs(`${year}-01-01`);
         end = dayjs(`${year}-06-30`);
         break;
-      case 'חצי-שנה2':
+      case "חצי-שנה2":
         start = dayjs(`${year}-07-01`);
         end = dayjs(`${year}-12-31`);
         break;
-      case 'שנה':
+      case "שנה":
         start = dayjs(`${year}-01-01`);
         end = dayjs(`${year}-12-31`);
         break;
       default:
-        start = null;
-        end = null;
+        // For custom periods, don't override dates (assume they are set elsewhere)
+        break;
     }
 
-    setStartDate(start);
-    setEndDate(end);
+    setPeriodView(mode);
+    setOpen(false);
+    if (start && end) {
+      setStartDate(start);
+      setEndDate(end);
+    }
   };
 
   return (
-    <FormControl variant="standard">
-      <Select
-        value={periodView}
-        onChange={handlePeriodViewChange}
-        className="select-timeview"
-        disableUnderline
-        IconComponent={KeyboardArrowDownIcon}
-        MenuProps={{
-          PaperProps: {
-            sx: {
-              bgcolor: '#3d3c3c',
-              color: '#efeded',
-              borderRadius: '18px',
-              marginTop: '8px',
-              '& .MuiMenuItem-root': {
-                padding: '10px 20px',
-                margin: '4px',
-                borderRadius: '12px',
-                '&:hover': { bgcolor: 'rgba(64, 147, 241, 0.2)' },
-                '&.Mui-selected': {
-                  bgcolor: '#4093f1 !important',
-                  color: 'white'
-                }
-              }
-            }
-          }
-        }}
+    <div className="select-container">
+      <div
+        className="select-trigger"
+        onClick={() => setOpen(!open)}
+        
       >
+        <span className="select-text">
+          {displayText}
+        </span>
 
-        {/* Renders the custom date range from the Popover as a selectable option.
-  The condition prevents duplicating standard periods (Quarters, Semesters, Year) 
-  that are already defined as fixed MenuItems below.
-*/}
-        {periodView && !periodView.startsWith('רבעון') && !periodView.startsWith('חצי') && periodView !== 'שנה' && (
-          <MenuItem value={periodView}>{periodView}</MenuItem>
-        )}
-        <MenuItem value="רבעון1">ינו' {year} - מרץ' {year} </MenuItem>
-        <MenuItem value="רבעון2">אפר' {year} - יוני' {year}</MenuItem>
-        <MenuItem value="רבעון3">יולי' {year} - ספט' {year}</MenuItem>
-        <MenuItem value="רבעון4">אוק' {year} - דצמ' {year}</MenuItem>
-        <MenuItem value="חצי-שנה1">חצי-ראשון {year}</MenuItem>
-        <MenuItem value="חצי-שנה2">חצי-שני {year}</MenuItem>
-        <MenuItem value="שנה">כל {year}</MenuItem>
+        <KeyboardArrowDownIcon
+          className={`select-arrow ${open ? "arrow-up" : ""}`}
+        />
+      </div>
 
-      </Select>
-    </FormControl>
+      {open && (
+        <div className="select-dropdown">
+          <div className="select-dropdown-content">
+
+            {periodView &&
+              !periodView.startsWith("רבעון") &&
+              !periodView.startsWith("חצי") &&
+              periodView !== "שנה" && (
+                <div
+                  className="select-option"
+                  onClick={() => handleSelect(periodView)}
+                >
+                  {periodView}
+                </div>
+              )}
+
+            <div className="select-option" onClick={() => handleSelect("רבעון1")}>
+              {periodLabels["רבעון1"]}
+            </div>
+            <div className="select-option" onClick={() => handleSelect("רבעון2")}>
+              {periodLabels["רבעון2"]}
+            </div>
+            <div className="select-option" onClick={() => handleSelect("רבעון3")}>
+              {periodLabels["רבעון3"]}
+            </div>
+            <div className="select-option" onClick={() => handleSelect("רבעון4")}>
+              {periodLabels["רבעון4"]}
+            </div>
+            <div className="select-option" onClick={() => handleSelect("חצי-שנה1")}>
+              {periodLabels["חצי-שנה1"]}
+            </div>
+            <div className="select-option" onClick={() => handleSelect("חצי-שנה2")}>
+              {periodLabels["חצי-שנה2"]}
+            </div>
+            <div className="select-option" onClick={() => handleSelect("שנה")}>
+              {periodLabels["שנה"]}
+            </div>
+
+          </div>
+        </div>
+      )}
+    </div>
   );
 }

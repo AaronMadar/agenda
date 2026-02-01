@@ -13,10 +13,16 @@
   justify-content: space-between;
   border: 1px solid #525252;
   cursor: pointer;
-  border-radius: 25px;
+  border-radius: 20px;
   background: #3d3c3c;
   height: 2.3rem;
 }
+
+.trigger:hover {
+  border-color: #4093f1;
+  transition: cubic-bezier(0.075, 0.82, 0.165, 1) 2s;
+}
+
 
 .selectedText {
   flex: 1;
@@ -45,7 +51,7 @@
   max-height: 300px;
   z-index: 10;
   overflow: hidden;
-  border-radius: 25px;
+  border-radius: 20px;
   margin-top: 4px;
 }
 

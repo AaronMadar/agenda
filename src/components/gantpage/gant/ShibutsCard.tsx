@@ -62,13 +62,11 @@ export function ShibutsCard({
                         resources.map((res, index) => (
                             <div
                                 key={index}
+                                className='div-ressource'
                                 style={{
-                                    paddingRight: index === 0 ? '0' : '10px',
+                                   
                                     borderRight: index === 0 ? 'none' : '1px solid #ccc',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    fontSize:'1.04rem',
-                                    gap: '5px'
+                                   
                                 }}
                             >
                                 <i className={iconResources[res.item as keyof typeof iconResources] ?? iconResources.default}></i>

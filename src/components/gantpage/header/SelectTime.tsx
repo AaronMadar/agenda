@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDateRange } from "@/contexts/DateRangeContext";
 import dayjs, { Dayjs } from "dayjs";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown"; //TODO remplace this icon by bootstrap icon
 
 import "@/style/components/gantpage/header/SelectTime.css";
 
@@ -16,73 +16,28 @@ export function SelectTime() {
     setPeriodView,
   } = useDateRange();
 
-  const periodLabels: { [key: string]: string } = {
-    "רבעון1": `ינו' ${year} - מרץ' ${year}`,
-    "רבעון2": `אפר' ${year} - יוני' ${year}`,
-    "רבעון3": `יולי' ${year} - ספט' ${year}`,
-    "רבעון4": `אוק' ${year} - דצמ' ${year}`,
-    "חצי-שנה1": `חצי-ראשון ${year}`,
-    "חצי-שנה2": `חצי-שני ${year}`,
-    "שנה": `כל ${year}`,
-  };
+  const options = [
+    { label: `ינו' ${year} - מרץ' ${year}`, start: `${year}-01-01`, end: `${year}-03-31` },
+    { label: `אפר' ${year} - יוני' ${year}`, start: `${year}-04-01`, end: `${year}-06-30` },
+    { label: `יולי' ${year} - ספט' ${year}`, start: `${year}-07-01`, end: `${year}-09-30` },
+    { label: `אוק' ${year} - דצמ' ${year}`, start: `${year}-10-01`, end: `${year}-12-31` },
+    { label: `חצי-ראשון ${year}`, start: `${year}-01-01`, end: `${year}-06-30` },
+    { label: `חצי-שני ${year}`, start: `${year}-07-01`, end: `${year}-12-31` },
+    { label: `כל ${year}`, start: `${year}-01-01`, end: `${year}-12-31` },
+  ];
 
-  const displayText = periodLabels[periodView] || periodView || "בחר תקופה";
-
-  const handleSelect = (mode: string) => {
-    let start: Dayjs | null = null;
-    let end: Dayjs | null = null;
-
-    switch (mode) {
-      case "רבעון1":
-        start = dayjs(`${year}-01-01`);
-        end = dayjs(`${year}-03-31`);
-        break;
-      case "רבעון2":
-        start = dayjs(`${year}-04-01`);
-        end = dayjs(`${year}-06-30`);
-        break;
-      case "רבעון3":
-        start = dayjs(`${year}-07-01`);
-        end = dayjs(`${year}-09-30`);
-        break;
-      case "רבעון4":
-        start = dayjs(`${year}-10-01`);
-        end = dayjs(`${year}-12-31`);
-        break;
-      case "חצי-שנה1":
-        start = dayjs(`${year}-01-01`);
-        end = dayjs(`${year}-06-30`);
-        break;
-      case "חצי-שנה2":
-        start = dayjs(`${year}-07-01`);
-        end = dayjs(`${year}-12-31`);
-        break;
-      case "שנה":
-        start = dayjs(`${year}-01-01`);
-        end = dayjs(`${year}-12-31`);
-        break;
-      default:
-        // For custom periods, don't override dates (assume they are set elsewhere)
-        break;
-    }
-
-    setPeriodView(mode);
+  const handleSelect = (option: typeof options[0]) => {
+    setPeriodView(option.label); 
+    setStartDate(dayjs(option.start));
+    setEndDate(dayjs(option.end));
     setOpen(false);
-    if (start && end) {
-      setStartDate(start);
-      setEndDate(end);
-    }
   };
 
   return (
     <div className="select-container">
-      <div
-        className="select-trigger"
-        onClick={() => setOpen(!open)}
-        
-      >
+      <div className="select-trigger" onClick={() => setOpen(!open)}>
         <span className="select-text">
-          {displayText}
+          {periodView || "בחר תקופה"}
         </span>
 
         <KeyboardArrowDownIcon
@@ -93,41 +48,15 @@ export function SelectTime() {
       {open && (
         <div className="select-dropdown">
           <div className="select-dropdown-content">
-
-            {periodView &&
-              !periodView.startsWith("רבעון") &&
-              !periodView.startsWith("חצי") &&
-              periodView !== "שנה" && (
-                <div
-                  className="select-option"
-                  onClick={() => handleSelect(periodView)}
-                >
-                  {periodView}
-                </div>
-              )}
-
-            <div className="select-option" onClick={() => handleSelect("רבעון1")}>
-              {periodLabels["רבעון1"]}
-            </div>
-            <div className="select-option" onClick={() => handleSelect("רבעון2")}>
-              {periodLabels["רבעון2"]}
-            </div>
-            <div className="select-option" onClick={() => handleSelect("רבעון3")}>
-              {periodLabels["רבעון3"]}
-            </div>
-            <div className="select-option" onClick={() => handleSelect("רבעון4")}>
-              {periodLabels["רבעון4"]}
-            </div>
-            <div className="select-option" onClick={() => handleSelect("חצי-שנה1")}>
-              {periodLabels["חצי-שנה1"]}
-            </div>
-            <div className="select-option" onClick={() => handleSelect("חצי-שנה2")}>
-              {periodLabels["חצי-שנה2"]}
-            </div>
-            <div className="select-option" onClick={() => handleSelect("שנה")}>
-              {periodLabels["שנה"]}
-            </div>
-
+            {options.map((option, index) => (
+              <div
+                key={index}
+                className="select-option"
+                onClick={() => handleSelect(option)}
+              >
+                {option.label}
+              </div>
+            ))}
           </div>
         </div>
       )}

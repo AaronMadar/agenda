@@ -1,7 +1,3 @@
-
-
-
-
 .select-container {
   position: relative;
   width: 13rem;
@@ -13,11 +9,6 @@
   
 }
 
-.select-container:hover {
-  border-color: #4093f1 ;
-}
-
-/* bouton */
 .select-trigger {
   display: flex;
   align-items: center;
@@ -44,7 +35,6 @@
   text-overflow: ellipsis;
 }
 
-/* flèche */
 .select-arrow {
   color: #dbd9d9;
   font-size: 18px;
@@ -55,7 +45,6 @@
   transform: rotate(180deg);
 }
 
-/* dropdown */
 .select-dropdown {
   position: absolute;
   width: 100%;
@@ -72,7 +61,6 @@
   overflow-y: auto;
 }
 
-/* options */
 .select-option {
   padding: 8px 14px;
   margin: 4px;

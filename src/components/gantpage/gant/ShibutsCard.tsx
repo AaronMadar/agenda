@@ -53,7 +53,7 @@ export function ShibutsCard({
             </div>
             <div className="div-down">
               
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px',flexWrap: 'nowrap',overflow: 'hidden' }}>
                      {formattedBegin && formattedEnd && (
                     <span className="spanDate">{formattedBegin} - {formattedEnd}</span>
                 )}

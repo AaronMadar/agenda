@@ -1,9 +1,7 @@
-/* --- STRUCTURE PRINCIPALE --- */
-.gant {
+.gant-container {
   min-height: calc(100vh - 3.5rem);
   display: flex;
   flex-direction: column;
-  /* Ton dégradé avec la barre de 1px */
   background: linear-gradient(to left, 
     #4b4a4a 9rem, 
     rgb(99, 98, 98) 9rem, 
@@ -13,20 +11,17 @@
   overflow-x: hidden;
 }
 
-/* --- LIGNES (TIMEZONE) --- */
-.timezone {
+.timeline-header {
   display: flex;
-  flex-direction: row; /* En RTL, le premier enfant sera à droite */
+  flex-direction: row; 
   height: 4rem;
   width: 100%;
   border-bottom: 1.9px solid rgb(87, 82, 82);
 }
 
-/* Version spécifique pour les lignes de cartes (Gdudim) */
-.timezone.gdudim {
+.timeline-header.gdudim {
   min-height: 6rem;
-  height: auto; /* Permet à la ligne de grandir selon le nombre de cartes */
-  /* padding-bottom: 2rem; */
+  height: auto; 
   align-items: stretch; /* Important pour que la sidebar grise suive la hauteur */
 }
 
@@ -52,11 +47,11 @@
 /* C'est ici que ton padding bottom fonctionne enfin ! */
 .row-content-wrapper {
   padding-top: 1rem;
-  padding-bottom: 1rem; /* Ton espace de 1rem à la fin de chaque Gdud */
+  padding-bottom: 1rem; 
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem; /* Espace entre les cartes ShibutsCard */
+  gap: 0.5rem;
   position:relative;
   min-height: 60px;
 }
@@ -64,11 +59,10 @@
 .gant-row {
   position: relative;
   width: 100%;
-  height: 3rem; /* Hauteur de chaque ligne de carte */
+  height: 3rem; 
 }
 
-/* --- LA FRISE TEMPORELLE (TIMELINE) --- */
-.frise-wrapper {
+.ticks-container {
   display: flex;
   flex-grow: 1;
   justify-content: space-between;
@@ -78,7 +72,7 @@
   padding-right: 0.3rem;
 }
 
-.frise-tick {
+.timeline-tick   {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -87,7 +81,7 @@
   justify-content: flex-end;
 }
 
-.date-text {
+.tick-label {
   font-size: 0.85rem;
   color: #efeded;
   margin-bottom: 25px; 

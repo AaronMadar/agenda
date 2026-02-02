@@ -1,10 +1,11 @@
 import { useMemo } from 'react';
 
+import { Box, Skeleton } from '@mui/material';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import dayjs, { Dayjs } from 'dayjs';
 
-import {ShibutsCard} from "./gant/ShibutsCard";
+import { ShibutsCard } from "./gant/ShibutsCard";
 import { iconServiceType } from "@/constants/icons";
 import { forceColors } from "@/constants/colors";
 import type { ShibutsApi } from '@/types/api-response';
@@ -100,39 +101,87 @@ export function Gant() {
         startDate,
         endDate,
         data,
+        loading,
     } = useDateRange();
 
 
     const currentYear = dayjs().year();
-
     const sDate = startDate || dayjs(`${currentYear}-01-01`);
     const eDate = endDate || dayjs(`${currentYear}-12-31`);
 
     const dates = useMemo(() => generateTicks(sDate, eDate), [sDate, eDate]);
 
     return (
-        <div className="gant">
+        <div className="gant-container">
             {/* TIMELINE HEADER */}
-            <div className="timezone">
-                <div className="yehida div-side">{data?.unit}</div>
-                <div className="frise-wrapper">
+            <div className="timeline-header">
+                <div className="unit-title div-side">{data?.unit}</div>
+                <div className="ticks-container">
                     {dates.map((date, i) => (
-                        <div className="frise-tick" key={i}>
-                            <span className="date-text">{date}</span>
+                        <div className="timeline-tick" key={i}>
+                            <span className="tick-label">{date}</span>
                             <i className="bi bi-caret-up-fill arrow-icon"></i>
                         </div>
                     ))}
                 </div>
             </div>
 
+
+            {/*LOADING STATE*/ }
+            {loading && (
+                <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+                    {[1, 2, 3, 4, 5].map((i) => (
+                        <div className="timeline-header gdudim" key={i} style={{ borderBottom: '1.9px solid rgb(87, 82, 82)' }}>
+
+                            {/* SIDEBAR: Simple text skeleton for the Unit/Gdud name */}
+                            <div className="div-side sidebar">
+                                <Skeleton
+                                    variant="text"
+                                    width="50%"
+                                    sx={{ bgcolor: 'rgba(255,255,255,0.1)' }}
+                                />
+                            </div>
+
+                            {/* CONTENT: Card skeleton matching official height and rounded style */}
+                            <div className="row-content-wrapper">
+                                <Skeleton
+                                    variant="rounded"
+                                    animation="wave"
+                                    sx={{
+                                        position: 'absolute',
+                                        // Height based on official structure (div-up + div-down)
+                                        height: '55px',
+                                        borderRadius: '20px',
+                                        bgcolor: 'rgba(255, 255, 255, 0.04)',
+
+                                        // Subtle wave effect logic
+                                        '&::after': {
+                                            background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.03), transparent) !important',
+                                        },
+
+                                        // Dispatching logic: randomized width and horizontal position
+                                        width: `${15 + (i * 7) % 20}%`,
+                                        insetInlineStart: `${5 + (i * 18) % 65}%`,
+
+                                        // Disable interactions to prevent layout shifts or hover states
+                                        pointerEvents: 'none'
+                                    }}
+                                />
+                            </div>
+                        </div>
+                    ))}
+                </Box>
+            )}
+
+
             {data?.gdudim.map((gdudData, index) => {
                 const filteredShibutsim = getFilteredShibutsim(gdudData.shibutsim, sDate, eDate);
                 if (filteredShibutsim.length === 0) {
-                    return null; 
+                    return null;
                 }
                 const sortedShibutsim = sortEventsByDate(filteredShibutsim);
                 return (
-                    <div className="timezone gdudim" key={gdudData.name || index}>
+                    <div className="timeline-header gdudim" key={gdudData.name || index}>
                         <div className="div-side sidebar">{gdudData.name}</div>
                         <div className="row-content-wrapper" >
                             {sortedShibutsim.map((shibuts, idx) => {

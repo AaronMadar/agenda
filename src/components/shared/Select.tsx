@@ -17,6 +17,7 @@ export function Select({
   label,
   placeholder = "בחר ערך",
 }: SelectProps) {
+
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
 

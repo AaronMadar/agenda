@@ -36,42 +36,6 @@
   cursor: pointer;
 }
 
-/* ===== Month Picker ===== */
-.monthPicker {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  margin-top: 6px;
-  display: flex;
-  gap: 8px;
-  padding: 12px 10px 10px;
-  background: #3d3c3c;
-  border-radius: 10px;
-  border: 1px solid #525252;
-  z-index: 30;
-}
-
-.column {
-  max-height: 160px;
-  overflow-y: auto;
-}
-
-.item {
-  padding: 4px 10px;
-  font-size: 12px;
-  cursor: pointer;
-  color: white;
-  border-radius: 10px;
-}
-
-.item:hover {
-  background: rgba(64, 153, 241, 0.2);
-}
-
-.active, .active:hover {
-  background: #60a5fa;
-}
-
 /* ===== Weekdays ===== */
 .weekdays {
   display: grid;
@@ -121,7 +85,6 @@
   border-radius: 6px;
   padding: 6px 8px;
   font-size: 11px;
-  line-height: 1.4;
   opacity: 0;
   pointer-events: none;
   transform: translateY(10px);
@@ -129,7 +92,6 @@
   z-index: 20;
 }
 
-/* Tooltip items */
 .tooltipItem {
   display: flex;
   align-items: center;
@@ -137,14 +99,9 @@
   white-space: nowrap;
 }
 
-.tooltipItem:not(:last-child) {
-  margin-bottom: 4px;
-}
-
 .topRow .tooltip {
   top: calc(100% + 7px);
   bottom: auto;
-  transform: translateY(-10px);
 }
 
 .leftColumn .tooltip {
@@ -156,7 +113,6 @@
   opacity: 1;
   transform: translateY(0);
 }
-
 
 /* ===== Tooltip Arrow ===== */
 .tooltip::after {
@@ -186,7 +142,6 @@
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  gap: 4px;
   font-size: 12px;
   color: black;
 }
@@ -205,49 +160,4 @@
   font-size: 12px;
   font-weight: 600;
   color: black;
-}
-
-/* ===== Picker Actions Container ===== */
-.pickerActions {
-  position: absolute;
-  top: 6px;
-  left: 6px; /* RTL-friendly */
-  display: flex;
-  gap: 6px;
-  z-index: 2;
-}
-
-.pickerActionBtn {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background-color: #6a6969 !important;
-  color: white;
-  border: none;
-  cursor: pointer;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
-  transition:
-    transform 0.15s ease,
-    background-color 0.15s ease,
-    box-shadow 0.15s ease,
-    opacity 0.15s ease;
-  opacity: 0.6;
-}
-
-.pickerActionBtn:hover {
-  transform: scale(1.1);
-  opacity: 1;
-  background-color: #525252;
-}
-
-.todayBtn {
-  background-color: rgb(0, 145, 255) !important;
-}
-
-.confirmBtn {
-  background-color: #22c55e !important;
 }

@@ -1,12 +1,11 @@
-import { useMemo, useState, useRef, useEffect } from "react";
+import { useMemo, useState } from "react";
 import dayjs, { Dayjs } from "dayjs";
 import localeData from "dayjs/plugin/localeData";
 import style from "@/style/components/dashboard/training-calendar/TrainingCalendar.module.css";
 import { iconServiceType } from "@/constants/icons";
 import type { CalendarEvent } from "./types";
-import CheckIcon from "@mui/icons-material/Check";
-import TodayIcon from "@mui/icons-material/Today";
-
+import { DateRange } from "@mui/icons-material";
+import { MonthPicker } from "./MonthPicker";
 
 dayjs.extend(localeData);
 
@@ -16,22 +15,7 @@ interface TrainingCalendarProps {
 
 export const TrainingCalendar = ({ events }: TrainingCalendarProps) => {
   const [currentMonth, setCurrentMonth] = useState<Dayjs>(dayjs());
-
-  /* ===== Month Picker ===== */
   const [pickerOpen, setPickerOpen] = useState(false);
-  const [tempMonth, setTempMonth] = useState(currentMonth.month());
-  const [tempYear, setTempYear] = useState(currentMonth.year());
-  const pickerRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      if (pickerRef.current && !pickerRef.current.contains(e.target as Node)) {
-        setPickerOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, []);
 
   /* ===== Calendar Days ===== */
   const days = useMemo(() => {
@@ -57,12 +41,6 @@ export const TrainingCalendar = ({ events }: TrainingCalendarProps) => {
     return map;
   }, [events]);
 
-  const months = dayjs.months();
-  const years = Array.from(
-    { length: 21 },
-    (_, i) => currentMonth.year() - 10 + i,
-  );
-
   return (
     <div className={style.calendar}>
       {/* ===== Header ===== */}
@@ -78,70 +56,17 @@ export const TrainingCalendar = ({ events }: TrainingCalendarProps) => {
 
           <button
             className={style.openPickerBtn}
-            onClick={() => {
-              setTempMonth(currentMonth.month());
-              setTempYear(currentMonth.year());
-              setPickerOpen((v) => !v);
-            }}
+            onClick={() => setPickerOpen((v) => !v)}
           >
-            📅
+            <DateRange />
           </button>
 
-          {pickerOpen && (
-            <div ref={pickerRef} className={style.monthPicker}>
-              <div className={style.column}>
-                {months.map((m, i) => (
-                  <div
-                    key={m}
-                    className={`${style.item} ${i === tempMonth ? style.active : ""}`}
-                    onClick={() => setTempMonth(i)}
-                  >
-                    {m}
-                  </div>
-                ))}
-              </div>
-
-              <div className={style.column}>
-                {years.map((y) => (
-                  <div
-                    key={y}
-                    className={`${style.item} ${y === tempYear ? style.active : ""}`}
-                    onClick={() => setTempYear(y)}
-                  >
-                    {y}
-                  </div>
-                ))}
-              </div>
-
-              {/* ✓ Confirm */}
-              <div className={style.pickerActions}>
-                <button
-                  className={`${style.pickerActionBtn} ${style.confirmBtn}`}
-                  onClick={() => {
-                    setCurrentMonth(dayjs().year(tempYear).month(tempMonth));
-                    setPickerOpen(false);
-                  }}
-                  title="אישור"
-                >
-                  <CheckIcon fontSize="small" />
-                </button>
-
-                <button
-                  className={`${style.pickerActionBtn} ${style.todayBtn}`}
-                  onClick={() => {
-                    const today = dayjs();
-                    setCurrentMonth(today);
-                    setTempMonth(today.month());
-                    setTempYear(today.year());
-                    setPickerOpen(false);
-                  }}
-                  title="היום"
-                >
-                  <TodayIcon fontSize="small" />
-                </button>
-              </div>
-            </div>
-          )}
+          <MonthPicker
+            value={currentMonth}
+            open={pickerOpen}
+            onClose={() => setPickerOpen(false)}
+            onChange={setCurrentMonth}
+          />
         </div>
 
         <button onClick={() => setCurrentMonth((m) => m.add(1, "month"))}>

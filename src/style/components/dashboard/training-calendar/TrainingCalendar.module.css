@@ -6,7 +6,6 @@
 }
 
 /* ===== Header ===== */
-
 .header {
   display: flex;
   align-items: center;
@@ -21,12 +20,59 @@
   color: rgb(235, 255, 255);
 }
 
+.monthTitleWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .monthTitle {
   font-weight: 600;
 }
 
-/* ===== Week Days ===== */
+.openPickerBtn {
+  font-size: 14px;
+  cursor: pointer;
+}
 
+/* ===== Month Picker ===== */
+.monthPicker {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 6px;
+  display: flex;
+  gap: 8px;
+  padding: 12px 10px 10px;
+  background: #3d3c3c;
+  border-radius: 10px;
+  border: 1px solid #525252;
+  z-index: 30;
+}
+
+.column {
+  max-height: 160px;
+  overflow-y: auto;
+}
+
+.item {
+  padding: 4px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  color: white;
+  border-radius: 10px;
+}
+
+.item:hover {
+  background: rgba(64, 153, 241, 0.2);
+}
+
+.active, .active:hover {
+  background: #60a5fa;
+}
+
+/* ===== Weekdays ===== */
 .weekdays {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -35,48 +81,112 @@
   opacity: 0.7;
 }
 
-/* ===== Calendar Grid ===== */
-
+/* ===== Grid ===== */
 .grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 5px;
-
   flex: 1;
   min-height: 0;
   overflow-y: auto;
 }
 
-
 /* ===== Day Cell ===== */
-
 .day {
+  position: relative;
   display: flex;
-  align-items: stretch;
   gap: 6px;
-
   padding: 6px;
   border-radius: 8px;
   min-height: 50px;
-
-  background: #dfdfdf;
+  background: #e5e5e5;
 }
 
-/* Days from other month */
+.busyDay {
+  background: #60a5fa;
+}
+
 .otherMonth {
   opacity: 0.35;
 }
 
-/* ===== Icons Area ===== */
+/* ===== Tooltip ===== */
+.tooltip {
+  position: absolute;
+  bottom: calc(100% + 7px);
+  right: 0;
+  max-width: 200px;
+  background: #111827;
+  color: white;
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 11px;
+  line-height: 1.4;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(10px);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  z-index: 20;
+}
 
+/* Tooltip items */
+.tooltipItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.tooltipItem:not(:last-child) {
+  margin-bottom: 4px;
+}
+
+.topRow .tooltip {
+  top: calc(100% + 7px);
+  bottom: auto;
+  transform: translateY(-10px);
+}
+
+.leftColumn .tooltip {
+  left: 0;
+  right: auto;
+}
+
+.day:hover .tooltip {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* ===== Tooltip Arrow ===== */
+.tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  right: 12px;
+  border-width: 6px;
+  border-style: solid;
+  border-color: #111827 transparent transparent transparent;
+}
+
+.topRow .tooltip::after {
+  top: auto;
+  bottom: 100%;
+  border-color: transparent transparent #111827 transparent;
+}
+
+.leftColumn .tooltip::after {
+  right: auto;
+  left: 12px;
+}
+
+/* ===== Icons Area ===== */
 .iconsArea {
   flex: 1;
-
   display: flex;
   align-items: center;
   justify-content: space-evenly;
   gap: 4px;
-
   font-size: 12px;
   color: black;
 }
@@ -85,23 +195,59 @@
   opacity: 0.9;
 }
 
-/* +N more */
-.more {
-  font-size: 10px;
-  opacity: 0.85;
-}
-
 /* ===== Day Number ===== */
-
 .dayNumber {
   flex-shrink: 0;
   width: 22px;
-
   display: flex;
   align-items: flex-start;
   justify-content: flex-end;
-
   font-size: 12px;
   font-weight: 600;
   color: black;
+}
+
+/* ===== Picker Actions Container ===== */
+.pickerActions {
+  position: absolute;
+  top: 6px;
+  left: 6px; /* RTL-friendly */
+  display: flex;
+  gap: 6px;
+  z-index: 2;
+}
+
+.pickerActionBtn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: #6a6969 !important;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+  transition:
+    transform 0.15s ease,
+    background-color 0.15s ease,
+    box-shadow 0.15s ease,
+    opacity 0.15s ease;
+  opacity: 0.6;
+}
+
+.pickerActionBtn:hover {
+  transform: scale(1.1);
+  opacity: 1;
+  background-color: #525252;
+}
+
+.todayBtn {
+  background-color: rgb(0, 145, 255) !important;
+}
+
+.confirmBtn {
+  background-color: #22c55e !important;
 }

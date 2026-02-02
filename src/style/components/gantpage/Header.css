@@ -8,7 +8,7 @@
   direction: row;
   align-items: center;
   border-bottom: 1px rgb(99, 98, 98) solid;
-  flex-shrink: 0; /*pour eviter que la hauteur se modifie */
+  flex-shrink: 0; 
 }
 
 .header-actions {
@@ -39,24 +39,21 @@
   font-size: 1.5rem;
   color: #42adff;
 
-  /* On prépare l'espace pour le rond */
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px; /* Ajuste selon la taille voulue */
-  height: 40px; /* Doit être identique à width pour un rond parfait */
+  width: 40px; 
+  height: 40px; 
 
-  /* Transition douce pour un effet premium */
   transition: all 0.2s ease-in-out;
   cursor: pointer;
-  border-radius: 50%; /* Prépare la forme arrondie */
+  border-radius: 50%; 
 }
 
 .header-icon:hover {
-  background-color: rgba(197, 194, 194, 0.1); /* Un bleu très léger qui rappelle l'icône */
-  color: #2a6dbd; /* L'icône fonce un peu au survol */
-  border-radius: 50%; /* Force le rond parfait */
-  transform: scale(1.1); /* Petit effet de zoom subtil */
+  background-color: rgba(197, 194, 194, 0.1); 
+  border-radius: 50%; 
+  transform: scale(1.1); 
 }
 
 .header-separator {

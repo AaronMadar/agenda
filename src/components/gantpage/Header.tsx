@@ -5,6 +5,7 @@ import { SelectTime } from "./header/SelectTime";
 import { PopoverTime } from "./header/PopoverTime";
 
 import "@/style/components/gantpage/Header.css";
+import { ControlsPanel } from '../shared/ControlsPanel';
 
 
 export function Header() {
@@ -38,11 +39,9 @@ export function Header() {
                 </div>
             </div>
             <div className="header-time-controls">
-                <i className="bi bi-calendar-date header-icon"
-                    onClick={handleOpenPopover} />   {/*This Icon is the anchor of the popover */}
+              
 
-                <PopoverTime anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
-                <SelectTime />
+                <ControlsPanel/>    
             </div>
         </header>
     )

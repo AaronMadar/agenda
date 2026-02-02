@@ -20,7 +20,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 15px;
-
+  font-size: 0.9rem;
+  font-weight: 500;
   height: 2.3rem;
   background: #3d3c3c;
   border: 1px solid #525252;

@@ -1,49 +1,72 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { TreeSelect } from "./TreeSelect";
-import { useTreeData } from "@/contexts/TreeDataContext";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import style from "@/style/components/shared/tree-dropdown/TreeDropdown.module.css"
+import style from "@/style/components/shared/tree-dropdown/TreeDropdown.module.css";
+import type { TreeNodeData } from "./types";
 
-export const TreeDropdown = () => {
+interface TreeDropdownProps {
+  data: TreeNodeData[];
+  value: TreeNodeData | null;
+  onChange: (node: TreeNodeData | null) => void;
+  placeholder?: string;
+  label?: string;
+}
+
+export const TreeDropdown = ({
+  data,
+  value,
+  onChange,
+  placeholder = "בחר ערך",
+  label,
+}: TreeDropdownProps) => {
   const [open, setOpen] = useState(false);
-  const { treeData, selectedNode, setSelectedNode, loading, error } = useTreeData();
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
-  if (loading) {
-    return <div className={style.container}>טוען...</div>;
-  }   
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    };
 
-  if (error) {
-    return <div className={style.container}>שגיאה: {error}</div>;
-  }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
-    <div className={style.container}>
-      <div
-        onClick={() => setOpen(!open)}
-        className={style.trigger}
-        
-      >
-        <span className={style.selectedText}>
-          {selectedNode?.label ?? "בחר ערך"}
-        </span>
-        <ExpandMoreIcon 
-          className={`${style.arrow} ${open ? style.arrowUp : style.arrowDown}`}
-        />
-      </div>
+    <div className={style.wrapper} ref={wrapperRef}>
+      {label && <span className={style.label}>{label}</span>}
 
-      {open && (
-        <div className={style.dropdown}>
-          <div className={style.dropdownContent}>
-            <TreeSelect
-              data={treeData}
-              onSelect={(node) => {
-                setSelectedNode(node);
-                setOpen(false);
-              }}
-            />
-          </div>
+      <div className={style.container}>
+        <div
+          onClick={() => setOpen((prev) => !prev)}
+          className={style.trigger}
+        >
+          <span className={style.selectedText}>
+            {value?.label ?? placeholder}
+          </span>
+
+          <ExpandMoreIcon
+            className={`${style.arrow} ${open ? style.arrowUp : style.arrowDown}`}
+          />
         </div>
-      )}
+
+        {open && (
+          <div className={style.dropdown}>
+            <div className={style.dropdownContent}>
+              <TreeSelect
+                data={data}
+                onSelect={(node) => {
+                  onChange(node);
+                  setOpen(false);
+                }}
+              />
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

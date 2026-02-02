@@ -1,6 +1,6 @@
 .containerWrapper {
     display: flex;
-    gap: clamp(8px, 1vw, 10px);
+    gap: clamp(8px, 2vw, 50px);
     align-items: center;
     padding: clamp(10px, 1.5vw, 15px) clamp(10px, 1.5vw, 15px) 0px clamp(10px, 1.5vw, 15px);
 }
@@ -11,7 +11,21 @@
   cursor: pointer;
 }
 
-.controlsContainer {
-    display: flex;
-    gap: clamp(10px, 1.5vw, 15px);
+.imgsContainer {
+  display: flex;
+  gap: clamp(10px, 1.5vw, 15px);
+  align-items: center;
+}
+
+.controlItem {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.labelText {
+  font-size: 15px;
+  font-weight: 400;
 }

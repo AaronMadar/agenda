@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import {SelectTime} from "../gantpage/header/SelectTime";
 import style from "@/style/components/dashboard/DashboardHeader.module.css";
-import { TreeDropdown } from "@/components/shared/tree-dropdown/TreeDropdown";
+import { ControlsPanel } from "../shared/ControlsPanel";
+
 
 export const DashboardHeader = () => {
   const navigate = useNavigate();
@@ -9,9 +9,10 @@ export const DashboardHeader = () => {
   return (
     <div className={style.containerWrapper}>
       <h4 style={{ flex: 1 }}>דשבורד למפקד</h4>
-      <div className={style.controlsContainer}>
-        <TreeDropdown />
-        <SelectTime />
+
+      <ControlsPanel />
+
+      <div className={style.imgsContainer}>
         <img
           src="/dashboard-image-gray.png"
           alt="Dashboard Image"

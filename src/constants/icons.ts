@@ -12,7 +12,7 @@ export const iconServiceType = {
     "סדיר- אימונים": "bi bi-shadows",
     "מילואים- תע\"ם": "bi bi-brightness-high-fill",
     "סדיר- תע”ם": "bi bi-vinyl-fill",
-    default: "bi bi-question-circle"
+    "דפולטיבי": "bi bi-question-circle"
 }  as const;
 
-export type ServiceType = keyof typeof iconServiceType;
+export type ServiceTypeKey = keyof typeof iconServiceType;

@@ -1,0 +1,93 @@
+.legend-popup {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  height: 234px;
+  background: #767f84;
+  backdrop-filter: blur(8px);
+  color: white;
+  padding: 15px;
+  border-radius: 12px;
+  width: 480px;
+  z-index: 1000;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  border: solid 1px rgb(149, 150, 148);
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 10px;
+  overflow: hidden;
+}
+
+.legend-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+.legend-body {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  gap:20px
+}
+
+.section-tsvaim {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.force-tag {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 14px;
+  border-radius: 8px; 
+  margin: 1px 2px;
+  color: #4e4e4e;
+  font-weight: 600;
+  font-size: 0.85rem;
+  box-shadow: 0 4px 7px rgba(0, 0, 0, 0.22);
+}
+
+.legend-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(4, 1fr);
+}
+
+.legend-list li {
+  margin-bottom: 8px;   
+  display: flex;
+  align-items: center;
+}
+
+.service-list {
+  list-style: none;
+
+  display: grid;
+  margin: 0;
+  padding: 0;
+  gap: 10px;
+  grid-template-columns: 1fr 1fr ;
+  grid-template-rows: 1fr 1fr;
+}
+
+.span-icon-type {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.me-2 {
+    margin-right: .5rem !important;
+    color: black;
+    font-size: 18px;
+    /* font-weight: 800; */
+}

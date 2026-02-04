@@ -95,7 +95,13 @@ const generateTicks = (start: Dayjs, end: Dayjs): string[] => {
 
 
 
-export function Gant() {
+
+type gantProps = {
+    setForceDisplayed: (forces: string[]) => void;
+}
+
+
+export function Gant({setForceDisplayed}: gantProps) {
 
     const {
         startDate,
@@ -109,7 +115,22 @@ export function Gant() {
     const sDate = startDate || dayjs(`${currentYear}-01-01`);
     const eDate = endDate || dayjs(`${currentYear}-12-31`);
 
+
     const dates = useMemo(() => generateTicks(sDate, eDate), [sDate, eDate]);
+
+    const displayedForces = useMemo(() => {
+        if (!data?.gdudim) return [];
+        const forces = new Set<string>();
+        data.gdudim.forEach((gdudData) => {
+            const filteredShibutsim = getFilteredShibutsim(gdudData.shibutsim, sDate, eDate);
+            if (filteredShibutsim.length > 0 && gdudData.forceType) {
+                forces.add(gdudData.forceType);
+            }
+        });
+        return Array.from(forces);
+    }, [data, sDate, eDate]);
+
+    setForceDisplayed(displayedForces)
 
     return (
         <div className="gant-container">
@@ -179,12 +200,12 @@ export function Gant() {
                 if (filteredShibutsim.length === 0) {
                     return null;
                 }
-                const sortedShibutsim = sortEventsByDate(filteredShibutsim);
+                const contentToDisplay = sortEventsByDate(filteredShibutsim);
                 return (
                     <div className="timeline-header gdudim" key={gdudData.name || index}>
                         <div className="div-side sidebar">{gdudData.name}</div>
                         <div className="row-content-wrapper" >
-                            {sortedShibutsim.map((shibuts, idx) => {
+                            {contentToDisplay.map((shibuts, idx) => {
                                 const startPos = calculatePosition(shibuts, sDate, eDate);
                                 const width = calculateWidth(shibuts, sDate, eDate);
                                 const isNearEnd = (startPos + width) > NEAR_END_THRESHOLD;
@@ -202,7 +223,7 @@ export function Gant() {
                                             resources={resourcesArray}
                                             icon={iconServiceType[
                                                 shibuts.seviceType as keyof typeof iconServiceType
-                                            ] ?? iconServiceType.default}
+                                            ] ?? iconServiceType["דפולטיבי"]}
                                             style={{
                                                 backgroundColor: forceColors[gdudData.forceType] as keyof typeof forceColors || forceColors.default,
                                                 insetInlineStart: isNearEnd ? 'auto' : `${startPos}%`,

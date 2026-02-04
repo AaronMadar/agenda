@@ -1,8 +1,4 @@
 .monthPicker {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  margin-top: 6px;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -10,7 +6,9 @@
   background: #3d3c3c;
   border-radius: 10px;
   border: 1px solid #525252;
-  z-index: 30;
+  z-index: 10000; 
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  pointer-events: all;
 }
 
 .btns {
@@ -29,19 +27,30 @@
   padding: 0 2px;
 }
 
+.column::-webkit-scrollbar {
+  width: 4px;
+}
+
+.column::-webkit-scrollbar-thumb {
+  background: #525252;
+  border-radius: 10px;
+}
+
 .item {
   padding: 4px 10px;
   font-size: 12px;
   cursor: pointer;
   color: white;
   border-radius: 10px;
+  white-space: nowrap;
 }
 
 .item:hover {
   background: rgba(64, 153, 241, 0.2) !important;
 }
 
-.active, .active:hover {
+.active,
+.active:hover {
   background: #60a5fa !important;
 }
 
@@ -58,16 +67,9 @@
   align-items: center;
   justify-content: center;
   opacity: 0.7;
+  transition: opacity 0.2s;
 }
 
 .actionBtn:hover {
   opacity: 1;
-}
-
-.confirmBtn {
-    background-color: #22c55e !important;
-}
-
-.todayBtn {
-  background-color: rgb(0, 145, 255) !important;
 }

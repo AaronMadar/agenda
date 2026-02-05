@@ -44,7 +44,7 @@ export function ShibutsCard({
                 </div>
                 
 
-                <div className={`variation-container ${isHovered ? 'visible' : 'hidden'}`}>
+                <div className={`variation-container ${isHovered ? 'visible' : ''}`}>
                     <PercentageWithArrow
                         value={variation ? parseFloat(variation) : 0}
                         gantMode
@@ -55,7 +55,7 @@ export function ShibutsCard({
               
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px',flexWrap: 'nowrap',overflow: 'hidden' }}>
                      {formattedBegin && formattedEnd && (
-                    <span className="spanDate">{formattedBegin} - {formattedEnd}</span>
+                    <span className={`spanDate  ${isHovered ? ''  : 'hidden' }` }>{formattedBegin} - {formattedEnd}</span>
                 )}
 
                     {resources && resources.length > 0 ? (

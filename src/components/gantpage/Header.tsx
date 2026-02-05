@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import "@/style/components/gantpage/Header.css";
@@ -9,13 +8,8 @@ interface HeadeProps {
 }
 
 export function Header({ onMapClick }: HeadeProps) {
-    const navigate = useNavigate();
-    // AnchorEl contains the HtmlElement where the popover will be anchored
-    const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
-    const handleOpenPopover = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorEl(event.currentTarget); // event.currentTarget is the element that was clicked
-    };
+    const navigate = useNavigate();
 
     return (
         <header className="header">
@@ -38,9 +32,8 @@ export function Header({ onMapClick }: HeadeProps) {
                     <i className='bi bi-camera header-icon' />
                 </div>
             </div>
+            <i className='control-icon bi bi-grid header-icon' />
             <div className="header-time-controls">
-
-
                 <ControlsPanel />
             </div>
         </header>

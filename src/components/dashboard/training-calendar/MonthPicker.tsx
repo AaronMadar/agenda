@@ -1,13 +1,16 @@
-import { useEffect, useRef, useState } from "react";
-import dayjs, { Dayjs } from "dayjs";
+import { useEffect, useRef, useState, useLayoutEffect } from "react";
+import type { RefObject } from "react";
+import { createPortal } from "react-dom";
+import dayjs from "dayjs";
 import { Check, Today } from "@mui/icons-material";
 import style from "@/style/components/dashboard/training-calendar/monthPicker.module.css";
 
 interface MonthPickerProps {
-  value: Dayjs;
+  value: dayjs.Dayjs;
   open: boolean;
   onClose: () => void;
-  onChange: (newMonth: Dayjs) => void;
+  onChange: (newMonth: dayjs.Dayjs) => void;
+  anchorRef: RefObject<HTMLButtonElement | null>;
 }
 
 export const MonthPicker = ({
@@ -15,9 +18,12 @@ export const MonthPicker = ({
   open,
   onClose,
   onChange,
+  anchorRef,
 }: MonthPickerProps) => {
   const [tempMonth, setTempMonth] = useState(value.month());
   const [tempYear, setTempYear] = useState(value.year());
+  
+  const [coords, setCoords] = useState({ top: 0, left: 0, isUp: false });
   const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -25,44 +31,58 @@ export const MonthPicker = ({
     setTempYear(value.year());
   }, [value]);
 
+  useLayoutEffect(() => {
+    if (open && anchorRef.current) {
+      const rect = anchorRef.current.getBoundingClientRect();
+      const spaceBelow = window.innerHeight - rect.bottom;
+      const isUp = spaceBelow < 250;
+
+      setCoords({
+        top: isUp ? rect.top : rect.bottom,
+        left: rect.right,
+        isUp
+      });
+    }
+  }, [open, anchorRef]);
+
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) {
         onClose();
       }
     };
-    document.addEventListener("mousedown", handler);
+    if (open) document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
-  }, [onClose]);
+  }, [open, onClose]);
 
   if (!open) return null;
 
   const months = dayjs.months();
   const years = Array.from({ length: 21 }, (_, i) => value.year() - 10 + i);
 
-  return (
-    <div ref={ref} className={style.monthPicker}>
+  const pickerContent = (
+    <div
+      ref={ref}
+      className={`${style.monthPicker} ${coords.isUp ? style.up : style.down}`}
+      style={{
+        position: "fixed",
+        top: `${coords.top}px`,
+        left: `${coords.left}px`,
+        transform: coords.isUp ? "translate(-100%, calc(-100% - 8px))" : "translateX(-100%)",
+        marginTop: coords.isUp ? "0" : "8px",
+      }}
+    >
       <div className={style.btns}>
-        <button
-          title="אישור"
-          className={`${style.actionBtn} ${style.confirmBtn}`}
-          onClick={() => {
+        <button className={style.actionBtn} onClick={() => {
             onChange(dayjs().year(tempYear).month(tempMonth));
             onClose();
-          }}
-        >
+        }}>
           <Check fontSize="small" />
         </button>
-
-        <button
-          title="היום"
-          className={`${style.actionBtn} ${style.todayBtn}`}
-          onClick={() => {
-            const today = dayjs();
-            onChange(today);
+        <button className={style.actionBtn} onClick={() => {
+            onChange(dayjs());
             onClose();
-          }}
-        >
+        }}>
           <Today fontSize="small" />
         </button>
       </div>
@@ -70,23 +90,14 @@ export const MonthPicker = ({
       <div className={style.columns}>
         <div className={style.column}>
           {months.map((m, i) => (
-            <div
-              key={m}
-              className={`${style.item} ${i === tempMonth ? style.active : ""}`}
-              onClick={() => setTempMonth(i)}
-            >
+            <div key={m} className={`${style.item} ${i === tempMonth ? style.active : ""}`} onClick={() => setTempMonth(i)}>
               {m}
             </div>
           ))}
         </div>
-
         <div className={style.column}>
           {years.map((y) => (
-            <div
-              key={y}
-              className={`${style.item} ${y === tempYear ? style.active : ""}`}
-              onClick={() => setTempYear(y)}
-            >
+            <div key={y} className={`${style.item} ${y === tempYear ? style.active : ""}`} onClick={() => setTempYear(y)}>
               {y}
             </div>
           ))}
@@ -94,4 +105,6 @@ export const MonthPicker = ({
       </div>
     </div>
   );
+
+  return createPortal(pickerContent, document.body);
 };

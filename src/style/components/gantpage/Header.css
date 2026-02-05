@@ -1,73 +1,70 @@
 .header {
   background-color: #4b4a4a;
   color: #efeded;
-  padding: 1rem;
-  text-align: center;
-  height: 3.5rem;
+
+  padding: clamp(0.1rem, 0.5vw, 1rem);
+  height: clamp(3rem, 6vw, 3.5rem);
+
   display: flex;
-  direction: row;
   align-items: center;
-  border-bottom: 1px rgb(99, 98, 98) solid;
-  flex-shrink: 0; 
+  gap: clamp(0.1rem, 0.5vw, 1rem);
+
+  border-bottom: 1px solid rgb(99, 98, 98);
+  flex-shrink: 0;
 }
 
+/* ===== Actions wrapper ===== */
 .header-actions {
   display: flex;
-  flex-direction: row;
   align-items: center;
-  gap: 1rem;
   margin-left: auto;
+  min-width: 0;
 }
 
-.header-actions-primary {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 1rem;
-  margin-right: auto;
-}
-
+/* ===== Primary / Secondary ===== */
+.header-actions-primary,
 .header-actions-secondary {
   display: flex;
-  flex-direction: row;
   align-items: center;
-  gap: 1rem;
-  margin-right: auto;
+  gap: clamp(0.1rem, 0.1vw, 0.5rem);
+  min-width: 0;
 }
 
+/* ===== Icon ===== */
 .header-icon {
-  font-size: 1.5rem;
+  font-size: clamp(1.1rem, 1.4vw, 1.5rem);
   color: #42adff;
+
+  width: clamp(2px, 2.5vw, 40px);
+  height: clamp(2px, 2.5vw, 40px);
 
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px; 
-  height: 40px; 
 
-  transition: all 0.2s ease-in-out;
   cursor: pointer;
-  border-radius: 50%; 
+  border-radius: 50%;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .header-icon:hover {
-  background-color: rgba(197, 194, 194, 0.1); 
-  border-radius: 50%; 
-  transform: scale(1.1); 
+  background-color: rgba(197, 194, 194, 0.1);
+  transform: scale(1.08);
 }
 
+/* ===== Separator ===== */
 .header-separator {
   border-left: 2px solid #525252;
-  height: 2rem;
-  margin-left: 1rem;
-  margin-right: 1rem;
+  height: clamp(1.4rem, 4vw, 2rem);
+  margin-inline: clamp(0.1rem, 0.4vw, 1rem);
+  flex-shrink: 0;
 }
 
+/* ===== Time controls ===== */
 .header-time-controls {
   display: flex;
-  flex-direction: row;
   align-items: center;
-  gap: 1rem;
+  min-width: 0;
 }
 
 .header-time-controls i {

@@ -1,45 +1,65 @@
 .wrapper {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: clamp(2px, 0.4vw, 8px);
   width: fit-content;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .label {
   color: #cfcfcf;
   white-space: nowrap;
+  font-size: clamp(0.75rem, 1vw, 0.9rem);
 }
 
 .container {
   position: relative;
-  width: 12rem;
+  width: clamp(130px, 10vw, 200px);
+  min-width: 0;
 }
 
+/* ===== Trigger ===== */
 .trigger {
   display: flex;
-  padding-right: 15px;
-  padding-left: 15px;
   align-items: center;
   justify-content: space-between;
-  border: 1px solid #525252;
-  cursor: pointer;
-  border-radius: 20px;
+  gap: clamp(6px, 1vw, 10px);
+
+  padding-inline: clamp(10px, 1.5vw, 15px);
+  height: clamp(2rem, 4vw, 2.3rem);
+
   background: #3d3c3c;
-  height: 2.3rem;
+  border: 1px solid #525252;
+  border-radius: 999px;
+  cursor: pointer;
+
+  font-size: clamp(0.75rem, 1vw, 0.9rem);
+  font-weight: 500;
+
+  min-width: 0;
 }
 
 .trigger:hover {
   border-color: #4093f1;
-  transition: cubic-bezier(0.075, 0.82, 0.165, 1) 2s;
+  transition: border-color 0.2s ease;
 }
 
+/* ===== Selected text ===== */
 .selectedText {
   flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: clamp(0.75rem, 1vw, 0.9rem);
 }
 
+/* ===== Arrow ===== */
 .arrow {
+  flex-shrink: 0;
   color: #dbd9d9;
-  font-size: 12px;
+  font-size: clamp(10px, 1.8vw, 14px);
   transition: transform 0.2s ease;
   display: inline-block;
 }
@@ -52,20 +72,22 @@
   transform: rotate(180deg);
 }
 
+/* ===== Dropdown ===== */
 .dropdown {
   position: absolute;
-  border: 1px solid #525252;
+  inset-inline: 0;
+  margin-top: clamp(4px, 0.5vw, 6px);
+
   background: #3d3c3c;
-  width: 100%;
-  max-height: 300px;
+  border: 1px solid #525252;
+  border-radius: 20px;
+
   z-index: 10;
   overflow: hidden;
-  border-radius: 20px;
-  margin-top: 4px;
 }
 
+/* ===== Scroll area ===== */
 .dropdownContent {
-  max-height: 300px;
-  overflow: auto;
-  height: 100%;
+  max-height: clamp(180px, 35vh, 300px);
+  overflow-y: auto;
 }

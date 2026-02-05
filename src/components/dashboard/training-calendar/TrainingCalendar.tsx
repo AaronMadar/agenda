@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef } from "react";
 import dayjs, { Dayjs } from "dayjs";
 import localeData from "dayjs/plugin/localeData";
 import style from "@/style/components/dashboard/training-calendar/TrainingCalendar.module.css";
@@ -16,6 +16,7 @@ interface TrainingCalendarProps {
 export const TrainingCalendar = ({ events }: TrainingCalendarProps) => {
   const [currentMonth, setCurrentMonth] = useState<Dayjs>(dayjs());
   const [pickerOpen, setPickerOpen] = useState(false);
+  const anchorRef = useRef<HTMLButtonElement>(null);
 
   /* ===== Calendar Days ===== */
   const days = useMemo(() => {
@@ -55,6 +56,7 @@ export const TrainingCalendar = ({ events }: TrainingCalendarProps) => {
           </div>
 
           <button
+            ref={anchorRef}
             className={style.openPickerBtn}
             onClick={() => setPickerOpen((v) => !v)}
           >
@@ -62,6 +64,7 @@ export const TrainingCalendar = ({ events }: TrainingCalendarProps) => {
           </button>
 
           <MonthPicker
+            anchorRef={anchorRef}
             value={currentMonth}
             open={pickerOpen}
             onClose={() => setPickerOpen(false)}
@@ -90,7 +93,7 @@ export const TrainingCalendar = ({ events }: TrainingCalendarProps) => {
           const isBusy = dayEvents.length > 0;
           const isOtherMonth = day.month() !== currentMonth.month();
           const isTopRow = Math.floor(index / 7) === 0;
-          const isLeftColumn = index % 7 === 6;
+          const isLeftColumn = (index + 1) % 7 === 0;
 
           const dayClassName = [
             style.day,

@@ -1,41 +1,52 @@
 .wrapper {
   display: flex;
   align-items: center;
-  gap: 5px;
-  width: fit-content;
+  gap: clamp(2px, 0.4vw, 8px);
+  max-width: 100%;
+  min-width: 0;
 }
 
 .label {
   color: #cfcfcf;
   white-space: nowrap;
+  font-size: clamp(0.75rem, 1vw, 0.9rem);
 }
 
 .container {
   position: relative;
-  width: 12rem;
+  width: clamp(130px, 10vw, 200px);
+  min-width: 0;
 }
 
+/* ===== Trigger ===== */
 .trigger {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 15px;
-  font-size: 0.9rem;
+  gap: clamp(6px, 1vw, 10px);
+
+  padding: 0 clamp(10px, 1.5vw, 15px);
+  height: clamp(2rem, 4vw, 2.4rem);
+
+  font-size: clamp(0.75rem, 1vw, 0.9rem);
   font-weight: 500;
-  height: 2.3rem;
+
   background: #3d3c3c;
   border: 1px solid #525252;
-  border-radius: 20px;
+  border-radius: 999px;
   cursor: pointer;
-  
+
+  min-width: 0;
 }
 
 .trigger:hover {
   border-color: #4093f1;
 }
 
+/* ===== Text ===== */
 .text {
   flex: 1;
+  min-width: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -46,8 +57,10 @@
   color: #a0a0a0;
 }
 
+/* ===== Arrow ===== */
 .arrow {
-  font-size: 18px;
+  flex-shrink: 0;
+  font-size: clamp(14px, 2vw, 18px);
   color: #dbd9d9;
   transition: transform 0.2s ease;
 }
@@ -56,28 +69,37 @@
   transform: rotate(180deg);
 }
 
+/* ===== Dropdown ===== */
 .dropdown {
   position: absolute;
-  width: 100%;
-  margin-top: 4px;
+  inset-inline: 0;
+  margin-top: clamp(4px, 0.5vw, 6px);
+
   background: #3d3c3c;
   border: 1px solid #525252;
-  border-radius: 20px;
+  border-radius: 16px;
+
   z-index: 20;
   overflow: hidden;
 }
 
+/* ===== Scroll area ===== */
 .dropdownContent {
-  max-height: 300px;
+  max-height: clamp(180px, 35vh, 300px);
   overflow-y: auto;
 }
 
+/* ===== Option ===== */
 .option {
-  padding: 8px 14px;
-  margin: 4px;
-  border-radius: 20px;
+  padding: clamp(6px, 1vw, 10px) clamp(10px, 1.5vw, 14px);
+  margin: clamp(2px, 0.5vw, 4px);
+
+  border-radius: 999px;
   cursor: pointer;
+
+  font-size: clamp(0.75rem, 1vw, 0.9rem);
   color: #efeded;
+
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

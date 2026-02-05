@@ -33,7 +33,13 @@ export const ControlsPanel = () => {
   if (error) return <div>שגיאה: {error}</div>;
 
   return (
-    <div style={{ display: "flex", gap: "13px" }}>
+    <div
+      style={{
+        display: "flex",
+        gap: "clamp(0px, 0.6vw, 13px)",
+        alignItems: "center",
+      }}
+    >
       <TreeDropdown
         label="יחידה"
         data={treeData}

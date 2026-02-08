@@ -5,7 +5,7 @@ import { Select } from "./Select";
 import { SelectTime } from "../gantpage/header/SelectTime";
 import { PopoverTime } from "../gantpage/header/PopoverTime";
 
-import '@/style/components/shared/ControlsPanel.css'
+import styles from '@/style/components/shared/ControlsPanel.module.css'
 
 export const ControlsPanel = () => {
   const {
@@ -36,11 +36,7 @@ export const ControlsPanel = () => {
 
   return (
     <>
-    <div className="control-panel"
-      style={{
-        
-      }}
-    >
+    <div className={styles["control-panel"]}>
       <TreeDropdown
         label="יחידה"
         data={treeData}
@@ -70,13 +66,11 @@ export const ControlsPanel = () => {
 
       <PopoverTime anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
       <i
-        className="bi bi-calendar-date header-icon"
+        className={`bi bi-calendar-date ${styles["time-icon"]}`}
         onClick={handleOpenPopover}
       />
     </div>
-    <i className="control-panel-icon bi bi-calendar4-range header-icon "/>
+    <i className={`${styles["control-panel-icon"]} bi bi-calendar4-range ${styles["header-icon"]}`} />
     </>
-    
-    
   );
 };

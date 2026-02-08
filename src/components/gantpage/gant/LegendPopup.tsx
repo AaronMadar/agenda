@@ -1,36 +1,36 @@
 import { iconServiceType , type ServiceTypeKey } from "@/constants/icons";
 import { forceColors } from "@/constants/colors";
 
-import "@/style/components/gantpage/LegendPopup.css"
+// Importation du module CSS
+import styles from "@/style/components/gantpage/LegendPopup.module.css";
 
 interface LegendProps {
     onClose:() => void;
     forceDisplayed: string[]
 }
 
-
-export function LegendPopup({ onClose  ,forceDisplayed}: LegendProps) {
+export function LegendPopup({ onClose, forceDisplayed }: LegendProps) {
 
     const serviceType = Object.keys(iconServiceType) 
 
     return (
-        <div className="legend-popup">
-            <div className="legend-header">
+        <div className={styles["legend-popup"]}>
+            <div className={styles["legend-header"]}>
                 <span>מקרא</span>
                 <i className="bi bi-x-lg" onClick={onClose} style={{ cursor: 'pointer' }} />
             </div>
 
-            <div className="legend-body">
+            <div className={styles["legend-body"]}>
                 {/* Section Service Types */}
-                <section className="section-tsvaim">
+                <section className={styles["section-tsvaim"]}>
                     <h6>צבעים</h6>
-                    <ul className="legend-list">
+                    <ul className={styles["legend-list"]}>
                         {Object.keys(forceColors).map(type => {
                             const isDisplayed = forceDisplayed.includes(type);
                             return (
                                 <li key={type}>
                                     <span
-                                        className="force-tag"
+                                        className={styles["force-tag"]}
                                         style={{ 
                                             backgroundColor: isDisplayed 
                                                 ? (forceColors[type] || forceColors['אחר']) 
@@ -44,25 +44,23 @@ export function LegendPopup({ onClose  ,forceDisplayed}: LegendProps) {
                             );
                         })}
                     </ul>
-
                 </section>
 
                 <hr />
 
                 {/* Section Force Colors */}
-                <section className="force-container">
+                <section className={styles["force-container"]}>
                     <h6>סוג שירות</h6>
-                    <ul className="service-list">
+                    <ul className={styles["service-list"]}>
                         {serviceType.map(type => (
                             <li key={type}>
-                                <span className="span-icon-type">
-                                    <i className={`${iconServiceType[type as ServiceTypeKey] || iconServiceType["דפולטיבי"]} me-2`} />
+                                <span className={styles["span-icon-type"]}>
+                                    <i className={`${iconServiceType[type as ServiceTypeKey] || iconServiceType["דפולטיבי"]} ${styles["me-2"]}`} />
                                     {type}
                                 </span>
                             </li>
                         ))}
                     </ul>
-
                 </section>
             </div>
         </div>

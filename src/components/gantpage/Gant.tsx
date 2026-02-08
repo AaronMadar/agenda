@@ -11,8 +11,8 @@ import { forceColors } from "@/constants/colors";
 import type { ShibutsApi } from '@/types/api-response';
 import { useDateRange } from '@/contexts/DateRangeContext';
 
-
-import "@/style/components/gantpage/Gant.css";
+// Importation du module CSS
+import styles from "@/style/components/gantpage/Gant.module.css";
 
 
 // --- CONSTANT ---
@@ -24,7 +24,6 @@ const getFilteredShibutsim = (shibutsim: ShibutsApi[], rangeStart: Dayjs, rangeE
         const itemStart = dayjs(shibut.dateBegin);
         const itemEnd = dayjs(shibut.dateEnd);
 
-        // La logique de comparaison est parfaite ! 
         return (itemEnd.isAfter(rangeStart) || itemEnd.isSame(rangeStart, 'day')) &&
             (itemStart.isBefore(rangeEnd) || itemStart.isSame(rangeEnd, 'day'));
     });
@@ -43,7 +42,6 @@ const calculatePosition = (shibuts: ShibutsApi, rangeStart: Dayjs, rangeEnd: Day
         const diff = visualStart.diff(rangeStart, 'day');
         return (diff / totalDays) * 100;
     }
-    // We add 1 to include the end day in the width calculation 
     const totalDays = rangeEnd.endOf('month').diff(rangeStart.startOf('month'), 'day') + 1;
     const itemStart = dayjs(shibuts.dateBegin);
     const visualStart = itemStart.isBefore(rangeStart) ? rangeStart : itemStart;
@@ -93,13 +91,9 @@ const generateTicks = (start: Dayjs, end: Dayjs): string[] => {
     return ticks;
 };
 
-
-
-
 type gantProps = {
     setForceDisplayed: (forces: string[]) => void;
 }
-
 
 export function Gant({setForceDisplayed}: gantProps) {
 
@@ -133,15 +127,15 @@ export function Gant({setForceDisplayed}: gantProps) {
     setForceDisplayed(displayedForces)
 
     return (
-        <div className="gant-container">
+        <div className={styles["gant-container"]}>
             {/* TIMELINE HEADER */}
-            <div className="timeline-header">
-                <div className="unit-title div-side">{data?.unit}</div>
-                <div className="ticks-container">
+            <div className={styles["timeline-header"]}>
+                <div className={`${styles["unit-title"]} ${styles["div-side"]}`}>{data?.unit}</div>
+                <div className={styles["ticks-container"]}>
                     {dates.map((date, i) => (
-                        <div className="timeline-tick" key={i}>
-                            <span className="tick-label">{date}</span>
-                            <i className="bi bi-caret-up-fill arrow-icon"></i>
+                        <div className={styles["timeline-tick"]} key={i}>
+                            <span className={styles["tick-label"]}>{date}</span>
+                            <i className={`bi bi-caret-up-fill ${styles["arrow-icon"]}`}></i>
                         </div>
                     ))}
                 </div>
@@ -152,10 +146,10 @@ export function Gant({setForceDisplayed}: gantProps) {
             {loading && (
                 <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
                     {[1, 2, 3, 4, 5].map((i) => (
-                        <div className="timeline-header gdudim" key={i} style={{ borderBottom: '1.9px solid rgb(87, 82, 82)' }}>
+                        <div className={`${styles["timeline-header"]} ${styles["gdudim"]}`} key={i} style={{ borderBottom: '1.9px solid rgb(87, 82, 82)' }}>
 
-                            {/* SIDEBAR: Simple text skeleton for the Unit/Gdud name */}
-                            <div className="div-side sidebar">
+                            {/* SIDEBAR */}
+                            <div className={`${styles["div-side"]} ${styles["sidebar"]}`}>
                                 <Skeleton
                                     variant="text"
                                     width="50%"
@@ -163,28 +157,21 @@ export function Gant({setForceDisplayed}: gantProps) {
                                 />
                             </div>
 
-                            {/* CONTENT: Card skeleton matching official height and rounded style */}
-                            <div className="row-content-wrapper">
+                            {/* CONTENT */}
+                            <div className={styles["row-content-wrapper"]}>
                                 <Skeleton
                                     variant="rounded"
                                     animation="wave"
                                     sx={{
                                         position: 'absolute',
-                                        // Height based on official structure (div-up + div-down)
                                         height: '55px',
                                         borderRadius: '20px',
                                         bgcolor: 'rgba(255, 255, 255, 0.04)',
-
-                                        // Subtle wave effect logic
                                         '&::after': {
                                             background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.03), transparent) !important',
                                         },
-
-                                        // Dispatching logic: randomized width and horizontal position
                                         width: `${15 + (i * 7) % 20}%`,
                                         insetInlineStart: `${5 + (i * 18) % 65}%`,
-
-                                        // Disable interactions to prevent layout shifts or hover states
                                         pointerEvents: 'none'
                                     }}
                                 />
@@ -202,9 +189,9 @@ export function Gant({setForceDisplayed}: gantProps) {
                 }
                 const contentToDisplay = sortEventsByDate(filteredShibutsim);
                 return (
-                    <div className="timeline-header gdudim" key={gdudData.name || index}>
-                        <div className="div-side sidebar">{gdudData.name}</div>
-                        <div className="row-content-wrapper" >
+                    <div className={`${styles["timeline-header"]} ${styles["gdudim"]}`} key={gdudData.name || index}>
+                        <div className={`${styles["div-side"]} ${styles["sidebar"]}`}>{gdudData.name}</div>
+                        <div className={styles["row-content-wrapper"]} >
                             {contentToDisplay.map((shibuts, idx) => {
                                 const startPos = calculatePosition(shibuts, sDate, eDate);
                                 const width = calculateWidth(shibuts, sDate, eDate);
@@ -214,7 +201,7 @@ export function Gant({setForceDisplayed}: gantProps) {
                                 const resourcesArray = shibuts.resource;
 
                                 return (
-                                    <div key={idx} className="gant-row">
+                                    <div key={idx} className={styles["gant-row"]}>
                                         <ShibutsCard
                                             title={shibuts.title}
                                             variation={`${shibuts.variationPastYear}%`}

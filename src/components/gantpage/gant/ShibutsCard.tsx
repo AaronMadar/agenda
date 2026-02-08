@@ -5,8 +5,8 @@ import { PercentageWithArrow } from "@/components/shared/PercentageWithArrow";
 import type { ResourceItem } from '@/types/api-response';
 import { iconResources } from '@/constants/icons';
 
-import "@/style/components/gantpage/ShibutsCard.css";
 
+import styles from "@/style/components/gantpage/ShibutsCard.module.css";
 
 interface ShibutsCardProps {
     title: string;
@@ -31,42 +31,40 @@ export function ShibutsCard({
 
     return (
         <div
-            className={`shibuts-card ${className || ''}`}
+            className={`${styles['shibuts-card']} ${className || ''}`}
             style={style}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
-            <div className="div-up">
+            <div className={styles["div-up"]}>
                 
-                <div className="iconAndTitle">
-                    <i className={`icon-card ${icon}`}></i>
-                    <span className="card-title">{title}</span>
+                <div className={styles["iconAndTitle"]}>
+                    <i className={`${styles["icon-card"]} ${icon}`}></i>
+                    <span className={styles["card-title"]}>{title}</span>
                 </div>
                 
 
-                <div className={`variation-container ${isHovered ? 'visible' : ''}`}>
+                <div className={`${styles["variation-container"]} ${isHovered ? styles['visible'] : ''}`}>
                     <PercentageWithArrow
                         value={variation ? parseFloat(variation) : 0}
                         gantMode
                     />
                 </div>
             </div>
-            <div className="div-down">
+            <div className={styles["div-down"]}>
               
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px',flexWrap: 'nowrap',overflow: 'hidden' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'nowrap', overflow: 'hidden' }}>
                      {formattedBegin && formattedEnd && (
-                    <span className={`spanDate  ${isHovered ? ''  : 'hidden' }` }>{formattedBegin} - {formattedEnd}</span>
+                    <span className={`${styles["spanDate"]} ${isHovered ? '' : styles['hidden']}`}>{formattedBegin} - {formattedEnd}</span>
                 )}
 
                     {resources && resources.length > 0 ? (
                         resources.map((res, index) => (
                             <div
                                 key={index}
-                                className='div-ressource'
+                                className={styles['div-ressource']}
                                 style={{
-                                   
                                     borderRight: index === 0 ? 'none' : '1px solid #ccc',
-                                   
                                 }}
                             >
                                 <i className={iconResources[res.item as keyof typeof iconResources] ?? iconResources.default}></i>

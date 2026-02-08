@@ -1,7 +1,7 @@
 import { useDateRange } from "@/contexts/DateRangeContext";
 import dayjs, { Dayjs } from "dayjs";
 
-import "@/style/components/gantpage/header/SelectTime.css";
+import styles from "@/style/components/gantpage/header/SelectTime.module.css";
 import { Select } from "@/components/shared/Select";
 
 export function SelectTime() {
@@ -45,4 +45,3 @@ export function SelectTime() {
     />
   )
 }
-

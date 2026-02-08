@@ -2,7 +2,7 @@ import { Gant } from "@/components/gantpage/Gant";
 import { Header } from "@/components/gantpage/Header";
 
 import "@/style/index.css"
-import "@/style/components/gantpage/Gant.css"
+import "@/style/components/gantpage/Gant.module.css"
 import { useState } from "react";
 import { LegendPopup } from "@/components/gantpage/gant/LegendPopup";
 

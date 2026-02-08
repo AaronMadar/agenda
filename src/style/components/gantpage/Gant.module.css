@@ -10,35 +10,44 @@
   );
   overflow-x: hidden;
 }
+/* 
+  .timeline-header {
+    display: flex;
+    flex-direction: row; 
+    height: 4rem;
+    width: 100%;
+    border-bottom: 1.9px solid rgb(87, 82, 82);
+    
+  } */
+  .timeline-header {
+    display: flex;
+    flex-direction: row; 
+    height: 4rem;
+    width: 100%;
+    border-bottom: 1.9px solid rgb(87, 82, 82);
+    
+  } 
 
-.timeline-header {
-  display: flex;
-  flex-direction: row; 
-  height: 4rem;
-  width: 100%;
-  border-bottom: 1.9px solid rgb(87, 82, 82);
-}
+  .timeline-header.gdudim {
+    min-height: 6rem;
+    height: auto; 
+    align-items: stretch; 
+  }
 
-.timeline-header.gdudim {
-  min-height: 6rem;
-  height: auto; 
-  align-items: stretch; /* Important pour que la sidebar grise suive la hauteur */
-}
+  /* --- SIDEBAR (LA PARTIE GRISE DE 9rem) --- */
+  .div-side {
+    width: 9rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0; /* Verrouille la largeur à 9rem */
+    color: aliceblue;
+    font-weight: 500;
+    font-size: 1.06rem;
+  }
 
-/* --- SIDEBAR (LA PARTIE GRISE DE 9rem) --- */
-.div-side {
-  width: 9rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0; /* Verrouille la largeur à 9rem */
-  color: aliceblue;
-  font-weight: 500;
-  font-size: 1.06rem;
-}
-
-.div-side.sidebar {
+  .div-side.sidebar {
   justify-content: flex-start; /* Aligne le nom du Gdud en haut */
   padding-top: 1rem;
 }

@@ -1,0 +1,20 @@
+.resourceTable {
+  width: 100%;
+}
+
+.resourceTable th {
+  color: #a5a5a5;
+  text-wrap: nowrap;
+  padding: 5px 10px;
+  text-align: right;
+}
+
+.resourceTable td {
+  text-wrap: nowrap;
+  padding: 5px 10px;
+  text-align: center;
+}
+
+.resourceTable td.resourceItem {
+  text-align: right;
+}

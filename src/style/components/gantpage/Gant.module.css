@@ -34,7 +34,6 @@
     align-items: stretch; 
   }
 
-  /* --- SIDEBAR (LA PARTIE GRISE DE 9rem) --- */
   .div-side {
     width: 9rem;
     display: flex;
@@ -48,15 +47,14 @@
   }
 
   .div-side.sidebar {
-  justify-content: flex-start; /* Aligne le nom du Gdud en haut */
+  justify-content: flex-start; 
   padding-top: 1rem;
 }
 
-/* --- CONTENU DES CARTES (LA PARTIE NOIRE) --- */
-/* C'est ici que ton padding bottom fonctionne enfin ! */
+
 .row-content-wrapper {
   padding-top: 1rem;
-  padding-bottom: 1rem; 
+  padding-bottom: 2rem; 
   flex: 1;
   display: flex;
   flex-direction: column;

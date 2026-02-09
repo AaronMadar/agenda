@@ -103,15 +103,15 @@
 //         data,
 //         loading,
 //     } = useDateRange();
-    
-    
+
+
 //     const currentYear = dayjs().year();
 //     const sDate = startDate || dayjs(`${currentYear}-01-01`);
 //     const eDate = endDate || dayjs(`${currentYear}-12-31`);
-    
-    
+
+
 //     const dates = useMemo(() => generateTicks(sDate, eDate), [sDate, eDate]);
-    
+
 //     const displayedForces = useMemo(() => {
 //         if (!data?.gdudim) return [];
 //         const forces = new Set<string>();
@@ -123,11 +123,11 @@
 //         });
 //         return Array.from(forces);
 //     }, [data, sDate, eDate]);
-    
+
 //        useEffect(() => {
 //             setForceDisplayed(displayedForces);
 //         }, [displayedForces, setForceDisplayed]);
-    
+
 //     return (
 //         <div className={styles["gant-container"]}>
 //             {/* TIMELINE HEADER */}
@@ -259,7 +259,7 @@ const getFilteredShibutsim = (shibutsim: ShibutsApi[], rangeStart: Dayjs, rangeE
         const itemStart = dayjs(shibut.dateBegin);
         const itemEnd = dayjs(shibut.dateEnd);
         return (itemEnd.isAfter(rangeStart) || itemEnd.isSame(rangeStart, 'day')) &&
-               (itemStart.isBefore(rangeEnd) || itemStart.isSame(rangeEnd, 'day'));
+            (itemStart.isBefore(rangeEnd) || itemStart.isSame(rangeEnd, 'day'));
     });
 };
 
@@ -311,7 +311,6 @@ type gantProps = {
     setForceDisplayed: (forces: string[]) => void;
 }
 
-// --- COMPOSANT MÉMORISÉ ---
 export const Gant = memo(function Gant({ setForceDisplayed }: gantProps) {
     const { startDate, endDate, data, loading } = useDateRange();
 
@@ -325,7 +324,7 @@ export const Gant = memo(function Gant({ setForceDisplayed }: gantProps) {
     const rowsToDisplay = useMemo(() => {
         if (!data?.gdudim) return [];
         return data.gdudim.map((gdudData) => {
-        
+
             const filtered = getFilteredShibutsim(gdudData.shibutsim, sDate, eDate);
             if (filtered.length === 0) return null;
             return {
@@ -347,16 +346,13 @@ export const Gant = memo(function Gant({ setForceDisplayed }: gantProps) {
         setForceDisplayed(displayedForces);
     }, [displayedForces, setForceDisplayed]);
 
-    if (loading) {
-        return (
-            <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', p: 2 }}>
-                {[1, 2, 3].map(i => <Skeleton key={i} height={80} sx={{ mb: 1, bgcolor: 'rgba(255,255,255,0.05)' }} />)}
-            </Box>
-        );
-    }
+
 
     return (
+
+
         <div className={styles["gant-container"]}>
+
             {/* TIMELINE HEADER */}
             <div className={styles["timeline-header"]}>
                 <div className={`${styles["unit-title"]} ${styles["div-side"]}`}>{data?.unit}</div>
@@ -369,6 +365,52 @@ export const Gant = memo(function Gant({ setForceDisplayed }: gantProps) {
                     ))}
                 </div>
             </div>
+
+            {/*LOADING STATE*/}
+            {loading && (
+                <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+
+                    {[1, 2, 3, 4, 5,6,7,8,9,10].map((i) => (
+                        <div className={`${styles["timeline-header"]} ${styles["gdudim"]}`} key={i} style={{ borderBottom: '1.9px solid rgb(87, 82, 82)' }}>
+
+                            {/* SIDEBAR */}
+                            <div className={`${styles["div-side"]} ${styles["sidebar"]}`}>
+                                <Skeleton
+                                    variant="text"
+                                    width="50%"
+                                    sx={{ bgcolor: 'rgba(255,255,255,0.1)' }}
+                                />
+                            </div>
+
+                            {/* CONTENT */}
+                            <div className={styles["row-content-wrapper"]}>
+                                <Skeleton
+                                    variant="rounded"
+                                    animation="wave"
+                                    sx={{
+                                        position: 'absolute',
+                                        height: '2.9rem',
+                                        borderRadius: '10px',
+                                        bgcolor: 'rgb(71, 71, 71)',
+                                        '&::after': {
+                                            background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.03), transparent) !important',
+                                        },
+                                        width: `${15 + (i * 7) % 20}%`,
+                                        insetInlineStart: `${5 + (i * 18) % 65}%`,
+                                        pointerEvents: 'none'
+                                    }}
+                                />
+                            </div>
+                        </div>
+                    ))}
+                </Box>
+            )}
+
+
+
+
+
+
 
             {rowsToDisplay.map((row) => (
                 <div className={`${styles["timeline-header"]} ${styles["gdudim"]}`} key={row.name}>
@@ -394,7 +436,7 @@ export const Gant = memo(function Gant({ setForceDisplayed }: gantProps) {
                                             insetInlineEnd: isNearEnd ? `${100 - (startPos + width)}%` : 'auto',
                                             width: `${width}%`,
                                             top: 0,
-                                            
+
                                         }}
                                     />
                                 </div>

@@ -26,14 +26,10 @@ export const DateRangeProvider = ({ children }: { children: React.ReactNode }) =
     fetch("/data.json")
       .then(res => res.json())
       .then(jsonData => {
-        setTimeout(() => {
-          setData(jsonData);
-          setStartDate(prev => prev || dayjs(jsonData.period.start));
-          setEndDate(prev => prev || dayjs(jsonData.period.end));
-          setLoading(false)
-        }, 10000)
-
-
+        setData(jsonData);
+        setStartDate(prev => prev || dayjs(jsonData.period.start));
+        setEndDate(prev => prev || dayjs(jsonData.period.end));
+        setLoading(false)
       })
       .catch(err => {
         console.error(err);

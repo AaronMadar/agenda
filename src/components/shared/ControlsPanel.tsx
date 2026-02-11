@@ -6,6 +6,7 @@ import { SelectTime } from "../gantpage/header/SelectTime";
 import { PopoverTime } from "../gantpage/header/PopoverTime";
 
 import styles from '@/style/components/shared/ControlsPanel.module.css'
+import { Tooltip } from "@mui/material";
 
 export const ControlsPanel = () => {
   const {
@@ -65,10 +66,14 @@ export const ControlsPanel = () => {
       <SelectTime />
 
       <PopoverTime anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
+      <Tooltip title="תאריך" arrow >
       <i
         className={`bi bi-calendar-date ${styles["time-icon"]}`}
         onClick={handleOpenPopover}
       />
+
+      </Tooltip>
+      
     </div>
     <i className={`${styles["control-panel-icon"]} bi bi-calendar4-range ${styles["header-icon"]}`} />
     </>

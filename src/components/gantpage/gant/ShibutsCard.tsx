@@ -29,6 +29,8 @@ export function ShibutsCard({
     const formattedBegin = dateBegin ? `${dayjs(dateBegin).format('D MMM')}\`` : '';
     const formattedEnd = dateEnd ? `${dayjs(dateEnd).format('D MMM')}\`` : '';
 
+   
+
     return (
         <div
             className={`${styles['shibuts-card']} ${className || ''}`}
@@ -37,12 +39,13 @@ export function ShibutsCard({
             onMouseLeave={() => setIsHovered(false)}
         >
             <div className={styles["div-up"]}>
-                
+
                 <div className={styles["iconAndTitle"]}>
                     <i className={`${styles["icon-card"]} ${icon}`}></i>
                     <span className={styles["card-title"]}>{title}</span>
-                </div>
+                </div>               
                 
+
 
                 <div className={`${styles["variation-container"]} ${isHovered ? styles['visible'] : ''}`}>
                     <PercentageWithArrow
@@ -52,11 +55,11 @@ export function ShibutsCard({
                 </div>
             </div>
             <div className={styles["div-down"]}>
-              
+
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'nowrap', overflow: 'hidden' }}>
-                     {formattedBegin && formattedEnd && (
-                    <span className={`${styles["spanDate"]} ${isHovered ? '' : styles['hidden']}`}>{formattedBegin} - {formattedEnd}</span>
-                )}
+                    {formattedBegin && formattedEnd && (
+                        <span className={`${styles["spanDate"]} ${isHovered ? '' : styles['hidden']}`}>{formattedBegin} - {formattedEnd}</span>
+                    )}
 
                     {resources && resources.length > 0 ? (
                         resources.map((res, index) => (
@@ -75,8 +78,8 @@ export function ShibutsCard({
                         <span style={{ color: '#888', fontStyle: 'italic' }}>אין משאבים</span>
                     )}
                 </div>
-                
-                 
+
+
             </div>
         </div>
     );

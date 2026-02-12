@@ -1,7 +1,6 @@
 export interface ResourceItem {
-  item: string | null;
-  quantity: number;
-  price: number;
+  categoryName: string;
+  items: {name: string, quantity: number, unitCost: number}[]
 }
 
 export interface ShibutsApi {
@@ -14,7 +13,7 @@ export interface ShibutsApi {
   variationPastYear: number;
   dateBegin: string;
   dateEnd: string;
-  resource?: ResourceItem[] | ;
+  resources: ResourceItem[];
 }
 
 export interface GdudApi {

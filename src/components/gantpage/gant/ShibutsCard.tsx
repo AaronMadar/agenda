@@ -1,66 +1,47 @@
-import { Popover } from "@mui/material";
 import React, { useState } from "react";
+import { Popover } from "@mui/material";
 import dayjs from "dayjs";
 
+import "@/style/components/gantpage/ShibutsCard.css";
+import { iconResources, iconServiceType } from "@/constants/icons";
 import { PercentageWithArrow } from "@/components/shared/PercentageWithArrow";
-import type { ResourceItem } from "@/types/api-response";
-import { iconResources } from "@/constants/icons";
 import { ResourcePopUp } from "@/components/shared/pop-ups/ResourcePopUp";
 import { KeyValPopUp } from "@/components/shared/pop-ups/KeyValPopUp";
+import type { ShibutsApi, ResourceItem } from '@/types/api-response';
 
-import "@/style/components/gantpage/ShibutsCard.css";
 
-const resourceDetailsTable = [
-  { item: "כד’ 5.56 מ”מ לאימונים", quantity: 1200, price: 1.5 },
-  { item: "כד’ 5.56 מ”מ", quantity: 300, price: 5 },
-  { item: "רימון יד מס’ 4", quantity: 500, price: 2 },
-  { item: "רימון יד מס’ 20", quantity: 200, price: 3 },
-];
-
-const keyValues = [
-    { key: "קוד שיבוץ", value: "12345678" },
-    { key: "יחידה", value: "מפקדת חטיבה 84" },
-    { key: "משימה", value: "קורס מ”כים חי”ר"},
-    { key: "עלות ישיר", value: "10000"},
-    { key: "עלות פריטי", value: "1200"},
-]
-
+dayjs.locale("he");
 interface ShibutsCardProps {
-  title: string;
-  variation?: string;
-  dateBegin?: string;
-  dateEnd?: string;
-  resources?: ResourceItem[];
+  shibuts: ShibutsApi;
+  pickud: string;
   style?: React.CSSProperties;
-  className?: string;
-  icon?: string;
+  className?: string;    // TODO: remove it
 }
 
-export function ShibutsCard({
-  title,
-  variation,
-  dateBegin,
-  dateEnd,
-  resources,
-  style,
-  className,
-  icon,
-}: ShibutsCardProps) {
-  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
-  const open = Boolean(anchorEl);
+export function ShibutsCard({ shibuts, style, className, pickud }: ShibutsCardProps) {
+  const [resourceAnchorEl, setResourceAnchorEl] = useState<HTMLElement | null>(null);
+  const isResourceOpen = Boolean(resourceAnchorEl);
 
   const [titleAnchorEl, setTitleAnchorEl] = useState<HTMLElement | null>(null);
   const isTitleOpen = Boolean(titleAnchorEl);
 
   const [hoveredResource, setHoveredResource] = useState<ResourceItem | null>(null);
-
   const [isHovered, setIsHovered] = useState(false);
 
-  dayjs.locale("he");
-  const formattedBegin = dateBegin
-    ? `${dayjs(dateBegin).format("D MMM")}\``
-    : "";
+  const { title, variationPastYear, dateBegin, dateEnd, resources, seviceType, codeShibuts, mesima, directCost, costOfItems } = shibuts;
+
+  const icon = iconServiceType[seviceType as keyof typeof iconServiceType] ?? iconServiceType["דפולטיבי"];
+
+  const formattedBegin = dateBegin ? `${dayjs(dateBegin).format("D MMM")}\`` : "";
   const formattedEnd = dateEnd ? `${dayjs(dateEnd).format("D MMM")}\`` : "";
+
+  const metadataShibuts = [
+            {key: "קוד שיבוץ", value: codeShibuts},
+            {key: "יחידה", value: pickud},
+            {key: "משימה", value: mesima},
+            {key: "עלות ישיר", value: String(directCost)},
+            {key: "עלות פריטי", value: String(costOfItems)},
+          ];
 
   return (
     <div
@@ -82,10 +63,7 @@ export function ShibutsCard({
         <div
           className={`variation-container ${isHovered ? "visible" : "hidden"}`}
         >
-          <PercentageWithArrow
-            value={variation ? parseFloat(variation) : 0}
-            gantMode
-          />
+          <PercentageWithArrow value={variationPastYear} gantMode />
         </div>
       </div>
 
@@ -113,8 +91,8 @@ export function ShibutsCard({
         }}
       >
         <KeyValPopUp
-          header="תרג”ד חי”ר סדיר"
-          keyValues={keyValues}
+          header={title}
+          keyValues={metadataShibuts}
         />
       </Popover>
 
@@ -140,11 +118,11 @@ export function ShibutsCard({
                 key={index}
                 className="div-ressource"
                 onMouseEnter={(e) => {
-                  setAnchorEl(e.currentTarget);
+                  setResourceAnchorEl(e.currentTarget);
                   setHoveredResource(res);
                 }}
                 onMouseLeave={() => {
-                  setAnchorEl(null);
+                  setResourceAnchorEl(null);
                   setHoveredResource(null);
                 }}
                 style={{
@@ -153,18 +131,18 @@ export function ShibutsCard({
               >
                 <i
                   className={
-                    iconResources[res.item as keyof typeof iconResources] ??
+                    iconResources[res.categoryName as keyof typeof iconResources] ??
                     iconResources.default
                   }
                 />
-                <span>{res.item}</span>
+                <span>{res.categoryName}</span>
               </div>
             ))}
 
           <Popover
-            open={open}
-            anchorEl={anchorEl}
-            onClose={() => setAnchorEl(null)}
+            open={isResourceOpen}
+            anchorEl={resourceAnchorEl}
+            onClose={() => setResourceAnchorEl(null)}
             anchorOrigin={{
               vertical: "bottom",
               horizontal: "center",
@@ -184,7 +162,7 @@ export function ShibutsCard({
               },
             }}
           >
-            <ResourcePopUp resourceDetailsTable={resourceDetailsTable} />
+            <ResourcePopUp resourceDetailsTable={hoveredResource?.items || []} />
           </Popover>
         </div>
       </div>

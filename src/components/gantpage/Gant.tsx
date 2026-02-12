@@ -6,7 +6,6 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import dayjs, { Dayjs } from 'dayjs';
 
 import { ShibutsCard } from "./gant/ShibutsCard";
-import { iconServiceType } from "@/constants/icons";
 import { forceColors } from "@/constants/colors";
 import type { ShibutsApi } from '@/types/api-response';
 import { useDateRange } from '@/contexts/DateRangeContext';
@@ -211,27 +210,15 @@ export function Gant({setForceDisplayed}: gantProps) {
                                 const isNearEnd = (startPos + width) > NEAR_END_THRESHOLD;
 
 
-                                const resourcesArray = shibuts.resource;
-
                                 return (
                                     <div key={idx} className="gant-row">
-                                        <ShibutsCard
-                                            title={shibuts.title}
-                                            variation={`${shibuts.variationPastYear}%`}
-                                            dateBegin={shibuts.dateBegin}
-                                            dateEnd={shibuts.dateEnd}
-                                            resources={resourcesArray}
-                                            icon={iconServiceType[
-                                                shibuts.seviceType as keyof typeof iconServiceType
-                                            ] ?? iconServiceType["דפולטיבי"]}
-                                            style={{
-                                                backgroundColor: forceColors[gdudData.forceType] as keyof typeof forceColors || forceColors.default,
-                                                insetInlineStart: isNearEnd ? 'auto' : `${startPos}%`,
-                                                insetInlineEnd: isNearEnd ? `${100 - (startPos + width)}%` : 'auto',
-                                                width: `${width}%`,
-                                                top: 0
-                                            }}
-                                        />
+                                        <ShibutsCard shibuts={shibuts} pickud={gdudData.pikud} style={{
+                                            backgroundColor: forceColors[gdudData.forceType] as keyof typeof forceColors || forceColors.default,
+                                            insetInlineStart: isNearEnd ? 'auto' : `${startPos}%`,
+                                            insetInlineEnd: isNearEnd ? `${100 - (startPos + width)}%` : 'auto',
+                                            width: `${width}%`,
+                                            top: 0
+                                        }} />
                                     </div>
                                 );
                             })}

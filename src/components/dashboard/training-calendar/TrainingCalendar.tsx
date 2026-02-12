@@ -7,6 +7,9 @@ import type { CalendarEvent } from "./types";
 import { DateRange } from "@mui/icons-material";
 import { MonthPicker } from "./MonthPicker";
 
+import ArrowRight from "../../../assets/icons/arrow_right.svg?react";
+import ArrowLeft from "../../../assets/icons/arrow_left.svg?react";
+
 dayjs.extend(localeData);
 
 interface TrainingCalendarProps {
@@ -43,16 +46,16 @@ export const TrainingCalendar = ({ events }: TrainingCalendarProps) => {
   }, [events]);
 
   return (
-    <div className={style.trainingCalendar}>
-      <div className={style.calendar}>
-        {/* ===== Header ===== */}
-        <div className={style.header}>
-          <h4>לוח אימונים</h4>
+    <div className={style.calendar}>
+      {/* ===== Header ===== */}
+      <div className={style.header}>
+        <h4>לוח אימונים</h4>
 
-          <div className={style.headerControls}>
-
-          <button onClick={() => setCurrentMonth((m) => m.subtract(1, "month"))}>
-            ▶
+        <div className={style.headerControls}>
+          <button
+            onClick={() => setCurrentMonth((m) => m.subtract(1, "month"))}
+          >
+            <ArrowRight style={{ width: 8, height: 30 }} />
           </button>
 
           <div className={style.monthTitleWrapper}>
@@ -65,7 +68,7 @@ export const TrainingCalendar = ({ events }: TrainingCalendarProps) => {
               className={style.openPickerBtn}
               onClick={() => setPickerOpen((v) => !v)}
             >
-              <DateRange />
+              <DateRange sx={{ fontSize: "20px" }} />
             </button>
 
             <MonthPicker
@@ -78,78 +81,76 @@ export const TrainingCalendar = ({ events }: TrainingCalendarProps) => {
           </div>
 
           <button onClick={() => setCurrentMonth((m) => m.add(1, "month"))}>
-            ◀
+            <ArrowLeft style={{ width: 8, height: 30 }} />
           </button>
-          </div>
-
         </div>
+      </div>
 
-        {/* ===== Weekdays ===== */}
-        <div className={style.weekdays}>
-          {["א", "ב", "ג", "ד", "ה", "ו", "ש"].map((d) => (
-            <div key={d}>{d}</div>
-          ))}
-        </div>
+      {/* ===== Weekdays ===== */}
+      <div className={style.weekdays}>
+        {["א", "ב", "ג", "ד", "ה", "ו", "ש"].map((d) => (
+          <div key={d}>{d}</div>
+        ))}
+      </div>
 
-        {/* ===== Grid ===== */}
-        <div className={style.grid}>
-          {days.map((day, index) => {
-            const dateKey = day.format("YYYY-MM-DD");
-            const dayEvents = eventsByDate[dateKey] || [];
+      {/* ===== Grid ===== */}
+      <div className={style.grid}>
+        {days.map((day, index) => {
+          const dateKey = day.format("YYYY-MM-DD");
+          const dayEvents = eventsByDate[dateKey] || [];
 
-            const isBusy = dayEvents.length > 0;
-            const isOtherMonth = day.month() !== currentMonth.month();
-            const isTopRow = Math.floor(index / 7) === 0;
-            const isLeftColumn = (index + 1) % 7 === 0;
+          const isBusy = dayEvents.length > 0;
+          const isOtherMonth = day.month() !== currentMonth.month();
+          const isTopRow = Math.floor(index / 7) === 0;
+          const isLeftColumn = (index + 1) % 7 === 0;
 
-            const dayClassName = [
-              style.day,
-              isBusy && style.busyDay,
-              isOtherMonth && style.otherMonth,
-              isTopRow && style.topRow,
-              isLeftColumn && style.leftColumn,
-            ]
-              .filter(Boolean)
-              .join(" ");
+          const dayClassName = [
+            style.day,
+            isBusy && style.busyDay,
+            isOtherMonth && style.otherMonth,
+            isTopRow && style.topRow,
+            isLeftColumn && style.leftColumn,
+          ]
+            .filter(Boolean)
+            .join(" ");
 
-            return (
-              <div key={dateKey} className={dayClassName}>
-                {isBusy && (
-                  <div className={style.tooltip}>
-                    {dayEvents.map((ev, idx) => (
-                      <div key={idx} className={style.tooltipItem}>
-                        <i
-                          className={
-                            iconServiceType[ev.serviceType] ??
-                            iconServiceType.default
-                          }
-                        />
-                        <span>
-                          {ev.title}
-                          <span style={{ opacity: 0.6 }}> ({ev.gdud})</span>
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                <div className={style.iconsArea}>
-                  {dayEvents.slice(0, 4).map((event, idx) => (
-                    <i
-                      key={idx}
-                      className={
-                        iconServiceType[event.serviceType] ??
-                        iconServiceType.default
-                      }
-                    />
+          return (
+            <div key={dateKey} className={dayClassName}>
+              {isBusy && (
+                <div className={style.tooltip}>
+                  {dayEvents.map((ev, idx) => (
+                    <div key={idx} className={style.tooltipItem}>
+                      <i
+                        className={
+                          iconServiceType[ev.serviceType] ??
+                          iconServiceType.default
+                        }
+                      />
+                      <span>
+                        {ev.title}
+                        <span style={{ opacity: 0.6 }}> ({ev.gdud})</span>
+                      </span>
+                    </div>
                   ))}
                 </div>
+              )}
 
-                <div className={style.dayNumber}>{day.date()}</div>
+              <div className={style.iconsArea}>
+                {dayEvents.slice(0, 4).map((event, idx) => (
+                  <i
+                    key={idx}
+                    className={
+                      iconServiceType[event.serviceType] ??
+                      iconServiceType.default
+                    }
+                  />
+                ))}
               </div>
-            );
-          })}
-        </div>
+
+              <div className={style.dayNumber}>{day.date()}</div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

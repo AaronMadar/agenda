@@ -1,3 +1,10 @@
+.trainingCalendar{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .calendar {
   display: flex;
   flex-direction: column;
@@ -9,7 +16,8 @@
 .header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 10px;
+  /* justify-content: space-between; */
 }
 
 .header button {
@@ -18,6 +26,12 @@
   font-size: 18px;
   cursor: pointer;
   color: rgb(235, 255, 255);
+}
+
+.headerControls {
+  flex: 1;
+  display: flex;
+  justify-content: center;
 }
 
 .monthTitleWrapper {

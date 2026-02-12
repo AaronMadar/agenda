@@ -1,9 +1,17 @@
+.reports{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .list {
     list-style: disc inside;
     padding-inline-start: clamp(12px, 4%, 20px);
     margin: 0;
     overflow-y: auto;
     min-width: 0;
+    max-height: 100%;
 }
 
 .item {

@@ -30,7 +30,7 @@ export function ShibutsCard({ shibuts, style, className, pickud }: ShibutsCardPr
 
   const { title, variationPastYear, dateBegin, dateEnd, resources, seviceType, codeShibuts, mesima, directCost, costOfItems } = shibuts;
 
-  const icon = iconServiceType[seviceType as keyof typeof iconServiceType] ?? iconServiceType["דפולטיבי"];
+  const icon = iconServiceType[seviceType as keyof typeof iconServiceType] ?? iconServiceType.default;
 
   const formattedBegin = dateBegin ? `${dayjs(dateBegin).format("D MMM")}\`` : "";
   const formattedEnd = dateEnd ? `${dayjs(dateEnd).format("D MMM")}\`` : "";
@@ -56,7 +56,7 @@ export function ShibutsCard({ shibuts, style, className, pickud }: ShibutsCardPr
           onMouseEnter={(e) => setTitleAnchorEl(e.currentTarget)}
           onMouseLeave={() => setTitleAnchorEl(null)}
         >
-          <i className={`icon-card ${icon}`}></i>
+          <i className={`icon-card ${icon.className}`} ></i>
           <span className="card-title">{title}</span>
         </div>
 

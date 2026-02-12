@@ -50,11 +50,27 @@ export const iconResources = {
 };
 
 export const iconServiceType = {
-    "מילואים- אימונים": "bi bi-crosshair",
-    "סדיר- אימונים": "bi bi-shadows",
-    "מילואים- תע\"ם": "bi bi-brightness-high-fill",
-    "סדיר- תע”ם": "bi bi-vinyl-fill",
-    default: "bi bi-question-circle"
-}  as const;
+  "מילואים- אימונים": {
+    className: "bi bi-crosshair",
+    color: "#FABF8B",
+  },
+  "סדיר- אימונים": {
+    className: "bi bi-shadows",
+    color: "#87C9FF",
+  },
+  "מילואים- תע\"ם": {
+    className: "bi bi-brightness-high-fill",
+    color: "#43a047",
+  },
+  "סדיר- תע”ם": {
+    className: "bi bi-vinyl-fill",
+    color: "#8e24aa",
+  },
+  default: {
+    className: "bi bi-question-circle",
+    color: "#616161",
+  },
+} as const;
+
 
 export type ServiceTypeKey = keyof typeof iconServiceType;

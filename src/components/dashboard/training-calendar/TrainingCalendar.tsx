@@ -2,7 +2,7 @@ import { useMemo, useState, useRef } from "react";
 import dayjs, { Dayjs } from "dayjs";
 import localeData from "dayjs/plugin/localeData";
 import style from "@/style/components/dashboard/training-calendar/TrainingCalendar.module.css";
-import { iconServiceType } from "@/constants/icons";
+import { iconServiceType, type ServiceTypeKey } from "@/constants/icons";
 import type { CalendarEvent } from "./types";
 import { DateRange } from "@mui/icons-material";
 import { MonthPicker } from "./MonthPicker";
@@ -21,7 +21,8 @@ export const TrainingCalendar = ({ events }: TrainingCalendarProps) => {
   const [pickerOpen, setPickerOpen] = useState(false);
   const anchorRef = useRef<HTMLButtonElement>(null);
 
-  /* ===== Calendar Days ===== */
+  /* ================= Calendar Days ================= */
+
   const days = useMemo(() => {
     const start = currentMonth.startOf("month").startOf("week");
     const end = currentMonth.endOf("month").endOf("week");
@@ -37,13 +38,19 @@ export const TrainingCalendar = ({ events }: TrainingCalendarProps) => {
     return result;
   }, [currentMonth]);
 
+  /* ================= Events By Date ================= */
+
   const eventsByDate = useMemo(() => {
     const map: Record<string, CalendarEvent[]> = {};
+
     events.forEach((ev) => {
       (map[ev.date] ??= []).push(ev);
     });
+
     return map;
   }, [events]);
+
+  /* ================= Render ================= */
 
   return (
     <div className={style.calendar}>
@@ -68,7 +75,7 @@ export const TrainingCalendar = ({ events }: TrainingCalendarProps) => {
               className={style.openPickerBtn}
               onClick={() => setPickerOpen((v) => !v)}
             >
-              <DateRange sx={{ fontSize: "20px" }} />
+              <DateRange sx={{ fontSize: 20 }} />
             </button>
 
             <MonthPicker
@@ -84,6 +91,8 @@ export const TrainingCalendar = ({ events }: TrainingCalendarProps) => {
             <ArrowLeft style={{ width: 8, height: 30 }} />
           </button>
         </div>
+
+        <div className={style.spacer} />
       </div>
 
       {/* ===== Weekdays ===== */}
@@ -100,6 +109,7 @@ export const TrainingCalendar = ({ events }: TrainingCalendarProps) => {
           const dayEvents = eventsByDate[dateKey] || [];
 
           const isBusy = dayEvents.length > 0;
+          const isToday = day.isSame(dayjs(), "day");
           const isOtherMonth = day.month() !== currentMonth.month();
           const isTopRow = Math.floor(index / 7) === 0;
           const isLeftColumn = (index + 1) % 7 === 0;
@@ -107,6 +117,7 @@ export const TrainingCalendar = ({ events }: TrainingCalendarProps) => {
           const dayClassName = [
             style.day,
             isBusy && style.busyDay,
+            isToday && style.isToday,
             isOtherMonth && style.otherMonth,
             isTopRow && style.topRow,
             isLeftColumn && style.leftColumn,
@@ -116,37 +127,53 @@ export const TrainingCalendar = ({ events }: TrainingCalendarProps) => {
 
           return (
             <div key={dateKey} className={dayClassName}>
+              {/* ===== Tooltip ===== */}
               {isBusy && (
                 <div className={style.tooltip}>
-                  {dayEvents.map((ev, idx) => (
-                    <div key={idx} className={style.tooltipItem}>
-                      <i
-                        className={
-                          iconServiceType[ev.serviceType] ??
-                          iconServiceType.default
-                        }
-                      />
-                      <span>
-                        {ev.title}
-                        <span style={{ opacity: 0.6 }}> ({ev.gdud})</span>
-                      </span>
-                    </div>
-                  ))}
+                  {dayEvents.map((ev, idx) => {
+                    const icon =
+                      iconServiceType[
+                        ev.serviceType as ServiceTypeKey
+                      ] ?? iconServiceType.default;
+
+                    return (
+                      <div key={idx} className={style.tooltipItem}>
+                        <i
+                          className={icon.className}
+                          style={{ color: icon.color }}
+                        />
+                        <span>
+                          {ev.title}
+                          <span style={{ opacity: 0.6 }}>
+                            {" "}
+                            ({ev.gdud})
+                          </span>
+                        </span>
+                      </div>
+                    );
+                  })}
                 </div>
               )}
 
+              {/* ===== Icons Preview In Cell ===== */}
               <div className={style.iconsArea}>
-                {dayEvents.slice(0, 4).map((event, idx) => (
-                  <i
-                    key={idx}
-                    className={
-                      iconServiceType[event.serviceType] ??
-                      iconServiceType.default
-                    }
-                  />
-                ))}
+                {dayEvents.slice(0, 4).map((ev, idx) => {
+                  const icon =
+                    iconServiceType[
+                      ev.serviceType as ServiceTypeKey
+                    ] ?? iconServiceType.default;
+
+                  return (
+                    <i
+                      key={idx}
+                      className={icon.className}
+                      style={{ color: icon.color }}
+                    />
+                  );
+                })}
               </div>
 
+              {/* ===== Day Number ===== */}
               <div className={style.dayNumber}>{day.date()}</div>
             </div>
           );

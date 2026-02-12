@@ -8,7 +8,9 @@ interface HeadeProps {
     onMapClick: () => void
 }
 
-
+const handlePrint = () => {
+    window.print();
+};
 
 export function Header({ onMapClick }: HeadeProps) {
 
@@ -50,7 +52,9 @@ export function Header({ onMapClick }: HeadeProps) {
                         <i className={`bi bi-arrow-clockwise ${styles["header-icon"]}`} />
                     </Tooltip>
                     <Tooltip title="הדפסה" arrow>
-                        <i className={`bi bi-printer ${styles["little"]} ${styles["header-icon"]}`} />
+                        <i
+                            className={`bi bi-printer ${styles["little"]} ${styles["header-icon"]}`}
+                            onClick={handlePrint} />
                     </Tooltip>
                     <Tooltip title="מצלמה" arrow>
                         <i className={`bi bi-camera ${styles["header-icon"]}`} />

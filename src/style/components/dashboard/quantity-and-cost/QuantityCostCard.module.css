@@ -1,0 +1,29 @@
+.containerWrapper {
+    background-color: #3f4445;
+    border-radius: 10px;
+    padding: clamp(4px, 2.3vw, 100px);
+}
+
+.content {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    gap: clamp(1px, 0.2vw, 15px);
+}
+
+.iconBox {
+    background-color: #52595A;
+    height: clamp(1px, 4vw, 150px);
+    width: clamp(1px, 4vw, 150px);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
+
+.icon {
+    height: clamp(16px, 1.7vw, 150px);
+    width: clamp(16px, 1.7vw, 150px);
+    color: #B2B4B4;
+}

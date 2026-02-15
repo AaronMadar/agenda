@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import style from "@/style/components/shared/ResourceCard.module.css"
 import { PercentageWithArrow } from "@/components/shared/PercentageWithArrow";
 
@@ -9,6 +10,7 @@ interface ResourceCardProps {
     percentage: number;
   };
   noBackground?: boolean;
+  externalStyle?: CSSProperties;
 }
 
 const convertToMOrK = (amount: number) => {
@@ -22,9 +24,10 @@ const convertToMOrK = (amount: number) => {
 }
 
 
-export const ResourceCard = ({ resource, noBackground = false }: ResourceCardProps) => {
+export const ResourceCard = ({ resource, externalStyle, noBackground = false }: ResourceCardProps) => {
   return (
     <div
+      style={externalStyle}
       className={`${style.containerWrapper} ${
         noBackground ? style.noBackground : ""
       }`}

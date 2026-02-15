@@ -2,20 +2,20 @@ import React, { useState } from "react";
 import { Popover } from "@mui/material";
 import dayjs from "dayjs";
 
-import "@/style/components/gantpage/ShibutsCard.css";
+import styles from "@/style/components/gantpage/ShibutsCard.module.css";
 import { iconResources, iconServiceType } from "@/constants/icons";
 import { PercentageWithArrow } from "@/components/shared/PercentageWithArrow";
 import { ResourcePopUp } from "@/components/shared/pop-ups/ResourcePopUp";
 import { KeyValPopUp } from "@/components/shared/pop-ups/KeyValPopUp";
 import type { ShibutsApi, ResourceItem } from '@/types/api-response';
 
-
 dayjs.locale("he");
+
 interface ShibutsCardProps {
   shibuts: ShibutsApi;
   pickud: string;
   style?: React.CSSProperties;
-  className?: string;    // TODO: remove it
+  className?: string;
 }
 
 export function ShibutsCard({ shibuts, style, className, pickud }: ShibutsCardProps) {
@@ -28,40 +28,55 @@ export function ShibutsCard({ shibuts, style, className, pickud }: ShibutsCardPr
   const [hoveredResource, setHoveredResource] = useState<ResourceItem | null>(null);
   const [isHovered, setIsHovered] = useState(false);
 
-  const { title, variationPastYear, dateBegin, dateEnd, resources, seviceType, codeShibuts, mesima, directCost, costOfItems } = shibuts;
+  const {
+    title,
+    variationPastYear,
+    dateBegin,
+    dateEnd,
+    resources,
+    seviceType,
+    codeShibuts,
+    mesima,
+    directCost,
+    costOfItems
+  } = shibuts;
 
-  const icon = iconServiceType[seviceType as keyof typeof iconServiceType] ?? iconServiceType.default;
+  const icon =
+    iconServiceType[seviceType as keyof typeof iconServiceType] ??
+    iconServiceType.default;
 
   const formattedBegin = dateBegin ? `${dayjs(dateBegin).format("D MMM")}\`` : "";
   const formattedEnd = dateEnd ? `${dayjs(dateEnd).format("D MMM")}\`` : "";
 
   const metadataShibuts = [
-            {key: "קוד שיבוץ", value: codeShibuts},
-            {key: "יחידה", value: pickud},
-            {key: "משימה", value: mesima},
-            {key: "עלות ישיר", value: String(directCost)},
-            {key: "עלות פריטי", value: String(costOfItems)},
-          ];
+    { key: "קוד שיבוץ", value: codeShibuts },
+    { key: "יחידה", value: pickud },
+    { key: "משימה", value: mesima },
+    { key: "עלות ישיר", value: String(directCost) },
+    { key: "עלות פריטי", value: String(costOfItems) },
+  ];
 
   return (
     <div
-      className={`shibuts-card ${className || ""}`}
+      className={`${styles.shibutsCard} ${className || ""}`}
       style={style}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="div-up">
+      <div className={styles.divUp}>
         <div
-          className="iconAndTitle"
+          className={styles.iconAndTitle}
           onMouseEnter={(e) => setTitleAnchorEl(e.currentTarget)}
           onMouseLeave={() => setTitleAnchorEl(null)}
         >
-          <i className={`icon-card ${icon.className}`} ></i>
-          <span className="card-title">{title}</span>
+          <i className={`icon-card ${icon.className}`} />
+          <span className={styles.cardTitle}>{title}</span>
         </div>
 
         <div
-          className={`variation-container ${isHovered ? "visible" : "hidden"}`}
+          className={`${styles.variationContainer} ${
+            isHovered ? styles.visible : ""
+          }`}
         >
           <PercentageWithArrow value={variationPastYear} gantMode />
         </div>
@@ -90,13 +105,10 @@ export function ShibutsCard({ shibuts, style, className, pickud }: ShibutsCardPr
           },
         }}
       >
-        <KeyValPopUp
-          header={title}
-          keyValues={metadataShibuts}
-        />
+        <KeyValPopUp header={title} keyValues={metadataShibuts} />
       </Popover>
 
-      <div className="div-down">
+      <div className={styles.divDown}>
         <div
           style={{
             display: "flex",
@@ -107,7 +119,7 @@ export function ShibutsCard({ shibuts, style, className, pickud }: ShibutsCardPr
           }}
         >
           {formattedBegin && formattedEnd && (
-            <span className="spanDate">
+            <span className={styles.spanDate}>
               {formattedBegin} - {formattedEnd}
             </span>
           )}
@@ -116,7 +128,7 @@ export function ShibutsCard({ shibuts, style, className, pickud }: ShibutsCardPr
             resources.map((res, index) => (
               <div
                 key={index}
-                className="div-ressource"
+                className={styles.divRessource}
                 onMouseEnter={(e) => {
                   setResourceAnchorEl(e.currentTarget);
                   setHoveredResource(res);
@@ -131,8 +143,9 @@ export function ShibutsCard({ shibuts, style, className, pickud }: ShibutsCardPr
               >
                 <i
                   className={
-                    iconResources[res.categoryName as keyof typeof iconResources] ??
-                    iconResources.default
+                    iconResources[
+                      res.categoryName as keyof typeof iconResources
+                    ] ?? iconResources.default
                   }
                 />
                 <span>{res.categoryName}</span>
@@ -162,7 +175,9 @@ export function ShibutsCard({ shibuts, style, className, pickud }: ShibutsCardPr
               },
             }}
           >
-            <ResourcePopUp resourceDetailsTable={hoveredResource?.items || []} />
+            <ResourcePopUp
+              resourceDetailsTable={hoveredResource?.items || []}
+            />
           </Popover>
         </div>
       </div>

@@ -1,23 +1,21 @@
-.shibuts-card {
+.shibutsCard {
     position: absolute;
-    background-color: rgb(1, 223, 1);
     border-radius: 1.19rem;
     overflow: hidden;
     cursor: pointer;
     height: 3rem; 
     min-width: 0; 
-   transition: 
+    transition: 
         min-width 0.8s cubic-bezier(0.19, 1, 0.22, 1), 
         height 0.4s ease-in-out,
         inset-inline-start 0.8s cubic-bezier(0.19, 1, 0.22, 1),
         inset-inline-end 0.8s cubic-bezier(0.19, 1, 0.22, 1),
         transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
-        ;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
     z-index: 1;
 }
 
-.shibuts-card:hover {
+.shibutsCard:hover {
   min-width: 40rem;
   min-height: 4.4rem ;
   max-height: 4.4rem ;
@@ -25,15 +23,14 @@
   z-index: 100 !important;
 }
 
-.shibuts-card.near-end:hover {
+.nearEnd:hover {
  margin-left: 1rem;
  background-color: #3e3d3d;
  border-radius: 1rem;
  padding: 5px 9px;
-    
 }
 
-.div-up {
+.divUp {
   flex-direction: row;
   height: 2.2rem;
   display: flex;
@@ -45,20 +42,23 @@
   white-space: nowrap;
 }
 
-.variation-container {
+.variationContainer {
     opacity: 0;
     transform: translateX(100px);
     transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
     pointer-events: none;
 }
 
-.variation-container.visible {
+.visible {
     opacity: 1;
     transform: translateX(0);
     pointer-events: auto;
 }
 
-
+.spanDate.hidden {
+    display: none;
+    transition: 0.4s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
 
 .iconAndTitle {
     display: flex;
@@ -66,18 +66,16 @@
     justify-self: center;
     flex-direction: row;
     gap: 0.2em;
-    
 }
 
-.card-title {
+.cardTitle {
     flex: 1; 
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
- 
 }
 
-.div-down {
+.divDown {
   background-color: #4b4a4a;
   color: white;
   height: 2.2rem;
@@ -93,16 +91,18 @@
   width: 100%;
 }
 
-.div-ressource {
-   padding-right:10px;
-    border-right:1px solid #ccc;
-    display: flex;
-    align-items: center;
-    font-size: 15px;
-    gap:7px;
+.shibutsCard:hover .divDown {
+    opacity: 1;
 }
-    
-                                 
+
+.divRessource {
+   padding-right:10px;
+   border-right:1px solid #ccc;
+   display: flex;
+   align-items: center;
+   font-size: 15px;
+   gap:7px;
+}
 
 .spanDate {
   margin-left: 1rem;
@@ -111,20 +111,8 @@
   align-items: center;
   justify-content: center;  
   background-color: #3e3d3d;
-  /* height: 2rem; */
   border-radius: 5px;
   padding: 1.9px 8px;
   font-size: 0.9rem;
   font-weight: 600;
-}
-
-.spanDate.hidden {
-    display: none;
-    transition: 0.4s cubic-bezier(0.075, 0.82, 0.165, 1);
-
-}
-
-.shibuts-card:hover .div-down {
-    opacity: 1;
-    transform: translateY(0);
 }

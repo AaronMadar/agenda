@@ -38,96 +38,97 @@ body {
 
   body,
   .main-wrapper {
-    background-color: white !important;
-    color: black !important;
+    background-color: white;
+    color: black;
   }
 
   .card {
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 
   .container,
   .row,
   .col {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    float: none !important;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    float: none;
   }
 
   nav,
   header,
   footer,
   .no-print {
-    display: none !important;
+    display: none;
   }
+
 
   @media print {
     [class*="gant-container"],
     [class*="timeline-header"] {
-      display: block !important;
-      height: auto !important;
-      min-height: 0 !important;
-      background: white !important;
+      display: block;
+      height: auto;
+      min-height: 0;
+      background: white;
     }
 
     /* 2. On transforme le wrapper de contenu pour qu'il laisse les cartes respirer */
     [class*="row-content-wrapper"] {
-      display: flex !important;
-      flex-direction: column !important;
-      gap: 20px !important; /* Espace entre les cartes d'un même Gdud */
-      height: auto !important;
-      padding: 10px !important;
+      display: flex;
+      flex-direction: column;
+      gap: 20px; /* Espace entre les cartes d'un même Gdud */
+      height: auto;
+      padding: 10px;
     }
 
     /* 3. On neutralise la ligne individuelle qui bloquait à 3rem */
     [class*="gant-row"] {
-      height: auto !important;
-      position: relative !important;
-      margin-bottom: 15px !important; /* Marge de sécurité */
+      height: auto;
+      position: relative;
+      margin-bottom: 15px; /* Marge de sécurité */
     }
 
     [class*="shibuts-card"] {
       /* Dimensions et état "Hover" forcé */
-      min-width: 40rem !important;
-      height: 4.4rem !important;
-      max-height: 4.4rem !important;
+      min-width: 40rem;
+      height: 4.4rem;
+      max-height: 4.4rem;
       margin-right: 8rem;
 
       /* Annulation du placement dynamique du Gantt */
-      position: relative !important;
-      inset-inline-start: auto !important;
-      inset-inline-end: auto !important;
-      transform: none !important;
+      position: relative;
+      inset-inline-start: auto;
+      inset-inline-end: auto;
+      transform: none;
 
       /* Structure et espacement */
-      display: flex !important;
-      flex-direction: column !important;
-      overflow: visible !important;
+      display: flex;
+      flex-direction: column;
+      overflow: visible;
 
       /* Rendu des couleurs */  
-      -webkit-print-color-adjust: exact !important;
-      print-color-adjust: exact !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
     }
   }
   [class*="div-down"] {
-    opacity: 1 !important;
-    transform: translateY(0) !important;
-    display: flex !important;
-    background-color: #4b4a4a !important;
-    -webkit-print-color-adjust: exact !important;
+    opacity: 1;
+    transform: translateY(0);
+    display: flex;
+    background-color: #4b4a4a;
+    -webkit-print-color-adjust: exact;
   }
 
   [class*="variation-container"] {
-    opacity: 1 !important;
-    transform: translateX(0) !important;
-    display: block !important;
+    opacity: 1;
+    transform: translateX(0);
+    display: block;
   }
 
   [class*="spanDate"] {
-    display: flex !important;
-    opacity: 1 !important;
+    display: flex;
+    opacity: 1;
   }
 }

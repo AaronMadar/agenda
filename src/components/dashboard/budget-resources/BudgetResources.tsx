@@ -11,10 +11,13 @@ interface BudgetResourcesProps {
 
 export const BudgetResources = ({ resources }: BudgetResourcesProps) => {
   return (
-    <div className={style.grid}>
-      {resources?.map((resource, index) => (
-        <ResourceCard key={index} resource={resource} />
-      ))}
+    <div className={style.budgetResources} >
+      <h4>משאבים תקציב</h4>
+      <div className={style.grid}>
+        {resources?.map((resource, index) => (
+          <ResourceCard key={index} resource={resource} />
+        ))}
+      </div>
     </div>
   );
 };

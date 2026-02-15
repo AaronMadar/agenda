@@ -57,19 +57,19 @@ export const DashboardBody = () => {
 
   return (
     <div className={style.bodyGrid}>
-      <BaseBodyCard title="כמויות ועלויות">
+      <BaseBodyCard>
         <QuantityAndCost quantityAndCost={summaryData?.quantityAndCost} />
       </BaseBodyCard>
 
-      <BaseBodyCard title="משאבים תקציב">
+      <BaseBodyCard>
         <BudgetResources resources={summaryData?.resources} />
       </BaseBodyCard>
 
-      <BaseBodyCard title="לוח אימונים">
+      <BaseBodyCard>
         <TrainingCalendar events={calendarEvents} />
       </BaseBodyCard>
 
-      <BaseBodyCard title="דיווחים">
+      <BaseBodyCard>
         <Reports reports={summaryData?.reports} />
       </BaseBodyCard>
     </div>

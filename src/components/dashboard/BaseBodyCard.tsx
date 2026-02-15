@@ -3,10 +3,9 @@ import style from "@/style/components/dashboard/BaseBodyCard.module.css";
 
 type BaseBodyCardProps = {
   children: ReactNode;
-  title?: string;
 };
 
-export const BaseBodyCard = ({ children, title }: BaseBodyCardProps) => {
+export const BaseBodyCard = ({ children }: BaseBodyCardProps) => {
   const [expanded, setExpanded] = useState(false);
 
   return (
@@ -23,16 +22,13 @@ export const BaseBodyCard = ({ children, title }: BaseBodyCardProps) => {
           expanded ? style.expanded : ""
         }`}
       >
-        <div className={style.header}>
-          {title && <h3>{title}</h3>}
 
-          <button
-            className={style.expandBtn}
-            onClick={() => setExpanded(!expanded)}
-          >
-            {expanded ? "✕" : "⛶"}
-          </button>
-        </div>
+        <button
+          className={style.expandBtn}
+          onClick={() => setExpanded(!expanded)}
+        >
+          {expanded ? "✕" : "⛶"}
+        </button>
 
         <div className={style.content}>
           {children}
@@ -41,12 +37,3 @@ export const BaseBodyCard = ({ children, title }: BaseBodyCardProps) => {
     </>
   );
 };
-
-
-
-
-
-
-
-
-

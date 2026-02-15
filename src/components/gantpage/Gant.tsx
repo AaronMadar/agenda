@@ -5,7 +5,6 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import dayjs, { Dayjs } from 'dayjs';
 
 import { ShibutsCard } from "./gant/ShibutsCard";
-import { iconServiceType } from "@/constants/icons";
 import { forceColors } from "@/constants/colors";
 import type { ShibutsApi } from '@/types/api-response';
 import { useDateRange } from '@/contexts/DateRangeContext';
@@ -187,22 +186,15 @@ export const Gant = memo(function Gant({ setForceDisplayed }: gantProps) {
 
                             return (
                                 <div key={shibuts.codeShibuts} className={styles["gant-row"]}>
-                                    <ShibutsCard
-                                        title={shibuts.title}
-                                        variation={`${shibuts.variationPastYear}%`}
-                                        dateBegin={shibuts.dateBegin}
-                                        dateEnd={shibuts.dateEnd}
-                                        resources={shibuts.resource}
-                                        icon={iconServiceType[shibuts.seviceType as keyof typeof iconServiceType] ?? iconServiceType["דפולטיבי"]}
-                                        style={{
-                                            backgroundColor: forceColors[gdud.forceType as keyof typeof forceColors] || forceColors.default,
-                                            insetInlineStart: isNearEnd ? 'auto' : `${startPos}%`,
-                                            insetInlineEnd: isNearEnd ? `${100 - (startPos + width)}%` : 'auto',
-                                            width: `${width}%`,
-                                            top: 0,
-
-                                        }}
-                                    />
+                                        <ShibutsCard shibuts={shibuts} pickud={gdud.pikud}
+                                            style={{
+                                                backgroundColor: forceColors[gdud.forceType as keyof typeof forceColors] || forceColors.default,
+                                                insetInlineStart: isNearEnd ? 'auto' : `${startPos}%`,
+                                                insetInlineEnd: isNearEnd ? `${100 - (startPos + width)}%` : 'auto',
+                                                width: `${width}%`,
+                                                top: 0,
+                                            }}
+                                        />
                                 </div>
                             );
                         })}

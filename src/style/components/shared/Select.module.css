@@ -40,7 +40,8 @@
 }
 
 .trigger:hover {
-  border-color: #4093f1;
+  border-color: #787e7f;
+  transition: border-color 0.2s ease;
 }
 
 /* ===== Text ===== */
@@ -106,5 +107,5 @@
 }
 
 .option:hover {
-  background: rgba(64, 153, 241, 0.2);
+  background: rgba(255, 255, 255, 0.1);
 }

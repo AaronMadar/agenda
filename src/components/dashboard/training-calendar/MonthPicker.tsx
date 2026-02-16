@@ -25,7 +25,10 @@ export const MonthPicker = ({
   const [tempYear, setTempYear] = useState(value.year());
 
   const [coords, setCoords] = useState({ top: 0, left: 0, isUp: false });
+
   const ref = useRef<HTMLDivElement | null>(null);
+  const activeMonthRef = useRef<HTMLDivElement | null>(null);
+  const activeYearRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     setTempMonth(value.month());
@@ -45,6 +48,19 @@ export const MonthPicker = ({
       });
     }
   }, [open, anchorRef]);
+
+  useEffect(() => {
+    if (open) {
+      requestAnimationFrame(() => {
+        activeMonthRef.current?.scrollIntoView({
+          block: "nearest",
+        });
+        activeYearRef.current?.scrollIntoView({
+          block: "nearest",
+        });
+      });
+    }
+  }, [open, tempMonth, tempYear]);
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -82,10 +98,7 @@ export const MonthPicker = ({
           placement="top"
           slotProps={{
             popper: {
-              sx: {
-                height: "35px",
-                zIndex: 20000,
-              },
+              sx: { zIndex: 20000 },
             },
           }}
         >
@@ -106,10 +119,7 @@ export const MonthPicker = ({
           placement="top"
           slotProps={{
             popper: {
-              sx: {
-                height: "35px",
-                zIndex: 20000,
-              },
+              sx: { zIndex: 20000 },
             },
           }}
         >
@@ -130,18 +140,25 @@ export const MonthPicker = ({
           {months.map((m, i) => (
             <div
               key={m}
-              className={`${style.item} ${i === tempMonth ? style.active : ""}`}
+              ref={i === tempMonth ? activeMonthRef : null}
+              className={`${style.item} ${
+                i === tempMonth ? style.active : ""
+              }`}
               onClick={() => setTempMonth(i)}
             >
               {m}
             </div>
           ))}
         </div>
+
         <div className={`${style.column} ${style.yearsColumn}`}>
           {years.map((y) => (
             <div
               key={y}
-              className={`${style.item} ${y === tempYear ? style.active : ""}`}
+              ref={y === tempYear ? activeYearRef : null}
+              className={`${style.item} ${
+                y === tempYear ? style.active : ""
+              }`}
               onClick={() => setTempYear(y)}
             >
               {y}

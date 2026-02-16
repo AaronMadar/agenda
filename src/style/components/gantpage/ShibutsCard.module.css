@@ -11,108 +11,103 @@
         inset-inline-start 0.8s cubic-bezier(0.19, 1, 0.22, 1),
         inset-inline-end 0.8s cubic-bezier(0.19, 1, 0.22, 1),
         transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 1;
 }
 
-.shibutsCard:hover {
-  min-width: 40rem;
-  min-height: 4.4rem ;
-  max-height: 4.4rem ;
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-  z-index: 100 !important;
-}
-
-.nearEnd:hover {
- margin-left: 1rem;
- background-color: #3e3d3d;
- border-radius: 1rem;
- padding: 5px 9px;
+.activeCard {
+    min-width: 40rem;
+    min-height: 4.4rem;
+    max-height: 4.4rem;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    z-index: 100 !important;
 }
 
 .divUp {
-  flex-direction: row;
-  height: 2.2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 1rem;
-  color: rgb(71, 71, 71);
-  font-weight: 500;
-  white-space: nowrap;
+    display: flex;
+    flex-direction: row;
+    height: 2.2rem;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1.2rem;
+    color: #474747;
+    font-weight: 500;
+    font-weight: 500;
+    white-space: nowrap;
 }
 
 .variationContainer {
     opacity: 0;
-    transform: translateX(100px);
-    transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-    pointer-events: none;
+    transform: translateX(10px);
+    transition: all 0.3s ease;
 }
 
 .visible {
     opacity: 1;
     transform: translateX(0);
-    pointer-events: auto;
-}
-
-.spanDate.hidden {
-    display: none;
-    transition: 0.4s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
 .iconAndTitle {
     display: flex;
     align-items: center;
-    justify-self: center;
-    flex-direction: row;
-    gap: 0.2em;
+    gap: 8px;
 }
 
 .cardTitle {
-    flex: 1; 
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
 }
 
 .divDown {
-  background-color: #4b4a4a;
-  color: white;
-  height: 2.2rem;
-  display: flex;
-  align-items: center;
-  padding: 0 1rem;
-  flex-direction: row;
-  justify-content: space-between;
-  opacity: 0;
-  transition:
-    opacity 0.4s ease-in-out,
-    transform 0.4s ease-in-out;
-  width: 100%;
+    background-color: #4b4a4a;
+    color: white;
+    height: 2.2rem;
+    display: flex;
+    align-items: center;
+    padding: 0 1.2rem;
+    transition: opacity 0.2s ease;
 }
 
-.shibutsCard:hover .divDown {
-    opacity: 1;
+.flexRow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
 .divRessource {
-   padding-right:10px;
-   border-right:1px solid #ccc;
-   display: flex;
-   align-items: center;
-   font-size: 15px;
-   gap:7px;
+    padding-right: 12px;
+    border-right: 1px solid rgba(255, 255, 255, 0.3);
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    gap: 6px;
 }
 
 .spanDate {
-  margin-left: 1rem;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;  
-  background-color: #3e3d3d;
-  border-radius: 5px;
-  padding: 1.9px 8px;
-  font-size: 0.9rem;
-  font-weight: 600;
+    background-color: #3e3d3d;
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.detailsAndPercentage {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.detailsIcon {
+    width: 1.3rem;
+    height: 1.3rem;
+    color: #2a3245;
+    opacity: 0.7;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.detailsIcon:hover {
+    opacity: 1;
 }

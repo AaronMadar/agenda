@@ -1,4 +1,5 @@
 import { useMemo, useState, useRef } from "react";
+import { Tooltip } from "@mui/material";
 import dayjs, { Dayjs } from "dayjs";
 import localeData from "dayjs/plugin/localeData";
 import style from "@/style/components/dashboard/training-calendar/TrainingCalendar.module.css";
@@ -70,13 +71,26 @@ export const TrainingCalendar = ({ events }: TrainingCalendarProps) => {
               {currentMonth.format("MMMM YYYY")}
             </div>
 
-            <button
-              ref={anchorRef}
-              className={style.openPickerBtn}
-              onClick={() => setPickerOpen((v) => !v)}
+            <Tooltip
+              title="בחירת חודש"
+              arrow
+              placement="top"
+              slotProps={{
+                popper: {
+                  sx: {
+                    zIndex: 20000,
+                  },
+                },
+              }}
             >
-              <DateRange sx={{ fontSize: 20 }} />
-            </button>
+              <button
+                ref={anchorRef}
+                className={style.openPickerBtn}
+                onClick={() => setPickerOpen((v) => !v)}
+              >
+                <DateRange sx={{ fontSize: 20 }} />
+              </button>
+            </Tooltip>
 
             <MonthPicker
               anchorRef={anchorRef}

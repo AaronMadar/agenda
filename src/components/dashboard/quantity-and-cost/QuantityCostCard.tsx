@@ -24,7 +24,7 @@ export const QuantityCostCard = ({ resource }: QuantityCostCardProps) => {
             }
         </div>
 
-        <ResourceCard resource={resource} noBackground externalStyle={{flex: 1}} />
+        <ResourceCard resource={resource} noBackground />
 
       </div>
     </div>

@@ -74,9 +74,8 @@ export function ShibutsCard({ shibuts, style, className, pickud }: ShibutsCardPr
         </div>
 
         <div
-          className={`${styles.variationContainer} ${
-            isHovered ? styles.visible : ""
-          }`}
+          className={`${styles.variationContainer} ${isHovered ? styles.visible : ""
+            }`}
         >
           <PercentageWithArrow value={variationPastYear} gantMode />
         </div>
@@ -108,7 +107,7 @@ export function ShibutsCard({ shibuts, style, className, pickud }: ShibutsCardPr
         <KeyValPopUp header={title} keyValues={metadataShibuts} />
       </Popover>
 
-      <div className={styles.divDown}>
+      <div className={styles.divDown }>
         <div
           style={{
             display: "flex",
@@ -116,6 +115,8 @@ export function ShibutsCard({ shibuts, style, className, pickud }: ShibutsCardPr
             gap: "10px",
             flexWrap: "nowrap",
             overflow: "hidden",
+            
+
           }}
         >
           {formattedBegin && formattedEnd && (
@@ -144,7 +145,7 @@ export function ShibutsCard({ shibuts, style, className, pickud }: ShibutsCardPr
                 <i
                   className={
                     iconResources[
-                      res.categoryName as keyof typeof iconResources
+                    res.categoryName as keyof typeof iconResources
                     ] ?? iconResources.default
                   }
                 />

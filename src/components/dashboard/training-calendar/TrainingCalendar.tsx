@@ -1,15 +1,13 @@
 import { useMemo, useState, useRef } from "react";
-import { Tooltip } from "@mui/material";
 import dayjs, { Dayjs } from "dayjs";
 import localeData from "dayjs/plugin/localeData";
+import { Tooltip } from "@mui/material";
+import { DateRange } from "@mui/icons-material";
 import style from "@/style/components/dashboard/training-calendar/TrainingCalendar.module.css";
 import { iconServiceType, type ServiceTypeKey } from "@/constants/icons";
 import type { CalendarEvent } from "./types";
-import { DateRange } from "@mui/icons-material";
 import { MonthPicker } from "./MonthPicker";
-
-import ArrowRight from "../../../assets/icons/arrow_right.svg?react";
-import ArrowLeft from "../../../assets/icons/arrow_left.svg?react";
+import { ArrowRight, ArrowLeft } from "@/assets/icons";
 
 dayjs.extend(localeData);
 

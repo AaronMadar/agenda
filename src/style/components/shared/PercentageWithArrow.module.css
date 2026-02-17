@@ -3,10 +3,10 @@
   align-items: center;
   padding: clamp(0px, 0.1vw, 6px) clamp(3px, 0.4vw, 10px);
   border-radius: 5px;
+  cursor: pointer;
 
   color: #00FF6F;
   background-color: rgba(90, 105, 89, 0.2);
-
   font-size: clamp(0.8rem, 1.5vw, 1rem);
 }
 
@@ -20,13 +20,10 @@
   margin-left: clamp(2px, 0.5vw, 4px);
 }
 
-
-
 .gantMode {
   background-color: #D9FCED;
   border-radius: 4px; 
   color: #18BF60;
-  /* Ombre douce teintée en vert pour plus de naturel */
   box-shadow: 0 2px 4px rgba(24, 191, 96, 0.25);
 }
 
@@ -34,6 +31,5 @@
   background-color: #FFEAEB;
   border-radius: 4px; 
   color: #DE4040;
-  /* Ombre douce teintée en rouge */
   box-shadow: 0 2px 4px rgba(222, 64, 64, 0.25);
 }

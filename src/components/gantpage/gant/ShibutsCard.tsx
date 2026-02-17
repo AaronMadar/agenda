@@ -1,14 +1,16 @@
 import React, { useState, useRef } from "react";
-import { Popover } from "@mui/material";
 import dayjs from "dayjs";
+import { Popover, Tooltip } from "@mui/material";
 
-import styles from "@/style/components/gantpage/ShibutsCard.module.css";
-import { iconResources, iconServiceType } from "@/constants/icons";
 import { PercentageWithArrow } from "@/components/shared/PercentageWithArrow";
 import { ResourcePopUp } from "@/components/shared/pop-ups/ResourcePopUp";
+import { DetailsPopUp } from "@/components/shared/pop-ups/DetailsPopUp";
 import { KeyValPopUp } from "@/components/shared/pop-ups/KeyValPopUp";
+
+import { Details } from "@/assets/icons";
+import { iconResources, iconServiceType } from "@/constants/icons";
 import type { ShibutsApi, ResourceItem } from "@/types/api-response";
-import Details from "@/assets/icons/details.svg?react";
+import styles from "@/style/components/gantpage/ShibutsCard.module.css";
 
 dayjs.locale("he");
 
@@ -52,6 +54,7 @@ export function ShibutsCard({
 
   const formattedBegin = dateBegin ? dayjs(dateBegin).format("D MMM") : "";
   const formattedEnd = dateEnd ? dayjs(dateEnd).format("D MMM") : "";
+  const amountOfDays = dateBegin && dateEnd ? dayjs(dateEnd).diff(dayjs(dateBegin), "day") + 1 : null;
 
   const metadataShibuts = [
     { key: "קוד שיבוץ", value: codeShibuts },
@@ -59,6 +62,7 @@ export function ShibutsCard({
     { key: "משימה", value: mesima },
     { key: "עלות ישיר", value: String(directCost) },
     { key: "עלות פריטי", value: String(costOfItems) },
+    { key: "משך", value: `${amountOfDays} ימים` },
   ];
 
   /* -------------------- Hover Logic -------------------- */
@@ -71,7 +75,7 @@ export function ShibutsCard({
   };
 
   const delayedClose = (
-    setter: React.Dispatch<React.SetStateAction<HTMLElement | null>>
+    setter: React.Dispatch<React.SetStateAction<HTMLElement | null>>,
   ) => {
     closeTimerRef.current = setTimeout(() => {
       setter(null);
@@ -98,16 +102,20 @@ export function ShibutsCard({
     >
       {/* ---------- Top Section ---------- */}
       <div className={styles.divUp}>
-        <div
-          className={styles.iconAndTitle}
-          onMouseEnter={(e) => {
-            clearCloseTimer();
-            setTitleAnchorEl(e.currentTarget);
-          }}
-          onMouseLeave={() => delayedClose(setTitleAnchorEl)}
-        >
-          <i className={`icon-card ${icon.className}`} />
-          <span className={styles.cardTitle}>{title}</span>
+        <div className={styles.iconAndTitle}>
+          <Tooltip title={seviceType} arrow placement="top">
+            <i className={`icon-card ${icon.className}`} />
+          </Tooltip>
+          <span
+            className={styles.cardTitle}
+            onMouseEnter={(e) => {
+              clearCloseTimer();
+              setTitleAnchorEl(e.currentTarget);
+            }}
+            onMouseLeave={() => delayedClose(setTitleAnchorEl)}
+          >
+            {title}
+          </span>
         </div>
 
         <div
@@ -133,15 +141,14 @@ export function ShibutsCard({
       </div>
 
       {/* ---------- Bottom Section ---------- */}
-      <div
-        className={styles.divDown}
-        style={{ opacity: isCardActive ? 1 : 0 }}
-      >
+      <div className={styles.divDown} style={{ opacity: isCardActive ? 1 : 0 }}>
         <div className={styles.flexRow}>
           {formattedBegin && formattedEnd && (
-            <span className={styles.spanDate}>
-              {formattedBegin} - {formattedEnd}
-            </span>
+            <Tooltip title={`${amountOfDays} ימים`} arrow placement="bottom">
+              <span className={styles.spanDate}>
+                {formattedBegin} - {formattedEnd}
+              </span>
+            </Tooltip>
           )}
 
           {resources?.map((res, index) => (
@@ -155,8 +162,7 @@ export function ShibutsCard({
               }}
               onMouseLeave={() => delayedClose(setResourceAnchorEl)}
               style={{
-                borderRight:
-                  index === 0 ? "none" : "1px solid #ccc",
+                borderRight: index === 0 ? "none" : "1px solid #ccc",
               }}
             >
               <i
@@ -191,7 +197,7 @@ export function ShibutsCard({
           },
         }}
       >
-        <KeyValPopUp header={title} keyValues={metadataShibuts} />
+        <DetailsPopUp />
       </Popover>
 
       {/* ---------- Title Popover ---------- */}

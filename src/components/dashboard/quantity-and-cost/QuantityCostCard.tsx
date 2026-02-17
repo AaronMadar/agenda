@@ -1,8 +1,6 @@
 import style from "@/style/components/dashboard/quantity-and-cost/QuantityCostCard.module.css";
 import { ResourceCard } from "@/components/shared/ResourceCard";
-import Swords from "@/assets/icons/Swords.svg?react";
-import RefereeHat from "@/assets/icons/referee-hat.svg?react";
-
+import { Swords, RefereeHat } from "@/assets/icons";
 
 interface QuantityCostCardProps {
   resource: {

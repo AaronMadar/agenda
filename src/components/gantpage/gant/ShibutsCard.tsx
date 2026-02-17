@@ -193,6 +193,8 @@ export function ShibutsCard({
             sx: {
               pointerEvents: "auto",
               backgroundColor: "transparent",
+              borderRadius: "10px",
+              overflow: "visible"
             },
           },
         }}
@@ -215,6 +217,8 @@ export function ShibutsCard({
             sx: {
               pointerEvents: "auto",
               backgroundColor: "transparent",
+              borderRadius: "10px",
+              overflow: "visible"
             },
           },
         }}
@@ -237,6 +241,8 @@ export function ShibutsCard({
             sx: {
               pointerEvents: "auto",
               backgroundColor: "transparent",
+              borderRadius: "10px",
+              overflow: "visible"
             },
           },
         }}

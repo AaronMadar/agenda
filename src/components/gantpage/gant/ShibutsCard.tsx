@@ -25,17 +25,10 @@ export function ShibutsCard({
   className,
   pickud,
 }: ShibutsCardProps) {
-  const [detailsAnchorEl, setDetailsAnchorEl] = useState<HTMLElement | null>(
-    null,
-  );
-  const [resourceAnchorEl, setResourceAnchorEl] = useState<HTMLElement | null>(
-    null,
-  );
+  const [detailsAnchorEl, setDetailsAnchorEl] = useState<HTMLElement | null>(null);
+  const [resourceAnchorEl, setResourceAnchorEl] = useState<HTMLElement | null>(null);
   const [titleAnchorEl, setTitleAnchorEl] = useState<HTMLElement | null>(null);
-  const [hoveredResource, setHoveredResource] = useState<ResourceItem | null>(
-    null,
-  );
-
+  const [hoveredResource, setHoveredResource] = useState<ResourceItem | null>(null);
   const [isCardActive, setIsCardActive] = useState(false);
 
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -56,6 +49,7 @@ export function ShibutsCard({
   const icon =
     iconServiceType[seviceType as keyof typeof iconServiceType] ??
     iconServiceType.default;
+
   const formattedBegin = dateBegin ? dayjs(dateBegin).format("D MMM") : "";
   const formattedEnd = dateEnd ? dayjs(dateEnd).format("D MMM") : "";
 
@@ -67,19 +61,21 @@ export function ShibutsCard({
     { key: "עלות פריטי", value: String(costOfItems) },
   ];
 
-  const handleDetailsEnter = (e: React.MouseEvent<HTMLElement>) => {
-    if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
-    setDetailsAnchorEl(e.currentTarget);
+  /* -------------------- Hover Logic -------------------- */
+
+  const clearCloseTimer = () => {
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
   };
 
-  const handleDetailsLeave = () => {
+  const delayedClose = (
+    setter: React.Dispatch<React.SetStateAction<HTMLElement | null>>
+  ) => {
     closeTimerRef.current = setTimeout(() => {
-      setDetailsAnchorEl(null);
-    }, 100);
-  };
-
-  const handlePopoverEnter = () => {
-    if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+      setter(null);
+    }, 10);
   };
 
   const handleCardLeave = () => {
@@ -89,40 +85,58 @@ export function ShibutsCard({
     setTitleAnchorEl(null);
   };
 
+  /* -------------------- Render -------------------- */
+
   return (
     <div
-      className={`${styles.shibutsCard} ${isCardActive ? styles.activeCard : ""} ${className || ""}`}
+      className={`${styles.shibutsCard} ${
+        isCardActive ? styles.activeCard : ""
+      } ${className || ""}`}
       style={style}
       onMouseEnter={() => setIsCardActive(true)}
       onMouseLeave={handleCardLeave}
     >
+      {/* ---------- Top Section ---------- */}
       <div className={styles.divUp}>
         <div
           className={styles.iconAndTitle}
-          onMouseEnter={(e) => setTitleAnchorEl(e.currentTarget)}
-          onMouseLeave={() => setTitleAnchorEl(null)}
+          onMouseEnter={(e) => {
+            clearCloseTimer();
+            setTitleAnchorEl(e.currentTarget);
+          }}
+          onMouseLeave={() => delayedClose(setTitleAnchorEl)}
         >
           <i className={`icon-card ${icon.className}`} />
           <span className={styles.cardTitle}>{title}</span>
         </div>
 
         <div
-          className={`${styles.variationContainer} ${isCardActive ? styles.visible : ""}`}
+          className={`${styles.variationContainer} ${
+            isCardActive ? styles.visible : ""
+          }`}
         >
           <div className={styles.detailsAndPercentage}>
             <div
               className={styles.detailsButton}
-              onMouseEnter={handleDetailsEnter}
-              onMouseLeave={handleDetailsLeave}
+              onMouseEnter={(e) => {
+                clearCloseTimer();
+                setDetailsAnchorEl(e.currentTarget);
+              }}
+              onMouseLeave={() => delayedClose(setDetailsAnchorEl)}
             >
               <Details className={styles.detailsIcon} />
             </div>
+
             <PercentageWithArrow value={variationPastYear} gantMode />
           </div>
         </div>
       </div>
 
-      <div className={styles.divDown} style={{ opacity: isCardActive ? 1 : 0 }}>
+      {/* ---------- Bottom Section ---------- */}
+      <div
+        className={styles.divDown}
+        style={{ opacity: isCardActive ? 1 : 0 }}
+      >
         <div className={styles.flexRow}>
           {formattedBegin && formattedEnd && (
             <span className={styles.spanDate}>
@@ -135,11 +149,15 @@ export function ShibutsCard({
               key={index}
               className={styles.divRessource}
               onMouseEnter={(e) => {
-                setResourceAnchorEl(e.currentTarget);
+                clearCloseTimer();
                 setHoveredResource(res);
+                setResourceAnchorEl(e.currentTarget);
               }}
-              onMouseLeave={() => setResourceAnchorEl(null)}
-              style={{ borderRight: index === 0 ? "none" : "1px solid #ccc" }}
+              onMouseLeave={() => delayedClose(setResourceAnchorEl)}
+              style={{
+                borderRight:
+                  index === 0 ? "none" : "1px solid #ccc",
+              }}
             >
               <i
                 className={
@@ -154,7 +172,7 @@ export function ShibutsCard({
         </div>
       </div>
 
-      {/* Popover Details */}
+      {/* ---------- Details Popover ---------- */}
       <Popover
         open={Boolean(detailsAnchorEl)}
         anchorEl={detailsAnchorEl}
@@ -164,13 +182,11 @@ export function ShibutsCard({
         sx={{ pointerEvents: "none" }}
         slotProps={{
           paper: {
-            onMouseEnter: handlePopoverEnter,
-            onMouseLeave: handleDetailsLeave,
+            onMouseEnter: clearCloseTimer,
+            onMouseLeave: () => delayedClose(setDetailsAnchorEl),
             sx: {
               pointerEvents: "auto",
               backgroundColor: "transparent",
-              boxShadow: "none",
-              marginBottom: "5px",
             },
           },
         }}
@@ -178,28 +194,46 @@ export function ShibutsCard({
         <KeyValPopUp header={title} keyValues={metadataShibuts} />
       </Popover>
 
-      {/* Popover Title */}
+      {/* ---------- Title Popover ---------- */}
       <Popover
         open={Boolean(titleAnchorEl)}
         anchorEl={titleAnchorEl}
-        sx={{ pointerEvents: "none" }}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
         transformOrigin={{ vertical: "bottom", horizontal: "center" }}
+        disableRestoreFocus
+        sx={{ pointerEvents: "none" }}
         slotProps={{
-          paper: { sx: { backgroundColor: "transparent", boxShadow: "none" } },
+          paper: {
+            onMouseEnter: clearCloseTimer,
+            onMouseLeave: () => delayedClose(setTitleAnchorEl),
+            sx: {
+              pointerEvents: "auto",
+              backgroundColor: "transparent",
+            },
+          },
         }}
       >
         <KeyValPopUp header={title} keyValues={metadataShibuts} />
       </Popover>
 
-      {/* Popover Resource */}
+      {/* ---------- Resource Popover ---------- */}
       <Popover
         open={Boolean(resourceAnchorEl)}
         anchorEl={resourceAnchorEl}
-        sx={{ pointerEvents: "none" }}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         transformOrigin={{ vertical: "top", horizontal: "center" }}
-        slotProps={{ paper: { sx: { backgroundColor: "transparent" } } }}
+        disableRestoreFocus
+        sx={{ pointerEvents: "none" }}
+        slotProps={{
+          paper: {
+            onMouseEnter: clearCloseTimer,
+            onMouseLeave: () => delayedClose(setResourceAnchorEl),
+            sx: {
+              pointerEvents: "auto",
+              backgroundColor: "transparent",
+            },
+          },
+        }}
       >
         <ResourcePopUp resourceDetailsTable={hoveredResource?.items || []} />
       </Popover>

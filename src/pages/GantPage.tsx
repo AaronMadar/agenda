@@ -6,6 +6,7 @@ import styles from "@/style/GantPage.module.css"
 
 import { useCallback, useState } from "react";
 import { LegendPopup } from "@/components/gantpage/gant/LegendPopup";
+import TimeLineHeader from "@/components/gantpage/TimeLineHeader";
 
 
 export function GantPage() {
@@ -20,6 +21,7 @@ export function GantPage() {
         <div className={styles["gantpage-container"]}>
             {/* On passe la fonction de modification au Header */}
             <Header onMapClick={toggleLegend} />
+            <TimeLineHeader  />
             
             <Gant setForceDisplayed={setForceDisplayed} />
 

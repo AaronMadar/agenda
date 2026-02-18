@@ -50,25 +50,7 @@ const calculateWidth = (shibuts: ShibutsApi, rangeStart: Dayjs, rangeEnd: Dayjs)
     return width < MIN_WIDTH_PERCENT ? MIN_WIDTH_PERCENT : width;
 };
 
-const generateTicks = (start: Dayjs, end: Dayjs): string[] => {
-    dayjs.locale('he');
-    const ticks: string[] = [];
-    const diffInDays = end.diff(start, 'day');
-    if (diffInDays <= 15) {
-        let current = start.clone();
-        while (!current.isAfter(end.add(1, 'day'))) {
-            ticks.push(current.format('D MMM'));
-            current = current.add(1, 'day');
-        }
-    } else {
-        let current = start.startOf('month');
-        while (!current.isAfter(end.add(1, 'month'))) {
-            ticks.push(current.format('MMM'));
-            current = current.add(1, 'month');
-        }
-    }
-    return ticks;
-};
+
 
 type gantProps = {
     setForceDisplayed: (forces: string[]) => void;
@@ -81,7 +63,6 @@ export const Gant = memo(function Gant({ setForceDisplayed }: gantProps) {
     const sDate = startDate || dayjs(`${currentYear}-01-01`);
     const eDate = endDate || dayjs(`${currentYear}-12-31`);
 
-    const dates = useMemo(() => generateTicks(sDate, eDate), [sDate, eDate]);
 
 
     const gdudimToDisplay = useMemo(() => {
@@ -116,24 +97,13 @@ export const Gant = memo(function Gant({ setForceDisplayed }: gantProps) {
 
         <div className={styles["gant-container"]}>
 
-            {/* TIMELINE HEADER */}
-            <div className={styles["timeline-header"]}>
-                <div className={`${styles["unit-title"]} ${styles["div-side"]}`}>{data?.unit}</div>
-                <div className={styles["ticks-container"]}>
-                    {dates.map((date, i) => (
-                        <div className={styles["timeline-tick"]} key={i}>
-                            <span className={styles["tick-label"]}>{date}</span>
-                            <i className={`bi bi-caret-up-fill ${styles["arrow-icon"]}`}></i>
-                        </div>
-                    ))}
-                </div>
-            </div>
+
 
             {/*LOADING STATE*/}
             {loading && (
                 <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
 
-                    {[1, 2, 3, 4, 5,6,7,8,9,10].map((i) => (
+                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
                         <div className={`${styles["timeline-header"]} ${styles["gdudim"]}`} key={i} style={{ borderBottom: '1.9px solid rgb(87, 82, 82)' }}>
 
                             {/* SIDEBAR */}
@@ -186,15 +156,15 @@ export const Gant = memo(function Gant({ setForceDisplayed }: gantProps) {
 
                             return (
                                 <div key={shibuts.codeShibuts} className={styles["gant-row"]}>
-                                        <ShibutsCard shibuts={shibuts} pickud={gdud.pikud}
-                                            style={{
-                                                backgroundColor: forceColors[gdud.forceType as keyof typeof forceColors] || forceColors.default,
-                                                insetInlineStart: isNearEnd ? 'auto' : `${startPos}%`,
-                                                insetInlineEnd: isNearEnd ? `${100 - (startPos + width)}%` : 'auto',
-                                                width: `${width}%`,
-                                                top: 0,
-                                            }}
-                                        />
+                                    <ShibutsCard shibuts={shibuts} pickud={gdud.pikud}
+                                        style={{
+                                            backgroundColor: forceColors[gdud.forceType as keyof typeof forceColors] || forceColors.default,
+                                            insetInlineStart: isNearEnd ? 'auto' : `${startPos}%`,
+                                            insetInlineEnd: isNearEnd ? `${100 - (startPos + width)}%` : 'auto',
+                                            width: `${width}%`,
+                                            top: 0,
+                                        }}
+                                    />
                                 </div>
                             );
                         })}
@@ -204,3 +174,4 @@ export const Gant = memo(function Gant({ setForceDisplayed }: gantProps) {
         </div>
     );
 });
+

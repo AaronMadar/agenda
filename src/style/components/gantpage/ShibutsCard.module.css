@@ -82,6 +82,10 @@
   white-space: nowrap;
 }
 
+.activeCard .cardTitle {
+  flex: none;
+}
+
 .divDown {
   background-color: #4b4a4a;
   color: white;

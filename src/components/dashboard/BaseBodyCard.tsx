@@ -1,4 +1,5 @@
 import { useState, type ReactNode } from "react";
+import { Tooltip } from "@mui/material";
 import style from "@/style/components/dashboard/BaseBodyCard.module.css";
 
 type BaseBodyCardProps = {
@@ -11,28 +12,31 @@ export const BaseBodyCard = ({ children }: BaseBodyCardProps) => {
   return (
     <>
       {expanded && (
-        <div
-          className={style.overlay}
-          onClick={() => setExpanded(false)}
-        />
+        <div className={style.overlay} onClick={() => setExpanded(false)} />
       )}
 
       <div
-        className={`${style.basicBodyCard} ${
-          expanded ? style.expanded : ""
-        }`}
+        className={`${style.basicBodyCard} ${expanded ? style.expanded : ""}`}
       >
-
-        <button
-          className={style.expandBtn}
-          onClick={() => setExpanded(!expanded)}
+        <Tooltip
+          title={expanded ? "סגור": "הרחב"}
+          arrow
+          placement="top"
+          slotProps={{
+            popper: {
+              sx: { zIndex: 20000 },
+            },
+          }}
         >
-          {expanded ? "✕" : "⛶"}
-        </button>
+          <button
+            className={style.expandBtn}
+            onClick={() => setExpanded(!expanded)}
+          >
+            {expanded ? "✕" : "⛶"}
+          </button>
+        </Tooltip>
 
-        <div className={style.content}>
-          {children}
-        </div>
+        <div className={style.content}>{children}</div>
       </div>
     </>
   );

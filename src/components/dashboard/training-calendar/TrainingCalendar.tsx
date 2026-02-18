@@ -1,14 +1,13 @@
 import { useMemo, useState, useRef } from "react";
 import dayjs, { Dayjs } from "dayjs";
 import localeData from "dayjs/plugin/localeData";
+import { Tooltip } from "@mui/material";
+import { DateRange } from "@mui/icons-material";
 import style from "@/style/components/dashboard/training-calendar/TrainingCalendar.module.css";
 import { iconServiceType, type ServiceTypeKey } from "@/constants/icons";
 import type { CalendarEvent } from "./types";
-import { DateRange } from "@mui/icons-material";
 import { MonthPicker } from "./MonthPicker";
-
-import ArrowRight from "../../../assets/icons/arrow_right.svg?react";
-import ArrowLeft from "../../../assets/icons/arrow_left.svg?react";
+import { ArrowRight, ArrowLeft } from "@/assets/icons";
 
 dayjs.extend(localeData);
 
@@ -70,13 +69,26 @@ export const TrainingCalendar = ({ events }: TrainingCalendarProps) => {
               {currentMonth.format("MMMM YYYY")}
             </div>
 
-            <button
-              ref={anchorRef}
-              className={style.openPickerBtn}
-              onClick={() => setPickerOpen((v) => !v)}
+            <Tooltip
+              title="בחירת חודש"
+              arrow
+              placement="top"
+              slotProps={{
+                popper: {
+                  sx: {
+                    zIndex: 20000,
+                  },
+                },
+              }}
             >
-              <DateRange sx={{ fontSize: 20 }} />
-            </button>
+              <button
+                ref={anchorRef}
+                className={style.openPickerBtn}
+                onClick={() => setPickerOpen((v) => !v)}
+              >
+                <DateRange sx={{ fontSize: 20 }} />
+              </button>
+            </Tooltip>
 
             <MonthPicker
               anchorRef={anchorRef}

@@ -1,0 +1,53 @@
+import { useDateRange } from "@/contexts/DateRangeContext";
+import dayjs, { Dayjs } from 'dayjs';
+import { useMemo } from "react";
+
+import styles from "@/style/components/gantpage/TimeLineHeader.module.css"
+
+
+export default function TimeLineHeader() {
+
+    const { startDate, endDate , data } = useDateRange();
+
+    const generateTicks = (start: Dayjs, end: Dayjs): string[] => {
+        dayjs.locale('he');
+        const ticks: string[] = [];
+        const diffInDays = end.diff(start, 'day');
+        if (diffInDays <= 15) {
+            let current = start.clone();
+            while (!current.isAfter(end.add(1, 'day'))) {
+                ticks.push(current.format('D MMM'));
+                current = current.add(1, 'day');
+            }
+        } else {
+            let current = start.startOf('month');
+            while (!current.isAfter(end.add(1, 'month'))) {
+                ticks.push(current.format('MMM'));
+                current = current.add(1, 'month');
+            }
+        }
+        return ticks;
+    };
+
+    const currentYear = dayjs().year();
+    const sDate = startDate || dayjs(`${currentYear}-01-01`);
+    const eDate = endDate || dayjs(`${currentYear}-12-31`);
+
+    const dates = useMemo(() => generateTicks(sDate, eDate), [sDate, eDate]);
+
+
+    return (
+
+        <div className={styles["timeline-header"]}>
+            <div className={`${styles["unit-title"]} ${styles["div-side"]}`}>{data?.unit}</div>
+            <div className={styles["ticks-container"]}>
+                {dates.map((date, i) => (
+                    <div className={styles["timeline-tick"]} key={i}>
+                        <span className={styles["tick-label"]}>{date}</span>
+                        <i className={`bi bi-caret-up-fill ${styles["arrow-icon"]}`}></i>
+                    </div>
+                ))}
+            </div>
+        </div>
+    )
+}

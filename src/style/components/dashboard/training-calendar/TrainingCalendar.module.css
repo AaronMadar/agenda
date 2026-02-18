@@ -108,18 +108,18 @@
 /* ===== Tooltip ===== */
 .tooltip {
   position: absolute;
-  bottom: calc(100% + 7px);
+  bottom: calc(100% + 3px);
   right: 0;
   max-width: 200px;
-  background: #111827;
+  background: #6D7479;
   color: white;
   border-radius: 6px;
   padding: 6px 8px;
   font-size: 11px;
   opacity: 0;
   pointer-events: none;
-  transform: translateY(10px);
-  transition: opacity 0.15s ease, transform 0.15s ease;
+  transform: translateY(5px);
+  transition: opacity 0.3s ease, transform 0.2s ease;
   z-index: 20;
 }
 
@@ -131,7 +131,7 @@
 }
 
 .topRow .tooltip {
-  top: calc(100% + 7px);
+  top: calc(100% + 3px);
   bottom: auto;
 }
 
@@ -153,13 +153,13 @@
   right: 12px;
   border-width: 6px;
   border-style: solid;
-  border-color: #111827 transparent transparent transparent;
+  border-color: #6D7479 transparent transparent transparent;
 }
 
 .topRow .tooltip::after {
   top: auto;
   bottom: 100%;
-  border-color: transparent transparent #111827 transparent;
+  border-color: transparent transparent #6D7479 transparent;
 }
 
 .leftColumn .tooltip::after {

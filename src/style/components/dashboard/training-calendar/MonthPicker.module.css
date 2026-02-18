@@ -18,13 +18,18 @@
 
 .columns {
   display: flex;
-  gap: 10px;
+  /* gap: 10px; */
 }
 
 .column {
   max-height: 160px;
+  min-width: 70px;
   overflow-y: auto;
   padding: 0 2px;
+}
+
+.yearsColumn {
+  text-align: center;
 }
 
 .column::-webkit-scrollbar {
@@ -34,6 +39,10 @@
 .column::-webkit-scrollbar-thumb {
   background: #525252;
   border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.224);
 }
 
 .item {
@@ -46,12 +55,12 @@
 }
 
 .item:hover {
-  background: rgba(64, 153, 241, 0.2) !important;
+  background: #484e50 ;
 }
 
 .active,
 .active:hover {
-  background: #60a5fa !important;
+  background: #646869;
 }
 
 /* ===== Action Buttons ===== */
@@ -59,7 +68,7 @@
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background-color: #6a6969 !important;
+  background-color: #6a6969;
   border: none;
   color: white;
   cursor: pointer;

@@ -57,9 +57,7 @@ export const DashboardBody = () => {
 
   return (
     <div className={style.bodyGrid}>
-      <BaseBodyCard>
-        <QuantityAndCost quantityAndCost={summaryData?.quantityAndCost} />
-      </BaseBodyCard>
+      <QuantityAndCost quantityAndCost={summaryData?.quantityAndCost} />
 
       <BaseBodyCard>
         <BudgetResources resources={summaryData?.resources} />

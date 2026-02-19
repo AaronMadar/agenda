@@ -67,6 +67,7 @@ export const iconServiceType = {
     color: "#8e24aa",
   },
   default: {
+    otherName: "דפולטיבי",
     className: "bi bi-question-circle",
     color: "#616161",
   },

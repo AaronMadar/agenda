@@ -55,8 +55,8 @@ export function LegendPopup({ onClose, forceDisplayed }: LegendProps) {
                         {serviceType.map(type => (
                             <li key={type}>
                                 <span className={styles["span-icon-type"]}>
-                                    <i className={`${iconServiceType[type as ServiceTypeKey] || iconServiceType["דפולטיבי"]} ${styles["me-2"]}`} />
-                                    {type}
+                                    <i className={`${iconServiceType[type as ServiceTypeKey].className } ${styles["me-2"]}`} />
+                                    {type != "default" ? type : iconServiceType.default.otherName}
                                 </span>
                             </li>
                         ))}

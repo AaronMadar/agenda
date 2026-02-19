@@ -27,6 +27,7 @@ export function ShibutsCard({
   className,
   pickud,
 }: ShibutsCardProps) {
+  
   const [detailsAnchorEl, setDetailsAnchorEl] = useState<HTMLElement | null>(null);
   const [resourceAnchorEl, setResourceAnchorEl] = useState<HTMLElement | null>(null);
   const [titleAnchorEl, setTitleAnchorEl] = useState<HTMLElement | null>(null);

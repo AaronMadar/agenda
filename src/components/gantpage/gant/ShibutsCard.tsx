@@ -127,7 +127,7 @@ export function ShibutsCard({
           <div className={styles.detailsAndPercentage}>
             <div
               className={styles.detailsButton}
-              onMouseEnter={(e) => {
+              onClick={(e) => {
                 clearCloseTimer();
                 setDetailsAnchorEl(e.currentTarget);
               }}

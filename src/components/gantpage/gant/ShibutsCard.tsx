@@ -160,6 +160,7 @@ export function ShibutsCard({
                 clearCloseTimer();
                 setHoveredResource(res);
                 setResourceAnchorEl(e.currentTarget);
+                setTitleAnchorEl(null)
               }}
               onMouseLeave={() => delayedClose(setResourceAnchorEl)}
               style={{
@@ -253,3 +254,6 @@ export function ShibutsCard({
     </div>
   );
 }
+
+
+

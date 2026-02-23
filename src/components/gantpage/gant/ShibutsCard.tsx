@@ -27,6 +27,7 @@ export function ShibutsCard({
   className,
   pickud,
 }: ShibutsCardProps) {
+  
   const [detailsAnchorEl, setDetailsAnchorEl] = useState<HTMLElement | null>(null);
   const [resourceAnchorEl, setResourceAnchorEl] = useState<HTMLElement | null>(null);
   const [titleAnchorEl, setTitleAnchorEl] = useState<HTMLElement | null>(null);
@@ -126,7 +127,7 @@ export function ShibutsCard({
           <div className={styles.detailsAndPercentage}>
             <div
               className={styles.detailsButton}
-              onMouseEnter={(e) => {
+              onClick={(e) => {
                 clearCloseTimer();
                 setDetailsAnchorEl(e.currentTarget);
               }}
@@ -159,6 +160,7 @@ export function ShibutsCard({
                 clearCloseTimer();
                 setHoveredResource(res);
                 setResourceAnchorEl(e.currentTarget);
+                setTitleAnchorEl(null)
               }}
               onMouseLeave={() => delayedClose(setResourceAnchorEl)}
               style={{
@@ -252,3 +254,6 @@ export function ShibutsCard({
     </div>
   );
 }
+
+
+

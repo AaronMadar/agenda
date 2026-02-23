@@ -10,6 +10,8 @@ import { TrainingCalendar } from "./training-calendar/TrainingCalendar";
 import { extractCalendarEvents } from "@/utils/calendar/extractCalendarEvents";
 import type { CalendarEvent } from "./training-calendar/types";
 
+import { getDashboardSummary, getDashboardCalendarData } from "@/api/dashboard.api";
+
 /* -------- types -------- */
 
 type DashboardSummaryResponse = {
@@ -34,18 +36,16 @@ export const DashboardBody = () => {
 
   /* KPI / cards data */
   useEffect(() => {
-    fetch("/public/dashboardSummary.json")
-      .then(res => res.json())
-      .then(setSummaryData)
-      .catch(err => {
-        console.error("Failed to load dashboard summary", err);
-      });
+      getDashboardSummary()
+        .then(setSummaryData)
+        .catch(err => {
+          console.error("Failed to load dashboard summary", err);
+        });
   }, []);
 
   /* Calendar data */
   useEffect(() => {
-    fetch("/data.json")
-      .then(res => res.json())
+    getDashboardCalendarData()
       .then(data => {
         const events = extractCalendarEvents(data);
         setCalendarEvents(events);

@@ -3,7 +3,26 @@
   border-radius: 1.1rem;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  cursor: pointer;
+  height: 2.8rem;
+  width: max-content;
+  min-width: 0;
+  transition:
+    min-width 0.8s cubic-bezier(0.19, 1, 0.22, 1),
+    height 0.4s ease-in-out,
+    inset-inline-start 0.8s cubic-bezier(0.19, 1, 0.22, 1),
+    inset-inline-end 0.8s cubic-bezier(0.19, 1, 0.22, 1),
+    height 0.2s cubic-bezier(0.19, 1, 0.22, 1),
+    transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+}
+/* .shibutsCard {
+  position: absolute;
+  border-radius: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; 
   cursor: pointer;
   height: 2.8rem;
   min-width: 0;
@@ -16,10 +35,10 @@
     transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   z-index: 1;
-}
+} */
 
 .activeCard {
-  min-width: 40rem;
+  min-width: 40rem !important;
   min-height: 4.4rem;
   max-height: 4.4rem;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
@@ -30,6 +49,7 @@
   display: flex;
   flex-direction: row;
   height: 2.2rem;
+  min-width: auto;
   justify-content: space-between;
   align-items: center;
   padding: 1.2rem 1rem;
@@ -70,22 +90,70 @@
   align-items: center;
   flex-direction: row;
   gap: 0.2em;
-  flex: 1;
-  min-width: 0;
+  flex: none;
+  min-width: auto;
 }
+/* 
+.iconAndTitle {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 0.2em;
+  flex: 1;
+  min-width: auto;
+} */
 
 .cardTitle {
-  flex: 1;
+  flex: none;
   min-width: 0;
+
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+/* 
+.cardTitle {
+  flex: 1;
+  min-width: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+} */
 
 .activeCard .cardTitle {
   flex: none;
 }
+.divDown {
+  position: absolute  ;
+    border-radius: 0 0 1.1rem 1.1rem;
 
+  bottom: -1.6px;
+  left: 0;
+  right: 0;   
+  background-color: #4b4a4a;
+  color: white;
+  display: none;
+  height: 0;
+  width: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  flex-direction: row;
+  justify-content: space-between;
+  transition:
+    opacity 0.15s ease-in-out,
+    transform 0.15s ease-in-out;
+  width: max-content;   /* ← au lieu de 100% */
+  min-width: 100%;      /* ← pour qu'il remplisse la carte quand elle est large (activeCard) */
+  overflow: hidden;
+}
+
+.activeCard .divDown {
+  height: 2.2rem;
+
+  opacity: 1;
+}
+/* 
 .divDown {
   background-color: #4b4a4a;
   color: white;
@@ -100,7 +168,7 @@
     transform 0.15s ease-in-out;
   width: 100%;
   overflow: hidden;
-}
+} */
 
 .flexRow {
   display: flex;

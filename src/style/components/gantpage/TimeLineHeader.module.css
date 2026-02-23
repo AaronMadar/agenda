@@ -1,8 +1,5 @@
 .timeline-header {
   display: flex;
-  position:sticky;
-  top : 3.5rem ;
-  z-index: 101;
   flex-direction: row;
   height: 4rem;
   width: 100%;

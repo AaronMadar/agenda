@@ -104,7 +104,7 @@ export function ShibutsCard({
       {/* ---------- Top Section ---------- */}
       <div className={styles.divUp}>
         <div className={styles.iconAndTitle}>
-          <Tooltip title={seviceType} arrow placement="top">
+          <Tooltip title={seviceType} arrow placement="top" >
             <i className={`icon-card ${icon.className}`} />
           </Tooltip>
           <span

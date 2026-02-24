@@ -161,7 +161,7 @@ export const Gant = memo(function Gant({ setForceDisplayed }: gantProps) {
                                             backgroundColor: forceColors[gdud.forceType as keyof typeof forceColors] || forceColors.default,
                                             insetInlineStart: isNearEnd ? 'auto' : `${startPos}%`,
                                             insetInlineEnd: isNearEnd ? `${100 - (startPos + width)}%` : 'auto',
-                                            minWidth: `${width}%`,
+                                            width: `${width === MIN_WIDTH_PERCENT ? null :  width}%`,
                                             top: 0,
                                         }}
                                     />

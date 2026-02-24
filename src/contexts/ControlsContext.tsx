@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import type { TreeNodeData } from "@/components/shared/tree-dropdown/types";
+import { getUnitsTree, getServiceTypes, getResourceTypes } from "@/api/controls.api";
 
 export type ServiceTypeOption = string;
 export type ResourceTypeOption = string;
@@ -64,27 +65,21 @@ export const ControlsProvider = ({ children }: { children: ReactNode }) => {
       setLoading(true);
 
       // Units tree
-      const treeRes = await fetch("/public/tree-data.json");
-      if (!treeRes.ok) throw new Error("Failed to fetch tree data");
-      const tree: TreeNodeData[] = await treeRes.json();
-      setTreeData(tree);
-      if (tree.length > 0 && !selectedUnit) {
-        setSelectedUnit(tree[0]);
+      const unitsTree = await getUnitsTree();
+      setTreeData(unitsTree);
+      if (unitsTree.length > 0 && !selectedUnit) {
+        setSelectedUnit(unitsTree[0]);
       }
 
       // Service types
-      const serviceRes = await fetch("/public/service-types.json");
-      if (!serviceRes.ok) throw new Error("Failed to fetch service types");
-      const services: ServiceTypeOption[] = await serviceRes.json();
+      const services: ServiceTypeOption[] = await getServiceTypes();
       setServiceTypes(services);
       if (!selectedServiceType && services.length > 0) {
         setSelectedServiceType(null); // null === "הכל"
       }
 
       // Resource types
-      const resourceRes = await fetch("/public/resource-types.json");
-      if (!resourceRes.ok) throw new Error("Failed to fetch resource types");
-      const resources: ResourceTypeOption[] = await resourceRes.json();
+      const resources: ResourceTypeOption[] = await getResourceTypes();
       setResourceTypes(resources);
       if (!selectedResourceType && resources.length > 0) {
         setSelectedResourceType(null); // null === "הכל"

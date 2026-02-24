@@ -7,6 +7,7 @@ import ArrowRight from "./arrow_right.svg?react";
 import ArrowLeft from "./arrow_left.svg?react";
 import Swords from "./Swords.svg?react";
 import RefereeHat from "./referee-hat.svg?react";
+import Hafsharot from "./hafsharot.svg?react";
 
 
 export {
@@ -18,5 +19,6 @@ export {
     ArrowRight,
     ArrowLeft,
     Swords,
-    RefereeHat
+    RefereeHat,
+    Hafsharot
 }

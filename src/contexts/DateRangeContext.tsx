@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import dayjs, { Dayjs } from "dayjs";
 import type { ApiResponse } from "@/types/api-response";
+import { getShibutzimData } from "@/api/gant.api";
 
 type DateRangeContextType = {
   startDate: Dayjs | null;
@@ -24,8 +25,7 @@ export const DateRangeProvider = ({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/data.json")
-      .then((res) => res.json())
+    getShibutzimData()
       .then((jsonData) => {
         setData(jsonData);
         setStartDate((prev) => prev || dayjs(jsonData.period.start));

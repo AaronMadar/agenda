@@ -54,10 +54,6 @@ export const ControlsProvider = ({ children }: { children: ReactNode }) => {
       const unitsTree = await getUnitsTree();
       setTreeData(unitsTree);
 
-      if (unitsTree.length > 0 && selectedUnitIds.length === 0) {
-        setSelectedUnitIds([unitsTree[0].id]);
-      }
-
       const services: ServiceTypeOption[] = await getServiceTypes();
       setServiceTypes(services);
 

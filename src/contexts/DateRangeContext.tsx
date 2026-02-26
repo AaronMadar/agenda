@@ -12,6 +12,13 @@ type DateRangeContextType = {
   setStartDate: React.Dispatch<React.SetStateAction<Dayjs | null>>;
   setEndDate: React.Dispatch<React.SetStateAction<Dayjs | null>>;
   setPeriodView: (value: string) => void;
+  refetchData: (
+    from: string,
+    to: string,
+    unitIds: string[],
+    serviceTypes: string[] | null,
+    resourceTypes: string[] | null,
+  ) => void;
 };
 
 const DateRangeContext = createContext<DateRangeContextType | null>(null);
@@ -25,7 +32,10 @@ export const DateRangeProvider = ({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getShibutzimData()
+    getShibutzimData(
+      dayjs().startOf("year").format("YYYY-MM-DD"),
+      dayjs().endOf("year").format("YYYY-MM-DD"),
+    )
       .then((jsonData) => {
         setData(jsonData);
         setStartDate((prev) => prev || dayjs(jsonData.period.start));
@@ -50,6 +60,25 @@ export const DateRangeProvider = ({
 
   const [periodView, setPeriodView] = useState<string>(`כל ${currentYear}`);
 
+  const refetchData = (
+    from: string,
+    to: string,
+    unitIds: string[] | null,
+    serviceTypes: string[] | null,
+    resourceTypes: string[] | null,
+  ) => {
+    setLoading(true);
+    getShibutzimData(from, to, unitIds, serviceTypes, resourceTypes)
+      .then((jsonData) => {
+        setData(jsonData);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
+  };
+
   return (
     <DateRangeContext.Provider
       value={{
@@ -61,6 +90,7 @@ export const DateRangeProvider = ({
         setStartDate,
         setEndDate,
         setPeriodView,
+        refetchData,
       }}
     >
       {children}

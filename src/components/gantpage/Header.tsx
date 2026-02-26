@@ -5,13 +5,13 @@ import html2canvas from 'html2canvas';
 import styles from "@/style/components/gantpage/Header.module.css";
 import { ControlsPanel } from '../shared/ControlsPanel';
 
-interface HeadeProps {
+interface HeaderProps {
     onMapClick: () => void
 }
 
 
 const handlePrint = () => {
-    window.print();
+        window.print();
 };
 
 const handleClickCamera = async () => {
@@ -32,7 +32,7 @@ const handleClickCamera = async () => {
             if (header) header.style.display = 'none';
             
             // Force l'affichage des détails des cartes (simule le hover)
-            const details = clonedDoc.querySelectorAll('[class*="variationContainer"], [class*="divDown"]');
+            const details = clonedDoc.querySelectorAll<HTMLElement>('[class*="variationContainer"], [class*="divDown"]');
             details.forEach(d => d.style.display = 'flex');
         }
     });
@@ -44,7 +44,7 @@ const handleClickCamera = async () => {
     link.click(); // Téléchargement direct plus fiable que l'iframe
 };
 
-export function Header({ onMapClick }: HeadeProps) {
+export function Header({ onMapClick }: HeaderProps) {
 
     const navigate = useNavigate();
 

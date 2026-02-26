@@ -1,8 +1,7 @@
 import { useDateRange } from "@/contexts/DateRangeContext";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 
-import styles from "@/style/components/gantpage/header/SelectTime.module.css";
-import { Select } from "@/components/shared/Select";
+import { SingleSelect } from "@/components/shared/selects/SingleSelect";
 
 export function SelectTime() {
   const year = new Date().getFullYear();
@@ -36,8 +35,7 @@ export function SelectTime() {
   }
 
   return (
-    <Select
-      label="תקופה"
+    <SingleSelect
       options={periodOptions}
       value={periodView}
       placeholder="בחר תקופה"

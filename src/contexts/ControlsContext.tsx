@@ -13,13 +13,11 @@ export type ControlsContextType = {
 
   // Service types
   serviceTypes: ServiceTypeOption[];
-  serviceTypeOptions: ServiceTypeOption[];
-  selectedServiceType: ServiceTypeOption | null;
+  selectedServiceTypes: ServiceTypeOption[] | null;
 
   // Resource types
   resourceTypes: ResourceTypeOption[];
-  resourceTypeOptions: ResourceTypeOption[];
-  selectedResourceType: ResourceTypeOption | null;
+  selectedResourceTypes: ResourceTypeOption[] | null;
 
   // Meta
   loading: boolean;
@@ -27,8 +25,8 @@ export type ControlsContextType = {
 
   // Actions
   setSelectedUnit: (node: TreeNodeData | null) => void;
-  setSelectedServiceType: (value: ServiceTypeOption | null) => void;
-  setSelectedResourceType: (value: ResourceTypeOption | null) => void;
+  setSelectedServiceTypes: (value: ServiceTypeOption[] | null) => void;
+  setSelectedResourceTypes: (value: ResourceTypeOption[] | null) => void;
   refetch: () => void;
 };
 
@@ -39,26 +37,15 @@ export const ControlsProvider = ({ children }: { children: ReactNode }) => {
   const [selectedUnit, setSelectedUnit] = useState<TreeNodeData | null>(null);
 
   const [serviceTypes, setServiceTypes] = useState<ServiceTypeOption[]>([]);
-  const [selectedServiceType, setSelectedServiceType] =
-    useState<ServiceTypeOption | null>(null);
+  const [selectedServiceTypes, setSelectedServiceTypes] =
+    useState<ServiceTypeOption[] | null>(null);
 
   const [resourceTypes, setResourceTypes] = useState<ResourceTypeOption[]>([]);
-  const [selectedResourceType, setSelectedResourceType] =
-    useState<ResourceTypeOption | null>(null);
+  const [selectedResourceTypes, setSelectedResourceTypes] =
+    useState<ResourceTypeOption[] | null>(null);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  // UI-ready options
-  const serviceTypeOptions = useMemo(
-    () => ["הכל", ...serviceTypes],
-    [serviceTypes]
-  );
-
-  const resourceTypeOptions = useMemo(
-    () => ["הכל", ...resourceTypes],
-    [resourceTypes]
-  );
 
   const fetchData = async () => {
     try {
@@ -74,15 +61,15 @@ export const ControlsProvider = ({ children }: { children: ReactNode }) => {
       // Service types
       const services: ServiceTypeOption[] = await getServiceTypes();
       setServiceTypes(services);
-      if (!selectedServiceType && services.length > 0) {
-        setSelectedServiceType(null); // null === "הכל"
+      if (!selectedServiceTypes && services.length > 0) {
+        setSelectedServiceTypes(null); // null === "הכל"
       }
 
       // Resource types
       const resources: ResourceTypeOption[] = await getResourceTypes();
       setResourceTypes(resources);
-      if (!selectedResourceType && resources.length > 0) {
-        setSelectedResourceType(null); // null === "הכל"
+      if (!selectedResourceTypes && resources.length > 0) {
+        setSelectedResourceTypes(null); // null === "הכל"
       }
 
       setError(null);
@@ -105,19 +92,17 @@ export const ControlsProvider = ({ children }: { children: ReactNode }) => {
         selectedUnit,
 
         serviceTypes,
-        serviceTypeOptions,
-        selectedServiceType,
+        selectedServiceTypes,
 
         resourceTypes,
-        resourceTypeOptions,
-        selectedResourceType,
+        selectedResourceTypes,
 
         loading,
         error,
 
         setSelectedUnit,
-        setSelectedServiceType,
-        setSelectedResourceType,
+        setSelectedServiceTypes,
+        setSelectedResourceTypes,
         refetch: fetchData,
       }}
     >

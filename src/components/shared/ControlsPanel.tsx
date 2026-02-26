@@ -1,12 +1,12 @@
 import { useState } from "react";
+import { Tooltip } from "@mui/material";
 import { useControls } from "@/contexts/ControlsContext";
 import { TreeDropdown } from "@/components/shared/tree-dropdown/TreeDropdown";
-import { Select } from "./Select";
 import { SelectTime } from "../gantpage/header/SelectTime";
 import { PopoverTime } from "../gantpage/header/PopoverTime";
+import { MultiSelect } from "./selects/MultiSelect";
+import styles from "@/style/components/shared/ControlsPanel.module.css";
 
-import styles from '@/style/components/shared/ControlsPanel.module.css'
-import { Tooltip } from "@mui/material";
 
 export const ControlsPanel = () => {
   const {
@@ -14,13 +14,13 @@ export const ControlsPanel = () => {
     selectedUnit,
     setSelectedUnit,
 
-    serviceTypeOptions,
-    selectedServiceType,
-    setSelectedServiceType,
+    serviceTypes,
+    selectedServiceTypes,
+    setSelectedServiceTypes,
 
-    resourceTypeOptions,
-    selectedResourceType,
-    setSelectedResourceType,
+    resourceTypes,
+    selectedResourceTypes,
+    setSelectedResourceTypes,
 
     loading,
     error,
@@ -37,45 +37,42 @@ export const ControlsPanel = () => {
 
   return (
     <>
-    <div className={styles["control-panel"]}>
-      <TreeDropdown
-        label="יחידה"
-        data={treeData}
-        value={selectedUnit}
-        onChange={setSelectedUnit}
-      />
+      <div className={styles["control-panel"]}>
+        <TreeDropdown
+          data={treeData}
+          value={selectedUnit}
+          onChange={setSelectedUnit}
+        />
 
-      <Select
-        label="סוג שירות"
-        options={serviceTypeOptions}
-        value={selectedServiceType ?? "הכל"}
-        onChange={(value) =>
-          setSelectedServiceType(value === "הכל" ? null : value)
-        }
-      />
+        <MultiSelect
+          placeholder="סוג שירות"
+          options={serviceTypes}
+          value={selectedServiceTypes ?? []}
+          onChange={(value) =>
+            setSelectedServiceTypes(value.length === 0 ? null : value)
+          }
+        />
 
-      <Select
-        label="משאבים"
-        options={resourceTypeOptions}
-        value={selectedResourceType ?? "הכל"}
-        onChange={(value) =>
-          setSelectedResourceType(value === "הכל" ? null : value)
-        }
-      />
+        <MultiSelect
+          placeholder="משאבים"
+          options={resourceTypes}
+          value={selectedResourceTypes ?? []}
+          onChange={(value) =>
+            setSelectedResourceTypes(value.length === 0 ? null : value)
+          }
+        />
 
-      <SelectTime />
+        <SelectTime />
 
-      <PopoverTime anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
-      <Tooltip title="תאריך" arrow >
-      <i
-        className={`bi bi-calendar-date ${styles["time-icon"]}`}
-        onClick={handleOpenPopover}
-      />
-
-      </Tooltip>
-      
-    </div>
-    <i className={`${styles["control-panel-icon"]} bi bi-calendar4-range ${styles["header-icon"]}`} />
+        <PopoverTime anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
+        <Tooltip title="תאריך" arrow>
+          <i
+            className={`bi bi-calendar-date ${styles["time-icon"]}`}
+            onClick={handleOpenPopover}
+          />
+        </Tooltip>
+      </div>
+      <i className={`${styles["control-panel-icon"]} bi bi-calendar4-range ${styles["header-icon"]}`} />
     </>
   );
 };

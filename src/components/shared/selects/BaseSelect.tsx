@@ -1,32 +1,27 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import styles from "@/style/components/shared/Select.module.css";
 
-interface SelectProps {
-  options: string[];
-  value?: string;
-  onChange: (value: string) => void;
+
+interface BaseSelectProps {
   label?: string;
+  displayText: string;
   placeholder?: string;
+  isPlaceholder?: boolean;
+  children: (actions: { close: () => void }) => ReactNode;
 }
 
-export function Select({
-  options,
-  value,
-  onChange,
+export function BaseSelect({
   label,
+  displayText,
   placeholder = "בחר ערך",
-}: SelectProps) {
-
+  isPlaceholder,
+  children,
+}: BaseSelectProps) {
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  const displayText = value || placeholder;
-
-  const handleSelect = (option: string) => {
-    onChange(option);
-    setOpen(false);
-  };
+  const close = () => setOpen(false);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -34,7 +29,7 @@ export function Select({
         wrapperRef.current &&
         !wrapperRef.current.contains(event.target as Node)
       ) {
-        setOpen(false);
+        close();
       }
     };
 
@@ -54,9 +49,11 @@ export function Select({
           onClick={() => setOpen((prev) => !prev)}
         >
           <span
-            className={`${styles.text} ${!value ? styles.placeholder : ""}`}
+            className={`${styles.text} ${
+              isPlaceholder ? styles.placeholder : ""
+            }`}
           >
-            {displayText}
+            {displayText || placeholder}
           </span>
 
           <KeyboardArrowDownIcon
@@ -66,17 +63,7 @@ export function Select({
 
         {open && (
           <div className={styles.dropdown}>
-            <div className={styles.dropdownContent}>
-              {options.map((option) => (
-                <div
-                  key={option}
-                  className={styles.option}
-                  onClick={() => handleSelect(option)}
-                >
-                  {option}
-                </div>
-              ))}
-            </div>
+            {children({ close })}
           </div>
         )}
       </div>

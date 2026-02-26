@@ -7,12 +7,11 @@ import { PopoverTime } from "../gantpage/header/PopoverTime";
 import { MultiSelect } from "./selects/MultiSelect";
 import styles from "@/style/components/shared/ControlsPanel.module.css";
 
-
 export const ControlsPanel = () => {
   const {
     treeData,
-    selectedUnit,
-    setSelectedUnit,
+    selectedUnitIds,
+    setSelectedUnitIds,
 
     serviceTypes,
     selectedServiceTypes,
@@ -40,8 +39,9 @@ export const ControlsPanel = () => {
       <div className={styles["control-panel"]}>
         <TreeDropdown
           data={treeData}
-          value={selectedUnit}
-          onChange={setSelectedUnit}
+          value={selectedUnitIds}
+          onChange={setSelectedUnitIds}
+          placeholder="יחידה"
         />
 
         <MultiSelect
@@ -72,7 +72,9 @@ export const ControlsPanel = () => {
           />
         </Tooltip>
       </div>
-      <i className={`${styles["control-panel-icon"]} bi bi-calendar4-range ${styles["header-icon"]}`} />
+      <i
+        className={`${styles["control-panel-icon"]} bi bi-calendar4-range ${styles["header-icon"]}`}
+      />
     </>
   );
 };

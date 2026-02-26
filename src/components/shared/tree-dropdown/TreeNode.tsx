@@ -1,23 +1,31 @@
 import { useState } from "react";
+import CheckIcon from "@mui/icons-material/Check";
 import type { TreeNodeData } from "./types";
-import style from "@/style/components/shared/tree-dropdown/TreeNode.module.css"
-
+import style from "@/style/components/shared/tree-dropdown/TreeNode.module.css";
 
 interface TreeNodeProps {
   node: TreeNodeData;
-  onSelect: (node: TreeNodeData) => void;
+  onToggle: (node: TreeNodeData) => void;
+  selectedIds: Set<string>;
+  ancestorChecked?: boolean;
   level?: number;
 }
 
-export const TreeNode = ({ node, onSelect, level = 0 }: TreeNodeProps) => {
+export const TreeNode = ({
+  node,
+  onToggle,
+  selectedIds,
+  ancestorChecked = false,
+  level = 0,
+}: TreeNodeProps) => {
   const [open, setOpen] = useState(false);
   const hasChildren = (node.children?.length ?? 0) > 0;
 
+  const isChecked = ancestorChecked || selectedIds.has(node.id);
+
   const getBackgroundColor = () => {
-    const opacity = level * 0.08;
-    const maxOpacity = Math.min(opacity, 0.5);
-    
-    return `rgba(255, 255, 255, ${maxOpacity})`;
+    const opacity = Math.min(level * 0.08, 0.5);
+    return `rgba(255, 255, 255, ${opacity})`;
   };
 
   return (
@@ -42,11 +50,15 @@ export const TreeNode = ({ node, onSelect, level = 0 }: TreeNodeProps) => {
           )}
 
           <span
-            onClick={() => onSelect(node)}
+            onClick={() => onToggle(node)}
             className={style.label}
           >
             {node.label}
           </span>
+
+          {isChecked && (
+            <CheckIcon className={style.check} sx={{ fontSize: 21 }} />
+          )}
         </div>
       </li>
 
@@ -56,7 +68,9 @@ export const TreeNode = ({ node, onSelect, level = 0 }: TreeNodeProps) => {
             <TreeNode
               key={child.id}
               node={child}
-              onSelect={onSelect}
+              onToggle={onToggle}
+              selectedIds={selectedIds}
+              ancestorChecked={isChecked}
               level={level + 1}
             />
           ))}

@@ -53,6 +53,11 @@
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: clamp(0.75rem, 1vw, 0.9rem);
+  color: #efeded;
+}
+
+.placeholder {
+  color: #a0a0a0;
 }
 
 /* ===== Arrow ===== */
@@ -90,4 +95,45 @@
 .dropdownContent {
   max-height: clamp(180px, 35vh, 300px);
   overflow-y: auto;
+}
+
+/* ===== Footer ===== */
+.footer {
+  border-top: 1px solid #525252;
+  padding: 8px;
+}
+
+.footerButtons {
+  display: flex;
+  gap: 8px;
+}
+
+.resetButton {
+  flex: 1;
+  background: transparent;
+  border: 1px solid #525252;
+  border-radius: 999px;
+  padding: 6px 10px;
+  cursor: pointer;
+  color: #efeded;
+  font-size: 0.85rem;
+}
+
+.resetButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.confirmButton {
+  flex: 1;
+  background: #525252;
+  border: none;
+  border-radius: 999px;
+  padding: 6px 10px;
+  cursor: pointer;
+  color: #efeded;
+  font-size: 0.85rem;
+}
+
+.confirmButton:hover {
+  background: #6a6a6a;
 }

@@ -1,21 +1,24 @@
 import { TreeNode } from "./TreeNode";
 import type { TreeNodeData } from "./types";
 
-
 interface TreeSelectProps {
   data: TreeNodeData[];
-  onSelect?: (node: TreeNodeData) => void;
+  selectedIds: Set<string>;
+  onToggle: (node: TreeNodeData) => void;
 }
 
-export const TreeSelect = ({ data, onSelect }: TreeSelectProps) => {
-  const handleSelect = (node: TreeNodeData) => {
-    onSelect?.(node);
-  };
-
+export const TreeSelect = ({ data, selectedIds, onToggle }: TreeSelectProps) => {
   return (
     <ul style={{ margin: 0, padding: 0 }}>
       {data.map((root) => (
-        <TreeNode key={root.id} node={root} onSelect={handleSelect} level={0} />
+        <TreeNode
+          key={root.id}
+          node={root}
+          selectedIds={selectedIds}
+          onToggle={onToggle}
+          ancestorChecked={false}
+          level={0}
+        />
       ))}
     </ul>
   );

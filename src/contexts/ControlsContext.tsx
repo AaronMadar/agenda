@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import type { TreeNodeData } from "@/components/shared/tree-dropdown/types";
 import { getUnitsTree, getServiceTypes, getResourceTypes } from "@/api/controls.api";
@@ -9,7 +9,7 @@ export type ResourceTypeOption = string;
 export type ControlsContextType = {
   // Unit tree
   treeData: TreeNodeData[];
-  selectedUnit: TreeNodeData | null;
+  selectedUnitIds: string[];
 
   // Service types
   serviceTypes: ServiceTypeOption[];
@@ -24,7 +24,7 @@ export type ControlsContextType = {
   error: string | null;
 
   // Actions
-  setSelectedUnit: (node: TreeNodeData | null) => void;
+  setSelectedUnitIds: (ids: string[]) => void;
   setSelectedServiceTypes: (value: ServiceTypeOption[] | null) => void;
   setSelectedResourceTypes: (value: ResourceTypeOption[] | null) => void;
   refetch: () => void;
@@ -34,7 +34,7 @@ const ControlsContext = createContext<ControlsContextType | null>(null);
 
 export const ControlsProvider = ({ children }: { children: ReactNode }) => {
   const [treeData, setTreeData] = useState<TreeNodeData[]>([]);
-  const [selectedUnit, setSelectedUnit] = useState<TreeNodeData | null>(null);
+  const [selectedUnitIds, setSelectedUnitIds] = useState<string[]>([]);
 
   const [serviceTypes, setServiceTypes] = useState<ServiceTypeOption[]>([]);
   const [selectedServiceTypes, setSelectedServiceTypes] =
@@ -51,26 +51,18 @@ export const ControlsProvider = ({ children }: { children: ReactNode }) => {
     try {
       setLoading(true);
 
-      // Units tree
       const unitsTree = await getUnitsTree();
       setTreeData(unitsTree);
-      if (unitsTree.length > 0 && !selectedUnit) {
-        setSelectedUnit(unitsTree[0]);
+
+      if (unitsTree.length > 0 && selectedUnitIds.length === 0) {
+        setSelectedUnitIds([unitsTree[0].id]);
       }
 
-      // Service types
       const services: ServiceTypeOption[] = await getServiceTypes();
       setServiceTypes(services);
-      if (!selectedServiceTypes && services.length > 0) {
-        setSelectedServiceTypes(null); // null === "הכל"
-      }
 
-      // Resource types
       const resources: ResourceTypeOption[] = await getResourceTypes();
       setResourceTypes(resources);
-      if (!selectedResourceTypes && resources.length > 0) {
-        setSelectedResourceTypes(null); // null === "הכל"
-      }
 
       setError(null);
     } catch (err) {
@@ -89,7 +81,7 @@ export const ControlsProvider = ({ children }: { children: ReactNode }) => {
     <ControlsContext.Provider
       value={{
         treeData,
-        selectedUnit,
+        selectedUnitIds,
 
         serviceTypes,
         selectedServiceTypes,
@@ -100,7 +92,7 @@ export const ControlsProvider = ({ children }: { children: ReactNode }) => {
         loading,
         error,
 
-        setSelectedUnit,
+        setSelectedUnitIds,
         setSelectedServiceTypes,
         setSelectedResourceTypes,
         refetch: fetchData,

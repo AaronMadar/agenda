@@ -1,6 +1,8 @@
 import { useState } from "react";
+import dayjs from "dayjs";
 import { Tooltip } from "@mui/material";
 import { useControls } from "@/contexts/ControlsContext";
+import { useDateRange } from "@/contexts/DateRangeContext";
 import { TreeDropdown } from "@/components/shared/tree-dropdown/TreeDropdown";
 import { SelectTime } from "../gantpage/header/SelectTime";
 import { PopoverTime } from "../gantpage/header/PopoverTime";
@@ -25,10 +27,45 @@ export const ControlsPanel = () => {
     error,
   } = useControls();
 
+  const {
+    startDate,
+    endDate,
+    setStartDate,
+    setEndDate,
+    setPeriodView,
+    refetchData,
+  } = useDateRange();
+
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
   const handleOpenPopover = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
+  };
+
+  const handleResetFilters = () => {
+    setStartDate(null);
+    setEndDate(null);
+    setPeriodView(`כל ${dayjs().year()}`);
+    setSelectedUnitIds([]);
+    setSelectedServiceTypes(null);
+    setSelectedResourceTypes(null);
+  };
+
+  const handleApplyFilters = () => {
+    refetchData(
+      startDate
+        ? startDate.format("YYYY-MM-DD")
+        : dayjs().startOf("year").format("YYYY-MM-DD"),
+      endDate
+        ? endDate.format("YYYY-MM-DD")
+        : dayjs().endOf("year").format("YYYY-MM-DD"),
+      selectedUnitIds,
+      selectedServiceTypes,
+      selectedResourceTypes,
+    );
+    alert(
+      "Filters applied! (This is a placeholder - implement actual data fetching)",
+    );
   };
 
   if (loading) return <div>טוען...</div>;
@@ -37,6 +74,14 @@ export const ControlsPanel = () => {
   return (
     <>
       <div className={styles["control-panel"]}>
+        <button className={styles["button"]} onClick={handleApplyFilters}>
+          בצע סינון
+        </button>
+
+        <button className={styles["button"]} onClick={handleResetFilters}>
+          איפוס סינונים
+        </button>
+
         <TreeDropdown
           data={treeData}
           value={selectedUnitIds}

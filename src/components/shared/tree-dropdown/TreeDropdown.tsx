@@ -7,7 +7,7 @@ import { toggleNode, getNodeLabel } from "./treeUtils";
 
 interface TreeDropdownProps {
   data: TreeNodeData[];
-  value: string[];
+  value: string[] | null;
   onChange: (ids: string[]) => void;
   placeholder?: string;
   label?: string;

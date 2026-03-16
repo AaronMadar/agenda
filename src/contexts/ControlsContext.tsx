@@ -3,13 +3,15 @@ import type { ReactNode } from "react";
 import type { TreeNodeData } from "@/components/shared/tree-dropdown/types";
 import { getUnitsTree, getServiceTypes, getResourceTypes } from "@/api/controls.api";
 
+export type UnitTypeOption = string;
 export type ServiceTypeOption = string;
 export type ResourceTypeOption = string;
+export type PeriodDateType = {start: string | null, end: string | null };
 
 export type ControlsContextType = {
   // Unit tree
   treeData: TreeNodeData[];
-  selectedUnitIds: string[];
+  selectedUnitIds: UnitTypeOption[] | null;
 
   // Service types
   serviceTypes: ServiceTypeOption[];
@@ -19,14 +21,21 @@ export type ControlsContextType = {
   resourceTypes: ResourceTypeOption[];
   selectedResourceTypes: ResourceTypeOption[] | null;
 
+  // Period data
+  currentYear: number;
+  periodView: string;
+  periodDate: PeriodDateType
+
   // Meta
   loading: boolean;
   error: string | null;
 
   // Actions
-  setSelectedUnitIds: (ids: string[]) => void;
+  setSelectedUnitIds: (ids: UnitTypeOption[] | null) => void;
   setSelectedServiceTypes: (value: ServiceTypeOption[] | null) => void;
   setSelectedResourceTypes: (value: ResourceTypeOption[] | null) => void;
+  setPeriodView: (value: string) => void;
+  setPeriodDate: (value: PeriodDateType) => void;
   refetch: () => void;
 };
 
@@ -34,7 +43,7 @@ const ControlsContext = createContext<ControlsContextType | null>(null);
 
 export const ControlsProvider = ({ children }: { children: ReactNode }) => {
   const [treeData, setTreeData] = useState<TreeNodeData[]>([]);
-  const [selectedUnitIds, setSelectedUnitIds] = useState<string[]>([]);
+  const [selectedUnitIds, setSelectedUnitIds] = useState<UnitTypeOption[] | null>(null);
 
   const [serviceTypes, setServiceTypes] = useState<ServiceTypeOption[]>([]);
   const [selectedServiceTypes, setSelectedServiceTypes] =
@@ -43,6 +52,10 @@ export const ControlsProvider = ({ children }: { children: ReactNode }) => {
   const [resourceTypes, setResourceTypes] = useState<ResourceTypeOption[]>([]);
   const [selectedResourceTypes, setSelectedResourceTypes] =
     useState<ResourceTypeOption[] | null>(null);
+
+  const currentYear = new Date().getFullYear();
+  const [periodView, setPeriodView] = useState<string>(`כל ${currentYear}`);
+  const [periodDate, setPeriodDate] = useState<PeriodDateType>({start: null, end: null})
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -85,12 +98,18 @@ export const ControlsProvider = ({ children }: { children: ReactNode }) => {
         resourceTypes,
         selectedResourceTypes,
 
+        currentYear,
+        periodView,
+        periodDate,
+        
         loading,
         error,
-
+        
         setSelectedUnitIds,
         setSelectedServiceTypes,
         setSelectedResourceTypes,
+        setPeriodView,
+        setPeriodDate,
         refetch: fetchData,
       }}
     >

@@ -3,7 +3,6 @@ import CheckIcon from "@mui/icons-material/Check";
 import { BaseSelect } from "./BaseSelect";
 import styles from "@/style/components/shared/Select.module.css";
 
-
 interface MultiSelectProps {
   options: string[];
   value?: string[];
@@ -33,7 +32,12 @@ export function MultiSelect({
 
   const resetSelection = () => {
     setTempSelected([]);
-    onChange([]);
+  };
+
+  const handleClose = (reason: "outside" | "action") => {
+    if (reason === "outside") {
+      setTempSelected(value);
+    }
   };
 
   const getDisplayText = () => {
@@ -47,6 +51,7 @@ export function MultiSelect({
       displayText={getDisplayText()}
       placeholder={placeholder}
       isPlaceholder={tempSelected.length === 0}
+      onClose={handleClose}
     >
       {({ close }) => (
         <>
@@ -87,7 +92,7 @@ export function MultiSelect({
                 className={styles.confirmButton}
                 onClick={() => {
                   onChange(tempSelected);
-                  close();
+                  close("action");
                 }}
               >
                 אישור

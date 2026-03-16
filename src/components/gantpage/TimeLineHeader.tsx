@@ -1,7 +1,6 @@
 import { useDateRange } from "@/contexts/DateRangeContext";
 import dayjs, { Dayjs } from 'dayjs';
 import { useMemo } from "react";
-
 import styles from "@/style/components/gantpage/TimeLineHeader.module.css"
 
 
@@ -9,7 +8,8 @@ export default function TimeLineHeader() {
 
     const { startDate, endDate , data } = useDateRange();
 
-    const generateTicks = (start: Dayjs, end: Dayjs): string[] => {
+    const generateTicks = (start: Dayjs | null, end: Dayjs | null): string[] => {
+        if (!start || !end) return []
         dayjs.locale('he');
         const ticks: string[] = [];
         const diffInDays = end.diff(start, 'day');
@@ -29,12 +29,7 @@ export default function TimeLineHeader() {
         return ticks;
     };
 
-    const currentYear = dayjs().year();
-    const sDate = startDate || dayjs(`${currentYear}-01-01`);
-    const eDate = endDate || dayjs(`${currentYear}-12-31`);
-
-    const dates = useMemo(() => generateTicks(sDate, eDate), [sDate, eDate]);
-
+    const dates = useMemo(() => generateTicks(startDate, endDate), [startDate, endDate]);
 
     return (
 

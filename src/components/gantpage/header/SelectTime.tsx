@@ -1,17 +1,9 @@
-import { useDateRange } from "@/contexts/DateRangeContext";
-import dayjs from "dayjs";
-
+import { useControls } from "@/contexts/ControlsContext";
 import { SingleSelect } from "@/components/shared/selects/SingleSelect";
 
 export function SelectTime() {
   const year = new Date().getFullYear();
-
-  const {
-    periodView,
-    setStartDate,
-    setEndDate,
-    setPeriodView,
-  } = useDateRange();
+  const { periodView, setPeriodView, setPeriodDate } = useControls();
 
   const options = [
     { label: `ינו' - מרץ' ${year}`, start: `${year}-01-01`, end: `${year}-03-31` },
@@ -23,16 +15,15 @@ export function SelectTime() {
     { label: `כל ${year}`, start: `${year}-01-01`, end: `${year}-12-31` },
   ];
 
-  const periodOptions = options.map(o => o.label);
+  const periodOptions = options.map((o) => o.label);
 
   const handleSelect = (label: string) => {
-    const selectedOption = options.find(o => o.label === label);
+    const selectedOption = options.find((o) => o.label === label);
     if (!selectedOption) return;
 
     setPeriodView(label);
-    setStartDate(dayjs(selectedOption.start));
-    setEndDate(dayjs(selectedOption.end));
-  }
+    setPeriodDate({ start: selectedOption.start, end: selectedOption.end });
+  };
 
   return (
     <SingleSelect
@@ -41,5 +32,5 @@ export function SelectTime() {
       placeholder="בחר תקופה"
       onChange={handleSelect}
     />
-  )
+  );
 }

@@ -14,14 +14,14 @@ import styles from "@/style/components/gantpage/Gant.module.css";
 const MIN_WIDTH_PERCENT = 5;
 const NEAR_END_THRESHOLD = 75;
 
-const getFilteredShibutsim = (shibutsim: ShibutsApi[], rangeStart: Dayjs, rangeEnd: Dayjs): ShibutsApi[] => {
-    return shibutsim.filter(shibut => {
-        const itemStart = dayjs(shibut.dateBegin);
-        const itemEnd = dayjs(shibut.dateEnd);
-        return (itemEnd.isAfter(rangeStart) || itemEnd.isSame(rangeStart, 'day')) &&
-            (itemStart.isBefore(rangeEnd) || itemStart.isSame(rangeEnd, 'day'));
-    });
-};
+// const getFilteredShibutsim = (shibutsim: ShibutsApi[], rangeStart: Dayjs, rangeEnd: Dayjs): ShibutsApi[] => {
+//     return shibutsim.filter(shibut => {
+//         const itemStart = dayjs(shibut.dateBegin);
+//         const itemEnd = dayjs(shibut.dateEnd);
+//         return (itemEnd.isAfter(rangeStart) || itemEnd.isSame(rangeStart, 'day')) &&
+//             (itemStart.isBefore(rangeEnd) || itemStart.isSame(rangeEnd, 'day'));
+//     });
+// };
 
 const sortEventsByDate = (items: ShibutsApi[]): ShibutsApi[] => {
     return [...items].sort((a, b) => dayjs(a.dateBegin).unix() - dayjs(b.dateBegin).unix());
@@ -47,8 +47,6 @@ const calculateWidth = (shibuts: ShibutsApi, rangeStart: Dayjs, rangeEnd: Dayjs)
     return width < MIN_WIDTH_PERCENT ? MIN_WIDTH_PERCENT : width;
 };
 
-
-
 type gantProps = {
     setForceDisplayed: (forces: string[]) => void;
 }
@@ -60,19 +58,17 @@ export const Gant = memo(function Gant({ setForceDisplayed }: gantProps) {
     const sDate = startDate || dayjs(`${currentYear}-01-01`);
     const eDate = endDate || dayjs(`${currentYear}-12-31`);
 
-
-
     const gdudimToDisplay = useMemo(() => {
         if (!data?.gdudim) return [];
         return data.gdudim.map((gdudData) => {
 
-            const filtered = getFilteredShibutsim(gdudData.shibutsim, sDate, eDate);
-            if (filtered.length === 0) return null;
+            // const filtered = getFilteredShibutsim(gdudData.shibutsim, sDate, eDate);
             return {
                 ...gdudData,
-                shibutsim: sortEventsByDate(filtered)
+                // shibutsim: sortEventsByDate(filtered)
+                shibutsim: sortEventsByDate(gdudData.shibutsim)
             };
-        }).filter((row): row is NonNullable<typeof row> => row !== null);
+        })
     }, [data, sDate, eDate]);
 
     const displayedForces = useMemo(() => {
@@ -87,15 +83,8 @@ export const Gant = memo(function Gant({ setForceDisplayed }: gantProps) {
         setForceDisplayed(displayedForces);
     }, [displayedForces, setForceDisplayed]);
 
-
-
     return (
-
-
         <div className={styles["gant-container"]}>
-
-
-
             {/*LOADING STATE*/}
             {loading && (
                 <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
@@ -135,12 +124,6 @@ export const Gant = memo(function Gant({ setForceDisplayed }: gantProps) {
                     ))}
                 </Box>
             )}
-
-
-
-
-
-
 
             {gdudimToDisplay.map((gdud) => (
                 <div className={`${styles["timeline-header"]} ${styles["gdudim"]}`} key={gdud.name}>

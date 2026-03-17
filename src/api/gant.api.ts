@@ -1,8 +1,8 @@
 import { httpClient } from "./httpClient";
 
 export const getShibutzimData = async (
-  from: string,
-  to: string,
+  from: string | null,
+  to: string | null,
   unitIds: string[] | null = null,
   serviceTypes: string[] | null = null,
   resourceTypes: string[] | null = null,

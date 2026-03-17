@@ -1,5 +1,4 @@
 import { useState } from "react";
-import dayjs from "dayjs";
 import { Tooltip } from "@mui/material";
 import { useControls } from "@/contexts/ControlsContext";
 import { useDateRange } from "@/contexts/DateRangeContext";
@@ -23,18 +22,16 @@ export const ControlsPanel = () => {
     selectedResourceTypes,
     setSelectedResourceTypes,
 
+    currentYear,
+    periodDate,
+    setPeriodDate,
+    setPeriodView,
+
     loading,
     error,
   } = useControls();
 
-  const {
-    startDate,
-    endDate,
-    setStartDate,
-    setEndDate,
-    setPeriodView,
-    refetchData,
-  } = useDateRange();
+  const {refetchData} = useDateRange();
 
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
@@ -43,33 +40,27 @@ export const ControlsPanel = () => {
   };
 
   const handleResetFilters = () => {
-    setStartDate(null);
-    setEndDate(null);
-    setPeriodView(`כל ${dayjs().year()}`);
-    setSelectedUnitIds([]);
+    setPeriodDate({start: null, end: null})
+    setPeriodView(`כל ${currentYear}`);
+    setSelectedUnitIds(null);
     setSelectedServiceTypes(null);
     setSelectedResourceTypes(null);
   };
 
   const handleApplyFilters = () => {
-    refetchData(
-      startDate
-        ? startDate.format("YYYY-MM-DD")
-        : dayjs().startOf("year").format("YYYY-MM-DD"),
-      endDate
-        ? endDate.format("YYYY-MM-DD")
-        : dayjs().endOf("year").format("YYYY-MM-DD"),
-      selectedUnitIds,
-      selectedServiceTypes,
-      selectedResourceTypes,
-    );
-    alert(
-      "Filters applied! (This is a placeholder - implement actual data fetching)",
-    );
-  };
+    const filters = {
+      from: periodDate ? periodDate.start : null,
+      to: periodDate ? periodDate.end : null,
+      unitIds: selectedUnitIds,
+      serviceTypes: selectedServiceTypes,
+      resourceTypes: selectedResourceTypes,
+    };
+    console.log("Applying filters:", filters);
+    refetchData(filters);
 
-  if (loading) return <div>טוען...</div>;
-  if (error) return <div>שגיאה: {error}</div>;
+    if (loading) return <div>טוען...</div>;
+    if (error) return <div>שגיאה: {error}</div>;
+  };
 
   return (
     <>

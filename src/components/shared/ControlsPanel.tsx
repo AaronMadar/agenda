@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Tooltip } from "@mui/material";
-import { useControls } from "@/contexts/ControlsContext";
+// import { useControls } from "@/contexts/ControlsContext";
+import { useControls } from "@/stores/controlsStore";
 import { useDateRange } from "@/contexts/DateRangeContext";
 import { TreeDropdown } from "@/components/shared/tree-dropdown/TreeDropdown";
 import { SelectTime } from "../gantpage/header/SelectTime";
@@ -9,27 +10,27 @@ import { MultiSelect } from "./selects/MultiSelect";
 import styles from "@/style/components/shared/ControlsPanel.module.css";
 
 export const ControlsPanel = () => {
-  const {
-    treeData,
-    selectedUnitIds,
-    setSelectedUnitIds,
+    const {
+      treeData,
+      selectedUnitIds,
+      setSelectedUnitIds,
 
-    serviceTypes,
-    selectedServiceTypes,
-    setSelectedServiceTypes,
+      serviceTypes,
+      selectedServiceTypes,
+      setSelectedServiceTypes,
 
-    resourceTypes,
-    selectedResourceTypes,
-    setSelectedResourceTypes,
+      resourceTypes,
+      selectedResourceTypes,
+      setSelectedResourceTypes,
 
-    currentYear,
-    periodDate,
-    setPeriodDate,
-    setPeriodView,
+      currentYear,
+      periodDate,
+      setPeriodDate,
+      setPeriodView,
 
-    loading,
-    error,
-  } = useControls();
+      loading,
+      error,
+    } = useControls();
 
   const {refetchData} = useDateRange();
 

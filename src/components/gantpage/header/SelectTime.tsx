@@ -1,4 +1,4 @@
-import { useControls } from "@/contexts/ControlsContext";
+import { useControls } from "@/stores/controlsStore";
 import { SingleSelect } from "@/components/shared/selects/SingleSelect";
 
 export function SelectTime() {

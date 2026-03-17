@@ -19,13 +19,11 @@ export function GantPage() {
 
     return (
         <div className={styles["gantpage-container"]}>
-            {/* On passe la fonction de modification au Header */}
             <Header onMapClick={toggleLegend} />
-            <TimeLineHeader  />
+            <TimeLineHeader />
             
             <Gant setForceDisplayed={setForceDisplayed} />
 
-            {/* La popup s'affiche ici si l'état est vrai */}
             {isLegendOpen && (
                 <LegendPopup 
                     onClose={() => setIsLegendOpen(false)} 

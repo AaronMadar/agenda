@@ -4,6 +4,7 @@ import { Tooltip } from '@mui/material';
 import html2canvas from 'html2canvas';
 import styles from "@/style/components/gantpage/Header.module.css";
 import { ControlsPanel } from '../shared/ControlsPanel';
+import { memo } from 'react';
 
 interface HeaderProps {
     onMapClick: () => void
@@ -11,27 +12,24 @@ interface HeaderProps {
 
 
 const handlePrint = () => {
-        window.print();
+    window.print();
 };
 
 const handleClickCamera = async () => {
     const appRoot = document.getElementById('root');
     if (!appRoot) return;
 
-    // Capture avec haute résolution et suppression des artefacts
     const canvas = await html2canvas(appRoot, {
-        scale: 2, // Double la densité de pixels pour la netteté
+        scale: 2,
         useCORS: true,
         logging: false,
-        backgroundColor: "#ffffff", // Force le fond blanc pour l'encre
+        backgroundColor: "#ffffff",
         windowWidth: appRoot.scrollWidth,
         windowHeight: appRoot.scrollHeight,
         onclone: (clonedDoc) => {
-            // Masque le header et les boutons sur la capture
             const header = clonedDoc.querySelector('header');
             if (header) header.style.display = 'none';
-            
-            // Force l'affichage des détails des cartes (simule le hover)
+
             const details = clonedDoc.querySelectorAll<HTMLElement>('[class*="variationContainer"], [class*="divDown"]');
             details.forEach(d => d.style.display = 'flex');
         }
@@ -41,10 +39,10 @@ const handleClickCamera = async () => {
     const link = document.createElement('a');
     link.download = `gantt-export-${new Date().getTime()}.png`;
     link.href = imgData;
-    link.click(); // Téléchargement direct plus fiable que l'iframe
+    link.click(); 
 };
 
-export function Header({ onMapClick }: HeaderProps) {
+export const Header = memo(({ onMapClick }: HeaderProps) => {
 
     const navigate = useNavigate();
 
@@ -81,7 +79,7 @@ export function Header({ onMapClick }: HeaderProps) {
                         <i className={`bi bi-bookmark ${styles["little"]} ${styles["header-icon"]}`} />
                     </Tooltip>
                     <Tooltip title="רענון" arrow>
-                        <i className={`bi bi-arrow-clockwise ${styles["header-icon"]}`} onClick={() => window.location.reload()} style={{cursor:'pointer'}} />
+                        <i className={`bi bi-arrow-clockwise ${styles["header-icon"]}`} onClick={() => window.location.reload()} style={{ cursor: 'pointer' }} />
                     </Tooltip>
                     <Tooltip title="הדפסה" arrow>
                         <i
@@ -89,7 +87,7 @@ export function Header({ onMapClick }: HeaderProps) {
                             onClick={handlePrint} />
                     </Tooltip>
                     <Tooltip title="מצלמה" arrow>
-                        <i className={`bi bi-camera ${styles["header-icon"]}`} onClick={handleClickCamera} style={{cursor:'pointer'}} />
+                        <i className={`bi bi-camera ${styles["header-icon"]}`} onClick={handleClickCamera} style={{ cursor: 'pointer' }} />
                     </Tooltip>
                 </div>
             </div>
@@ -100,6 +98,4 @@ export function Header({ onMapClick }: HeaderProps) {
             </div>
         </header>
     )
-}
-
-
+})

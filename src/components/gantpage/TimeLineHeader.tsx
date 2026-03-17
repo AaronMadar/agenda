@@ -10,7 +10,6 @@ export default function TimeLineHeader() {
 
     const generateTicks = (start: Dayjs | null, end: Dayjs | null): string[] => {
         if (!start || !end) return []
-        dayjs.locale('he');
         const ticks: string[] = [];
         const diffInDays = end.diff(start, 'day');
         if (diffInDays <= 15) {
@@ -20,7 +19,7 @@ export default function TimeLineHeader() {
                 current = current.add(1, 'day');
             }
         } else {
-            let current = start.startOf('month');
+            let current = start.startOf('month');   
             while (!current.isAfter(end.add(1, 'month'))) {
                 ticks.push(current.format('MMM'));
                 current = current.add(1, 'month');

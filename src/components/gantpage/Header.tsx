@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Tooltip } from '@mui/material';
 import html2canvas from 'html2canvas';
 import styles from "@/style/components/gantpage/Header.module.css";
-import { ControlsPanel } from '../shared/ControlsPanel';
+import { FiltersPanel } from '../shared/FiltersPanel';
 import { memo } from 'react';
 
 interface HeaderProps {
@@ -94,7 +94,7 @@ export const Header = memo(({ onMapClick }: HeaderProps) => {
 
             <i className={`${styles["control-icon"]} bi bi-grid ${styles["header-icon"]}`} />
             <div className={styles["header-time-controls"]}>
-                <ControlsPanel />
+                <FiltersPanel />
             </div>
         </header>
     )

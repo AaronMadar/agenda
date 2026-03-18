@@ -6,7 +6,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
-import { useControls } from "@/stores/controlsStore";
+import { useFilters } from "@/stores/filtersStore";
 
 import styles from "@/style/components/gantpage/header/PopoverTime.module.css";
 
@@ -16,7 +16,7 @@ interface PopoverProps {
 }
 
 export function PopoverTime({ anchorEl, setAnchorEl }: PopoverProps) {
-  const { currentYear, setPeriodView, setPeriodDate } = useControls();
+  const { currentYear, setPeriodView, setPeriodDate } = useFilters();
 
   const [selectedStart, setSelectedStart] = useState<Dayjs | null>(null);
   const [selectedEnd, setSelectedEnd] = useState<Dayjs | null>(null);

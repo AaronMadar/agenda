@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import type { TreeNodeData } from "@/components/shared/tree-dropdown/types";
-import { getUnitsTree, getServiceTypes, getResourceTypes } from "@/api/controls.api";
+import { getUnitsTree, getServiceTypes, getResourceTypes } from "@/api/filters.api";
 
 // Option types
 export type UnitTypeOption = string;
@@ -9,9 +9,9 @@ export type ResourceTypeOption = string;
 export type PeriodDateType = { start: string | null; end: string | null };
 
 // Zustand store type
-export type ControlsState = {
+export type FiltersState = {
   // Unit tree
-  treeData: TreeNodeData[];
+  UnitTreeData: TreeNodeData[];
   selectedUnitIds: UnitTypeOption[] | null;
 
   // Service types
@@ -37,12 +37,12 @@ export type ControlsState = {
   setSelectedResourceTypes: (values: ResourceTypeOption[] | null) => void;
   setPeriodView: (value: string) => void;
   setPeriodDate: (value: PeriodDateType) => void;
-  loadInitialData: (idSoldier: string) => Promise<void>; 
+  loadFiltersData: (idSoldier: string) => Promise<void>; 
 };
 
-export const useControls = create<ControlsState>((set, get) => ({
+export const useFilters = create<FiltersState>((set, get) => ({
   // Initial values
-  treeData: [],
+  UnitTreeData: [],
   selectedUnitIds: null,
 
   serviceTypes: [],
@@ -66,7 +66,7 @@ export const useControls = create<ControlsState>((set, get) => ({
   setPeriodDate: (value) => set({ periodDate: value }),
 
   // Load initial data from API
-  loadInitialData: async (idSoldier) => {
+  loadFiltersData: async (idSoldier) => {
     try {
       set({ loading: true });
 
@@ -75,7 +75,7 @@ export const useControls = create<ControlsState>((set, get) => ({
       const resources = await getResourceTypes();
 
       set({
-        treeData: unitsTree,
+        UnitTreeData: unitsTree,
         serviceTypes: services,
         resourceTypes: resources,
         error: null,

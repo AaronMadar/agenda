@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import style from "@/style/components/dashboard/DashboardHeader.module.css";
-import { ControlsPanel } from "../shared/ControlsPanel";
+import { FiltersPanel } from "../shared/FiltersPanel";
 // import { KeyValPopUp } from "../shared/pop-ups/KeyValPopUp"
 // import { ResourcePopUp } from "../shared/pop-ups/ResourcePopUp";
 
@@ -30,7 +30,7 @@ export const DashboardHeader = () => {
       {/* <KeyValPopUp header="תרג”ד חי”ר סדיר" keyValues={keyValues} /> */}
       {/* <ResourcePopUp resourceDetailsTable={resourceDetailsTable} /> */}
 
-      <ControlsPanel />
+      <FiltersPanel />
 
       <div className={style.imgsContainer}>
         <img

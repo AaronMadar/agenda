@@ -52,15 +52,15 @@ type gantProps = {
 }
 
 export const Gant = memo(function Gant({ setForceDisplayed }: gantProps) {
-    const { startDate, endDate, data, loading } = useDateRange();
+    const { startDate, endDate, shibutzimData, loading } = useDateRange();
 
     const currentYear = dayjs().year();
     const sDate = startDate || dayjs(`${currentYear}-01-01`);
     const eDate = endDate || dayjs(`${currentYear}-12-31`);
 
     const gdudimToDisplay = useMemo(() => {
-        if (!data?.gdudim) return [];
-        return data.gdudim.map((gdudData) => {
+        if (!shibutzimData?.gdudim) return [];
+        return shibutzimData.gdudim.map((gdudData) => {
 
             // const filtered = getFilteredShibutsim(gdudData.shibutsim, sDate, eDate);
             return {
@@ -69,7 +69,7 @@ export const Gant = memo(function Gant({ setForceDisplayed }: gantProps) {
                 shibutsim: sortEventsByDate(gdudData.shibutsim)
             };
         })
-    }, [data, sDate, eDate]);
+    }, [shibutzimData, sDate, eDate]);
 
     const displayedForces = useMemo(() => {
         const forces = new Set<string>();

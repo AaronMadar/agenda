@@ -1,12 +1,12 @@
 import { useDateRange } from "@/contexts/DateRangeContext";
-import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
 import { useMemo } from "react";
 import styles from "@/style/components/gantpage/TimeLineHeader.module.css"
 
 
 export default function TimeLineHeader() {
 
-    const { startDate, endDate , data } = useDateRange();
+    const { startDate, endDate , shibutzimData } = useDateRange();
 
     const generateTicks = (start: Dayjs | null, end: Dayjs | null): string[] => {
         if (!start || !end) return []
@@ -33,7 +33,7 @@ export default function TimeLineHeader() {
     return (
 
         <div className={styles["timeline-header"]}>
-            <div className={`${styles["unit-title"]} ${styles["div-side"]}`}>{data?.unit}</div>
+            <div className={`${styles["unit-title"]} ${styles["div-side"]}`}>{shibutzimData?.unit}</div>
             <div className={styles["ticks-container"]}>
                 {dates.map((date, i) => (
                     <div className={styles["timeline-tick"]} key={i}>

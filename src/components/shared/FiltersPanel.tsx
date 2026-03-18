@@ -1,17 +1,17 @@
 import { useState } from "react";
 import { Tooltip } from "@mui/material";
-// import { useControls } from "@/contexts/ControlsContext";
-import { useControls } from "@/stores/controlsStore";
+import { useFilters } from "@/stores/filtersStore";
 import { useDateRange } from "@/contexts/DateRangeContext";
 import { TreeDropdown } from "@/components/shared/tree-dropdown/TreeDropdown";
 import { SelectTime } from "../gantpage/header/SelectTime";
 import { PopoverTime } from "../gantpage/header/PopoverTime";
 import { MultiSelect } from "./selects/MultiSelect";
-import styles from "@/style/components/shared/ControlsPanel.module.css";
+import { useShibutzim } from "@/hooks/useShibutzim";
+import styles from "@/style/components/shared/FiltersPanel.module.css";
 
-export const ControlsPanel = () => {
+export const FiltersPanel = () => {
     const {
-      treeData,
+      UnitTreeData,
       selectedUnitIds,
       setSelectedUnitIds,
 
@@ -30,9 +30,9 @@ export const ControlsPanel = () => {
 
       loading,
       error,
-    } = useControls();
+    } = useFilters();
 
-  const {refetchData} = useDateRange();
+  const {refetchShibutzimData} = useShibutzim();
 
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
@@ -57,7 +57,7 @@ export const ControlsPanel = () => {
       resourceTypes: selectedResourceTypes,
     };
     console.log("Applying filters:", filters);
-    refetchData(filters);
+    refetchShibutzimData(filters);
 
     if (loading) return <div>טוען...</div>;
     if (error) return <div>שגיאה: {error}</div>;
@@ -75,7 +75,7 @@ export const ControlsPanel = () => {
         </button>
 
         <TreeDropdown
-          data={treeData}
+          data={UnitTreeData}
           value={selectedUnitIds}
           onChange={setSelectedUnitIds}
           placeholder="יחידה"

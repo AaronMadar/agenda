@@ -1,9 +1,9 @@
-import { useControls } from "@/stores/controlsStore";
+import { useFilters } from "@/stores/filtersStore";
 import { SingleSelect } from "@/components/shared/selects/SingleSelect";
 
 export function SelectTime() {
   const year = new Date().getFullYear();
-  const { periodView, setPeriodView, setPeriodDate } = useControls();
+  const { periodView, setPeriodView, setPeriodDate } = useFilters();
 
   const options = [
     { label: `ינו' - מרץ' ${year}`, start: `${year}-01-01`, end: `${year}-03-31` },

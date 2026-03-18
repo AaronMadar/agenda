@@ -1,9 +1,9 @@
 import { httpClient } from "./httpClient";
 
 export const getShibutzimData = async (
-  from: string | null,
-  to: string | null,
-  unitIds: string[] | null = null,
+  from: string,
+  to: string,
+  unitIds: string[],
   serviceTypes: string[] | null = null,
   resourceTypes: string[] | null = null,
 ) => {

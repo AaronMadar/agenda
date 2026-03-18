@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Tooltip } from "@mui/material";
 import { useFilters } from "@/stores/filtersStore";
-import { useDateRange } from "@/contexts/DateRangeContext";
 import { TreeDropdown } from "@/components/shared/tree-dropdown/TreeDropdown";
 import { SelectTime } from "../gantpage/header/SelectTime";
 import { PopoverTime } from "../gantpage/header/PopoverTime";
@@ -33,6 +32,7 @@ export const FiltersPanel = () => {
     } = useFilters();
 
   const {refetchShibutzimData} = useShibutzim();
+  const rootUnitId = useFilters(state => state.UnitTreeData?.[0]?.id);
 
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
@@ -43,7 +43,7 @@ export const FiltersPanel = () => {
   const handleResetFilters = () => {
     setPeriodDate({start: null, end: null})
     setPeriodView(`כל ${currentYear}`);
-    setSelectedUnitIds(null);
+    setSelectedUnitIds([rootUnitId]);
     setSelectedServiceTypes(null);
     setSelectedResourceTypes(null);
   };
@@ -56,7 +56,6 @@ export const FiltersPanel = () => {
       serviceTypes: selectedServiceTypes,
       resourceTypes: selectedResourceTypes,
     };
-    console.log("Applying filters:", filters);
     refetchShibutzimData(filters);
 
     if (loading) return <div>טוען...</div>;
@@ -79,6 +78,7 @@ export const FiltersPanel = () => {
           value={selectedUnitIds}
           onChange={setSelectedUnitIds}
           placeholder="יחידה"
+          rootValue={rootUnitId}
         />
 
         <MultiSelect

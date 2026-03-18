@@ -70,12 +70,15 @@ export const useFilters = create<FiltersState>((set, get) => ({
     try {
       set({ loading: true });
 
-      const unitsTree = await getUnitsTree(idSoldier);
-      const services = await getServiceTypes();
-      const resources = await getResourceTypes();
+      const [unitsTree, services, resources] = await Promise.all([
+        getUnitsTree(idSoldier),
+        getServiceTypes(),
+        getResourceTypes(),
+      ]);
 
       set({
         UnitTreeData: unitsTree,
+        selectedUnitIds: [unitsTree[0]?.id],
         serviceTypes: services,
         resourceTypes: resources,
         error: null,

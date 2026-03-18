@@ -11,6 +11,7 @@ interface TreeDropdownProps {
   onChange: (ids: string[]) => void;
   placeholder?: string;
   label?: string;
+  rootValue?: string;
 }
 
 export const TreeDropdown = ({
@@ -19,6 +20,7 @@ export const TreeDropdown = ({
   onChange,
   placeholder = "בחר ערך",
   label,
+  rootValue,
 }: TreeDropdownProps) => {
   const [open, setOpen] = useState(false);
   const [tempSelected, setTempSelected] = useState<Set<string>>(
@@ -56,12 +58,27 @@ export const TreeDropdown = ({
   };
 
   const handleConfirm = () => {
-    onChange([...tempSelected]);
+    let selectedItems: string[];
+
+    if (tempSelected.size) {
+      selectedItems = Array.from(tempSelected);
+    } else if (value?.length) {
+      selectedItems = value;
+      setTempSelected(new Set(value));
+    } else if (rootValue) {
+      selectedItems = [rootValue];
+      setTempSelected(new Set([rootValue]));
+    } else {
+      selectedItems = [];
+    }
+
+    onChange(selectedItems);
     setOpen(false);
   };
 
   const handleReset = () => {
-    setTempSelected(new Set());
+    const newSelection = rootValue ? new Set([rootValue]) : new Set<string>();
+    setTempSelected(newSelection);
   };
 
   return (

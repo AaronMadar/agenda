@@ -5,8 +5,8 @@ import { useFilters } from "@/stores/filtersStore";
 import { useDateRange } from "@/contexts/DateRangeContext";
 
 type RefetchParams = {
-  from: string | null;
-  to: string | null;
+  from?: string | null;
+  to?: string | null;
   unitIds?: string[] | null;
   serviceTypes?: string[] | null;
   resourceTypes?: string[] | null;
@@ -20,11 +20,9 @@ export const useShibutzim = () => {
     setLoading,
   } = useDateRange();
 
-  const { UnitTreeData } = useFilters();
+  const rootUnitId = useFilters(state => state.UnitTreeData?.[0]?.id);
 
-  /**
-   * Fetch data from API with optional filters
-   */
+  // Fetch data from API with optional filters
   const refetchShibutzimData = useCallback(
     async ({
       from,
@@ -32,21 +30,35 @@ export const useShibutzim = () => {
       unitIds,
       serviceTypes,
       resourceTypes,
-    }: RefetchParams) => {
+    }: RefetchParams = {}) => {
       try {
         setLoading(true);
 
+        const defaultFrom = dayjs().startOf("year").format("YYYY-MM-DD");
+        const defaultTo = dayjs().endOf("year").format("YYYY-MM-DD");
+
+        const fromDate = from ?? defaultFrom;
+        const toDate = to ?? defaultTo;
+
+        if (!unitIds?.length) return;
+
+        console.log("Fetching data with filters:", {
+          from: fromDate,
+          to: toDate,
+          unitIds,
+          serviceTypes,
+          resourceTypes,
+        });
+
         const jsonData = await getShibutzimData(
-          from,
-          to,
+          fromDate,
+          toDate,
           unitIds,
           serviceTypes,
           resourceTypes
         );
 
         setShibutzimData(jsonData);
-
-        // Update date range based on API response
         setStartDate(dayjs(jsonData.period.start));
         setEndDate(dayjs(jsonData.period.end));
       } catch (error) {
@@ -58,19 +70,14 @@ export const useShibutzim = () => {
     [setShibutzimData, setStartDate, setEndDate, setLoading]
   );
 
-  /**
-   * Initial fetch on mount (default: full current year)
-   */
+   // Initial fetch on mount (default: full current year)
   useEffect(() => {
-    const from = dayjs().startOf("year").format("YYYY-MM-DD");
-    const to = dayjs().endOf("year").format("YYYY-MM-DD");
+    if (!rootUnitId) return;
 
-    const defaultUnitId = UnitTreeData.length > 0 ? UnitTreeData[0].id : null;
-
-    const unitIds = defaultUnitId ? [defaultUnitId] : null;
-
-    refetchShibutzimData({ from, to, unitIds });
-  }, [refetchShibutzimData, UnitTreeData]);
+    refetchShibutzimData({
+      unitIds: [rootUnitId],
+    });
+  }, [rootUnitId]);
 
   return {
     refetchShibutzimData,

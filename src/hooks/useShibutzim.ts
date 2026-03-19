@@ -2,7 +2,7 @@ import { useEffect, useCallback } from "react";
 import dayjs from "dayjs";
 import { getShibutzimData } from "@/api/gant.api";
 import { useFilters } from "@/stores/filtersStore";
-import { useDateRange } from "@/contexts/DateRangeContext";
+import { useShibutzimContext } from "@/contexts/ShibutzimContext";
 
 type RefetchParams = {
   from?: string | null;
@@ -18,7 +18,7 @@ export const useShibutzim = () => {
     setStartDate,
     setEndDate,
     setLoading,
-  } = useDateRange();
+  } = useShibutzimContext();
 
   const rootUnitId = useFilters(state => state.UnitTreeData?.[0]?.id);
 

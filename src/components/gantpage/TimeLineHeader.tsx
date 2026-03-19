@@ -1,4 +1,4 @@
-import { useDateRange } from "@/contexts/DateRangeContext";
+import { useShibutzimContext } from "@/contexts/ShibutzimContext";
 import { Dayjs } from 'dayjs';
 import { useMemo } from "react";
 import styles from "@/style/components/gantpage/TimeLineHeader.module.css"
@@ -6,7 +6,7 @@ import styles from "@/style/components/gantpage/TimeLineHeader.module.css"
 
 export default function TimeLineHeader() {
 
-    const { startDate, endDate , shibutzimData } = useDateRange();
+    const { startDate, endDate , shibutzimData } = useShibutzimContext();
 
     const generateTicks = (start: Dayjs | null, end: Dayjs | null): string[] => {
         if (!start || !end) return []

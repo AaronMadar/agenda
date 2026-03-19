@@ -7,7 +7,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { ShibutsCard } from "./gant/ShibutsCard";
 import { forceColors } from "@/constants/colors";
 import type { ShibutsApi } from '@/types/api-response';
-import { useDateRange } from '@/contexts/DateRangeContext';
+import { useShibutzimContext } from '@/contexts/ShibutzimContext';
 
 import styles from "@/style/components/gantpage/Gant.module.css";
 
@@ -52,7 +52,7 @@ type gantProps = {
 }
 
 export const Gant = memo(function Gant({ setForceDisplayed }: gantProps) {
-    const { startDate, endDate, shibutzimData, loading } = useDateRange();
+    const { startDate, endDate, shibutzimData, loading } = useShibutzimContext();
 
     const currentYear = dayjs().year();
     const sDate = startDate || dayjs(`${currentYear}-01-01`);

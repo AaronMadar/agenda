@@ -1,74 +1,26 @@
-import { useEffect, useState } from "react";
 import style from "@/style/components/dashboard/DashboardBody.module.css";
 
 import { BaseBodyCard } from "./BaseBodyCard";
 import { QuantityAndCost } from "./quantity-and-cost/QuantityAndCost";
 import { BudgetResources } from "./budget-resources/BudgetResources";
-import { Reports } from "./reports/Reports";
 import { TrainingCalendar } from "./training-calendar/TrainingCalendar";
-
-import { extractCalendarEvents } from "@/utils/calendar/extractCalendarEvents";
-import type { CalendarEvent } from "./training-calendar/types";
-
-import { getDashboardSummary, getDashboardCalendarData } from "@/api/dashboard.api";
-
-/* -------- types -------- */
-
-type DashboardSummaryResponse = {
-  quantityAndCost: {
-    name: string;
-    amount: number;
-    percentage: number;
-  }[];
-  resources: {
-    name: string;
-    amount: number;
-    percentage: number;
-  }[];
-  reports: string[];
-};
-
-/* -------- component -------- */
+import { Reports } from "./reports/Reports";
 
 export const DashboardBody = () => {
-  const [summaryData, setSummaryData] = useState<DashboardSummaryResponse | null>(null);
-  const [calendarEvents, setCalendarEvents] = useState<CalendarEvent[]>([]);
-
-  /* KPI / cards data */
-  useEffect(() => {
-      getDashboardSummary()
-        .then(setSummaryData)
-        .catch(err => {
-          console.error("Failed to load dashboard summary", err);
-        });
-  }, []);
-
-  /* Calendar data */
-  useEffect(() => {
-    getDashboardCalendarData()
-      .then(data => {
-        const events = extractCalendarEvents(data);
-        setCalendarEvents(events);
-      })
-      .catch(err => {
-        console.error("Failed to load calendar data", err);
-      });
-  }, []);
-
   return (
     <div className={style.bodyGrid}>
-      <QuantityAndCost quantityAndCost={summaryData?.quantityAndCost} />
+      <QuantityAndCost />
 
       <BaseBodyCard>
-        <BudgetResources resources={summaryData?.resources} />
+        <BudgetResources />
       </BaseBodyCard>
 
       <BaseBodyCard>
-        <TrainingCalendar events={calendarEvents} />
+        <TrainingCalendar />
       </BaseBodyCard>
 
       <BaseBodyCard>
-        <Reports reports={summaryData?.reports} />
+        <Reports />
       </BaseBodyCard>
     </div>
   );

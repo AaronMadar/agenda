@@ -1,13 +1,10 @@
 import style from "@/style/components/shared/ResourceCard.module.css"
 import { PercentageWithArrow } from "@/components/shared/PercentageWithArrow";
+import type { Resource } from "./resourceCard.types";
 
 
 interface ResourceCardProps {
-  resource: {
-    name: string;
-    amount: number;
-    percentage: number;
-  };
+  resource: Resource;
   noBackground?: boolean;
 }
 
@@ -20,7 +17,6 @@ const convertToMOrK = (amount: number) => {
     return amount.toString();
   }
 }
-
 
 export const ResourceCard = ({ resource, noBackground = false }: ResourceCardProps) => {
   return (

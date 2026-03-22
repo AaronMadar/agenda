@@ -4,12 +4,8 @@ import { ResourceCard } from "../../shared/ResourceCard";
 import { getResources } from "@/api/dashboard.api";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { ErrorState } from "@/components/shared/ErrorState";
+import type { Resource } from "../../shared/resourceCard.types";
 
-interface Resource {
-  name: string;
-  amount: number;
-  percentage: number;
-}
 
 export const BudgetResources = () => {
   const [resources, setResources] = useState<Resource[] | null>(null);

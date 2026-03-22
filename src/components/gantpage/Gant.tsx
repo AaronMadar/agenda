@@ -6,7 +6,7 @@ import dayjs, { Dayjs } from 'dayjs';
 
 import { ShibutsCard } from "./gant/ShibutsCard";
 import { forceColors } from "@/constants/colors";
-import type { ShibutsApi } from '@/types/api-response';
+import type { Shibutz } from '@/api/dataRes.types';
 import { useShibutzimContext } from '@/contexts/ShibutzimContext';
 
 import styles from "@/style/components/gantpage/Gant.module.css";
@@ -23,11 +23,11 @@ const NEAR_END_THRESHOLD = 75;
 //     });
 // };
 
-const sortEventsByDate = (items: ShibutsApi[]): ShibutsApi[] => {
+const sortEventsByDate = (items: Shibutz[]): Shibutz[] => {
     return [...items].sort((a, b) => dayjs(a.dateBegin).unix() - dayjs(b.dateBegin).unix());
 };
 
-const calculatePosition = (shibuts: ShibutsApi, rangeStart: Dayjs, rangeEnd: Dayjs): number => {
+const calculatePosition = (shibuts: Shibutz, rangeStart: Dayjs, rangeEnd: Dayjs): number => {
     const diffInRangeDays = rangeEnd.endOf("day").diff(rangeStart.startOf("day"), 'day');
     const totalDays = diffInRangeDays <= 15 ? (diffInRangeDays + 1) : (rangeEnd.endOf('month').diff(rangeStart.startOf('month'), 'day') + 1);
     const itemStart = dayjs(shibuts.dateBegin);
@@ -36,7 +36,7 @@ const calculatePosition = (shibuts: ShibutsApi, rangeStart: Dayjs, rangeEnd: Day
     return (diff / totalDays) * 100;
 };
 
-const calculateWidth = (shibuts: ShibutsApi, rangeStart: Dayjs, rangeEnd: Dayjs): number => {
+const calculateWidth = (shibuts: Shibutz, rangeStart: Dayjs, rangeEnd: Dayjs): number => {
     const diffInRangeDays = rangeEnd.endOf("day").diff(rangeStart.startOf("day"), 'day');
     const totalDays = diffInRangeDays <= 15 ? (diffInRangeDays + 1) : (rangeEnd.endOf('month').diff(rangeStart.startOf('month'), 'day') + 1);
     const itemStart = dayjs(shibuts.dateBegin);
@@ -135,7 +135,7 @@ export const Gant = memo(function Gant({ setForceDisplayed }: gantProps) {
                             const isNearEnd = (startPos + width) > NEAR_END_THRESHOLD;
 
                             return (
-                                <div key={shibuts.codeShibuts} className={styles["gant-row"]}>
+                                <div key={shibuts.codeShibutz} className={styles["gant-row"]}>
                                     <ShibutsCard shibuts={shibuts} pickud={gdud.pikud}
                                         style={{
                                             backgroundColor: forceColors[gdud.forceType as keyof typeof forceColors] || forceColors.default,

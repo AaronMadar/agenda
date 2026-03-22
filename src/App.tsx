@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import dayjs from "dayjs";
 import "dayjs/locale/he";
+import localeData from "dayjs/plugin/localeData";
 
 import { ShibutzimProvider } from "@/contexts/ShibutzimContext";
 import { GantPage } from '@/pages/GantPage'
@@ -10,6 +11,7 @@ import { useEffect } from "react";
 
 
 dayjs.locale("he");
+dayjs.extend(localeData);
 
 export default function App() {
     const loadFiltersData = useFilters((state) => state.loadFiltersData)

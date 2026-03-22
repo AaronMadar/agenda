@@ -1,10 +1,9 @@
-import type {
-  CalendarSourceData,
-  CalendarEvent,
-} from "@/components/dashboard/training-calendar/types";
+import type { CalendarEvent } from "@/components/dashboard/training-calendar/types";
+import type { DataResponse } from "@/api/dataRes.types";
+
 
 export const extractCalendarEvents = (
-  data: CalendarSourceData,
+  data: DataResponse,
 ): CalendarEvent[] => {
   const events: CalendarEvent[] = [];
 
@@ -18,7 +17,7 @@ export const extractCalendarEvents = (
           date: current.toISOString().slice(0, 10),
           title: sh.title,
           gdud: gdud.name,
-          serviceType: sh.seviceType,
+          serviceType: sh.serviceType,
         });
 
         current.setDate(current.getDate() + 1);

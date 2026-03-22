@@ -1,6 +1,5 @@
-import { useMemo, useState, useRef, useEffect } from "react";
+import { useMemo, useState, useRef } from "react";
 import dayjs, { Dayjs } from "dayjs";
-import localeData from "dayjs/plugin/localeData";
 import { Tooltip } from "@mui/material";
 import { DateRange } from "@mui/icons-material";
 import style from "@/style/components/dashboard/training-calendar/TrainingCalendar.module.css";
@@ -8,40 +7,26 @@ import { iconServiceType, type ServiceTypeKey } from "@/constants/icons";
 import type { CalendarEvent } from "./types";
 import { MonthPicker } from "./MonthPicker";
 import { ArrowRight, ArrowLeft } from "@/assets/icons";
-import { getDashboardCalendarData } from "@/api/dashboard.api";
 import { extractCalendarEvents } from "@/utils/calendar/extractCalendarEvents";
-import { ErrorState } from "@/components/shared/ErrorState";
-// import { EmptyState } from "@/components/shared/EmptyState";
+// import { ErrorState } from "@/components/shared/ErrorState";
+import { EmptyState } from "@/components/shared/EmptyState";
+import { useShibutzimContext } from "@/contexts/ShibutzimContext";
 
-dayjs.extend(localeData);
 
 export const TrainingCalendar = () => {
-  // ================= States =================
-  const [events, setEvents] = useState<CalendarEvent[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  // ================= Context =================
+  const { shibutzimData, loading } = useShibutzimContext();
 
+  // ================= Local State =================
   const [currentMonth, setCurrentMonth] = useState<Dayjs>(dayjs());
   const [pickerOpen, setPickerOpen] = useState(false);
   const anchorRef = useRef<HTMLButtonElement>(null);
 
-  // ================= Fetch Calendar Events =================
-  useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        const data = await getDashboardCalendarData();
-        const extracted = extractCalendarEvents(data);
-        setEvents(extracted);
-      } catch (err) {
-        console.error("Failed to load calendar data", err);
-        setError("Failed to load calendar data");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchEvents();
-  }, []);
+  // ================= Derived Events =================
+  const events: CalendarEvent[] = useMemo(() => {
+    if (!shibutzimData) return [];
+    return extractCalendarEvents(shibutzimData);
+  }, [shibutzimData]);
 
   // ================= Calendar Days =================
   const days = useMemo(() => {
@@ -50,19 +35,23 @@ export const TrainingCalendar = () => {
 
     const result: Dayjs[] = [];
     let d = start;
+
     while (d.isBefore(end) || d.isSame(end, "day")) {
       result.push(d);
       d = d.add(1, "day");
     }
+
     return result;
   }, [currentMonth]);
 
   // ================= Events By Date =================
   const eventsByDate = useMemo(() => {
     const map: Record<string, CalendarEvent[]> = {};
+
     events.forEach(ev => {
       (map[ev.date] ??= []).push(ev);
     });
+
     return map;
   }, [events]);
 
@@ -79,7 +68,9 @@ export const TrainingCalendar = () => {
           </button>
 
           <div className={style.monthTitleWrapper}>
-            <div className={style.monthTitle}>{currentMonth.format("MMMM YYYY")}</div>
+            <div className={style.monthTitle}>
+              {currentMonth.format("MMMM YYYY")}
+            </div>
 
             <Tooltip
               title="בחירת חודש"
@@ -109,16 +100,23 @@ export const TrainingCalendar = () => {
             <ArrowLeft style={{ width: 8, height: 30 }} />
           </button>
         </div>
+
         <div className={style.spacer} />
       </div>
 
-      {/* ===== Status Messages ===== */}
-      {loading && <div>Loading calendar...</div>}
-      {error && <ErrorState message={error} />}
-      {/* {!loading && !error && events.length === 0 && <EmptyState message="אין אירועים בלוח האימונים" />} */}
+      {/* ===== States ===== */}
+      {loading && <EmptyState message="טוען מידע..." />}
+
+      {/* {!loading && !shibutzimData && (
+        <ErrorState message="לא נטען מידע" />
+      )} */}
+
+      {!loading && shibutzimData && events.length === 0 && (
+        <div>אין אירועים בלוח האימונים</div>
+      )}
 
       {/* ===== Grid ===== */}
-      {!loading && !error && events.length > 0 && (
+      {!loading && shibutzimData && events.length > 0 && (
         <>
           {/* ===== Weekdays ===== */}
           <div className={style.weekdays}>
@@ -157,14 +155,21 @@ export const TrainingCalendar = () => {
                     <div className={style.tooltip}>
                       {dayEvents.map((ev, idx) => {
                         const icon =
-                          iconServiceType[ev.serviceType as ServiceTypeKey] ??
-                          iconServiceType.default;
+                          iconServiceType[
+                            ev.serviceType as ServiceTypeKey
+                          ] ?? iconServiceType.default;
 
                         return (
                           <div key={idx} className={style.tooltipItem}>
-                            <i className={icon.className} style={{ color: icon.color }} />
+                            <i
+                              className={icon.className}
+                              style={{ color: icon.color }}
+                            />
                             <span>
-                              {ev.title} <span style={{ opacity: 0.6 }}>({ev.gdud})</span>
+                              {ev.title}{" "}
+                              <span style={{ opacity: 0.6 }}>
+                                ({ev.gdud})
+                              </span>
                             </span>
                           </div>
                         );
@@ -176,9 +181,17 @@ export const TrainingCalendar = () => {
                   <div className={style.iconsArea}>
                     {dayEvents.slice(0, 4).map((ev, idx) => {
                       const icon =
-                        iconServiceType[ev.serviceType as ServiceTypeKey] ??
-                        iconServiceType.default;
-                      return <i key={idx} className={icon.className} style={{ color: icon.color }} />;
+                        iconServiceType[
+                          ev.serviceType as ServiceTypeKey
+                        ] ?? iconServiceType.default;
+
+                      return (
+                        <i
+                          key={idx}
+                          className={icon.className}
+                          style={{ color: icon.color }}
+                        />
+                      );
                     })}
                   </div>
 

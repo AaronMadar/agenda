@@ -1,13 +1,10 @@
 import style from "@/style/components/dashboard/quantity-and-cost/QuantityCostCard.module.css";
 import { ResourceCard } from "@/components/shared/ResourceCard";
 import { Swords, RefereeHat } from "@/assets/icons";
+import type { Resource } from "../../shared/resourceCard.types";
 
 interface QuantityCostCardProps {
-  resource: {
-    name: string;
-    amount: number;
-    percentage: number;
-  };
+  resource: Resource;
 }
 
 export const QuantityCostCard = ({ resource }: QuantityCostCardProps) => {

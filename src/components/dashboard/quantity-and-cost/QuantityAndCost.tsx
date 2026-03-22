@@ -4,12 +4,8 @@ import { QuantityCostCard } from "./QuantityCostCard";
 import { getQuantityAndCost } from "@/api/dashboard.api";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { ErrorState } from "@/components/shared/ErrorState";
+import type { Resource } from "../../shared/resourceCard.types";
 
-interface Resource {
-  name: string;
-  amount: number;
-  percentage: number;
-}
 
 export const QuantityAndCost = () => {
   const [data, setData] = useState<Resource[] | null>(null);

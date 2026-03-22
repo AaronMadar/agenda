@@ -9,13 +9,12 @@ import { KeyValPopUp } from "@/components/shared/pop-ups/KeyValPopUp";
 
 import { Details } from "@/assets/icons";
 import { iconResources, iconServiceType } from "@/constants/icons";
-import type { ShibutsApi, ResourceItem } from "@/types/api-response";
+import type { Shibutz, Resource } from '@/api/dataRes.types';
 import styles from "@/style/components/gantpage/ShibutsCard.module.css";
 
-dayjs.locale("he");
 
 interface ShibutsCardProps {
-  shibuts: ShibutsApi;
+  shibuts: Shibutz;
   pickud: string;
   style?: React.CSSProperties;
   className?: string;
@@ -31,7 +30,7 @@ export function ShibutsCard({
   const [detailsAnchorEl, setDetailsAnchorEl] = useState<HTMLElement | null>(null);
   const [resourceAnchorEl, setResourceAnchorEl] = useState<HTMLElement | null>(null);
   const [titleAnchorEl, setTitleAnchorEl] = useState<HTMLElement | null>(null);
-  const [hoveredResource, setHoveredResource] = useState<ResourceItem | null>(null);
+  const [hoveredResource, setHoveredResource] = useState<Resource | null>(null);
   const [isCardActive, setIsCardActive] = useState(false);
 
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -42,15 +41,15 @@ export function ShibutsCard({
     dateBegin,
     dateEnd,
     resources,
-    seviceType,
-    codeShibuts,
+    serviceType,
+    codeShibutz,
     mesima,
     directCost,
     costOfItems,
   } = shibuts;
 
   const icon =
-    iconServiceType[seviceType as keyof typeof iconServiceType] ??
+    iconServiceType[serviceType as keyof typeof iconServiceType] ??
     iconServiceType.default;
 
   const formattedBegin = dateBegin ? dayjs(dateBegin).format("D MMM") : "";
@@ -58,7 +57,7 @@ export function ShibutsCard({
   const amountOfDays = dateBegin && dateEnd ? dayjs(dateEnd).diff(dayjs(dateBegin), "day") + 1 : null;
 
   const metadataShibuts = [
-    { key: "קוד שיבוץ", value: codeShibuts },
+    { key: "קוד שיבוץ", value: codeShibutz },
     { key: "יחידה", value: pickud },
     { key: "משימה", value: mesima },
     { key: "עלות ישיר", value: String(directCost) },
@@ -104,7 +103,7 @@ export function ShibutsCard({
       {/* ---------- Top Section ---------- */}
       <div className={styles.divUp}>
         <div className={styles.iconAndTitle}>
-          <Tooltip title={seviceType} arrow placement="top" >
+          <Tooltip title={serviceType} arrow placement="top" >
             <i className={`icon-card ${icon.className}`} />
           </Tooltip>
           <span
@@ -254,6 +253,3 @@ export function ShibutsCard({
     </div>
   );
 }
-
-
-

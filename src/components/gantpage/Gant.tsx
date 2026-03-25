@@ -126,7 +126,7 @@ export const Gant = memo(function Gant({ setForceDisplayed }: gantProps) {
             )}
 
             {gdudimToDisplay.map((gdud) => (
-                <div className={`${styles["timeline-header"]} ${styles["gdudim"]}`} key={gdud.name}>
+                <div className={`${styles["gantrow"]}`} key={gdud.name}>
                     <div className={`${styles["div-side"]} ${styles["sidebar"]}`}>{gdud.name}</div>
                     <div className={styles["row-content-wrapper"]}>
                         {gdud.shibutsim.map((shibuts) => {
@@ -135,6 +135,7 @@ export const Gant = memo(function Gant({ setForceDisplayed }: gantProps) {
                             const isNearEnd = (startPos + width) > NEAR_END_THRESHOLD;
 
                             return (
+                                <div style={{height:"70px"}}>
                                 <div key={shibuts.codeShibuts} className={styles["gant-row"]}>
                                     <ShibutsCard shibuts={shibuts} pickud={gdud.pikud}
                                         style={{
@@ -145,6 +146,8 @@ export const Gant = memo(function Gant({ setForceDisplayed }: gantProps) {
                                             top: 0,
                                         }}
                                     />
+                                </div>
+
                                 </div>
                             );
                         })}

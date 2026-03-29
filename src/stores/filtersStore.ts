@@ -6,6 +6,7 @@ import { getUnitsTree, getServiceTypes, getResourceTypes } from "@/api/filters.a
 export type UnitTypeOption = string;
 export type ServiceTypeOption = string;
 export type ResourceTypeOption = string;
+export type optionType = { id: string; name: string };
 export type PeriodDateType = { start: string | null; end: string | null };
 
 // Zustand store type
@@ -15,11 +16,11 @@ export type FiltersState = {
   selectedUnitIds: UnitTypeOption[] | null;
 
   // Service types
-  serviceTypes: ServiceTypeOption[];
+  serviceTypes: optionType[];
   selectedServiceTypes: ServiceTypeOption[] | null;
 
   // Resource types
-  resourceTypes: ResourceTypeOption[];
+  resourceTypes: optionType[];
   selectedResourceTypes: ResourceTypeOption[] | null;
 
   // Period data

@@ -4,7 +4,7 @@ import { BaseSelect } from "./BaseSelect";
 import styles from "@/style/components/shared/Select.module.css";
 
 interface MultiSelectProps {
-  options: string[];
+  options: { id: string; name: string }[];
   value?: string[];
   onChange: (value: string[]) => void;
   placeholder?: string;
@@ -22,11 +22,11 @@ export function MultiSelect({
     setTempSelected(value);
   }, [value]);
 
-  const toggleOption = (option: string) => {
+  const toggleOption = (option: { id: string; name: string }) => {
     setTempSelected((prev) =>
-      prev.includes(option)
-        ? prev.filter((item) => item !== option)
-        : [...prev, option]
+      prev.includes(option.id)
+        ? prev.filter((item) => item !== option.id)
+        : [...prev, option.id]
     );
   };
 
@@ -42,7 +42,7 @@ export function MultiSelect({
 
   const getDisplayText = () => {
     if (tempSelected.length === 0) return placeholder;
-    if (tempSelected.length <= 2) return tempSelected.join(", ");
+    if (tempSelected.length <= 2) return tempSelected.map((id) => options.find((o) => o.id === id)?.name).filter(Boolean).join(", ");
     return `${placeholder} [${tempSelected.length}]`;
   };
 
@@ -57,16 +57,16 @@ export function MultiSelect({
         <>
           <div className={styles.dropdownContent}>
             {options.map((option) => {
-              const selected = tempSelected.includes(option);
+              const selected = tempSelected.includes(option.id);
 
               return (
                 <div
-                  key={option}
+                  key={option.id}
                   className={styles.option}
                   onClick={() => toggleOption(option)}
                 >
                   <div className={styles.optionFlex}>
-                    <span>{option}</span>
+                    <span>{option.name}</span>
                     {selected && (
                       <CheckIcon
                         className={styles.check}

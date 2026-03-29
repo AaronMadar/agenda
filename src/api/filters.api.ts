@@ -8,11 +8,11 @@ export const getUnitsTree = async (idSoldier: string) => {
 };
 
 export const getServiceTypes = async () => {
-  const { data } = await httpClient.get<string[]>("/filters/service-types.json");
+  const { data } = await httpClient.get<{ id: string; name: string }[]>("/filters/service-types.json");
   return data;
 };
 
 export const getResourceTypes = async () => {
-  const { data } = await httpClient.get<string[]>("/filters/resource-types.json");
+  const { data } = await httpClient.get<{ id: string; name: string }[]>("/filters/resource-types.json");
   return data;
 };

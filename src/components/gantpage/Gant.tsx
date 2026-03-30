@@ -120,7 +120,7 @@ type GantProps = {
 };
 
 export const Gant = memo(function Gant({
-  groupByField = "serviceType",
+  groupByField = "location",
   setForceDisplayed,
 }: GantProps) {
   const { startDate, endDate, shibutzimData, loading } =

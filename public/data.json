@@ -15,7 +15,7 @@
       "variationPastYear": -25,
       "dateBegin": "2026-01-10",
       "dateEnd": "2026-01-12",
-      "unitId": "givati",
+      "unitId": "גבעתי",
       "location": "צריפין",
       "resources": [
         {
@@ -61,8 +61,8 @@
       "variationPastYear": 5,
       "dateBegin": "2026-03-01",
       "dateEnd": "2026-03-10",
-      "unitId": "gdud-tzabar",
-      "location": "גולני",
+      "unitId": "גדוד צבר",
+      "location": "מחנה גולני",
       "resources": [
         {
           "categoryName": "ציוד אישי",
@@ -105,7 +105,7 @@
       "variationPastYear": 10,
       "dateBegin": "2026-02-01",
       "dateEnd": "2026-03-15",
-      "unitId": "gdud-rotem",
+      "unitId": "גדוד צבר",
       "location": "מחנה דוד",
       "resources": [
         {
@@ -149,7 +149,7 @@
       "variationPastYear": -5,
       "dateBegin": "2026-04-05",
       "dateEnd": "2026-04-20",
-      "unitId": "gdud-orev",
+      "unitId": "גדוד עורב",
       "location": "מחנה עופר",
       "resources": [
         {
@@ -185,7 +185,7 @@
       "variationPastYear": 20,
       "dateBegin": "2026-06-01",
       "dateEnd": "2026-08-01",
-      "unitId": "mahlaka-1",
+      "unitId": "מחלקה 1",
       "location": "מחנה שיזפון",
       "resources": [
         {
@@ -220,7 +220,7 @@
       "variationPastYear": -12,
       "dateBegin": "2026-11-10",
       "dateEnd": "2026-11-25",
-      "unitId": "plugat-gimel",
+      "unitId": "פלוגת ג",
       "location": "מחנה שיזפון",
       "resources": [
         {
@@ -249,8 +249,8 @@
       "variationPastYear": 8,
       "dateBegin": "2026-07-10",
       "dateEnd": "2026-07-25",
-      "unitId": "gdud-rotem",
-      "location": "גולני",
+      "unitId": "גדוד רותם",
+      "location": "מחנה גולני",
       "resources": [
         {
           "categoryName": "תחבורה",
@@ -278,7 +278,7 @@
       "variationPastYear": -3,
       "dateBegin": "2026-05-05",
       "dateEnd": "2026-05-07",
-      "unitId": "plugat-zayin",
+      "unitId": "פלוגת ז",
       "location": "פילון",
       "resources": [
         {
@@ -300,7 +300,7 @@
       "variationPastYear": 2,
       "dateBegin": "2026-09-12",
       "dateEnd": "2026-09-14",
-      "unitId": "plugat-vav",
+      "unitId": "פלוגת ו",
       "location": "מחנה דוד",
       "resources": [
         {
@@ -322,7 +322,7 @@
       "variationPastYear": 15,
       "dateBegin": "2026-08-01",
       "dateEnd": "2026-08-10",
-      "unitId": "mahlaka-8",
+      "unitId": "מחלקה 8",
       "location": "צריפין",
       "resources": [
         {
@@ -344,13 +344,227 @@
       "variationPastYear": 6,
       "dateBegin": "2026-10-01",
       "dateEnd": "2026-10-20",
-      "unitId": "plugat-gimel",
+      "unitId": "פלוגת ג",
       "location": "מחנה עופר",
       "resources": [
         {
           "categoryName": "הדרכה",
           "items": [
             { "name": "חוברות", "quantity": 200, "unitCost": 15 }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "אימון פלוגתי נוסף",
+      "codeShibutz": "11111111",
+      "directCost": 17000,
+      "costOfItems": 7500,
+      "mesima": "אימון פלוגתי",
+      "serviceType": "סדיר",
+      "forceType": "חי\"ר",
+      "variationPastYear": 4,
+      "dateBegin": "2026-03-20",
+      "dateEnd": "2026-03-30",
+      "unitId": "גבעתי",
+      "location": "מחנה דוד",
+      "resources": [
+        {
+          "categoryName": "לוגיסטיקה",
+          "items": [
+            { "name": "מנות קרב", "quantity": 550, "unitCost": 18 },
+            { "name": "מים מינרליים (ליטר)", "quantity": 2000, "unitCost": 1.2 }
+          ]
+        },
+        {
+          "categoryName": "רפואה",
+          "items": [
+            { "name": "ערכות עזרה ראשונה", "quantity": 70, "unitCost": 35 }
+          ]
+        }
+      ]
+    },
+
+    {
+      "title": "אימון מחלקות חורף",
+      "codeShibutz": "22222222",
+      "directCost": 21000,
+      "costOfItems": 8200,
+      "mesima": "אימון מחלקות",
+      "serviceType": "מילואים",
+      "forceType": "חת\"ם",
+      "variationPastYear": -2,
+      "dateBegin": "2026-12-01",
+      "dateEnd": "2026-12-10",
+      "unitId": "גדוד עורב",
+      "location": "מחנה שיזפון",
+      "resources": [
+        {
+          "categoryName": "תחזוקה",
+          "items": [
+            { "name": "אמצעי חימום", "quantity": 25, "unitCost": 400 }
+          ]
+        },
+        {
+          "categoryName": "לוגיסטיקה",
+          "items": [
+            { "name": "אוהלים", "quantity": 30, "unitCost": 950 }
+          ]
+        }
+      ]
+    },
+
+    {
+      "title": "תעסוקה מבצעית קיץ",
+      "codeShibutz": "33333333",
+      "directCost": 32000,
+      "costOfItems": 14000,
+      "mesima": "תעסוקה מבצעית",
+      "serviceType": "קבע",
+      "forceType": "אס\"ף",
+      "variationPastYear": 12,
+      "dateBegin": "2026-07-01",
+      "dateEnd": "2026-08-15",
+      "unitId": "מחלקה 1",
+      "location": "מחנה שיזפון",
+      "resources": [
+        {
+          "categoryName": "אבטחה",
+          "items": [
+            { "name": "אמצעי תצפית", "quantity": 15, "unitCost": 1800 }
+          ]
+        },
+        {
+          "categoryName": "לוגיסטיקה",
+          "items": [
+            { "name": "גנרטורים", "quantity": 8, "unitCost": 2800 }
+          ]
+        }
+      ]
+    },
+
+    {
+      "title": "קורס מפקדים נוסף",
+      "codeShibutz": "44444444",
+      "directCost": 19000,
+      "costOfItems": 7800,
+      "mesima": "קורס מפקדים",
+      "serviceType": "סדיר",
+      "forceType": "חיק",
+      "variationPastYear": 7,
+      "dateBegin": "2026-05-10",
+      "dateEnd": "2026-05-25",
+      "unitId": "פלוגת ג",
+      "location": "מחנה עופר",
+      "resources": [
+        {
+          "categoryName": "הדרכה",
+          "items": [
+            { "name": "חוברות", "quantity": 220, "unitCost": 15 }
+          ]
+        }
+      ]
+    },
+
+    {
+      "title": "טירונות חורף",
+      "codeShibutz": "55555555",
+      "directCost": 20000,
+      "costOfItems": 9000,
+      "mesima": "טירונות לוחמים",
+      "serviceType": "סדיר",
+      "forceType": "חה\"ן",
+      "variationPastYear": 3,
+      "dateBegin": "2026-11-01",
+      "dateEnd": "2026-12-15",
+      "unitId": "גדוד רותם",
+      "location": "מחנה דוד",
+      "resources": [
+        {
+          "categoryName": "לוגיסטיקה",
+          "items": [
+            { "name": "שקי שינה", "quantity": 300, "unitCost": 95 }
+          ]
+        },
+        {
+          "categoryName": "רפואה",
+          "items": [
+            { "name": "תחבושות אישיות", "quantity": 350, "unitCost": 8 }
+          ]
+        }
+      ]
+    },
+
+    {
+      "title": "אימון לילה מתקדם",
+      "codeShibutz": "77777777",
+      "directCost": 9500,
+      "costOfItems": 4000,
+      "mesima": "אימון לוחמה בלילה",
+      "serviceType": "מילואים",
+      "forceType": "חי\"ר",
+      "variationPastYear": 5,
+      "dateBegin": "2026-10-10",
+      "dateEnd": "2026-10-12",
+      "unitId": "פלוגה ו",
+      "location": "מחנה דוד",
+      "resources": [
+        {
+          "categoryName": "אבטחה",
+          "items": [
+            { "name": "אמצעי תאורה", "quantity": 70, "unitCost": 95 }
+          ]
+        }
+      ]
+    },
+
+    {
+      "title": "הטמעת ציוד חטיבתית",
+      "codeShibutz": "88888888",
+      "directCost": 16000,
+      "costOfItems": 7200,
+      "mesima": "הטמעת ציוד",
+      "serviceType": "קבע",
+      "forceType": "עורף",
+      "variationPastYear": 11,
+      "dateBegin": "2026-09-01",
+      "dateEnd": "2026-09-10",
+      "unitId": "מחלקה 8",
+      "location": "צריפין",
+      "resources": [
+        {
+          "categoryName": "ציוד אישי",
+          "items": [
+            { "name": "אפודים", "quantity": 120, "unitCost": 130 }
+          ]
+        }
+      ]
+    },
+
+    {
+      "title": "אימון חטיבה נוסף",
+      "codeShibutz": "99999999",
+      "directCost": 27000,
+      "costOfItems": 11500,
+      "mesima": "אימון חטיבה",
+      "serviceType": "מילואים",
+      "forceType": "חת\"ם",
+      "variationPastYear": 9,
+      "dateBegin": "2026-08-05",
+      "dateEnd": "2026-08-20",
+      "unitId": "גדוד רותם",
+      "location": "מחנה גולני",
+      "resources": [
+        {
+          "categoryName": "תחבורה",
+          "items": [
+            { "name": "אוטובוסים", "quantity": 14, "unitCost": 1600 }
+          ]
+        },
+        {
+          "categoryName": "לוגיסטיקה",
+          "items": [
+            { "name": "מנות קרב", "quantity": 900, "unitCost": 18 }
           ]
         }
       ]

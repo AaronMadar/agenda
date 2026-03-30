@@ -194,9 +194,11 @@ export const Gant = memo(function Gant({
         <div className={styles["gantrow"]} key={groupName}>
           {/* SIDEBAR */}
           <div className={`${styles["div-side"]} ${styles["sidebar"]}`}>
-            <div>{groupName}</div>
-            <div style={{ fontSize: "0.8rem", opacity: 0.7 }}>
-              {group.count} שיבוצים
+            <div className={styles["sticky-side-header"]}>
+              <div>{groupName}</div>
+              <div style={{ fontSize: "0.8rem", opacity: 0.7 }}>
+                {group.count} שיבוצים
+              </div>
             </div>
           </div>
 

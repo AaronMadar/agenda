@@ -50,19 +50,19 @@ export const iconResources = {
 };
 
 export const iconServiceType = {
-  "מילואים- אימונים": {
+  "מילואים": {
     className: "bi bi-crosshair",
     color: "#FABF8B",
   },
-  "סדיר- אימונים": {
+  "סדיר": {
     className: "bi bi-shadows",
     color: "#87C9FF",
   },
-  "מילואים- תע\"ם": {
+  "קבע": {
     className: "bi bi-brightness-high-fill",
     color: "#43a047",
   },
-  "סדיר- תע”ם": {
+  "שירות לאומי": {
     className: "bi bi-vinyl-fill",
     color: "#8e24aa",
   },

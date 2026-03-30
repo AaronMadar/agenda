@@ -1,14 +1,9 @@
-export interface DataResponse {
-  unit: string;
-  period: {start: string; end: string};
-  gdudim: Gdud[];
-}
-
-export interface Gdud {
-    name: string;
-    forceType: string;
-    pikud: string;
-    shibutsim: Shibutz[];
+export interface ShibutzimRes {
+    period: {
+        start: string;
+        end: string;
+    }
+    shibutzim: Shibutz[]
 }
 
 export interface Shibutz {
@@ -18,9 +13,12 @@ export interface Shibutz {
     costOfItems: number;
     mesima: string;
     serviceType: string;
+    forceType: string;
     variationPastYear: number;
     dateBegin: string;
     dateEnd: string;
+    unitId: string;
+    location: string;
     resources: Resource[];
 }
 

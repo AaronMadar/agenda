@@ -1,5 +1,5 @@
 import { httpClient } from "./httpClient";
-import type { DataResponse } from "./dataRes.types";
+import type { ShibutzimRes } from "@/types/shibutzim.types";
 
 export const getShibutzimData = async (
   from: string,
@@ -7,7 +7,7 @@ export const getShibutzimData = async (
   unitIds: string[],
   serviceTypes: string[] | null = null,
   resourceTypes: string[] | null = null,
-): Promise<DataResponse> => {
+): Promise<ShibutzimRes> => {
   const { data } = await httpClient.get("/data.json", {
     params: {
       from,

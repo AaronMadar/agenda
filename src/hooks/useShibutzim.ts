@@ -50,7 +50,7 @@ export const useShibutzim = () => {
           resourceTypes,
         });
 
-        const jsonData = await getShibutzimData(
+        const response = await getShibutzimData(
           fromDate,
           toDate,
           unitIds,
@@ -58,9 +58,9 @@ export const useShibutzim = () => {
           resourceTypes
         );
 
-        setShibutzimData(jsonData);
-        setStartDate(dayjs(jsonData.period.start));
-        setEndDate(dayjs(jsonData.period.end));
+        setShibutzimData(response.shibutzim);
+        setStartDate(dayjs(response.period.start));
+        setEndDate(dayjs(response.period.end));
       } catch (error) {
         console.error(error);
       } finally {

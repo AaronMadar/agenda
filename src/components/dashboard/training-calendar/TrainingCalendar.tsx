@@ -168,7 +168,7 @@ export const TrainingCalendar = () => {
                             <span>
                               {ev.title}{" "}
                               <span style={{ opacity: 0.6 }}>
-                                ({ev.gdud})
+                                ({ev.unitId})
                               </span>
                             </span>
                           </div>

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, memo } from "react";
 import dayjs from "dayjs";
 import { Popover, Tooltip } from "@mui/material";
 
@@ -9,24 +9,21 @@ import { KeyValPopUp } from "@/components/shared/pop-ups/KeyValPopUp";
 
 import { Details } from "@/assets/icons";
 import { iconResources, iconServiceType } from "@/constants/icons";
-import type { Shibutz, Resource } from '@/api/dataRes.types';
-import styles from "@/style/components/gantpage/ShibutsCard.module.css";
+import type { Shibutz, Resource } from "@/types/shibutzim.types";
 
+import styles from "@/style/components/gantpage/ShibutsCard.module.css";
 
 interface ShibutsCardProps {
   shibuts: Shibutz;
-  pickud: string;
   style?: React.CSSProperties;
   className?: string;
 }
 
-export function ShibutsCard({
+export const ShibutsCard = memo(function ShibutsCard({
   shibuts,
   style,
   className,
-  pickud,
 }: ShibutsCardProps) {
-  
   const [detailsAnchorEl, setDetailsAnchorEl] = useState<HTMLElement | null>(null);
   const [resourceAnchorEl, setResourceAnchorEl] = useState<HTMLElement | null>(null);
   const [titleAnchorEl, setTitleAnchorEl] = useState<HTMLElement | null>(null);
@@ -42,30 +39,46 @@ export function ShibutsCard({
     dateEnd,
     resources,
     serviceType,
+    forceType,
     codeShibutz,
     mesima,
     directCost,
     costOfItems,
+    unitId,
+    location,
   } = shibuts;
+
+  /* ---------------- ICON ---------------- */
 
   const icon =
     iconServiceType[serviceType as keyof typeof iconServiceType] ??
     iconServiceType.default;
 
+  /* ---------------- DATES ---------------- */
+
   const formattedBegin = dateBegin ? dayjs(dateBegin).format("D MMM") : "";
   const formattedEnd = dateEnd ? dayjs(dateEnd).format("D MMM") : "";
-  const amountOfDays = dateBegin && dateEnd ? dayjs(dateEnd).diff(dayjs(dateBegin), "day") + 1 : null;
+
+  const amountOfDays =
+    dateBegin && dateEnd
+      ? dayjs(dateEnd).diff(dayjs(dateBegin), "day") + 1
+      : null;
+
+  /* ---------------- METADATA ---------------- */
 
   const metadataShibuts = [
     { key: "קוד שיבוץ", value: codeShibutz },
-    { key: "יחידה", value: pickud },
+    { key: "יחידה", value: unitId },
+    { key: "מיקום", value: location },
     { key: "משימה", value: mesima },
+    { key: "סוג שירות", value: serviceType },
+    { key: "תיאור שירות", value: forceType },
     { key: "עלות ישיר", value: String(directCost) },
     { key: "עלות פריטי", value: String(costOfItems) },
-    { key: "משך", value: `${amountOfDays} ימים` },
+    { key: "משך", value: amountOfDays ? `${amountOfDays} ימים` : "-" },
   ];
 
-  /* -------------------- Hover Logic -------------------- */
+  /* ---------------- HOVER LOGIC ---------------- */
 
   const clearCloseTimer = () => {
     if (closeTimerRef.current) {
@@ -75,11 +88,11 @@ export function ShibutsCard({
   };
 
   const delayedClose = (
-    setter: React.Dispatch<React.SetStateAction<HTMLElement | null>>,
+    setter: React.Dispatch<React.SetStateAction<HTMLElement | null>>
   ) => {
     closeTimerRef.current = setTimeout(() => {
       setter(null);
-    }, 10);
+    }, 80);
   };
 
   const handleCardLeave = () => {
@@ -89,7 +102,41 @@ export function ShibutsCard({
     setTitleAnchorEl(null);
   };
 
-  /* -------------------- Render -------------------- */
+  /* ---------------- REUSABLE POPOVER ---------------- */
+
+  const renderPopover = (
+    open: boolean,
+    anchorEl: HTMLElement | null,
+    setAnchor: React.Dispatch<React.SetStateAction<HTMLElement | null>>,
+    children: React.ReactNode,
+    anchorOrigin: any,
+    transformOrigin: any
+  ) => (
+    <Popover
+      open={open}
+      anchorEl={anchorEl}
+      anchorOrigin={anchorOrigin}
+      transformOrigin={transformOrigin}
+      disableRestoreFocus
+      sx={{ pointerEvents: "none" }}
+      slotProps={{
+        paper: {
+          onMouseEnter: clearCloseTimer,
+          onMouseLeave: () => delayedClose(setAnchor),
+          sx: {
+            pointerEvents: "auto",
+            backgroundColor: "transparent",
+            borderRadius: "10px",
+            overflow: "visible",
+          },
+        },
+      }}
+    >
+      {children}
+    </Popover>
+  );
+
+  /* ---------------- RENDER ---------------- */
 
   return (
     <div
@@ -100,12 +147,13 @@ export function ShibutsCard({
       onMouseEnter={() => setIsCardActive(true)}
       onMouseLeave={handleCardLeave}
     >
-      {/* ---------- Top Section ---------- */}
+      {/* ---------- TOP ---------- */}
       <div className={styles.divUp}>
         <div className={styles.iconAndTitle}>
-          <Tooltip title={serviceType} arrow placement="top" >
+          <Tooltip title={serviceType} arrow>
             <i className={`icon-card ${icon.className}`} />
           </Tooltip>
+
           <span
             className={styles.cardTitle}
             onMouseEnter={(e) => {
@@ -140,31 +188,28 @@ export function ShibutsCard({
         </div>
       </div>
 
-      {/* ---------- Bottom Section ---------- */}
+      {/* ---------- BOTTOM ---------- */}
       <div className={styles.divDown} style={{ opacity: isCardActive ? 1 : 0 }}>
         <div className={styles.flexRow}>
           {formattedBegin && formattedEnd && (
-            <Tooltip title={`${amountOfDays} ימים`} arrow placement="bottom">
+            <Tooltip title={`${amountOfDays} ימים`} arrow>
               <span className={styles.spanDate}>
                 {formattedBegin} - {formattedEnd}
               </span>
             </Tooltip>
           )}
 
-          {resources?.map((res, index) => (
+          {resources?.map((res) => (
             <div
-              key={index}
+              key={res.categoryName}
               className={styles.divRessource}
               onMouseEnter={(e) => {
                 clearCloseTimer();
                 setHoveredResource(res);
                 setResourceAnchorEl(e.currentTarget);
-                setTitleAnchorEl(null)
+                setTitleAnchorEl(null);
               }}
               onMouseLeave={() => delayedClose(setResourceAnchorEl)}
-              style={{
-                borderRight: index === 0 ? "none" : "1px solid #ccc",
-              }}
             >
               <i
                 className={
@@ -179,77 +224,34 @@ export function ShibutsCard({
         </div>
       </div>
 
-      {/* ---------- Details Popover ---------- */}
-      <Popover
-        open={Boolean(detailsAnchorEl)}
-        anchorEl={detailsAnchorEl}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        transformOrigin={{ vertical: "bottom", horizontal: "center" }}
-        disableRestoreFocus
-        sx={{ pointerEvents: "none" }}
-        slotProps={{
-          paper: {
-            onMouseEnter: clearCloseTimer,
-            onMouseLeave: () => delayedClose(setDetailsAnchorEl),
-            sx: {
-              pointerEvents: "auto",
-              backgroundColor: "transparent",
-              borderRadius: "10px",
-              overflow: "visible"
-            },
-          },
-        }}
-      >
-        <DetailsPopUp />
-      </Popover>
+      {/* ---------- POPOVERS ---------- */}
 
-      {/* ---------- Title Popover ---------- */}
-      <Popover
-        open={Boolean(titleAnchorEl)}
-        anchorEl={titleAnchorEl}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        transformOrigin={{ vertical: "bottom", horizontal: "center" }}
-        disableRestoreFocus
-        sx={{ pointerEvents: "none" }}
-        slotProps={{
-          paper: {
-            onMouseEnter: clearCloseTimer,
-            onMouseLeave: () => delayedClose(setTitleAnchorEl),
-            sx: {
-              pointerEvents: "auto",
-              backgroundColor: "transparent",
-              borderRadius: "10px",
-              overflow: "visible"
-            },
-          },
-        }}
-      >
-        <KeyValPopUp header={title} keyValues={metadataShibuts} />
-      </Popover>
+      {renderPopover(
+        Boolean(detailsAnchorEl),
+        detailsAnchorEl,
+        setDetailsAnchorEl,
+        <DetailsPopUp />,
+        { vertical: "top", horizontal: "center" },
+        { vertical: "bottom", horizontal: "center" }
+      )}
 
-      {/* ---------- Resource Popover ---------- */}
-      <Popover
-        open={Boolean(resourceAnchorEl)}
-        anchorEl={resourceAnchorEl}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-        transformOrigin={{ vertical: "top", horizontal: "center" }}
-        disableRestoreFocus
-        sx={{ pointerEvents: "none" }}
-        slotProps={{
-          paper: {
-            onMouseEnter: clearCloseTimer,
-            onMouseLeave: () => delayedClose(setResourceAnchorEl),
-            sx: {
-              pointerEvents: "auto",
-              backgroundColor: "transparent",
-              borderRadius: "10px",
-              overflow: "visible"
-            },
-          },
-        }}
-      >
-        <ResourcePopUp resourceDetailsTable={hoveredResource?.items || []} />
-      </Popover>
+      {renderPopover(
+        Boolean(titleAnchorEl),
+        titleAnchorEl,
+        setTitleAnchorEl,
+        <KeyValPopUp header={title} keyValues={metadataShibuts} />,
+        { vertical: "top", horizontal: "center" },
+        { vertical: "bottom", horizontal: "center" }
+      )}
+
+      {renderPopover(
+        Boolean(resourceAnchorEl),
+        resourceAnchorEl,
+        setResourceAnchorEl,
+        <ResourcePopUp resourceDetailsTable={hoveredResource?.items || []} />,
+        { vertical: "bottom", horizontal: "center" },
+        { vertical: "top", horizontal: "center" }
+      )}
     </div>
   );
-}
+});

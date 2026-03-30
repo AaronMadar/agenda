@@ -1,15 +1,15 @@
 import { createContext, useContext, useState } from "react";
 import { Dayjs } from "dayjs";
-import type { DataResponse } from "@/api/dataRes.types";
+import type { Shibutz } from "@/types/shibutzim.types";
 
 type ShibutzimContextType = {
   startDate: Dayjs | null;
   endDate: Dayjs | null;
-  shibutzimData: DataResponse | null;
+  shibutzimData: Shibutz[] | null;
   loading: boolean;
   setStartDate: React.Dispatch<React.SetStateAction<Dayjs | null>>;
   setEndDate: React.Dispatch<React.SetStateAction<Dayjs | null>>;
-  setShibutzimData: React.Dispatch<React.SetStateAction<DataResponse | null>>;
+  setShibutzimData: React.Dispatch<React.SetStateAction<Shibutz[] | null>>;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
@@ -25,7 +25,7 @@ export const ShibutzimProvider = ({
   const [endDate, setEndDate] = useState<Dayjs | null>(null);
 
   // API data state
-  const [shibutzimData, setShibutzimData] = useState<DataResponse | null>(null);
+  const [shibutzimData, setShibutzimData] = useState<Shibutz[] | null>(null);
 
   // Loading state
   const [loading, setLoading] = useState<boolean>(false);

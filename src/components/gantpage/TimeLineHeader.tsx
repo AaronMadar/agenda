@@ -3,9 +3,7 @@ import { Dayjs } from 'dayjs';
 import { useMemo } from "react";
 import styles from "@/style/components/gantpage/TimeLineHeader.module.css"
 
-
 export default function TimeLineHeader() {
-
     const { startDate, endDate , shibutzimData } = useShibutzimContext();
 
     const generateTicks = (start: Dayjs | null, end: Dayjs | null): string[] => {
@@ -30,10 +28,21 @@ export default function TimeLineHeader() {
 
     const dates = useMemo(() => generateTicks(startDate, endDate), [startDate, endDate]);
 
-    return (
+    const totalCount = useMemo(() => {
+        if (!shibutzimData?.length) return 0;
+        return shibutzimData.length;
+    }, [shibutzimData]);
 
+    return (
         <div className={styles["timeline-header"]}>
-            <div className={`${styles["unit-title"]} ${styles["div-side"]}`}>{shibutzimData?.unit}</div>
+            {/* LEFT TOP CORNER */}
+            <div className={`${styles["unit-title"]} ${styles["div-side"]}`}>
+                <div style={{ fontSize: "0.9rem", opacity: 0.8, marginTop: 2 }}>
+                    סה"כ שיבוצים: {totalCount}
+                </div>
+            </div>
+
+            {/* TICKS */}
             <div className={styles["ticks-container"]}>
                 {dates.map((date, i) => (
                     <div className={styles["timeline-tick"]} key={i}>

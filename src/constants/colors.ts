@@ -5,7 +5,5 @@ export const forceColors: Record<string, string> = {
   "עורף": "#ffbd95",
   "אס\"ף": "#B3BDFF",
   "חת\"ם": "#FEEA9D",
-  "אחר": "#929FAA"
+  "אחר": "#cecece",
 };
-
-

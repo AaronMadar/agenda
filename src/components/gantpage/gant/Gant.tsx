@@ -7,6 +7,7 @@ import dayjs, { Dayjs } from "dayjs";
 import { ShibutsCard } from "./ShibutsCard";
 import type { Shibutz } from "@/types/shibutzim.types";
 import { useShibutzimContext } from "@/contexts/ShibutzimContext";
+import { useViewSettings } from "@/contexts/GantViewSettingsContext";
 import { forceColors } from "@/constants/colors";
 
 import styles from "@/style/components/gantpage/gant/Gant.module.css";
@@ -115,16 +116,12 @@ const calculateWidth = (
 ========================= */
 
 type GantProps = {
-  groupByField?: "location" | "unitId" | "forceType" | "mesima" | "serviceType";
   setForceDisplayed: (forceTypes: string[]) => void;
 };
 
-export const Gant = memo(function Gant({
-  groupByField = "location",
-  setForceDisplayed,
-}: GantProps) {
-  const { startDate, endDate, shibutzimData, loading } =
-    useShibutzimContext();
+export const Gant = memo(function Gant({ setForceDisplayed, }: GantProps) {
+  const { startDate, endDate, shibutzimData, loading } = useShibutzimContext();
+  const { groupByField } = useViewSettings();
 
   const currentYear = dayjs().year();
   const sDate = startDate || dayjs(`${currentYear}-01-01`);
@@ -208,9 +205,17 @@ export const Gant = memo(function Gant({
               const startPos = calculatePosition(shibuts, sDate, eDate);
               const width = calculateWidth(shibuts, sDate, eDate);
               const isNearEnd = startPos + width > NEAR_END_THRESHOLD;
+              const isNotLastInRow = group.shibutzim.indexOf(shibuts) !== group.shibutzim.length - 1;
 
               return (
-                <div key={shibuts.codeShibutz} style={{ height: "70px" }}>
+                <div 
+                key={shibuts.codeShibutz} 
+                style={{ 
+                  height: "70px",
+                   margin: "0.2rem 0" ,
+                   borderBottom: isNotLastInRow ? "0.1px dashed #3f3f3f" : undefined,
+                  }}
+                >
                   <div className={styles["gant-row"]}>
                     <ShibutsCard
                       shibuts={shibuts}

@@ -1,26 +1,27 @@
 import { createContext, useContext, useState, type ReactNode } from "react";
+import type { Shibutz } from "@/types/shibutzim.types";
 
 interface GantViewSettingsContextType {
   showOpenCards: boolean;
   setShowOpenCards: (value: boolean) => void;
 
-  selectedViewMode: string;
-  setSelectedViewMode: (mode: string) => void;
+  groupByField: keyof Shibutz;
+  setGroupByField: (field: keyof Shibutz) => void;
 }
 
 const GantViewSettingsContext = createContext<GantViewSettingsContextType | null>(null);
 
 export const GantViewSettingsProvider = ({ children }: { children: ReactNode }) => {
   const [showOpenCards, setShowOpenCards] = useState(true);
-  const [selectedViewMode, setSelectedViewMode] = useState<string>('location');
+  const [groupByField, setGroupByField] = useState<keyof Shibutz>('location');
 
   return (
     <GantViewSettingsContext.Provider
       value={{
         showOpenCards,
         setShowOpenCards,
-        selectedViewMode,
-        setSelectedViewMode,
+        groupByField,
+        setGroupByField,
       }}
     >
       {children}

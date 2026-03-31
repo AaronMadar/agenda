@@ -10,9 +10,8 @@ export const ViewSettingsList = () => {
   const {
     showOpenCards,
     setShowOpenCards,
-    // viewModeOptions,
-    selectedViewMode,
-    setSelectedViewMode,
+    groupByField,
+    setGroupByField,
   } = useViewSettings();
 
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -49,7 +48,7 @@ export const ViewSettingsList = () => {
       <ViewSettingsSelect
         id="groupBy"
         label="קבץ לפי"
-        value={selectedViewMode}
+        value={groupByField}
         options={GROUP_BY_OPTIONS}
         setAnchorEl={setAnchorEl}
         setActiveSelect={setActiveSelect}
@@ -61,8 +60,8 @@ export const ViewSettingsList = () => {
         anchorEl={anchorEl}
         activeSelect={activeSelect}
         options={GROUP_BY_OPTIONS}
-        value={selectedViewMode}
-        onSelect={setSelectedViewMode}
+        value={groupByField}
+        onSelect={setGroupByField}
         clearCloseTimer={clearCloseTimer}
         delayedClose={delayedClose}
       />

@@ -12,6 +12,8 @@ export const ViewSettingsList = () => {
     setShowOpenCards,
     groupByField,
     setGroupByField,
+    groupsInAscOrder,
+    setGroupsInAscOrder,
   } = useViewSettings();
 
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -45,9 +47,17 @@ export const ViewSettingsList = () => {
 
       <ViewSettingsDivider />
 
+      <ViewSettingsToggle
+        label="קבוצות בסדר עולה"
+        value={groupsInAscOrder}
+        onChange={setGroupsInAscOrder}
+      />
+
+      <ViewSettingsDivider />
+
       <ViewSettingsSelect
         id="groupBy"
-        label="קבץ לפי"
+        label="הצג קבוצות לפי"
         value={groupByField}
         options={GROUP_BY_OPTIONS}
         setAnchorEl={setAnchorEl}

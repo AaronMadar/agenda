@@ -27,9 +27,10 @@ const sortEventsByDate = (items: Shibutz[]): Shibutz[] => {
 
 function groupBy<T, K extends keyof T>(
   items: T[],
-  key: K
+  key: K,
+  sortAsc: boolean = true
 ): Record<string, T[]> {
-  return items.reduce((acc, item) => {
+  const grouped = items.reduce((acc, item) => {
     const groupKey = String(item[key] ?? "Unknown");
 
     if (!acc[groupKey]) acc[groupKey] = [];
@@ -37,30 +38,29 @@ function groupBy<T, K extends keyof T>(
 
     return acc;
   }, {} as Record<string, T[]>);
+
+  const sortedEntries = Object.entries(grouped).sort(([a], [b]) =>
+    sortAsc ? a.localeCompare(b) : b.localeCompare(a)
+  );
+
+  return sortedEntries.reduce((acc, [key, value]) => {
+    acc[key] = value;
+    return acc;
+  }, {} as Record<string, T[]>);
 }
 
 /* enrichment */
 function enrichGroups(grouped: Record<string, Shibutz[]>) {
-  const sortedEntries = Object.entries(grouped).sort(([a], [b]) =>
-    a.localeCompare(b)
+  return Object.entries(grouped).reduce<Record<string, { count: number; shibutzim: Shibutz[] }>>(
+    (acc, [key, items]) => {
+      acc[key] = {
+        count: items.length,
+        shibutzim: sortEventsByDate(items),
+      };
+      return acc;
+    },
+    {}
   );
-
-  return sortedEntries.reduce<
-    Record<
-      string,
-      {
-        count: number;
-        shibutzim: Shibutz[];
-      }
-    >
-  >((acc, [key, items]) => {
-    acc[key] = {
-      count: items.length,
-      shibutzim: sortEventsByDate(items),
-    };
-
-    return acc;
-  }, {});
 }
 
 const calculatePosition = (
@@ -119,16 +119,16 @@ type GantProps = {
   setForceDisplayed: (forceTypes: string[]) => void;
 };
 
-export const Gant = memo(function Gant({ setForceDisplayed, }: GantProps) {
+export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
   const { startDate, endDate, shibutzimData, loading } = useShibutzimContext();
-  const { groupByField } = useViewSettings();
+  const { groupByField, groupsInAscOrder } = useViewSettings();
 
   const currentYear = dayjs().year();
   const sDate = startDate || dayjs(`${currentYear}-01-01`);
   const eDate = endDate || dayjs(`${currentYear}-12-31`);
 
   /* =========================
-     GROUP + ENRICH
+     DISPLAYED FORCES
   ========================= */
 
   const displayedForces = useMemo(() => {
@@ -144,12 +144,16 @@ export const Gant = memo(function Gant({ setForceDisplayed, }: GantProps) {
     setForceDisplayed(displayedForces);
   }, [displayedForces]);
 
+  /* =========================
+     GROUP + ENRICH
+  ========================= */
+
   const grouped = useMemo(() => {
     if (!shibutzimData?.length) return {};
 
-    const raw = groupBy(shibutzimData, groupByField);
+    const raw = groupBy(shibutzimData, groupByField, groupsInAscOrder);
     return enrichGroups(raw);
-  }, [shibutzimData, groupByField]);
+  }, [shibutzimData, groupByField, groupsInAscOrder]);
 
   /* =========================
      RENDER
@@ -205,24 +209,26 @@ export const Gant = memo(function Gant({ setForceDisplayed, }: GantProps) {
               const startPos = calculatePosition(shibuts, sDate, eDate);
               const width = calculateWidth(shibuts, sDate, eDate);
               const isNearEnd = startPos + width > NEAR_END_THRESHOLD;
-              const isNotLastInRow = group.shibutzim.indexOf(shibuts) !== group.shibutzim.length - 1;
+              const isNotLastInRow =
+                group.shibutzim.indexOf(shibuts) !== group.shibutzim.length - 1;
 
               return (
-                <div 
-                key={shibuts.codeShibutz} 
-                style={{
-                  padding: "0.2rem 0.2rem 2.7rem 0.2rem",
-                  borderBottom: isNotLastInRow ? "0.1px dashed #3f3f3f" : undefined,
+                <div
+                  key={shibuts.codeShibutz}
+                  style={{
+                    padding: "0.2rem 0.2rem 2.7rem 0.2rem",
+                    borderBottom: isNotLastInRow
+                      ? "0.1px dashed #3f3f3f"
+                      : undefined,
                   }}
                 >
                   <div className={styles["gant-row"]}>
                     <ShibutsCard
                       shibuts={shibuts}
                       style={{
-                        backgroundColor: forceColors[shibuts.forceType] ?? forceColors["אחר"],
-                        insetInlineStart: isNearEnd
-                          ? "auto"
-                          : `${startPos}%`,
+                        backgroundColor:
+                          forceColors[shibuts.forceType] ?? forceColors["אחר"],
+                        insetInlineStart: isNearEnd ? "auto" : `${startPos}%`,
                         insetInlineEnd: isNearEnd
                           ? `${100 - (startPos + width)}%`
                           : "auto",

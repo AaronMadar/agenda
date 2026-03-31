@@ -5,6 +5,9 @@ interface GantViewSettingsContextType {
   showOpenCards: boolean;
   setShowOpenCards: (value: boolean) => void;
 
+  groupsInAscOrder: boolean;
+  setGroupsInAscOrder: (value: boolean) => void;
+
   groupByField: keyof Shibutz;
   setGroupByField: (field: keyof Shibutz) => void;
 }
@@ -13,6 +16,7 @@ const GantViewSettingsContext = createContext<GantViewSettingsContextType | null
 
 export const GantViewSettingsProvider = ({ children }: { children: ReactNode }) => {
   const [showOpenCards, setShowOpenCards] = useState(true);
+  const [groupsInAscOrder, setGroupsInAscOrder] = useState(true);
   const [groupByField, setGroupByField] = useState<keyof Shibutz>('location');
 
   return (
@@ -22,6 +26,8 @@ export const GantViewSettingsProvider = ({ children }: { children: ReactNode }) 
         setShowOpenCards,
         groupByField,
         setGroupByField,
+        groupsInAscOrder,
+        setGroupsInAscOrder,
       }}
     >
       {children}

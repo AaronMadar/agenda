@@ -45,14 +45,11 @@
 }
 
 .row-content-wrapper {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
+  padding: 0.2rem 0;
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 0.1rem;
-  ;
   min-height: 0;
 }
 

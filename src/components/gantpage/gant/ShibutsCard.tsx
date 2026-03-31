@@ -9,6 +9,7 @@ import { KeyValPopUp } from "@/components/shared/pop-ups/KeyValPopUp";
 
 import { Details } from "@/assets/icons";
 import { iconResources, iconServiceType } from "@/constants/icons";
+import { useViewSettings } from "@/contexts/GantViewSettingsContext";
 import type { Shibutz, Resource } from "@/types/shibutzim.types";
 
 import styles from "@/style/components/gantpage/gant/ShibutsCard.module.css";
@@ -31,6 +32,8 @@ export const ShibutsCard = memo(function ShibutsCard({
   const [isCardActive, setIsCardActive] = useState(false);
 
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const { showOpenCards } = useViewSettings();
 
   const {
     title,
@@ -141,7 +144,7 @@ export const ShibutsCard = memo(function ShibutsCard({
   return (
     <div
       className={`${styles.shibutsCard} ${
-        isCardActive ? styles.activeCard : ""
+        (isCardActive || showOpenCards) ? styles.activeCard : ""
       } ${className || ""}`}
       style={style}
       onMouseEnter={() => setIsCardActive(true)}
@@ -168,7 +171,7 @@ export const ShibutsCard = memo(function ShibutsCard({
 
         <div
           className={`${styles.variationContainer} ${
-            isCardActive ? styles.visible : ""
+            (isCardActive || showOpenCards) ? styles.visible : ""
           }`}
         >
           <div className={styles.detailsAndPercentage}>
@@ -189,7 +192,7 @@ export const ShibutsCard = memo(function ShibutsCard({
       </div>
 
       {/* ---------- BOTTOM ---------- */}
-      <div className={styles.divDown} style={{ opacity: isCardActive ? 1 : 0 }}>
+      <div className={styles.divDown} style={{ opacity: (isCardActive || showOpenCards) ? 1 : 0 }}>
         <div className={styles.flexRow}>
           {formattedBegin && formattedEnd && (
             <Tooltip title={`${amountOfDays} ימים`} arrow>

@@ -210,10 +210,9 @@ export const Gant = memo(function Gant({ setForceDisplayed, }: GantProps) {
               return (
                 <div 
                 key={shibuts.codeShibutz} 
-                style={{ 
-                  height: "70px",
-                   margin: "0.2rem 0" ,
-                   borderBottom: isNotLastInRow ? "0.1px dashed #3f3f3f" : undefined,
+                style={{
+                  padding: "0.2rem 0.2rem 2.7rem 0.2rem",
+                  borderBottom: isNotLastInRow ? "0.1px dashed #3f3f3f" : undefined,
                   }}
                 >
                   <div className={styles["gant-row"]}>

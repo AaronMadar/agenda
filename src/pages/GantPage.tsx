@@ -1,8 +1,8 @@
-import { Gant } from "@/components/gantpage/Gant";
-import { Header } from "@/components/gantpage/Header";
+import { Gant } from "@/components/gantpage/gant/Gant";
+import { Header } from "@/components/gantpage/header/Header";
 
 import "@/style/index.css"
-import styles from "@/style/GantPage.module.css"
+import styles from "@/style/pages/GantPage.module.css"
 
 import { useCallback, useState } from "react";
 import { LegendPopup } from "@/components/gantpage/gant/LegendPopup";

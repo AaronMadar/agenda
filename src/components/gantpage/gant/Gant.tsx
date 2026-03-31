@@ -4,12 +4,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import dayjs, { Dayjs } from "dayjs";
 
-import { ShibutsCard } from "./gant/ShibutsCard";
+import { ShibutsCard } from "./ShibutsCard";
 import type { Shibutz } from "@/types/shibutzim.types";
 import { useShibutzimContext } from "@/contexts/ShibutzimContext";
 import { forceColors } from "@/constants/colors";
 
-import styles from "@/style/components/gantpage/Gant.module.css";
+import styles from "@/style/components/gantpage/gant/Gant.module.css";
 
 const MIN_WIDTH_PERCENT = 5;
 const NEAR_END_THRESHOLD = 75;

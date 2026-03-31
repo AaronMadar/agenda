@@ -2,7 +2,7 @@ import { iconServiceType , type ServiceTypeKey } from "@/constants/icons";
 import { forceColors } from "@/constants/colors";
 
 // Importation du module CSS
-import styles from "@/style/components/gantpage/LegendPopup.module.css";
+import styles from "@/style/components/gantpage/gant/LegendPopup.module.css";
 
 interface LegendProps {
     onClose:() => void;

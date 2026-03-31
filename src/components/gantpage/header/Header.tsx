@@ -1,15 +1,14 @@
-
 import { useNavigate } from 'react-router-dom';
 import { Tooltip } from '@mui/material';
 import html2canvas from 'html2canvas';
-import styles from "@/style/components/gantpage/Header.module.css";
-import { FiltersPanel } from '../shared/FiltersPanel';
-import { memo } from 'react';
+import styles from "@/style/components/gantpage/header/Header.module.css";
+import { FiltersPanel } from '../../shared/FiltersPanel';
+import { memo, useState } from 'react';
+import { ViewSettingsPopover } from './view-settings/ViewSettingsPopover';
 
 interface HeaderProps {
     onMapClick: () => void
 }
-
 
 const handlePrint = () => {
     window.print();
@@ -43,6 +42,15 @@ const handleClickCamera = async () => {
 };
 
 export const Header = memo(({ onMapClick }: HeaderProps) => {
+    const [settingsAnchorEl, setSettingsAnchorEl] = useState<HTMLElement | null>(null);
+
+    const handleOpenSettings = (event: React.MouseEvent<HTMLElement>) => {
+        setSettingsAnchorEl(event.currentTarget);
+    };
+
+    const handleCloseSettings = () => {
+        setSettingsAnchorEl(null);
+    };
 
     const navigate = useNavigate();
 
@@ -89,6 +97,9 @@ export const Header = memo(({ onMapClick }: HeaderProps) => {
                     <Tooltip title="מצלמה" arrow>
                         <i className={`bi bi-camera ${styles["header-icon"]}`} onClick={handleClickCamera} style={{ cursor: 'pointer' }} />
                     </Tooltip>
+                    <Tooltip title="הגדרות צפייה" arrow>
+                        <i className={`bi bi-toggles2 ${styles["header-icon"]}`} onClick={handleOpenSettings} style={{ cursor: 'pointer' }} />
+                    </Tooltip>
                 </div>
             </div>
 
@@ -96,6 +107,11 @@ export const Header = memo(({ onMapClick }: HeaderProps) => {
             <div className={styles["header-time-controls"]}>
                 <FiltersPanel />
             </div>
+
+            <ViewSettingsPopover
+                anchorEl={settingsAnchorEl}
+                onClose={handleCloseSettings}
+            />
         </header>
     )
 })

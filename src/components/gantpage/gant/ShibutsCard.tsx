@@ -11,7 +11,7 @@ import { Details } from "@/assets/icons";
 import { iconResources, iconServiceType } from "@/constants/icons";
 import type { Shibutz, Resource } from "@/types/shibutzim.types";
 
-import styles from "@/style/components/gantpage/ShibutsCard.module.css";
+import styles from "@/style/components/gantpage/gant/ShibutsCard.module.css";
 
 interface ShibutsCardProps {
   shibuts: Shibutz;

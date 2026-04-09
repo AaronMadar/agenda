@@ -12,12 +12,28 @@ import { forceColors } from "@/constants/colors";
 
 import styles from "@/style/components/gantpage/gant/Gant.module.css";
 
-const MIN_WIDTH_PERCENT = 5;
-const NEAR_END_THRESHOLD = 75;
+const MIN_WIDTH_PERCENT = 10;
+// const NEAR_END_THRESHOLD = 75;
+
+// const ACTIVE_CARD_WIDTH_REM = 40;
+// const FONT_SIZE_BASE = 16;
 
 /* =========================
    HELPERS
 ========================= */
+
+const checkIsNearEnd = (startPos: number): boolean => {
+  if (typeof window === 'undefined') return false;
+
+  const sidebarWidthPx = 9 * 16; // 9rem * 16px
+  const availableWidthPx = window.innerWidth - sidebarWidthPx;
+  const activeCardWidthPx = 40 * 16; // 40rem * 16px
+
+  // On convertit les 40rem en pourcentage du wrapper disponible
+  const activeCardPercent = (activeCardWidthPx / availableWidthPx) * 100;
+
+  return (startPos + activeCardPercent) > 100;
+};
 
 const sortEventsByDate = (items: Shibutz[]): Shibutz[] => {
   return [...items].sort(
@@ -92,8 +108,9 @@ const calculateWidth = (
 ): number => {
   const diffInRangeDays = rangeEnd
     .endOf("day")
-    .diff(rangeStart.startOf("day"), "day");
+    .diff(rangeStart.startOf("day"), "day") + 1;
 
+  // the timeline for less than 15 days rendered days ticks , so we verify what will the percent by days , after 15 days it will be a month 
   const totalDays =
     diffInRangeDays <= 15
       ? diffInRangeDays + 1
@@ -105,6 +122,9 @@ const calculateWidth = (
   const visualStart = itemStart.isBefore(rangeStart) ? rangeStart : itemStart;
   const visualEnd = itemEnd.isAfter(rangeEnd) ? rangeEnd : itemEnd;
 
+  if (itemEnd.isBefore(rangeStart) || itemStart.isAfter(rangeEnd)) {
+    return 0;
+  }
   let width =
     ((visualEnd.diff(visualStart, "day") + 1) / totalDays) * 100;
 
@@ -208,7 +228,10 @@ export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
             {group.shibutzim.map((shibuts) => {
               const startPos = calculatePosition(shibuts, sDate, eDate);
               const width = calculateWidth(shibuts, sDate, eDate);
-              const isNearEnd = startPos + width > NEAR_END_THRESHOLD;
+              // const isNearEnd = startPos + width > NEAR_END_THRESHOLD;
+            
+             const isNearEnd = checkIsNearEnd(startPos);
+              
               const isNotLastInRow =
                 group.shibutzim.indexOf(shibuts) !== group.shibutzim.length - 1;
 
@@ -232,10 +255,10 @@ export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
                         insetInlineEnd: isNearEnd
                           ? `${100 - (startPos + width)}%`
                           : "auto",
-                        width:
-                          width < MIN_WIDTH_PERCENT + 5
-                            ? undefined
-                            : `${width}%`,
+                        width: `${width === MIN_WIDTH_PERCENT ? null : width}%`,
+                        // width < MIN_WIDTH_PERCENT + 5
+                        //   ? undefined
+                        //   : `${width}%`,
                         top: 0,
                       }}
                     />

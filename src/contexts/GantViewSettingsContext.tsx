@@ -15,7 +15,7 @@ interface GantViewSettingsContextType {
 const GantViewSettingsContext = createContext<GantViewSettingsContextType | null>(null);
 
 export const GantViewSettingsProvider = ({ children }: { children: ReactNode }) => {
-  const [showOpenCards, setShowOpenCards] = useState(true);
+  const [showOpenCards, setShowOpenCards] = useState(false);
   const [groupsInAscOrder, setGroupsInAscOrder] = useState(true);
   const [groupByField, setGroupByField] = useState<keyof Shibutz>('location');
 

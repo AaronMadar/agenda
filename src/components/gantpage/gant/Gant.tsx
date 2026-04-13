@@ -13,26 +13,15 @@ import { forceColors } from "@/constants/colors";
 import styles from "@/style/components/gantpage/gant/Gant.module.css";
 
 const MIN_WIDTH_PERCENT = 10;
-// const NEAR_END_THRESHOLD = 75;
-
-// const ACTIVE_CARD_WIDTH_REM = 40;
-// const FONT_SIZE_BASE = 16;
+const ACTIVE_CARD_MIN_WIDTH_PERCENT = 40;
 
 /* =========================
    HELPERS
 ========================= */
 
-const checkIsNearEnd = (startPos: number): boolean => {
-  if (typeof window === 'undefined') return false;
-
-  const sidebarWidthPx = 9 * 16; // 9rem * 16px
-  const availableWidthPx = window.innerWidth - sidebarWidthPx;
-  const activeCardWidthPx = 40 * 16; // 40rem * 16px
-
-  // On convertit les 40rem en pourcentage du wrapper disponible
-  const activeCardPercent = (activeCardWidthPx / availableWidthPx) * 100;
-
-  return (startPos + activeCardPercent) > 100;
+const checkIsNearEnd = (startPos: number, cardWidth: number): boolean => {
+  const maximalWidthPercent = cardWidth > ACTIVE_CARD_MIN_WIDTH_PERCENT ? cardWidth : ACTIVE_CARD_MIN_WIDTH_PERCENT;
+  return (startPos + maximalWidthPercent) > 100;
 };
 
 const sortEventsByDate = (items: Shibutz[]): Shibutz[] => {
@@ -79,11 +68,12 @@ function enrichGroups(grouped: Record<string, Shibutz[]>) {
   );
 }
 
-const calculatePosition = (
-  shibuts: Shibutz,
+const calculateStartPosition = (
+  shibutsStart: Dayjs,
   rangeStart: Dayjs,
   rangeEnd: Dayjs
 ): number => {
+  // TODO use the calculation of the days as a parameter, in order not to repeat yourself
   const diffInRangeDays = rangeEnd
     .endOf("day")
     .diff(rangeStart.startOf("day"), "day");
@@ -93,8 +83,7 @@ const calculatePosition = (
       ? diffInRangeDays + 1
       : rangeEnd.endOf("month").diff(rangeStart.startOf("month"), "day") + 1;
 
-  const itemStart = dayjs(shibuts.dateBegin);
-  const visualStart = itemStart.isBefore(rangeStart) ? rangeStart : itemStart;
+  const visualStart = shibutsStart.isBefore(rangeStart) ? rangeStart : shibutsStart;
 
   const diff = visualStart.diff(rangeStart, "day");
 
@@ -125,7 +114,7 @@ const calculateWidth = (
   if (itemEnd.isBefore(rangeStart) || itemStart.isAfter(rangeEnd)) {
     return 0;
   }
-  let width =
+  const width =
     ((visualEnd.diff(visualStart, "day") + 1) / totalDays) * 100;
 
   return width < MIN_WIDTH_PERCENT ? MIN_WIDTH_PERCENT : width;
@@ -226,12 +215,9 @@ export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
           {/* CONTENT */}
           <div className={styles["row-content-wrapper"]}>
             {group.shibutzim.map((shibuts) => {
-              const startPos = calculatePosition(shibuts, sDate, eDate);
-              const width = calculateWidth(shibuts, sDate, eDate);
-              // const isNearEnd = startPos + width > NEAR_END_THRESHOLD;
-            
-             const isNearEnd = checkIsNearEnd(startPos);
-              
+              const startPos = calculateStartPosition(dayjs(shibuts.dateBegin), sDate, eDate);
+              const cardWidth = calculateWidth(shibuts, sDate, eDate);
+              const isNearEnd = checkIsNearEnd(startPos, cardWidth);
               const isNotLastInRow =
                 group.shibutzim.indexOf(shibuts) !== group.shibutzim.length - 1;
 
@@ -241,7 +227,7 @@ export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
                   style={{
                     padding: "0.2rem 0.2rem 2.7rem 0.2rem",
                     borderBottom: isNotLastInRow
-                      ? "0.1px dashed #3f3f3f"
+                      ? "0.1px solid #343434a1"
                       : undefined,
                   }}
                 >
@@ -253,12 +239,9 @@ export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
                           forceColors[shibuts.forceType] ?? forceColors["אחר"],
                         insetInlineStart: isNearEnd ? "auto" : `${startPos}%`,
                         insetInlineEnd: isNearEnd
-                          ? `${100 - (startPos + width)}%`
+                          ? `${100 - (startPos + cardWidth)}%`
                           : "auto",
-                        width: `${width === MIN_WIDTH_PERCENT ? null : width}%`,
-                        // width < MIN_WIDTH_PERCENT + 5
-                        //   ? undefined
-                        //   : `${width}%`,
+                        width: `${cardWidth === MIN_WIDTH_PERCENT ? null : cardWidth}%`,
                         top: 0,
                       }}
                     />

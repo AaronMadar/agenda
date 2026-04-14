@@ -8,7 +8,7 @@ export const getShibutzimData = async (
   serviceTypes: string[] | null = null,
   resourceTypes: string[] | null = null,
 ): Promise<ShibutzimRes> => {
-  const { data } = await httpClient.get("/data.json", {
+  const { data } = await httpClient.get("/shibutzim", {
     params: {
       from,
       to,

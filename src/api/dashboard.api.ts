@@ -8,10 +8,10 @@ const get = async <T>(url: string): Promise<T> => {
 };
 
 export const getQuantityAndCost = (): Promise<Resource[]> =>
-  get<Resource[]>("/dashboard/quantity-and-cost.json");
+  get<Resource[]>("/dashboard/quantity-and-cost");
 
 export const getResources = (): Promise<Resource[]> =>
-  get<Resource[]>("/dashboard/resources.json");
+  get<Resource[]>("/dashboard/resources");
 
 export const getReports = (): Promise<string[]> =>
-  get<string[]>("/dashboard/reports.json");
+  get<string[]>("/dashboard/reports");

@@ -1,11 +1,14 @@
 import axios from "axios";
+import qs from "qs";
 
 export const httpClient = axios.create({
-  baseURL: "/",
+  baseURL: import.meta.env.VITE_SERVER_URL,
   headers: {
     "Content-Type": "application/json",
   },
   timeout: 10000,
+  paramsSerializer: (params) =>
+    qs.stringify(params, { arrayFormat: "repeat" }),
 });
 
 httpClient.interceptors.request.use((config) => {

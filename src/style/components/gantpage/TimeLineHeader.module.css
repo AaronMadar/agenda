@@ -18,44 +18,16 @@
   );
 }
 
-  .timeline-header.gdudim {
-    min-height: 6rem;
-    height: auto; 
-    align-items: stretch; 
-  }
-
-  .div-side {
-    width: 9rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    color: aliceblue;
-    font-weight: 500;
-    font-size: 1.06rem;
-  }
-
-  .div-side.sidebar {
-  justify-content: flex-start; 
-  padding-top: 1rem;
-}
-
-.row-content-wrapper {
-  padding-top: 1rem;
-  padding-bottom: 2rem; 
-  flex: 1;
+.div-side {
+  width: 9rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  position:relative;
-  min-height: 60px;
-}
-
-.gant-row {
-  position: relative;
-  width: 100%;
-  height: 3rem; 
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: aliceblue;
+  font-weight: 500;
+  font-size: 1.06rem;
 }
 
 .ticks-container {
@@ -67,9 +39,10 @@
   align-items: flex-end; 
   padding-right: 0.3rem;
   background-color: rgba(0, 0, 0, 0.15);
+  padding: 0 0.4rem;
 }
 
-.timeline-tick   {
+.timeline-tick {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -90,8 +63,8 @@
   bottom: 0.19rem; 
   left: 50%;
   transform: translateX(-50%);
-  font-size: 0.8rem !important;
-  line-height: 0 !important;
+  font-size: 0.8rem;
+  line-height: 0;
   height: 0;
   display: flex;
   align-items: center;

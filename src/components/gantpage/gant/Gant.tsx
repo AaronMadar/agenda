@@ -227,7 +227,7 @@ export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
                 <div
                   key={shibuts.codeShibutz}
                   style={{
-                    padding: "0.2rem 0.2rem 2.7rem 0.2rem",
+                    padding: "0.2rem 0.4rem 2.7rem 0.4rem",
                     borderBottom: isNotLastInRow
                       ? "0.1px solid #343434a1"
                       : undefined,

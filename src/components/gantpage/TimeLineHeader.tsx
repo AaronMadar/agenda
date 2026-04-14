@@ -36,7 +36,7 @@ export default function TimeLineHeader() {
     return (
         <div className={styles["timeline-header"]}>
             {/* LEFT TOP CORNER */}
-            <div className={`${styles["unit-title"]} ${styles["div-side"]}`}>
+            <div className={styles["div-side"]}>
                 <div style={{ fontSize: "0.9rem", opacity: 0.8, marginTop: 2 }}>
                     סה"כ שיבוצים: {totalCount}
                 </div>

@@ -37,11 +37,8 @@
   color: aliceblue;
   font-weight: 500;
   font-size: 1.06rem;
-}
-
-.div-side.sidebar {
-  justify-content: flex-start;
   padding-top: 1rem;
+  justify-content: flex-start;
 }
 
 .row-content-wrapper {

@@ -174,11 +174,8 @@ export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
       {loading && (
         <Box sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
           {[...Array(10)].map((_, i) => (
-            <div
-              key={i}
-              className={`${styles["timeline-header"]} ${styles["gdudim"]}`}
-            >
-              <div className={`${styles["div-side"]} ${styles["sidebar"]}`}>
+            <div>
+              <div className={styles["div-side"]}>
                 <Skeleton width="50%" />
               </div>
 
@@ -203,7 +200,7 @@ export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
       {Object.entries(grouped).map(([groupName, group]) => (
         <div className={styles["gantrow"]} key={groupName}>
           {/* SIDEBAR */}
-          <div className={`${styles["div-side"]} ${styles["sidebar"]}`}>
+          <div className={styles["div-side"]}>
             <div className={styles["sticky-side-header"]}>
               <div>{groupName}</div>
               <div style={{ fontSize: "0.8rem", opacity: 0.7 }}>
@@ -220,6 +217,11 @@ export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
               const isNearEnd = checkIsNearEnd(startPos, cardWidth);
               const isNotLastInRow =
                 group.shibutzim.indexOf(shibuts) !== group.shibutzim.length - 1;
+
+              const exceedsLeftEdge = startPos + cardWidth > 100;
+              const endOffsetPercent = exceedsLeftEdge
+                ? 0
+                : 100 - (startPos + cardWidth);
 
               return (
                 <div
@@ -239,7 +241,7 @@ export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
                           forceColors[shibuts.forceType] ?? forceColors["אחר"],
                         insetInlineStart: isNearEnd ? "auto" : `${startPos}%`,
                         insetInlineEnd: isNearEnd
-                          ? `${100 - (startPos + cardWidth)}%`
+                          ? `${endOffsetPercent}%`
                           : "auto",
                         width: `${cardWidth === MIN_WIDTH_PERCENT ? null : cardWidth}%`,
                         top: 0,

@@ -1,0 +1,44 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  background-color: #474d4f;
+  border-radius: 6px;
+  padding: clamp(10px, 1vw, 20px);
+  gap: 10px;
+  cursor: pointer;
+}
+
+.title {
+  color: #b2bfc4;
+  font-weight: 400;
+  font-size: clamp(0.9rem, 1.1vw, 1.1rem);
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.label {
+  font-size: 0.7rem;
+  color: #8fa3ad;
+}
+
+.value {
+  font-size: clamp(0.9rem, 1.3vw, 1.4rem);
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.currency {
+  font-size: 1.3rem;
+  font-weight: 100;
+  color: #8fa3ad;
+}

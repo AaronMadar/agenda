@@ -8,8 +8,8 @@ type RefetchParams = {
   from?: string | null;
   to?: string | null;
   unitIds?: string[] | null;
-  serviceTypes?: string[] | null;
-  resourceTypes?: string[] | null;
+  serviceTypeIds?: string[] | null;
+  resourceTypeIds?: string[] | null;
 };
 
 export const useShibutzim = () => {
@@ -28,8 +28,8 @@ export const useShibutzim = () => {
       from,
       to,
       unitIds,
-      serviceTypes,
-      resourceTypes,
+      serviceTypeIds,
+      resourceTypeIds,
     }: RefetchParams = {}) => {
       try {
         setLoading(true);
@@ -46,16 +46,16 @@ export const useShibutzim = () => {
           from: fromDate,
           to: toDate,
           unitIds,
-          serviceTypes,
-          resourceTypes,
+          serviceTypeIds,
+          resourceTypeIds,
         });
 
         const response = await getShibutzimData(
           fromDate,
           toDate,
           unitIds,
-          serviceTypes,
-          resourceTypes
+          serviceTypeIds,
+          resourceTypeIds
         );
 
         setShibutzimData(response.shibutzim);

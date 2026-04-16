@@ -13,8 +13,8 @@ export const getShibutzimData = async (
       from,
       to,
       unitIds,
-      serviceTypes,
-      resourceTypes,
+      serviceTypeIds: serviceTypes,
+      resourceTypeIds: resourceTypes,
     },
   });
   return data;

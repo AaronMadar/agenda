@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import style from "@/style/components/dashboard/DashboardHeader.module.css";
 import { FiltersPanel } from "../shared/FiltersPanel";
+import { DashboardTable } from "./dashboard-table/DashboardTable";
+import { useState } from "react";
 // import { KeyValPopUp } from "../shared/pop-ups/KeyValPopUp"
 // import { ResourcePopUp } from "../shared/pop-ups/ResourcePopUp";
 
@@ -23,6 +25,59 @@ import { FiltersPanel } from "../shared/FiltersPanel";
 export const DashboardHeader = () => {
   const navigate = useNavigate();
 
+  const columns = [
+    { label: "name", searchable: true, sumable: false },
+    { label: "age", searchable: false, sumable: true },
+    { label: "city", searchable: true, sumable: false },
+    { label: "country", searchable: true, sumable: false },
+    { label: "money", searchable: false, sumable: true }
+  ]
+
+  const data = [
+    { name: "John Doe", age: 30, city: "New York", country: "USA", money: 1000 },
+    { name: "Jane Smith", age: 25, city: "London", country: "UK", money: 1500 },
+    { name: "Michael Johnson", age: 35, city: "Sydney", country: "Australia", money: 2000 },
+    { name: "John Doe", age: 30, city: "New York", country: "USA", money: 1000 },
+    { name: "Jane Smith", age: 25, city: "London", country: "UK", money: 1500 },
+    { name: "Michael Johnson", age: 35, city: "Sydney", country: "Australia", money: 2000 },
+    { name: "John Doe", age: 30, city: "New York", country: "USA", money: 1000 },
+    { name: "Jane Smith", age: 25, city: "London", country: "UK", money: 1500 },
+    { name: "Michael Johnson", age: 35, city: "Sydney", country: "Australia", money: 2000 },
+    { name: "John Doe", age: 30, city: "New York", country: "USA", money: 1000 },
+    { name: "Jane Smith", age: 25, city: "London", country: "UK", money: 1500 },
+    { name: "Michael Johnson", age: 35, city: "Sydney", country: "Australia", money: 2000 },
+    { name: "Emily Davis", age: 28, city: "Toronto", country: "Canada", money: 2500 }
+  ]
+
+  const [favorites, setFavorites] = useState<Set<number>>(new Set());
+
+  const toggleFavorite = (index: number) => {
+      setFavorites(prev => {
+          const newSet = new Set(prev);
+          if (newSet.has(index)) {
+              newSet.delete(index);
+          } else {
+              newSet.add(index);
+          }
+          return newSet;
+      });
+  };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   return (
     <div className={style.containerWrapper}>
       <h4 style={{ flex: 1 }}>דשבורד למפקד</h4>
@@ -30,7 +85,30 @@ export const DashboardHeader = () => {
       {/* <KeyValPopUp header="תרג”ד חי”ר סדיר" keyValues={keyValues} /> */}
       {/* <ResourcePopUp resourceDetailsTable={resourceDetailsTable} /> */}
 
-      <FiltersPanel />
+      {/* <FiltersPanel /> */}
+
+
+
+
+
+
+
+
+
+
+
+      <DashboardTable
+          columns={columns}
+          data={data}
+          favoriteRows={favorites}
+          onToggleFavorite={toggleFavorite}
+      />
+
+
+
+
+
+
 
       <div className={style.imgsContainer}>
         <img

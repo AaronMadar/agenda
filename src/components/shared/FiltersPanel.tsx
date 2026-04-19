@@ -53,8 +53,8 @@ export const FiltersPanel = () => {
       from: periodDate ? periodDate.start : null,
       to: periodDate ? periodDate.end : null,
       unitIds: selectedUnitIds,
-      serviceTypes: selectedServiceTypes,
-      resourceTypes: selectedResourceTypes,
+      serviceTypeIds: selectedServiceTypes,
+      resourceTypeIds: selectedResourceTypes,
     };
     refetchShibutzimData(filters);
 

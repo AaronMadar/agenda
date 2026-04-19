@@ -9,6 +9,7 @@ import Swords from "./Swords.svg?react";
 import RefereeHat from "./referee-hat.svg?react";
 import Hafsharot from "./hafsharot.svg?react";
 import DownloadIcon from "./download_document.svg?react";
+import Search from "./search.svg?react";
 
 
 export {
@@ -22,5 +23,6 @@ export {
     Swords,
     RefereeHat,
     Hafsharot,
-    DownloadIcon
+    DownloadIcon,
+    Search
 }

@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import style from '../../../style/components/dashboard/dashboard-table/DashboardTable.module.css'
-import { DownloadIcon } from '@/assets/icons';
+import { DownloadIcon, Search } from '@/assets/icons';
 
 type Column = {
     label: string;
@@ -27,6 +27,7 @@ export const DashboardTable = ({
     onToggleFavorite
 }: DashboardTableProps) => {
     const [showOnlyFavorites, setShowOnlyFavorites] = useState(false);
+    const [searchText, setSearchText] = useState("");
 
     const [showColumns, setShowColumns] = useState<Set<string>>(new Set(columns.map(col => col.label)));
     const [selectedColumns, setSelectedColumns] = useState<Set<string>>(showColumns);
@@ -39,20 +40,41 @@ export const DashboardTable = ({
     const displayData = useMemo(() => {
         if (!data) return [];
 
+        let result = data;
+
         if (showOnlyFavorites) {
-            return data.filter(row => favoriteRows.has(row.id));
+            result = result.filter(row => favoriteRows.has(row.id));
         }
 
-        return data;
-    }, [data, showOnlyFavorites, favoriteRows]);
+        if (searchText.trim()) {
+            const lowerSearch = searchText.toLowerCase();
+
+            result = result.filter(row => {
+                return columns.some(col => {
+                    const value = row[col.label];
+                    if (value == null) return false;
+
+                    return String(value).toLowerCase().includes(lowerSearch);
+                });
+            });
+        }
+
+        return result;
+    }, [data, showOnlyFavorites, searchText, favoriteRows, columns]);
 
     return (
         <div className={style.container}>
             <div className={style.filters}>
                 <div className={style.searchHolder}>
                     <div className={style.searchAndFavorites}>
-                        <div className={style.searchFilter}>
-                            search filter
+                        <div className={`${style.searchFilter} ${searchText ? style.hasText : ""}`}>
+                            <Search className={style.searchIcon}/>
+                            <input
+                                className={style.searchInput}
+                                value={searchText}
+                                onChange={(e) => setSearchText(e.target.value)}
+                                placeholder="חיפוש..."
+                            />
                         </div>
 
                         {favorites && (
@@ -143,34 +165,3 @@ export const DashboardTable = ({
         </div>
     );
 };
-
-
-
-
-
-
-
-
-// (
-                    
-//                     <div key={rowIndex} className={style.tableRow}>
-                        
-//                         {/* ⭐ FAVORITE TOGGLE */}
-//                         {favorites && (
-//                             <label className={style.favoriteCheckbox}>
-//                                 <input
-//                                     type="checkbox"
-//                                     checked={favoriteRows.has(rowIndex)}
-//                                     onChange={() => onToggleFavorite?.(rowIndex)}
-//                                 />
-//                                 <span className={style.favoriteMark}></span>
-//                             </label>
-//                         )}
-
-//                         {columns.map((col, colIndex) => (
-//                             <div key={colIndex} className={style.tableCell}>
-//                                 {row[col.label]}
-//                             </div>
-//                         ))}
-//                     </div>
-//                 )

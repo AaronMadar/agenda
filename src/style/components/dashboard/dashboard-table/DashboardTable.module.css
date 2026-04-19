@@ -8,6 +8,8 @@
     min-height: 250px;
 }
 
+/* ================= FILTERS ================= */
+
 .filters {
     display: flex;
     align-items: center;
@@ -16,29 +18,10 @@
     background: #4c5255;
 }
 
-.tableBody {
-    /* flex: 1; */
-    background: rgb(52, 74, 53);
-}
-
-.sum {
-    background: rgb(179, 50, 159);
-    display: flex;
-}
-
-.sumCell {
+.searchHolder {
     flex: 1;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 5px;
-    background: rgb(255, 117, 234);
-}
-
-.sumValue {
-    background: rgba(107, 175, 220, 0.427);
-    padding: 0 5px;
-    border-radius: 4px;
+    background: rgb(33, 147, 69);
 }
 
 .searchAndFavorites {
@@ -48,95 +31,54 @@
     gap: 10px;
 }
 
-.searchHolder {
-    flex: 1;
-    display: flex;
-    background: rgb(33, 147, 69);
-}
+/* ================= SEARCH ================= */
 
 .searchFilter {
+    position: relative;
     background: #383c3d;
     border-radius: 8px;
-    padding: 5px;
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 200px;
+    transition: box-shadow 0.3s ease;
 }
 
-.csvIcon {
-    cursor: pointer;
+/* input */
+.searchInput {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #fff;
+    margin-right: 20px;
+    transition: width 0.3s ease, padding 0.3s, margin-right 0.3s ease;
 }
 
-.csvIcon:hover {
+/* focus style */
+.searchFilter:focus-within {
+    box-shadow: 0 0 0 1px #5fa8d3;
+}
+
+/* icon */
+.searchIcon {
+    position: absolute;
     opacity: 0.8;
+    transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
-.chooseColumn {
-    display: flex;
-    gap: 5px;
-    align-items: center;
-    background: rgb(68, 68, 81);
-    padding: 0 8px;
-    border-radius: 15px;
-    border: 1px solid #66797e;
+.searchFilter:focus-within .searchIcon,
+.hasText .searchIcon {
+    opacity: 0;
+    transform: translateX(6px);
 }
 
-.upDownIcon::before {
-    content: "›";
-    background: red;
-    /* display: inline-block; */
-    transition: transform 0.2s ease;
+.searchFilter:focus-within .searchInput,
+.hasText .searchInput {
+    margin-right: 0px;
 }
 
-.open::before {
-    transform: rotate(90deg);
-}
-
-.columnsHeaders {
-    /* background: rgb(63, 99, 99); */
-    display: flex;
-    justify-content: space-between;
-    /* gap: 10px; */
-}
-
-.columnHeader {
-    background: rgb(7, 64, 64);
-    flex: 1;
-    display: flex;
-    gap: 5px;
-    justify-content: center;
-    align-items: center;
-    padding: 5px;
-}
-
-.tableRow {
-    /* background: rgb(109, 104, 47); */
-    display: flex;
-    /* gap: 10px; */
-}
-
-.tableCell {
-    background: rgb(42, 155, 78);
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 5px;
-}
-
-.selectFavorite {
-    background: rgb(255, 0, 0);
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-}
-
-.favoriteSpaceHolder {
-    width: 40px;
-    /* height: 20px; */
-    /* background-color: #23798e; */
-}
-
-
-
-
+/* ================= FAVORITES CHECKBOX ================= */
 
 .checkbox {
     display: flex;
@@ -156,12 +98,10 @@
     height: 18px;
     border: 2px solid #aaa;
     border-radius: 4px;
-    display: inline-block;
     position: relative;
     transition: all 0.2s ease;
 }
 
-/* hover */
 .checkbox:hover .checkmark {
     border-color: #666;
 }
@@ -189,52 +129,83 @@
     opacity: 1;
 }
 
+/* ================= ICONS ================= */
 
+.csvIcon {
+    cursor: pointer;
+}
 
+.csvIcon:hover {
+    opacity: 0.8;
+}
 
+/* ================= COLUMN SELECTOR ================= */
 
+.chooseColumn {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    background: rgb(68, 68, 81);
+    padding: 0 8px;
+    border-radius: 15px;
+    border: 1px solid #66797e;
+}
 
+.upDownIcon::before {
+    content: "›";
+    background: red;
+    transition: transform 0.2s ease;
+}
 
+.open::before {
+    transform: rotate(90deg);
+}
 
+/* ================= TABLE ================= */
 
+.tableBody {
+    background: rgb(52, 74, 53);
+}
 
+.columnsHeaders {
+    display: flex;
+    justify-content: space-between;
+}
 
+.columnHeader {
+    background: rgb(7, 64, 64);
+    flex: 1;
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+}
 
+.columnSearch {
+    opacity: 0.6;
+}
 
+/* rows */
 
+.tableRow {
+    display: flex;
+}
 
+.tableCell {
+    background: rgb(42, 155, 78);
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+}
 
+/* ================= FAVORITE COLUMN ================= */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* ===== FAVORITE STAR ===== */
+.favoriteSpaceHolder {
+    width: 40px;
+}
 
 .favoriteCheckbox {
     display: flex;
@@ -259,4 +230,26 @@
 .favoriteCheckbox input:checked + .favoriteMark::before {
     content: "★";
     color: #87c9ff;
+}
+
+/* ================= SUM ROW ================= */
+
+.sum {
+    background: rgb(179, 50, 159);
+    display: flex;
+}
+
+.sumCell {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    background: rgb(255, 117, 234);
+}
+
+.sumValue {
+    background: rgba(107, 175, 220, 0.427);
+    padding: 0 5px;
+    border-radius: 4px;
 }

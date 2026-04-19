@@ -7,6 +7,7 @@
     align-items: center;
     gap: 8px;
     transition: box-shadow 0.3s ease;
+    min-width: 170px;
 }
 
 /* focus style */
@@ -22,8 +23,10 @@
     color: #fff;
     margin-right: 20px;
     transition: margin-right 0.3s ease;
+    min-width: 0;
+    width: 0;
+    flex: 1;
 }
-
 /* icon */
 .searchIcon {
     position: absolute;

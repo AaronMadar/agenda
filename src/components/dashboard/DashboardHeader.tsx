@@ -4,6 +4,7 @@ import { FiltersPanel } from "../shared/FiltersPanel";
 import { DashboardTable } from "./dashboard-table/DashboardTable";
 import { useState } from "react";
 import { useFavorites } from "@/hooks/useFavorites";
+import { DropdownMultiSelect } from "./dashboard-table/DropdownMultiSelect";
 // import { KeyValPopUp } from "../shared/pop-ups/KeyValPopUp"
 // import { ResourcePopUp } from "../shared/pop-ups/ResourcePopUp";
 
@@ -47,9 +48,10 @@ export const DashboardHeader = () => {
     { id: 10, name: "Emily Davis", age: 28, city: "Toronto", country: "Canada", money: 2500 }
   ]
 
-  const { favorites, toggleFavorite } = useFavorites("dashboardUsers");
+  // const { favorites, toggleFavorite } = useFavorites("dashboardUsers");
 
-
+  const [selected, setSelected] = useState<string[]>([]);
+  const options = ["חףךלחע", "גיל", "עיר", "מדינה", "כסף", "אפשרות 6", "אפשרות 7", "אפשרות 8", "אפשרות 9", "אפשרות 10"];
 
 
 
@@ -82,15 +84,22 @@ export const DashboardHeader = () => {
 
 
 
-      <DashboardTable
+      {/* <DashboardTable
           columns={columns}
           data={data}
           favoriteRows={favorites}
           onToggleFavorite={toggleFavorite}
+      /> */}
+
+
+      
+
+      <DropdownMultiSelect
+          search
+          options={options}
+          selectedOptions={selected}
+          onChange={setSelected}
       />
-
-
-
 
 
 

@@ -31,53 +31,6 @@
     gap: 10px;
 }
 
-/* ================= SEARCH ================= */
-
-.searchFilter {
-    position: relative;
-    background: #383c3d;
-    border-radius: 8px;
-    padding: 5px 10px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    width: 200px;
-    transition: box-shadow 0.3s ease;
-}
-
-/* input */
-.searchInput {
-    background: transparent;
-    border: none;
-    outline: none;
-    color: #fff;
-    margin-right: 20px;
-    transition: width 0.3s ease, padding 0.3s, margin-right 0.3s ease;
-}
-
-/* focus style */
-.searchFilter:focus-within {
-    box-shadow: 0 0 0 1px #5fa8d3;
-}
-
-/* icon */
-.searchIcon {
-    position: absolute;
-    opacity: 0.8;
-    transition: opacity 0.25s ease, transform 0.25s ease;
-}
-
-.searchFilter:focus-within .searchIcon,
-.hasText .searchIcon {
-    opacity: 0;
-    transform: translateX(6px);
-}
-
-.searchFilter:focus-within .searchInput,
-.hasText .searchInput {
-    margin-right: 0px;
-}
-
 /* ================= FAVORITES CHECKBOX ================= */
 
 .checkbox {

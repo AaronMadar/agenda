@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import style from '../../../style/components/dashboard/dashboard-table/DashboardTable.module.css'
 import { DownloadIcon, Search } from '@/assets/icons';
+import { SearchInput } from './SearchInput';
 
 type Column = {
     label: string;
@@ -67,15 +68,12 @@ export const DashboardTable = ({
             <div className={style.filters}>
                 <div className={style.searchHolder}>
                     <div className={style.searchAndFavorites}>
-                        <div className={`${style.searchFilter} ${searchText ? style.hasText : ""}`}>
-                            <Search className={style.searchIcon}/>
-                            <input
-                                className={style.searchInput}
-                                value={searchText}
-                                onChange={(e) => setSearchText(e.target.value)}
-                                placeholder="חיפוש..."
-                            />
-                        </div>
+                        <SearchInput
+                            value={searchText}
+                            setValue={setSearchText}
+                            placeholder="חיפוש..."
+                            width={200}
+                        />
 
                         {favorites && (
                             <label className={style.checkbox}>

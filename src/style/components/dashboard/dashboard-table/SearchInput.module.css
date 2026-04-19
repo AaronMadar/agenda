@@ -1,0 +1,44 @@
+.searchFilter {
+    position: relative;
+    background: #383c3d;
+    border-radius: 8px;
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: box-shadow 0.3s ease;
+}
+
+/* focus style */
+.searchFilter:focus-within {
+    box-shadow: 0 0 0 1px #5fa8d3;
+}
+
+/* input */
+.searchInput {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #fff;
+    margin-right: 20px;
+    transition: margin-right 0.3s ease;
+}
+
+/* icon */
+.searchIcon {
+    position: absolute;
+    opacity: 0.8;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+/* when focused or has text */
+.searchFilter:focus-within .searchIcon,
+.hasText .searchIcon {
+    opacity: 0;
+    transform: translateX(6px);
+}
+
+.searchFilter:focus-within .searchInput,
+.hasText .searchInput {
+    margin-right: 0px;
+}

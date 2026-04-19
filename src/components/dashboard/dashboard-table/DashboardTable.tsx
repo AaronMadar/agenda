@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import style from '../../../style/components/dashboard/dashboard-table/DashboardTable.module.css'
 
 type Column = {
@@ -25,15 +25,25 @@ export const DashboardTable = ({
     favoriteRows = new Set(),
     onToggleFavorite
 }: DashboardTableProps) => {
+    const [showOnlyFavorites, setShowOnlyFavorites] = useState(false);
 
     const [showColumns, setShowColumns] = useState<Set<string>>(new Set(columns.map(col => col.label)));
     const [selectedColumns, setSelectedColumns] = useState<Set<string>>(showColumns);
     const [openColumnSelector, setOpenColumnSelector] = useState(false);
 
     const sumColum = (colLabel: string) => {
-        if (!data) return 0;
-        return data.reduce((sum, row) => sum + (Number(row[colLabel]) || 0), 0);
+        return displayData.reduce((sum, row) => sum + (Number(row[colLabel]) || 0), 0);
     };
+
+    const displayData = useMemo(() => {
+        if (!data) return [];
+
+        if (showOnlyFavorites) {
+            return data.filter(row => favoriteRows.has(row.id));
+        }
+
+        return data;
+    }, [data, showOnlyFavorites, favoriteRows]);
 
     return (
         <div className={style.container}>
@@ -46,7 +56,11 @@ export const DashboardTable = ({
 
                         {favorites && (
                             <label className={style.checkbox}>
-                                <input type="checkbox" />
+                                <input
+                                    type="checkbox"
+                                    checked={showOnlyFavorites}
+                                    onChange={(e) => setShowOnlyFavorites(e.target.checked)}
+                                />
                                 <span className={style.checkmark}></span>
                                 הצג מועדפים בלבד
                             </label>
@@ -84,28 +98,33 @@ export const DashboardTable = ({
                     ))}
                 </div>
 
-                {data && data.map((row, rowIndex) => (
-                    <div key={rowIndex} className={style.tableRow}>
-                        
-                        {/* ⭐ FAVORITE TOGGLE */}
-                        {favorites && (
-                            <label className={style.favoriteCheckbox}>
-                                <input
-                                    type="checkbox"
-                                    checked={favoriteRows.has(rowIndex)}
-                                    onChange={() => onToggleFavorite?.(rowIndex)}
-                                />
-                                <span className={style.favoriteMark}></span>
-                            </label>
-                        )}
+                {displayData && displayData.map((row, rowIndex) => {
+                    const hasBottomBorder = showSum || rowIndex !== displayData.length -1
+                    return (
+                        <div 
+                            key={rowIndex} 
+                            className={style.tableRow}
+                            style={{borderBottom: hasBottomBorder ? "1px solid #ccc" : "none"}}>
+                            
+                            {favorites && (
+                                <label className={style.favoriteCheckbox}>
+                                    <input
+                                        type="checkbox"
+                                        checked={favoriteRows.has(row.id)}
+                                        onChange={() => onToggleFavorite?.(row.id)}
+                                    />
+                                    <span className={style.favoriteMark}></span>
+                                </label>
+                            )}
 
-                        {columns.map((col, colIndex) => (
-                            <div key={colIndex} className={style.tableCell}>
-                                {row[col.label]}
-                            </div>
-                        ))}
-                    </div>
-                ))}
+                            {columns.map((col, colIndex) => (
+                                <div key={colIndex} className={style.tableCell}>
+                                    {row[col.label]}
+                                </div>
+                            ))}
+                        </div>
+                    )
+                })}
             </div>
 
             {showSum && (
@@ -125,3 +144,34 @@ export const DashboardTable = ({
         </div>
     );
 };
+
+
+
+
+
+
+
+
+// (
+                    
+//                     <div key={rowIndex} className={style.tableRow}>
+                        
+//                         {/* ⭐ FAVORITE TOGGLE */}
+//                         {favorites && (
+//                             <label className={style.favoriteCheckbox}>
+//                                 <input
+//                                     type="checkbox"
+//                                     checked={favoriteRows.has(rowIndex)}
+//                                     onChange={() => onToggleFavorite?.(rowIndex)}
+//                                 />
+//                                 <span className={style.favoriteMark}></span>
+//                             </label>
+//                         )}
+
+//                         {columns.map((col, colIndex) => (
+//                             <div key={colIndex} className={style.tableCell}>
+//                                 {row[col.label]}
+//                             </div>
+//                         ))}
+//                     </div>
+//                 )

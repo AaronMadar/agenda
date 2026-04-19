@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import style from '../../../style/components/dashboard/dashboard-table/DashboardTable.module.css'
+import { DownloadIcon } from '@/assets/icons';
 
 type Column = {
     label: string;
@@ -68,9 +69,7 @@ export const DashboardTable = ({
                     </div>
                 </div>
 
-                <div className={style.csvIcon}>
-                    download to csv icon
-                </div>
+                <DownloadIcon className={style.csvIcon} />
 
                 <div className={style.chooseColumn}>
                     <div className={`${style.upDownIcon} ${openColumnSelector ? style.open : ""}`} />

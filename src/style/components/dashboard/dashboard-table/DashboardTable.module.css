@@ -61,7 +61,11 @@
 }
 
 .csvIcon {
-    background: rgb(128, 131, 83);
+    cursor: pointer;
+}
+
+.csvIcon:hover {
+    opacity: 0.8;
 }
 
 .chooseColumn {

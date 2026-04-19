@@ -157,7 +157,11 @@
 /* ================= FAVORITE COLUMN ================= */
 
 .favoriteSpaceHolder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 40px;
+    padding: 3px 5px;
 }
 
 .favoriteCheckbox {
@@ -190,6 +194,7 @@
 .sum {
     background: rgb(179, 50, 159);
     display: flex;
+    height: 35px;
 }
 
 .sumCell {
@@ -205,4 +210,14 @@
     background: rgba(107, 175, 220, 0.427);
     padding: 0 5px;
     border-radius: 4px;
+}
+
+.chooseColumn {
+    display: flex;
+    align-items: center;
+    background: rgb(68, 68, 81);
+    padding: 0 8px;
+    border-radius: 15px;
+    border: 1px solid #66797e;
+    cursor: pointer;
 }

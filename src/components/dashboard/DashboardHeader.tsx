@@ -48,8 +48,10 @@ export const DashboardHeader = () => {
     { id: 10, name: "Emily Davis", age: 28, city: "Toronto", country: "Canada", money: 2500 }
   ]
 
-  // const { favorites, toggleFavorite } = useFavorites("dashboardUsers");
+  const { favorites, toggleFavorite } = useFavorites("dashboardUsers");
 
+  const [open, setOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [selected, setSelected] = useState<string[]>([]);
   const options = ["חףךלחע", "גיל", "עיר", "מדינה", "כסף", "אפשרות 6", "אפשרות 7", "אפשרות 8", "אפשרות 9", "אפשרות 10"];
 
@@ -84,22 +86,34 @@ export const DashboardHeader = () => {
 
 
 
-      {/* <DashboardTable
+      <DashboardTable
           columns={columns}
           data={data}
           favoriteRows={favorites}
           onToggleFavorite={toggleFavorite}
-      /> */}
+      />
 
 
       
 
-      <DropdownMultiSelect
-          search
-          options={options}
-          selectedOptions={selected}
-          onChange={setSelected}
-      />
+{/* <button
+    onClick={(e) => {
+        setAnchorEl(e.currentTarget);
+        setOpen(prev => !prev);
+    }}
+>
+    פתח
+</button>
+
+<DropdownMultiSelect
+    open={open}
+    anchorEl={anchorEl}
+    onClose={() => setOpen(false)}
+    options={options}
+    selectedOptions={selected}
+    onChange={setSelected}
+    search
+/> */}
 
 
 

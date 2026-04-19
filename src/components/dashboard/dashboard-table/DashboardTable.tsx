@@ -1,7 +1,8 @@
-import { useMemo, useState } from 'react';
-import style from '../../../style/components/dashboard/dashboard-table/DashboardTable.module.css'
-import { DownloadIcon, Search } from '@/assets/icons';
-import { SearchInput } from './SearchInput';
+import { useMemo, useState } from "react";
+import style from "../../../style/components/dashboard/dashboard-table/DashboardTable.module.css";
+import { DownloadIcon } from "@/assets/icons";
+import { SearchInput } from "./SearchInput";
+import { DropdownMultiSelect } from "./DropdownMultiSelect";
 
 type Column = {
     label: string;
@@ -30,12 +31,23 @@ export const DashboardTable = ({
     const [showOnlyFavorites, setShowOnlyFavorites] = useState(false);
     const [searchText, setSearchText] = useState("");
 
-    const [showColumns, setShowColumns] = useState<Set<string>>(new Set(columns.map(col => col.label)));
-    const [selectedColumns, setSelectedColumns] = useState<Set<string>>(showColumns);
+    // ================= COLUMN SELECTOR =================
     const [openColumnSelector, setOpenColumnSelector] = useState(false);
+    const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
-    const sumColum = (colLabel: string) => {
-        return displayData.reduce((sum, row) => sum + (Number(row[colLabel]) || 0), 0);
+    const [selectedColumns, setSelectedColumns] = useState<string[]>(
+        () => columns.map(c => c.label)
+    );
+
+    const selectedColumnObjects = useMemo(() => {
+        return columns.filter(c => selectedColumns.includes(c.label));
+    }, [columns, selectedColumns]);
+
+    const sumColumn = (colLabel: string) => {
+        return displayData.reduce(
+            (sum, row) => sum + (Number(row[colLabel]) || 0),
+            0
+        );
     };
 
     const displayData = useMemo(() => {
@@ -50,21 +62,24 @@ export const DashboardTable = ({
         if (searchText.trim()) {
             const lowerSearch = searchText.toLowerCase();
 
-            result = result.filter(row => {
-                return columns.some(col => {
+            result = result.filter(row =>
+                selectedColumnObjects.some(col => {
                     const value = row[col.label];
                     if (value == null) return false;
 
-                    return String(value).toLowerCase().includes(lowerSearch);
-                });
-            });
+                    return String(value)
+                        .toLowerCase()
+                        .includes(lowerSearch);
+                })
+            );
         }
 
         return result;
-    }, [data, showOnlyFavorites, searchText, favoriteRows, columns]);
+    }, [data, showOnlyFavorites, searchText, favoriteRows, selectedColumnObjects]);
 
     return (
         <div className={style.container}>
+            {/* ================= FILTERS ================= */}
             <div className={style.filters}>
                 <div className={style.searchHolder}>
                     <div className={style.searchAndFavorites}>
@@ -80,7 +95,9 @@ export const DashboardTable = ({
                                 <input
                                     type="checkbox"
                                     checked={showOnlyFavorites}
-                                    onChange={(e) => setShowOnlyFavorites(e.target.checked)}
+                                    onChange={(e) =>
+                                        setShowOnlyFavorites(e.target.checked)
+                                    }
                                 />
                                 <span className={style.checkmark}></span>
                                 הצג מועדפים בלבד
@@ -91,69 +108,96 @@ export const DashboardTable = ({
 
                 <DownloadIcon className={style.csvIcon} />
 
+                {/* ================= COLUMN SELECT ================= */}
                 <div className={style.chooseColumn}>
-                    <div className={`${style.upDownIcon} ${openColumnSelector ? style.open : ""}`} />
-                    <div className={style.chooseColumnHeader} onClick={() => setOpenColumnSelector(prev => !prev)}>
+                    <div
+                        className={style.chooseColumnHeader}
+                        onClick={(e) => {
+                            setAnchorEl(e.currentTarget);
+                            setOpenColumnSelector(prev => !prev);
+                        }}
+                    >
                         בחר עמודות להצגה
                     </div>
-                    <div className={style.columnsList}>
-                    </div>
+
+                    <DropdownMultiSelect
+                        search
+                        options={columns.map(c => c.label)}
+                        selectedOptions={selectedColumns}
+                        onChange={setSelectedColumns}
+                        open={openColumnSelector}
+                        anchorEl={anchorEl}
+                        onClose={() => setOpenColumnSelector(false)}
+                    />
                 </div>
             </div>
 
+            {/* ================= TABLE ================= */}
             <div className={style.tableBody}>
                 <div className={style.columnsHeaders}>
-                    {favorites && <div className={style.favoriteSpaceHolder}></div>}
+                    {favorites && (
+                        <div className={style.favoriteSpaceHolder}></div>
+                    )}
 
-                    {columns.map((col, index) => (
+                    {selectedColumnObjects.map((col, index) => (
                         <div key={index} className={style.columnHeader}>
                             {col.label}
-                            {col.searchable && (
-                                <div className={style.columnSearch}>
-                                    +
-                                </div>
-                            )}
                         </div>
                     ))}
                 </div>
 
-                {displayData && displayData.map((row, rowIndex) => {
-                    const hasBottomBorder = showSum || rowIndex !== displayData.length -1
+                {displayData.map((row, rowIndex) => {
+                    const hasBottomBorder =
+                        showSum || rowIndex !== displayData.length - 1;
+
                     return (
-                        <div 
-                            key={rowIndex} 
+                        <div
+                            key={rowIndex}
                             className={style.tableRow}
-                            style={{borderBottom: hasBottomBorder ? "1px solid #ccc" : "none"}}>
-                            
+                            style={{
+                                borderBottom: hasBottomBorder
+                                    ? "1px solid #ccc"
+                                    : "none"
+                            }}
+                        >
                             {favorites && (
                                 <label className={style.favoriteCheckbox}>
                                     <input
                                         type="checkbox"
                                         checked={favoriteRows.has(row.id)}
-                                        onChange={() => onToggleFavorite?.(row.id)}
+                                        onChange={() =>
+                                            onToggleFavorite?.(row.id)
+                                        }
                                     />
                                     <span className={style.favoriteMark}></span>
                                 </label>
                             )}
 
-                            {columns.map((col, colIndex) => (
-                                <div key={colIndex} className={style.tableCell}>
+                            {selectedColumnObjects.map((col, colIndex) => (
+                                <div
+                                    key={colIndex}
+                                    className={style.tableCell}
+                                >
                                     {row[col.label]}
                                 </div>
                             ))}
                         </div>
-                    )
+                    );
                 })}
             </div>
 
+            {/* ================= SUM ================= */}
             {showSum && (
                 <div className={style.sum}>
-                    {favorites && <div className={style.favoriteSpaceHolder}></div>}
-                    {columns.map((col, index) => (
+                    {favorites && (
+                        <div className={style.favoriteSpaceHolder}>ס"ה</div>
+                    )}
+
+                    {selectedColumnObjects.map((col, index) => (
                         <div key={index} className={style.sumCell}>
                             {col.sumable && (
                                 <span className={style.sumValue}>
-                                    {sumColum(col.label)}
+                                    {sumColumn(col.label)}
                                 </span>
                             )}
                         </div>

@@ -6,6 +6,7 @@ type DropdownMultiSelectProps = {
     search?: boolean;
     selectedOptions: string[];
     options?: string[];
+    positionRL?: number;
     onChange: (newSelected: string[]) => void;
 
     open: boolean;
@@ -20,7 +21,8 @@ export const DropdownMultiSelect = ({
     onChange,
     open,
     anchorEl,
-    onClose
+    onClose,
+    positionRL
 }: DropdownMultiSelectProps) => {
     const [searchText, setSearchText] = useState("");
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -79,7 +81,7 @@ export const DropdownMultiSelect = ({
             style={{
                 position: "absolute",
                 top: rect.bottom + window.scrollY,
-                left: rect.left + window.scrollX,
+                left: rect.left + window.scrollX + (positionRL || 0),
                 zIndex: 1000
             }}
         >

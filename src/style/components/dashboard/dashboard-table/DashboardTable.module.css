@@ -135,6 +135,16 @@
     padding: 5px;
 }
 
+.columnHeaderContent {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.columnHeaderContent.searchable {
+    cursor: pointer;
+}
+
 .columnSearch {
     opacity: 0.6;
 }

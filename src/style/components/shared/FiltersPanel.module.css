@@ -3,16 +3,13 @@
 }
 
 .time-icon {
-  font-size: 1.4rem;
-  color: #42adff;
-
+  font-size: 1.6rem;
+  color: #d0d0d0;
   width: 40px;
   height: 40px ;
-
   display: inline-flex;
   align-items: center;
   justify-content: center;
-
   cursor: pointer;
   border-radius: 50%;
   transition: background-color 0.2s ease, transform 0.2s ease;
@@ -25,7 +22,7 @@
 
 @media (max-width: 1023px) {
   .control-panel-icon {
-    display: flex;
+  display: flex;
   margin-left: 2rem;
   margin-right: 2rem;
   width: 40px;

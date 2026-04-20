@@ -11,6 +11,7 @@ import { useViewSettings } from "@/contexts/GantViewSettingsContext";
 import { forceColors } from "@/constants/colors";
 
 import styles from "@/style/components/gantpage/gant/Gant.module.css";
+import { EmptyState } from "@/components/shared/EmptyState";
 
 const MIN_WIDTH_PERCENT = 10;
 const ACTIVE_CARD_MIN_WIDTH_PERCENT = 40;
@@ -254,6 +255,9 @@ export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
           </div>
         </div>
       ))}
+
+      {/* EMPTY STATE */}
+      {!shibutzimData?.length && !loading && <EmptyState />}
     </div>
   );
 });

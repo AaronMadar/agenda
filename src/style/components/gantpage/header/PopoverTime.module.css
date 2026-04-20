@@ -1,116 +1,27 @@
-/* Le conteneur principal (MUI Paper) */
 .popover-dates-container {
-    background-color: #3d3c3c !important;    
-    border: 1px solid #525252 !important;
-    border-radius: 15px !important;
-    min-width: 200px !important; /* Contrôle la largeur ici */
-    color: white;
+  background-color: #3d3c3c !important;
+  border: 1px solid #525252 !important;
+  border-radius: 12px !important  ;
+  min-width: 200px;
 }
 
-/* Le Box interne */
 .popover-content-box {
-    padding: 16px;
-    display: flex;    
-    flex-direction: column;
-    justify-content: center;
-    gap: 0.7rem;
-    height: 12rem;
-    width: 14rem;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.7rem;
+  height: 12rem;
+  width: 14rem;
 }
 
-/* Le titre */
 .popover-title {
-    color: #4093f1;
-    font-weight: bold;
-    font-size: 0.85rem;
-    margin-bottom: -5px;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 0.85rem;
+  margin-bottom: -5px;
 }
 
-/* On utilise :global pour que les classes internes MUI ne soient pas renommées */
-:global(.css-19y0qf7-MuiFormControl-root-MuiPickersTextField-root) {
-    display: -webkit-inline-box;
-    display: -webkit-inline-flex;
-    display: -ms-inline-flexbox;
-    display: inline-flex;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    position: relative;
-    min-width: 0;
-    padding: 0;
-    margin: 0;
-    border: 0; 
-    vertical-align: top;
-    width: 80% !important;
-    max-width: 100%;
-}
-
-:global(.css-1hgcujo-MuiPickersInputBase-root-MuiPickersOutlinedInput-root){
-    direction: ltr;
-}
-
-/* Style des champs DatePicker */
-.date-picker-field :global(.MuiInputBase-root) {
-    color: #efeded !important;
-}
-
-.date-picker-field :global(.MuiOutlinedInput-notchedOutline) {
-    border-color: #525252 !important;
-    border-radius: 10px !important;
-}
-
-/* Hover sur les champs */
-.date-picker-field:hover :global(.MuiOutlinedInput-notchedOutline) {
-    border-color: #4093f1 !important;
-}
-
-:global(.MuiButton-root).apply-button {
-  margin-top: 8px;
-  background-color: #4093f1 !important;
-  border-radius: 1rem;
-}
-
-:global(.MuiButton-root).apply-button:hover {
-  background-color: #3376c2 !important;
-}
-
-/* input text */
-.date-picker-field :global(.MuiOutlinedInput-input) {
-  color: rgb(255, 255, 255) !important;
-}
-
-/* border */
-.date-picker-field :global(.MuiOutlinedInput-root) :global(fieldset) {
-  border-color: white !important;
-}
-
-.date-picker-field :global(.MuiOutlinedInput-root:hover) :global(fieldset) {
-  border-color: rgb(255, 255, 255);
-}
-
-.date-picker-field :global(.MuiOutlinedInput-root.Mui-focused) :global(fieldset) {
-  border-color: rgb(255, 255, 255) !important;
-}
-
-/* label */
-.date-picker-field :global(.MuiInputLabel-root) {
-  color: rgb(255, 255, 255);
-}
-
-.date-picker-field :global(.MuiInputLabel-root.Mui-focused) {
-  color: rgb(255, 255, 255) ;
-}
-
-/* calendar icon */
-.date-picker-field :global(.MuiSvgIcon-root) {
-  color: #4093f1;
-}
-
-:global(.MuiPickersSectionList-sectionContent) :global(.MuiPickersInputBase-sectionContent) :global(.css-1jpopwz-MuiPickersSectionList-sectionContent-MuiPickersInputBase-sectionContent) {
-  color: rgb(255, 0, 0) !important;
-}
-
-:global(.css-15395ss-MuiPickersSectionList-root-MuiPickersInputBase-sectionsContainer-MuiPickersOutlinedInput-sectionsContainer )
-{
-  color: white
+:global(.MuiPickersInputBase-root.MuiPickersOutlinedInput-root) {
+  direction: ltr;
 }

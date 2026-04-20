@@ -73,7 +73,76 @@ export function PopoverTime({ anchorEl, setAnchorEl }: PopoverProps) {
                 size: "small",
                 fullWidth: true,
                 className: styles["date-picker-field"],
+                sx: {
+                  "& .MuiInputBase-input": {
+                    color: "white",
+                  },
+                  "& .MuiPickersSectionList-root": {
+                    color: "#fff",
+                  },
+
+                  "& label": {
+                    color: "white",
+                  },
+
+                  "& label.Mui-focused": {
+                    color: "white",
+                  },
+                  "& .MuiInputBase-root.Mui-filled": {
+                    backgroundColor: "#ffffff",
+                  },
+
+                  "& label.MuiInputLabel-shrink": {
+                    color: "white",
+                  },
+                },
               },
+              popper: {
+                sx: {
+                  "& input": {
+                    color: "#ffffff",
+                  },
+                  "& .MuiSvgIcon-root": {
+                    color: "#ffffff",
+                  },
+                  "& .MuiPaper-root": {
+                    backgroundColor: "#3d3c3c",
+                    color: "white",
+                  },
+
+                  "& .MuiPickersDay-root": {
+                    color: "white",
+                  },
+
+                  "& .MuiPickersDay-root.Mui-selected": {
+                    backgroundColor: "#6a6a6a",
+                    color: "white",
+                  },
+
+                  "& .MuiPickersDay-root:hover": {
+                    backgroundColor: "#949090",
+                  },
+
+                  "& .MuiPickersDay-root.MuiPickersDay-today": {
+                    border: "1px solid white",
+                  },
+
+                  "& .MuiInputBase-root": {
+                    backgroundColor: "#ffffff",
+                  },
+                  "& .MuiDayCalendar-weekDayLabel": {
+                    color: "#949090",
+                    fontWeight: "bold",
+                    fontSize: "0.9rem",
+                  },
+                },
+              },
+              openPickerIcon: {
+                sx: {
+                  color: "#8e8e8e",
+                },
+              },
+
             }}
           />
 
@@ -85,11 +154,84 @@ export function PopoverTime({ anchorEl, setAnchorEl }: PopoverProps) {
             className={styles["date-picker-field"]}
             onChange={setSelectedEnd}
             slotProps={{
+
               textField: {
                 size: "small",
                 fullWidth: true,
                 className: styles["date-picker-field"],
+
+                sx: {
+
+
+                  "& .MuiInputBase-input": {
+                    color: "white",
+                  },
+                  "& .MuiPickersSectionList-root": {
+                    color: "#fff",
+                  },
+
+                  "& label": {
+                    color: "white",
+                  },
+
+                  "& label.Mui-focused": {
+                    color: "white",
+                  },
+                  "& .MuiInputBase-root.Mui-filled": {
+                    backgroundColor: "#ffffff",
+                  },
+
+                  "& label.MuiInputLabel-shrink": {
+                    color: "white",
+                  },
+                },
               },
+              popper: {
+                sx: {
+                  "& input": {
+                    color: "#ffffff",
+                  },
+                  "& .MuiSvgIcon-root": {
+                    color: "#ffffff",
+                  },
+                  "& .MuiPaper-root": {
+                    backgroundColor: "#3d3c3c",
+                    color: "white",
+                  },
+
+                  "& .MuiPickersDay-root": {
+                    color: "white",
+                  },
+
+                  "& .MuiPickersDay-root.Mui-selected": {
+                    backgroundColor: "#6a6a6a",
+                    color: "white",
+                  },
+
+                  "& .MuiPickersDay-root:hover": {
+                    backgroundColor: "#949090",
+                  },
+
+                  "& .MuiPickersDay-root.MuiPickersDay-today": {
+                    border: "1px solid white",
+                  },
+
+                  "& .MuiInputBase-root": {
+                    backgroundColor: "#ffffff",
+                  },
+                  "& .MuiDayCalendar-weekDayLabel": {
+                    color: "#949090",
+                    fontWeight: "bold",
+                    fontSize: "0.9rem",
+                  },
+                },
+              },
+              openPickerIcon: {
+                sx: {
+                  color: "#8e8e8e",
+                },
+              },
+
             }}
           />
 
@@ -97,6 +239,7 @@ export function PopoverTime({ anchorEl, setAnchorEl }: PopoverProps) {
             variant="contained"
             onClick={handleApply}
             className={styles["apply-button"]}
+            sx={{ backgroundColor: "#525252", borderRadius: "12px", "&:hover": { backgroundColor: "#6a6a6a" } }}
           >
             החל
           </Button>

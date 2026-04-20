@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import style from "../../../style/components/dashboard/dashboard-table/DashboardTable.module.css";
-import { DownloadIcon } from "@/assets/icons";
+import { ArrowDownIcon, DownloadIcon } from "@/assets/icons";
 import { SearchInput } from "./SearchInput";
 import { DropdownMultiSelect } from "./DropdownMultiSelect";
 
@@ -111,6 +111,13 @@ export const DashboardTable = ({
         );
     };
 
+    const resetFilters = () => {
+        setShowOnlyFavorites(false);
+        setSearchText("");
+        setColumnFilters({});
+        setSelectedColumns(columns.map(c => c.label));
+    };
+
     return (
         <div className={style.container}>
             {/* ================= FILTERS ================= */}
@@ -142,6 +149,10 @@ export const DashboardTable = ({
 
                 <DownloadIcon className={style.csvIcon} />
 
+                <div className={style.resetFilters} onClick={resetFilters}>
+                    איפוס סינונים
+                </div>
+
                 {/* ================= COLUMN SELECTOR (GLOBAL) ================= */}
                 <div className={style.chooseColumn}>
                     <div
@@ -151,7 +162,8 @@ export const DashboardTable = ({
                             setOpenColumnSelector(prev => !prev);
                         }}
                     >
-                        בחר עמודות להצגה
+                        <div>בחר עמודות להצגה</div>
+                        <ArrowDownIcon className={style.dropdownIcon} />
                     </div>
 
                     {openColumnSelector && (
@@ -189,7 +201,7 @@ export const DashboardTable = ({
                                 <span>{col.label}</span>
 
                                 {col.searchable && (
-                                    <span>▼</span>
+                                    <ArrowDownIcon className={style.dropdownIcon} />
                                 )}
                             </div>
 
@@ -218,31 +230,43 @@ export const DashboardTable = ({
                 </div>
 
                 {/* ================= ROWS ================= */}
-                {displayData.map((row, rowIndex) => (
-                    <div key={rowIndex} className={style.tableRow}>
-                        {favorites && (
-                            <label className={style.favoriteCheckbox}>
-                                <input
-                                    type="checkbox"
-                                    checked={favoriteRows.has(row.id)}
-                                    onChange={() =>
-                                        onToggleFavorite?.(row.id)
-                                    }
-                                />
-                                <span className={style.favoriteMark}></span>
-                            </label>
-                        )}
+                {displayData.map((row, rowIndex) => {
+                    const hasBottomBorder = showSum || rowIndex !== displayData.length -1;
 
-                        {selectedColumnObjects.map((col) => (
-                            <div
-                                key={col.label}
-                                className={style.tableCell}
+                    return (
+                        <div 
+                            key={rowIndex} 
+                            className={style.tableRow}
+                            style={{
+                                borderBottom: hasBottomBorder
+                                    ? "1px solid #535a5b"  
+                                    : "none"
+                            }}
                             >
-                                {row[col.label]}
-                            </div>
-                        ))}
-                    </div>
-                ))}
+                            {favorites && (
+                                <label className={style.favoriteCheckbox}>
+                                    <input
+                                        type="checkbox"
+                                        checked={favoriteRows.has(row.id)}
+                                        onChange={() =>
+                                            onToggleFavorite?.(row.id)
+                                        }
+                                    />
+                                    <span className={style.favoriteMark}></span>
+                                </label>
+                            )}
+
+                            {selectedColumnObjects.map((col) => (
+                                <div
+                                    key={col.label}
+                                    className={style.tableCell}
+                                >
+                                    {row[col.label]}
+                                </div>
+                            ))}
+                        </div>
+                    )
+                })}
             </div>
 
             {/* ================= SUM ================= */}

@@ -10,6 +10,7 @@ import RefereeHat from "./referee-hat.svg?react";
 import Hafsharot from "./hafsharot.svg?react";
 import DownloadIcon from "./download_document.svg?react";
 import Search from "./search.svg?react";
+import ArrowDownIcon from "./arrow_down.svg?react";
 
 
 export {
@@ -24,5 +25,6 @@ export {
     RefereeHat,
     Hafsharot,
     DownloadIcon,
-    Search
+    Search,
+    ArrowDownIcon
 }

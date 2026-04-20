@@ -170,7 +170,7 @@ export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
   ========================= */
 
   return (
-    <div className={styles["gant-container"]}>
+    <div className={`${styles["gant-container"]} ${!shibutzimData?.length && !loading ? styles["empty"] : ""}`}>
       {/* LOADING */}
       {loading && (
         <Box sx={{ display: "flex", flexDirection: "column", width: "100%" }}>

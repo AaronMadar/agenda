@@ -28,10 +28,11 @@ export const DashboardTable = ({
     favoriteRows = new Set(),
     onToggleFavorite
 }: DashboardTableProps) => {
+
     const [showOnlyFavorites, setShowOnlyFavorites] = useState(false);
     const [searchText, setSearchText] = useState("");
 
-    // ================= COLUMN VISIBILITY (main selector) =================
+    // ================= COLUMN VISIBILITY =================
     const [openColumnSelector, setOpenColumnSelector] = useState(false);
 
     const [selectedColumns, setSelectedColumns] = useState<string[]>(
@@ -40,7 +41,6 @@ export const DashboardTable = ({
 
     // ================= PER COLUMN FILTER =================
     const [columnFilters, setColumnFilters] = useState<Record<string, string[]>>({});
-
     const [openColumnFilter, setOpenColumnFilter] = useState<string | null>(null);
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
@@ -48,7 +48,16 @@ export const DashboardTable = ({
         return columns.filter(c => selectedColumns.includes(c.label));
     }, [columns, selectedColumns]);
 
-    // ================= UNIQUE VALUES PER COLUMN =================
+    // ================= GRID TEMPLATE =================
+    const gridTemplate = useMemo(() => {
+        const cols = selectedColumnObjects.length;
+
+        return favorites
+            ? `40px repeat(${cols}, minmax(150px, 1fr))`
+            : `repeat(${cols}, minmax(150px, 1fr))`;
+    }, [selectedColumnObjects, favorites]);
+
+    // ================= UNIQUE VALUES =================
     const getColumnOptions = (colLabel: string) => {
         if (!data) return [];
 
@@ -153,7 +162,7 @@ export const DashboardTable = ({
                     איפוס סינונים
                 </div>
 
-                {/* ================= COLUMN SELECTOR (GLOBAL) ================= */}
+                {/* COLUMN SELECTOR */}
                 <div className={style.chooseColumn}>
                     <div
                         className={style.chooseColumnHeader}
@@ -183,110 +192,118 @@ export const DashboardTable = ({
 
             {/* ================= TABLE ================= */}
             <div className={style.tableBody}>
-                <div className={style.columnsHeaders}>
-                    {favorites && (
-                        <div className={style.favoriteSpaceHolder}></div>
-                    )}
+                <div
+                    className={style.tableInner}
+                    style={{ "--grid-template": gridTemplate } as React.CSSProperties}
+                >
+                    {/* HEADER */}
+                    <div className={style.columnsHeaders}>
+                        {favorites && (
+                            <div className={style.favoriteSpaceHolder}></div>
+                        )}
 
-                    {selectedColumnObjects.map((col) => (
-                        <div key={col.label} className={style.columnHeader}>
-                            <div 
-                                className={`${style.columnHeaderContent} ${col.searchable ? style.searchable : ""}`}
-                                onClick={(e) => {
-                                    if (!col.searchable) return;
-                                    setAnchorEl(e.currentTarget);
-                                    setOpenColumnFilter(prev => prev === col.label ? null : col.label);
-                                }}>
+                        {selectedColumnObjects.map((col) => (
+                            <div key={col.label} className={style.columnHeader}>
+                                <div
+                                    className={`${style.columnHeaderContent} ${col.searchable ? style.searchable : ""}`}
+                                    onClick={(e) => {
+                                        if (!col.searchable) return;
+                                        setAnchorEl(e.currentTarget);
+                                        setOpenColumnFilter(prev =>
+                                            prev === col.label ? null : col.label
+                                        );
+                                    }}
+                                >
+                                    <span>{col.label}</span>
 
-                                <span>{col.label}</span>
+                                    {col.searchable && (
+                                        <ArrowDownIcon className={style.dropdownIcon} />
+                                    )}
+                                </div>
 
-                                {col.searchable && (
-                                    <ArrowDownIcon className={style.dropdownIcon} />
+                                {openColumnFilter === col.label && (
+                                    <DropdownMultiSelect
+                                        positionRL={-70}
+                                        search
+                                        options={getColumnOptions(col.label)}
+                                        selectedOptions={columnFilters[col.label] || []}
+                                        onChange={(newSelected) =>
+                                            setColumnFilters(prev => ({
+                                                ...prev,
+                                                [col.label]: newSelected
+                                            }))
+                                        }
+                                        open={true}
+                                        anchorEl={anchorEl}
+                                        onClose={() => setOpenColumnFilter(null)}
+                                    />
                                 )}
                             </div>
+                        ))}
+                    </div>
 
-                            {/* ================= COLUMN FILTER DROPDOWN ================= */}
-                            {openColumnFilter === col.label && (
-                                <DropdownMultiSelect
-                                    positionRL={-70}
-                                    search
-                                    options={getColumnOptions(col.label)}
-                                    selectedOptions={
-                                        columnFilters[col.label] || []
-                                    }
-                                    onChange={(newSelected) =>
-                                        setColumnFilters(prev => ({
-                                            ...prev,
-                                            [col.label]: newSelected
-                                        }))
-                                    }
-                                    open={true}
-                                    anchorEl={anchorEl}
-                                    onClose={() => setOpenColumnFilter(null)}
-                                />
-                            )}
-                        </div>
-                    ))}
-                </div>
+                    {/* ROWS */}
+                    <div className={style.rows}>
+                    {displayData.map((row, rowIndex) => {
+                        const hasBottomBorder = showSum || rowIndex !== displayData.length - 1;
 
-                {/* ================= ROWS ================= */}
-                {displayData.map((row, rowIndex) => {
-                    const hasBottomBorder = showSum || rowIndex !== displayData.length -1;
-
-                    return (
-                        <div 
-                            key={rowIndex} 
-                            className={style.tableRow}
-                            style={{
-                                borderBottom: hasBottomBorder
-                                    ? "1px solid #535a5b"  
-                                    : "none"
-                            }}
+                        return (
+                            <div
+                                key={rowIndex}
+                                className={style.tableRow}
+                                style={{
+                                    borderBottom: hasBottomBorder
+                                        ? "1px solid #535a5b"
+                                        : "none"
+                                }}
                             >
+                                {favorites && (
+                                    <label className={style.favoriteCheckbox}>
+                                        <input
+                                            type="checkbox"
+                                            checked={favoriteRows.has(row.id)}
+                                            onChange={() =>
+                                                onToggleFavorite?.(row.id)
+                                            }
+                                        />
+                                        <span className={style.favoriteMark}></span>
+                                    </label>
+                                )}
+
+                                {selectedColumnObjects.map((col) => (
+                                    <div
+                                        key={col.label}
+                                        className={style.tableCell}
+                                    >
+                                        {row[col.label]}
+                                    </div>
+                                ))}
+                            </div>
+                        );
+                    })}
+                    </div>
+
+                    {/* SUM */}
+                    {showSum && (
+                        <div className={style.sum}>
+                            <div className={style.sumLabel}>סכום כולל</div>
                             {favorites && (
-                                <label className={style.favoriteCheckbox}>
-                                    <input
-                                        type="checkbox"
-                                        checked={favoriteRows.has(row.id)}
-                                        onChange={() =>
-                                            onToggleFavorite?.(row.id)
-                                        }
-                                    />
-                                    <span className={style.favoriteMark}></span>
-                                </label>
+                                <div className={style.favoriteSpaceHolder}></div>
                             )}
 
                             {selectedColumnObjects.map((col) => (
-                                <div
-                                    key={col.label}
-                                    className={style.tableCell}
-                                >
-                                    {row[col.label]}
+                                <div key={col.label} className={style.sumCell}>
+                                    {col.sumable && (
+                                        <span className={style.sumValue}>
+                                            {sumColumn(col.label)}
+                                        </span>
+                                    )}
                                 </div>
                             ))}
                         </div>
-                    )
-                })}
-            </div>
-
-            {/* ================= SUM ================= */}
-            {showSum && (
-                <div className={style.sum}>
-                    {favorites && (
-                        <div className={style.favoriteSpaceHolder}>ס"ה</div>
                     )}
-
-                    {selectedColumnObjects.map((col) => (
-                        <div key={col.label} className={style.sumCell}>
-                            {col.sumable && (
-                                <span className={style.sumValue}>
-                                    {sumColumn(col.label)}
-                                </span>
-                            )}
-                        </div>
-                    ))}
                 </div>
-            )}
+            </div>
         </div>
     );
 };

@@ -79,7 +79,7 @@ export const DropdownMultiSelect = ({
             ref={dropdownRef}
             className={style.container}
             style={{
-                position: "absolute",
+                position: "fixed",
                 top: rect.bottom + window.scrollY,
                 left: rect.left + window.scrollX + (positionRL || 0),
                 zIndex: 1000

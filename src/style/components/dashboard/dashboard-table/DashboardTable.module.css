@@ -106,27 +106,32 @@
     opacity: 1;
 }
 
-/* ================= 4. TABLE STRUCTURE ================= */
 .tableBody {
     flex: 1;
     display: flex;
-    max-height: 500px;
+    flex-direction: column;
     overflow: auto;
     min-height: 0;
+
+    max-height: 500px;
 }
 
 .tableInner {
     display: flex;
     flex-direction: column;
     flex: 1;
-    min-height: 100%;
+    min-width: 100%;
+    width: max-content;
+    min-height: max-content;
 }
+
 
 .rows {
     flex: 1;
     display: block;
     width: 100%;
 }
+
 
 /* ================= GRID ROWS (HEADER / ROW / SUM) ================= */
 .columnsHeaders,
@@ -187,6 +192,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     min-width: 0;
+    max-width: 200px;
 }
 
 /* ================= 6. FAVORITE COLUMN ================= */
@@ -256,6 +262,8 @@
     height: 35px;
     position: sticky;
     bottom: 0;
+    margin-top: auto;
+    z-index: 5;
 }
 
 .sumCell {

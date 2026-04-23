@@ -26,6 +26,9 @@
   z-index: 100;
 }
 
+
+
+
 .divUp {
   display: flex;
   flex-direction: row;
@@ -105,8 +108,8 @@
   transition:
     opacity 0.15s ease-in-out,
     transform 0.15s ease-in-out;
-  width: max-content; /* ← au lieu de 100% */
-  min-width: 100%; /* ← pour qu'il remplisse la carte quand elle est large (activeCard) */
+  width: max-content;
+  min-width: 100%;
   overflow: hidden;
 }
 
@@ -164,4 +167,17 @@
 
 .detailsIcon:hover {
   opacity: 1;
+}
+
+
+@media (max-width: 1300px) {
+  .activeCard {
+    min-width: 60%;
+    min-height: 4.4rem;
+    max-height: 4.4rem;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    z-index: 100;
+    insetInlineStart: 0 !important;
+    insetInlineEnd: 0 !important;
+  }
 }

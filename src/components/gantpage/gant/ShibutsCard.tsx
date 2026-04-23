@@ -33,7 +33,7 @@ export const ShibutsCard = memo(function ShibutsCard({
 
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const { showOpenCards } = useViewSettings();
+  const { showOpenCards , isLittleScreen } = useViewSettings();
 
   const {
     title,
@@ -145,7 +145,9 @@ export const ShibutsCard = memo(function ShibutsCard({
     <div
       className={`${styles.shibutsCard} ${
         (isCardActive || showOpenCards) ? styles.activeCard : ""
-      } ${className || ""}`}
+      }
+      ${isLittleScreen ? styles.activecardlittleScreen : ""}
+      ${className || ""}`}
       style={style}
       onMouseEnter={() => setIsCardActive(true)}
       onMouseLeave={handleCardLeave}

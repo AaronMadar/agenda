@@ -271,12 +271,11 @@ export const DashboardTable = ({
                                 )}
 
                                 {selectedColumnObjects.map((col) => (
-                                    <div
-                                        key={col.label}
-                                        className={style.tableCell}
-                                    >
-                                        {row[col.label]}
-                                    </div>
+<div className={style.tableCell}>
+    <div className={style.cellText}>
+        {row[col.label]}
+    </div>
+</div>
                                 ))}
                             </div>
                         );

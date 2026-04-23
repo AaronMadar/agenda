@@ -6,6 +6,7 @@
     border-radius: 8px;
     overflow: hidden;
     min-height: 300px;
+    width: 1300px;
 }
 
 /* ================= 2. FILTERS & SEARCH ================= */
@@ -108,38 +109,39 @@
 /* ================= 4. TABLE STRUCTURE ================= */
 .tableBody {
     flex: 1;
-    /* display: flex; */
+    display: flex;
     max-height: 500px;
     overflow: auto;
     min-height: 0;
 }
 
 .tableInner {
-    width: max-content;
-
     display: flex;
     flex-direction: column;
+    flex: 1;
     min-height: 100%;
 }
 
 .rows {
     flex: 1;
-    display: flex;
-    flex-direction: column;
+    display: block;
+    width: 100%;
 }
 
+/* ================= GRID ROWS (HEADER / ROW / SUM) ================= */
 .columnsHeaders,
 .tableRow,
 .sum {
     display: grid;
     grid-template-columns: var(--grid-template);
     align-items: center;
+    width: 100%;
 }
 
+/* ================= ROW ================= */
 .tableRow {
     min-height: 36px;
     border-bottom: 1px solid #535a5b;
-    flex-shrink: 0;
 }
 
 /* ================= 5. HEADER & CELLS ================= */
@@ -148,22 +150,6 @@
     position: sticky;
     top: 0;
     z-index: 5;
-}
-
-.columnHeader,
-.tableCell,
-.sumCell {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 6px;
-    min-width: 0;
-}
-
-.tableCell {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
 }
 
 .columnHeaderContent {
@@ -183,6 +169,24 @@
 .columnHeaderContent.searchable:hover .dropdownIcon,
 .chooseColumnHeader:hover .dropdownIcon {
     opacity: 0.6;
+}
+
+.columnHeader,
+.tableCell,
+.sumCell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 6px;
+    min-width: 0;
+}
+
+.tableCell > span,
+.tableCell > div {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
 }
 
 /* ================= 6. FAVORITE COLUMN ================= */
@@ -225,18 +229,25 @@
     display: flex;
     gap: 5px;
     align-items: center;
-    padding: 0 8px;
+    padding: 2px 10px;
     border-radius: 15px;
     border: 1px solid #66797e;
-    background: rgb(68, 68, 81);
     cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.chooseColumn:hover {
+    background: rgba(183, 223, 255, 0.098);
+}
+
+.chooseColumn:active {
+    background: rgba(0, 0, 0, 0.098);
 }
 
 .chooseColumnHeader {
     display: flex;
     gap: 5px;
     align-items: center;
-    padding: 2px 3px;
     border-radius: 15px;
 }
 
@@ -248,7 +259,6 @@
 }
 
 .sumCell {
-    flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -267,4 +277,6 @@
     right: 20px;
     bottom: 5px;
     color: #87c9ff;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }

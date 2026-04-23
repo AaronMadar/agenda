@@ -11,6 +11,7 @@ import Hafsharot from "./hafsharot.svg?react";
 import DownloadIcon from "./download_document.svg?react";
 import Search from "./search.svg?react";
 import ArrowDownIcon from "./arrow_down.svg?react";
+import DrillIcon from "./drill.svg?react";
 
 
 export {
@@ -26,5 +27,6 @@ export {
     Hafsharot,
     DownloadIcon,
     Search,
-    ArrowDownIcon
+    ArrowDownIcon,
+    DrillIcon
 }

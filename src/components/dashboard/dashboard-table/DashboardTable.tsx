@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import style from "../../../style/components/dashboard/dashboard-table/DashboardTable.module.css";
-import { ArrowDownIcon, DownloadIcon } from "@/assets/icons";
+import { ArrowDownIcon, DownloadIcon, DrillIcon } from "@/assets/icons";
 import { SearchInput } from "./SearchInput";
 import { DropdownMultiSelect } from "./DropdownMultiSelect";
 
@@ -14,6 +14,7 @@ type DashboardTableProps = {
     columns: Column[];
     data?: any[];
     showSum?: boolean;
+    isDrillable?: boolean;
     favorites?: boolean;
 
     favoriteRows?: Set<number>;
@@ -24,6 +25,7 @@ export const DashboardTable = ({
     columns,
     data,
     showSum = true,
+    isDrillable = true,
     favorites = true,
     favoriteRows = new Set(),
     onToggleFavorite
@@ -52,10 +54,13 @@ export const DashboardTable = ({
     const gridTemplate = useMemo(() => {
         const cols = selectedColumnObjects.length;
 
-        return favorites
-            ? `40px repeat(${cols}, minmax(150px, 1fr))`
-            : `repeat(${cols}, minmax(150px, 1fr))`;
-    }, [selectedColumnObjects, favorites]);
+        let template = `repeat(${cols}, minmax(150px, 1fr))`
+
+        if (favorites) template = `40px ${template}`
+        if (isDrillable) template = `${template} 100px`
+
+        return template
+    }, [selectedColumnObjects, favorites, isDrillable]);
 
     // ================= UNIQUE VALUES =================
     const getFilteredOptions = (colLabel: string) => {
@@ -156,6 +161,10 @@ export const DashboardTable = ({
         setColumnFilters({});
         setSelectedColumns(columns.map(c => c.label));
     };
+
+    const hasSumCol = useMemo(() => {
+        return selectedColumnObjects.some(col => col.sumable);
+    }, [selectedColumnObjects]);
 
     return (
         <div className={style.container}>
@@ -270,11 +279,17 @@ export const DashboardTable = ({
                                 )}
                             </div>
                         ))}
+
+                        {selectedColumns.length > 0 && isDrillable && (
+                            <div className={style.drillHolder}>
+                                פירוט נוסף
+                            </div>
+                        )}
                     </div>
 
                     {/* ROWS */}
                     <div className={style.rows}>
-                        {displayData.map((row, rowIndex) => {
+                        {selectedColumns.length > 0 && displayData.map((row, rowIndex) => {
                             const hasBottomBorder = showSum || rowIndex !== displayData.length - 1;
 
                             return (
@@ -307,13 +322,19 @@ export const DashboardTable = ({
                                             </div>
                                         </div>
                                     ))}
+
+                                    {isDrillable && (
+                                        <div className={style.drillHolder} title="פירוט נוסף">
+                                            <DrillIcon className={style.drillIcon} />
+                                        </div>
+                                    )}
                                 </div>
                             );
                         })}
                     </div>
 
                     {/* SUM */}
-                    {showSum && (
+                    {hasSumCol && showSum && (
                         <div className={style.sum}>
                             <div className={style.sumLabel}>סכום כולל</div>
                             {favorites && (

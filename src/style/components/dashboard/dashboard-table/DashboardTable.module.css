@@ -325,6 +325,10 @@
     opacity: 0.6;
 }
 
+.drillHolder:active .drillIcon {
+    opacity: 0.3;
+}
+
 .recordsCount {
     padding: 5px 10px;
     color: #aaa;

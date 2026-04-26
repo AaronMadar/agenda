@@ -161,7 +161,7 @@ export const DashboardHeader = () => {
     { id: 10, name: "Emily Davis", age: 28, city: "Toronto", country: "Canada", money: 2500, email: "emily.davis@example.com", phone: "111-111-1111", company: "GHI Co", position: "Analyst" }
   ]
 
-  const { favorites, toggleFavorite } = useFavorites("dashboardUsers");
+  // const { favorites, toggleFavorite } = useFavorites("dashboardUsers");
 
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -187,7 +187,7 @@ export const DashboardHeader = () => {
       {/* <KeyValPopUp header="תרג”ד חי”ר סדיר" keyValues={keyValues} /> */}
       {/* <ResourcePopUp resourceDetailsTable={resourceDetailsTable} /> */}
 
-      {/* <FiltersPanel /> */}
+      <FiltersPanel />
 
 
 
@@ -199,12 +199,13 @@ export const DashboardHeader = () => {
 
 
 
-      <DashboardTable
+      {/* <DashboardTable
           columns={columns}
           data={data}
           favoriteRows={favorites}
           onToggleFavorite={toggleFavorite}
-      />
+          onRowClick={(row) => console.log("Row clicked:", row)}
+      /> */}
 
 
       

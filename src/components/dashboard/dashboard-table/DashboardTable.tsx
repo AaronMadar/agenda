@@ -15,6 +15,7 @@ type DashboardTableProps = {
     data?: any[];
     showSum?: boolean;
     isDrillable?: boolean;
+    onRowClick?: (rowData: any) => void;
     favorites?: boolean;
 
     favoriteRows?: Set<number>;
@@ -28,7 +29,8 @@ export const DashboardTable = ({
     isDrillable = true,
     favorites = true,
     favoriteRows = new Set(),
-    onToggleFavorite
+    onToggleFavorite,
+    onRowClick
 }: DashboardTableProps) => {
     const tableBodyRef = useRef<HTMLDivElement>(null);
     const [showOnlyFavorites, setShowOnlyFavorites] = useState(false);
@@ -367,7 +369,11 @@ export const DashboardTable = ({
                                     ))}
 
                                     {isDrillable && (
-                                        <div className={style.drillHolder} title="פירוט נוסף">
+                                        <div 
+                                            className={style.drillHolder} 
+                                            title="פירוט נוסף"
+                                            onClick={() => onRowClick?.(row)}
+                                        >
                                             <DrillIcon className={style.drillIcon} />
                                         </div>
                                     )}
@@ -395,7 +401,11 @@ export const DashboardTable = ({
                             ))}
 
                             {isDrillable && (
-                                <div className={style.drillHolder} title="פירוט נוסף">
+                                <div 
+                                    className={style.drillHolder} 
+                                    title="פירוט נוסף"
+                                    onClick={() => onRowClick?.({isSum: true})}
+                                >
                                     <DrillIcon className={style.drillIcon} />
                                 </div>
                             )}

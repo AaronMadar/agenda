@@ -324,3 +324,11 @@
 .drillHolder:hover .drillIcon {
     opacity: 0.6;
 }
+
+.recordsCount {
+    padding: 5px 10px;
+    color: #aaa;
+    font-size: 14px;
+    background: rgba(255, 255, 255, 0.02);
+    border-top: 1px solid #535a5b;
+}

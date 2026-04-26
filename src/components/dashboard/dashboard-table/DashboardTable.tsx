@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef, useEffect } from "react";
 import style from "../../../style/components/dashboard/dashboard-table/DashboardTable.module.css";
 import { ArrowDownIcon, DownloadIcon, DrillIcon } from "@/assets/icons";
 import { SearchInput } from "./SearchInput";
@@ -30,7 +30,7 @@ export const DashboardTable = ({
     favoriteRows = new Set(),
     onToggleFavorite
 }: DashboardTableProps) => {
-
+    const tableBodyRef = useRef<HTMLDivElement>(null);
     const [showOnlyFavorites, setShowOnlyFavorites] = useState(false);
     const [searchText, setSearchText] = useState("");
 
@@ -162,9 +162,28 @@ export const DashboardTable = ({
         setSelectedColumns(columns.map(c => c.label));
     };
 
-    const hasSumCol = useMemo(() => {
-        return selectedColumnObjects.some(col => col.sumable);
-    }, [selectedColumnObjects]);
+    useEffect(() => {
+        const tableBody = tableBodyRef.current;
+        if (!tableBody) return;
+
+        const handleWheel = (e: WheelEvent) => {
+            if (Math.abs(e.deltaY) > 0) {
+                e.preventDefault();
+                tableBody.scrollLeft -= e.deltaY * 0.4;
+            }
+        };
+
+        const header = tableBody.querySelector(`.${style.columnsHeaders}`);
+        const sumRow = tableBody.querySelector(`.${style.sum}`);
+
+        header?.addEventListener('wheel', handleWheel as any, { passive: false });
+        sumRow?.addEventListener('wheel', handleWheel as any, { passive: false });
+
+        return () => {
+            header?.removeEventListener('wheel', handleWheel as any);
+            sumRow?.removeEventListener('wheel', handleWheel as any);
+        };
+    }, [displayData]);
 
     return (
         <div className={style.container}>
@@ -193,6 +212,10 @@ export const DashboardTable = ({
                             </label>
                         )}
                     </div>
+                </div>
+
+                <div className={style.recordsCount}>
+                    {`מציג ${displayData.length} מתוך ${data?.length || 0} רשומות`}
                 </div>
 
                 <DownloadIcon className={style.csvIcon} />
@@ -230,7 +253,7 @@ export const DashboardTable = ({
             </div>
 
             {/* ================= TABLE ================= */}
-            <div className={style.tableBody}>
+            <div className={style.tableBody} ref={tableBodyRef}>
                 <div
                     className={style.tableInner}
                     style={{ "--grid-template": gridTemplate } as React.CSSProperties}
@@ -334,7 +357,7 @@ export const DashboardTable = ({
                     </div>
 
                     {/* SUM */}
-                    {hasSumCol && showSum && (
+                    {showSum && (
                         <div className={style.sum}>
                             <div className={style.sumLabel}>סכום כולל</div>
                             {favorites && (
@@ -350,6 +373,12 @@ export const DashboardTable = ({
                                     )}
                                 </div>
                             ))}
+
+                            {isDrillable && (
+                                <div className={style.drillHolder} title="פירוט נוסף">
+                                    <DrillIcon className={style.drillIcon} />
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>

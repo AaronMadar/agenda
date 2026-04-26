@@ -164,35 +164,35 @@ export const DashboardTable = ({
         setSelectedColumns(columns.map(c => c.label));
     };
 
-useEffect(() => {
-    const tableBody = tableBodyRef.current;
-    if (!tableBody) return;
+    useEffect(() => {
+        const tableBody = tableBodyRef.current;
+        if (!tableBody) return;
 
-    const handleWheel = (e: WheelEvent) => {
-        const target = e.target as HTMLElement;
+        const handleWheel = (e: WheelEvent) => {
+            const target = e.target as HTMLElement;
 
-        if (target.closest('[role="listbox"]')) return;
+            if (target.closest('[role="listbox"]')) return;
 
-        if (isDropdownOpen) return;
+            if (isDropdownOpen) return;
 
-        const isInsideTable =
-            target.closest(`.${style.columnsHeaders}`) ||
-            target.closest(`.${style.sum}`);
+            const isInsideTable =
+                target.closest(`.${style.columnsHeaders}`) ||
+                target.closest(`.${style.sum}`);
 
-        if (!isInsideTable) return;
+            if (!isInsideTable) return;
 
-        if (Math.abs(e.deltaY) > 0) {
-            e.preventDefault();
-            tableBody.scrollLeft += e.deltaY * 0.4;
-        }
-    };
+            if (Math.abs(e.deltaY) > 0) {
+                e.preventDefault();
+                tableBody.scrollLeft += e.deltaY * 0.4;
+            }
+        };
 
-    tableBody.addEventListener("wheel", handleWheel, { passive: false });
+        tableBody.addEventListener("wheel", handleWheel, { passive: false });
 
-    return () => {
-        tableBody.removeEventListener("wheel", handleWheel);
-    };
-}, [isDropdownOpen]);
+        return () => {
+            tableBody.removeEventListener("wheel", handleWheel);
+        };
+    }, [isDropdownOpen]);
 
     return (
         <div className={style.container}>

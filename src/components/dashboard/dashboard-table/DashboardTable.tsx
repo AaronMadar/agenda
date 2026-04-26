@@ -46,6 +46,8 @@ export const DashboardTable = ({
     const [openColumnFilter, setOpenColumnFilter] = useState<string | null>(null);
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
     const selectedColumnObjects = useMemo(() => {
         return columns.filter(c => selectedColumns.includes(c.label));
     }, [columns, selectedColumns]);
@@ -162,28 +164,35 @@ export const DashboardTable = ({
         setSelectedColumns(columns.map(c => c.label));
     };
 
-    useEffect(() => {
-        const tableBody = tableBodyRef.current;
-        if (!tableBody) return;
+useEffect(() => {
+    const tableBody = tableBodyRef.current;
+    if (!tableBody) return;
 
-        const handleWheel = (e: WheelEvent) => {
-            if (Math.abs(e.deltaY) > 0) {
-                e.preventDefault();
-                tableBody.scrollLeft -= e.deltaY * 0.4;
-            }
-        };
+    const handleWheel = (e: WheelEvent) => {
+        const target = e.target as HTMLElement;
 
-        const header = tableBody.querySelector(`.${style.columnsHeaders}`);
-        const sumRow = tableBody.querySelector(`.${style.sum}`);
+        if (target.closest('[role="listbox"]')) return;
 
-        header?.addEventListener('wheel', handleWheel as any, { passive: false });
-        sumRow?.addEventListener('wheel', handleWheel as any, { passive: false });
+        if (isDropdownOpen) return;
 
-        return () => {
-            header?.removeEventListener('wheel', handleWheel as any);
-            sumRow?.removeEventListener('wheel', handleWheel as any);
-        };
-    }, [displayData]);
+        const isInsideTable =
+            target.closest(`.${style.columnsHeaders}`) ||
+            target.closest(`.${style.sum}`);
+
+        if (!isInsideTable) return;
+
+        if (Math.abs(e.deltaY) > 0) {
+            e.preventDefault();
+            tableBody.scrollLeft += e.deltaY * 0.4;
+        }
+    };
+
+    tableBody.addEventListener("wheel", handleWheel, { passive: false });
+
+    return () => {
+        tableBody.removeEventListener("wheel", handleWheel);
+    };
+}, [isDropdownOpen]);
 
     return (
         <div className={style.container}>
@@ -230,6 +239,7 @@ export const DashboardTable = ({
                         className={style.chooseColumnHeader}
                         onClick={(e) => {
                             setAnchorEl(e.currentTarget);
+                            setIsDropdownOpen(true);
                             setOpenColumnSelector(prev => !prev);
                         }}
                     >
@@ -243,10 +253,16 @@ export const DashboardTable = ({
                             search
                             options={columns.map(c => c.label)}
                             selectedOptions={selectedColumns}
-                            onChange={setSelectedColumns}
+                            onChange={(newSelected) => {
+                                if (newSelected.length === 0) return;
+                                setSelectedColumns(newSelected);
+                            }}
                             open={openColumnSelector}
                             anchorEl={anchorEl}
-                            onClose={() => setOpenColumnSelector(false)}
+                            onClose={() => {
+                                setOpenColumnSelector(false);
+                                setIsDropdownOpen(false);
+                            }}
                         />
                     )}
                 </div>
@@ -271,6 +287,7 @@ export const DashboardTable = ({
                                     onClick={(e) => {
                                         if (!col.searchable) return;
                                         setAnchorEl(e.currentTarget);
+                                        setIsDropdownOpen(true);
                                         setOpenColumnFilter(prev =>
                                             prev === col.label ? null : col.label
                                         );
@@ -297,7 +314,10 @@ export const DashboardTable = ({
                                         }
                                         open={true}
                                         anchorEl={anchorEl}
-                                        onClose={() => setOpenColumnFilter(null)}
+                                        onClose={() => {
+                                            setOpenColumnFilter(null);
+                                            setIsDropdownOpen(false);
+                                        }}
                                     />
                                 )}
                             </div>

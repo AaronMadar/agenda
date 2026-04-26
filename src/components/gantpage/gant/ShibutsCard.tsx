@@ -33,7 +33,7 @@ export const ShibutsCard = memo(function ShibutsCard({
 
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const { showOpenCards , isLittleScreen } = useViewSettings();
+  const { showOpenCards, isLittleScreen } = useViewSettings();
 
   const {
     title,
@@ -143,9 +143,8 @@ export const ShibutsCard = memo(function ShibutsCard({
 
   return (
     <div
-      className={`${styles.shibutsCard} ${
-        (isCardActive || showOpenCards) ? styles.activeCard : ""
-      }
+      className={`${styles.shibutsCard} ${(isCardActive || showOpenCards) ? styles.activeCard : ""
+        }
       ${isLittleScreen ? styles.activecardlittleScreen : ""}
       ${className || ""}`}
       style={style}
@@ -172,9 +171,8 @@ export const ShibutsCard = memo(function ShibutsCard({
         </div>
 
         <div
-          className={`${styles.variationContainer} ${
-            (isCardActive || showOpenCards) ? styles.visible : ""
-          }`}
+          className={`${styles.variationContainer} ${(isCardActive || showOpenCards) ? styles.visible : ""
+            }`}
         >
           <div className={styles.detailsAndPercentage}>
             <div
@@ -204,28 +202,32 @@ export const ShibutsCard = memo(function ShibutsCard({
             </Tooltip>
           )}
 
-          {resources?.map((res) => (
-            <div
-              key={res.categoryName}
-              className={styles.divRessource}
-              onMouseEnter={(e) => {
-                clearCloseTimer();
-                setHoveredResource(res);
-                setResourceAnchorEl(e.currentTarget);
-                setTitleAnchorEl(null);
-              }}
-              onMouseLeave={() => delayedClose(setResourceAnchorEl)}
-            >
-              <i
-                className={
-                  iconResources[
+          <div className={styles.resourceDiv}>
+            {resources?.map((res) => (
+              <div
+                key={res.categoryName}
+                className={styles.divRessource}
+                onMouseEnter={(e) => {
+                  clearCloseTimer();
+                  setHoveredResource(res);
+                  setResourceAnchorEl(e.currentTarget);
+                  setTitleAnchorEl(null);
+                }}
+                onMouseLeave={() => delayedClose(setResourceAnchorEl)}
+              >
+                <i
+                  className={
+                    iconResources[
                     res.categoryName as keyof typeof iconResources
-                  ] ?? iconResources.default
-                }
-              />
-              <span>{res.categoryName}</span>
-            </div>
-          ))}
+                    ] ?? iconResources.default
+                  }
+                />
+                <span>{res.categoryName}</span>
+              </div>
+
+
+            ))}
+          </div>
         </div>
       </div>
 

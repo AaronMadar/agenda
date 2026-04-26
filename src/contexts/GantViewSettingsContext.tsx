@@ -21,7 +21,7 @@ export const GantViewSettingsProvider = ({ children }: { children: ReactNode }) 
   const [showOpenCards, setShowOpenCards] = useState(false);
   const [groupsInAscOrder, setGroupsInAscOrder] = useState(true);
   const [groupByField, setGroupByField] = useState<keyof Shibutz>('location');
-  const [isLittleScreen, setIsLittleScreen] = useState(window.innerWidth < 1300);
+  const [isLittleScreen, setIsLittleScreen] = useState(window.innerWidth < 1700);
 
 
   return (

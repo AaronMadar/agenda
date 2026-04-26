@@ -94,25 +94,13 @@ const calculateStartPosition = (
 };
 
 const calculateEndPosition = (
-  shibutsEnd: Dayjs,
-  rangeStart: Dayjs,
-  rangeEnd: Dayjs
+  startpos: number,
+  cardwidth: number,
+  
 ): number => {
-  const diffInRangeDays = rangeEnd
-    .endOf("day")
-    .diff(rangeStart.startOf("day"), "day") + 1;
-
-  const totalDays =
-    diffInRangeDays <= 15
-      ? diffInRangeDays
-      : rangeEnd.endOf("month").diff(rangeStart.startOf("month"), "day") + 1;
-
-  const visualEnd = shibutsEnd.isAfter(rangeEnd) ? rangeEnd : shibutsEnd;
-
-  //VERY IMPORTANT ! CALCUL THE END POSITION BY THE END (INSETINLINE END)
-  const diff = rangeEnd.diff(visualEnd, "day") + 1;
-
-  return (diff / totalDays) * 100;
+ const MAXIMAL_WIDTH_SCREEN = 100;
+ // IMPORTANT THIS RETURN THE POSITION IN PERCENTAGE FROM THE END OF THE SCREEN , NOT FROM THE START
+  return MAXIMAL_WIDTH_SCREEN - (startpos + cardwidth);
 };
 
 
@@ -258,8 +246,8 @@ export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
           <div className={styles["row-content-wrapper"]}>
             {group.shibutzim.map((shibuts) => {
               const startPos = calculateStartPosition(dayjs(shibuts.dateBegin), sDate, eDate);
-              const endPos = calculateEndPosition(dayjs(shibuts.dateEnd), sDate, eDate);
               const cardWidth = calculateWidth(shibuts, sDate, eDate);
+              const endPos = calculateEndPosition(startPos, cardWidth);
               const isNearEnd = checkIsNearEnd(startPos, cardWidth, activeMinWidth);
               const isNearStart = checkIsNearStart(endPos, cardWidth, activeMinWidth);
               const isNotLastInRow =
@@ -271,7 +259,7 @@ export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
               let widthVal: string | undefined;
 
               const maximalWidth = Math.min(Math.max(cardWidth, activeMinWidth), 100);
-              const displayedWidth = Math.min(cardWidth, 100);
+              const displayedWidth = Math.min(cardWidth, 100); 
 
               if (isNearEnd && isNearStart) {
                 // If both edges are near, center card to keep it inside track

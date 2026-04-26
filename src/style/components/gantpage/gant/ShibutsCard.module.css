@@ -26,9 +26,6 @@
   z-index: 100;
 }
 
-
-
-
 .divUp {
   display: flex;
   flex-direction: row;
@@ -108,10 +105,25 @@
   transition:
     opacity 0.15s ease-in-out,
     transform 0.15s ease-in-out;
-  width: max-content;
-  min-width: 100%;
+  width: 100%;
   overflow: hidden;
 }
+
+.resourceDiv {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  overflow: auto;
+  flex: 1;
+  padding: 2px;
+}
+
+.resourceDiv::-webkit-scrollbar {
+  height: 2px;
+}
+
+
+
 
 .activeCard .divDown {
   height: 2.2rem;
@@ -133,6 +145,7 @@
   font-size: 15px;
   gap: 7px;
   transition: opacity 0.1s ease-in-out;
+  flex-shrink: 1;
 }
 
 .spanDate {
@@ -169,15 +182,46 @@
   opacity: 1;
 }
 
-
-@media (max-width: 1300px) {
+@media (max-width: 1700px) {
   .activeCard {
     min-width: 60%;
-    min-height: 4.4rem;
+    min-height: 4rem;
     max-height: 4.4rem;
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
     z-index: 100;
-    insetInlineStart: 0 !important;
-    insetInlineEnd: 0 !important;
+  }
+
+  .shibutsCard {
+    height: 2.6rem;
+  }
+
+  .divRessource {
+    font-size: 13px;
+  }
+
+  .spanDate {
+    font-size: 0.8rem;
+  }
+
+  .divUp {
+    height: 2rem;
+    font-size: 14px;
+  }
+
+  .activeCard {
+    height: 4rem;
+  }
+
+  .divDown {
+    height: 2rem;
+  }
+
+  .activeCard .divDown {
+    height: 2rem;
+  }
+
+  .activeCard .divUp {
+    height: 2rem;
+    padding: 0 1rem;
   }
 }

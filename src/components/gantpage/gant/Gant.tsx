@@ -152,10 +152,8 @@ export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
       console.log("window width:", window.innerWidth);
       if (window.innerWidth < 1700) {
         setIsLittleScreen(true);
-      }
-      else if (window.innerWidth >= 1700) {
-        setIsLittleScreen(false);
-      } else {
+      }    
+      else {
         setIsLittleScreen(false);
       }
     };

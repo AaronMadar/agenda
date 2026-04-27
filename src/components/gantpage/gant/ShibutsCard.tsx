@@ -61,7 +61,7 @@ export const ShibutsCard = memo(function ShibutsCard({
     const handleWheel = (e: WheelEvent) => {
       if (Math.abs(e.deltaY) > 0) {
         e.preventDefault();
-        resourceDiv.scrollLeft += e.deltaY * 0.8;
+        resourceDiv.scrollLeft += e.deltaY * 0.1;
       }
     };
 

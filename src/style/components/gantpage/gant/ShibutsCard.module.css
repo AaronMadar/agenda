@@ -1,222 +1,233 @@
-.shibutsCard {
-  position: absolute;
-  border-radius: 1.1rem;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  cursor: pointer;
-  height: 2.8rem;
-  min-width: 0;
-  transition:
-    min-width 0.8s cubic-bezier(0.19, 1, 0.22, 1),
-    height 0.4s ease-in-out,
-    inset-inline-start 0.8s cubic-bezier(0.19, 1, 0.22, 1),
-    inset-inline-end 0.8s cubic-bezier(0.19, 1, 0.22, 1),
-    height 0.2s cubic-bezier(0.19, 1, 0.22, 1),
-    transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  z-index: 1;
-}
+  .shibutsCard {
+    position: absolute;
+    border-radius: 1.1rem;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    cursor: pointer;
+    height: 2.8rem;
+    min-width: 0;
+    transition:
+      min-width 0.8s cubic-bezier(0.19, 1, 0.22, 1),
+      height 0.4s ease-in-out,
+      inset-inline-start 0.8s cubic-bezier(0.19, 1, 0.22, 1),
+      inset-inline-end 0.8s cubic-bezier(0.19, 1, 0.22, 1),
+      height 0.2s cubic-bezier(0.19, 1, 0.22, 1),
+      transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+  }
 
-.activeCard {
-  min-height: 4.4rem;
-  max-height: 4.4rem;
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-  z-index: 100;
-}
-
-.divUp {
-  display: flex;
-  flex-direction: row;
-  height: 2.2rem;
-  min-width: auto;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.2rem 1rem;
-  color: rgb(71, 71, 71);
-  font-weight: 500;
-  font-weight: 500;
-  white-space: nowrap;
-}
-
-.activeCard .divUp {
-  padding: 0 1rem;
-}
-
-.variationContainer {
-  opacity: 0;
-  transform: translateX(10px);
-  transition: all 0.3s ease;
-
-  flex: 0 0 0;
-  width: 0;
-  overflow: hidden;
-}
-
-.visible {
-  opacity: 1;
-  transform: translateX(0);
-  flex: 0 0 auto;
-  width: auto;
-}
-
-.spanDate.hidden {
-  display: none;
-  transition: 0.4s cubic-bezier(0.075, 0.82, 0.165, 1);
-}
-
-.iconAndTitle {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  gap: 0.2em;
-  flex: none;
-  min-width: auto;
-}
-
-.cardTitle {
-  flex: none;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.activeCard .cardTitle {
-  flex: none;
-}
-.divDown {
-  position: absolute;
-  border-radius: 0 0 1.1rem 1.1rem;
-  bottom: -1.6px;
-  left: 0;
-  right: 0;
-  background-color: #4b4a4a;
-  color: white;
-  display: none;
-  height: 0;
-  width: 0;
-  display: flex;
-  align-items: center;
-  padding: 0 1rem;
-  flex-direction: row;
-  justify-content: space-between;
-  transition:
-    opacity 0.15s ease-in-out,
-    transform 0.15s ease-in-out;
-  width: 100%;
-  overflow: hidden;
-}
-
-.resourceDiv {
-  display: flex;
-  flex-direction: row;
-  gap: 12px;
-  overflow: auto;
-  flex: 1;
-  padding: 2px;
-}
-
-.resourceDiv::-webkit-scrollbar {
-  height: 2px;
-}
-
-.activeCard .divDown {
-  height: 2.2rem;
-  opacity: 1;
-}
-
-.flexRow {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.divRessource {
-  padding-right: 10px;
-  border-right: 1px solid #ccc;
-  display: flex;
-  white-space: nowrap;
-  align-items: center;
-  font-size: 15px;
-  gap: 7px;
-  transition: opacity 0.1s ease-in-out;
-  flex-shrink: 1;
-}
-
-.spanDate {
-  margin-left: 1rem;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  background-color: #3e3d3d;
-  border-radius: 5px;
-  padding: 1.9px 8px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  transition: opacity 0.1s ease-in-out;
-  white-space: nowrap;
-}
-
-.detailsAndPercentage {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.detailsIcon {
-  width: 1.3rem;
-  height: 1.3rem;
-  color: #2a3245;
-  opacity: 0.7;
-  cursor: pointer;
-  transition: opacity 0.2s ease;
-}
-
-.detailsIcon:hover {
-  opacity: 1;
-}
-
-@media (max-width: 1700px) {
   .activeCard {
-    min-height: 4rem;
+    min-height: 4.4rem;
     max-height: 4.4rem;
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
     z-index: 100;
   }
 
-  .shibutsCard {
-    height: 2.6rem;
-  }
-
-  .divRessource {
-    font-size: 13px;
-  }
-
-  .spanDate {
-    font-size: 0.8rem;
-  }
-
   .divUp {
-    height: 2rem;
-    font-size: 14px;
-  }
-
-  .activeCard {
-    height: 4rem;
-  }
-
-  .divDown {
-    height: 2rem;
-  }
-
-  .activeCard .divDown {
-    height: 2rem;
+    display: flex;
+    flex-direction: row;
+    height: 2.2rem;
+    min-width: auto;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 1rem;
+    color: rgb(71, 71, 71);
+    font-weight: 500;
+    font-weight: 500;
+    white-space: nowrap;
   }
 
   .activeCard .divUp {
-    height: 2rem;
     padding: 0 1rem;
   }
+
+  .variationContainer {
+    opacity: 0;
+    transform: translateX(10px);
+    transition: all 0.3s ease;
+
+    flex: 0 0 0;
+    width: 0;
+    overflow: hidden;
+  }
+
+  .visible {
+    opacity: 1;
+    transform: translateX(0);
+    flex: 0 0 auto;
+    width: auto;
+  }
+
+  .spanDate.hidden {
+    display: none;
+    transition: 0.4s cubic-bezier(0.075, 0.82, 0.165, 1);
+  }
+
+  .iconAndTitle {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 0.2em;
+    flex: none;
+    min-width: auto;
+  }
+
+  .cardTitle {
+    flex: none;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .activeCard .cardTitle {
+    flex: none;
+  }
+  .divDown {
+    position: absolute;
+    border-radius: 0 0 1.1rem 1.1rem;
+    bottom: -1.6px;
+    left: 0;
+    right: 0;
+    background-color: #4b4a4a;
+    color: white;
+    height: 0;
+    width: 0;
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+    flex-direction: row;
+    justify-content: space-between;
+    transition:
+      opacity 0.15s ease-in-out,
+      transform 0.15s ease-in-out;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .resourceDiv {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    gap: 12px;
+    overflow-x:scroll;
+    padding: 2px;
+  }
+
+  .resourceDiv::-webkit-scrollbar {
+    height: 2px;
+  }
+
+  .activeCard .divDown {
+    height: 2.2rem;
+    opacity: 1;
+  }
+
+  /* .flexRow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+  } */
+
+  .flexRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;      
+  min-width: 0;      
+  overflow: hidden;  
 }
+
+  .divRessource {
+    padding-right: 10px;
+    border-right: 1px solid #ccc;
+    display: flex;
+    white-space: nowrap;
+    align-items: center;
+    font-size: 15px;
+    gap: 7px;
+    transition: opacity 0.1s ease-in-out;
+    flex-shrink: 0;
+  }
+
+  .spanDate {
+    margin-left: 1rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: #3e3d3d;
+    border-radius: 5px;
+    padding: 1.9px 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: opacity 0.1s ease-in-out;
+    white-space: nowrap;
+  }
+
+  .detailsAndPercentage {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .detailsIcon {
+    width: 1.3rem;
+    height: 1.3rem;
+    color: #2a3245;
+    opacity: 0.7;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+  }
+
+  .detailsIcon:hover {
+    opacity: 1;
+  }
+
+  @media (max-width: 1700px) {
+    .activeCard {
+      min-height: 4rem;
+      max-height: 4.4rem;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+      z-index: 100;
+    }
+
+    .shibutsCard {
+      height: 2.6rem;
+    }
+
+    .divRessource {
+      font-size: 13px;
+    }
+
+    .spanDate {
+      font-size: 0.8rem;
+    }
+
+    .divUp {
+      height: 2rem;
+      font-size: 14px;
+    }
+
+    .activeCard {
+      height: 4rem;
+    }
+
+    .divDown {
+      height: 2rem;
+    }
+
+    .activeCard .divDown {
+      height: 2rem;
+    }
+
+    .activeCard .divUp {
+      height: 2rem;
+      padding: 0 1rem;
+    }
+  }

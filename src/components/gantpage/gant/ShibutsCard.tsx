@@ -1,4 +1,4 @@
-import React, { useState, useRef, memo } from "react";
+import React, { useState, useRef, memo, useEffect } from "react";
 import dayjs from "dayjs";
 import { Popover, Tooltip } from "@mui/material";
 
@@ -31,6 +31,7 @@ export const ShibutsCard = memo(function ShibutsCard({
   const [hoveredResource, setHoveredResource] = useState<Resource | null>(null);
   const [isCardActive, setIsCardActive] = useState(false);
 
+  const resourceDivRef = useRef<HTMLDivElement>(null);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const { showOpenCards, isLittleScreen, activeCardWidthPercent } = useViewSettings();
@@ -50,6 +51,23 @@ export const ShibutsCard = memo(function ShibutsCard({
     unitId,
     location,
   } = shibuts;
+
+  /* ---------------- HORIZONTAL SCROLL LOGIC ---------------- */
+
+  useEffect(() => {
+    const resourceDiv = resourceDivRef.current;
+    if (!resourceDiv) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaY) > 0) {
+        e.preventDefault();
+        resourceDiv.scrollLeft += e.deltaY * 0.8;
+      }
+    };
+
+    resourceDiv.addEventListener("wheel", handleWheel, { passive: false });
+    return () => resourceDiv.removeEventListener("wheel", handleWheel);
+  }, []);
 
   /* ---------------- ICON ---------------- */
 
@@ -177,8 +195,9 @@ export const ShibutsCard = memo(function ShibutsCard({
         </div>
 
         <div
-          className={`${styles.variationContainer} ${(isCardActive || showOpenCards) ? styles.visible : ""
-            }`}
+          className={`${styles.variationContainer} ${
+            isCardActive || showOpenCards ? styles.visible : ""
+          }`}
         >
           <div className={styles.detailsAndPercentage}>
             <div
@@ -208,11 +227,12 @@ export const ShibutsCard = memo(function ShibutsCard({
             </Tooltip>
           )}
 
-          <div className={styles.resourceDiv}>
+          <div className={styles.resourceDiv} ref={resourceDivRef}>
             {resources?.map((res) => (
               <div
                 key={res.categoryName}
                 className={styles.divRessource}
+                style={{ flexShrink: 0 }}
                 onMouseEnter={(e) => {
                   clearCloseTimer();
                   setHoveredResource(res);

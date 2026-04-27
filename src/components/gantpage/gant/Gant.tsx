@@ -22,7 +22,7 @@ const checkIsNearEnd = (startPos: number, cardWidth: number, activeMinWidth: num
   return (startPos + maximalWidthPercent) > 100;
 };
 
- const checkIsNearStart = (endPos: number, cardWidth: number, activeMinWidth: number): boolean => {
+const checkIsNearStart = (endPos: number, cardWidth: number, activeMinWidth: number): boolean => {
   const maximalWidthPercent = cardWidth > activeMinWidth ? cardWidth : activeMinWidth;
   return endPos + maximalWidthPercent > 100;
 }
@@ -96,10 +96,10 @@ const calculateStartPosition = (
 const calculateEndPosition = (
   startpos: number,
   cardwidth: number,
-  
+
 ): number => {
- const MAXIMAL_WIDTH_SCREEN = 100;
- // IMPORTANT THIS RETURN THE POSITION IN PERCENTAGE FROM THE END OF THE SCREEN , NOT FROM THE START
+  const MAXIMAL_WIDTH_SCREEN = 100;
+  // IMPORTANT THIS RETURN THE POSITION IN PERCENTAGE FROM THE END OF THE SCREEN , NOT FROM THE START
   return MAXIMAL_WIDTH_SCREEN - (startpos + cardwidth);
 };
 
@@ -144,9 +144,8 @@ type GantProps = {
 
 export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
   const { startDate, endDate, shibutzimData, loading } = useShibutzimContext();
-  const { groupByField, groupsInAscOrder , setIsLittleScreen ,isLittleScreen} = useViewSettings();
+  const { groupByField, groupsInAscOrder, setIsLittleScreen, showOpenCards, activeCardWidthPercent } = useViewSettings();
 
-  const activeMinWidth = isLittleScreen ? 60 : 40;
 
 
 
@@ -246,10 +245,10 @@ export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
           <div className={styles["row-content-wrapper"]}>
             {group.shibutzim.map((shibuts) => {
               const startPos = calculateStartPosition(dayjs(shibuts.dateBegin), sDate, eDate);
-              const cardWidth = calculateWidth(shibuts, sDate, eDate);
-              const endPos = calculateEndPosition(startPos, cardWidth);
-              const isNearEnd = checkIsNearEnd(startPos, cardWidth, activeMinWidth);
-              const isNearStart = checkIsNearStart(endPos, cardWidth, activeMinWidth);
+              const cardWidth = calculateWidth(shibuts, sDate, eDate); //minimal width is 10% maximal width is 100%
+              const endPos = calculateEndPosition(startPos, cardWidth);//position by the end not by the start 
+              const isNearEnd = checkIsNearEnd(startPos, cardWidth, activeCardWidthPercent);
+              const isNearStart = checkIsNearStart(endPos, cardWidth, activeCardWidthPercent);
               const isNotLastInRow =
                 group.shibutzim.indexOf(shibuts) !== group.shibutzim.length - 1;
 
@@ -258,29 +257,24 @@ export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
               let insetEnd: string | undefined;
               let widthVal: string | undefined;
 
-              const maximalWidth = Math.min(Math.max(cardWidth, activeMinWidth), 100);
-              const displayedWidth = Math.min(cardWidth, 100); 
+              const maximalWidth = Math.min(Math.max(cardWidth, activeCardWidthPercent), 100);
 
               if (isNearEnd && isNearStart) {
                 // If both edges are near, center card to keep it inside track
                 insetStart = `${Math.max(0, (100 - maximalWidth) / 2)}%`;
                 insetEnd = "auto";
-                widthVal = `${displayedWidth}%`;
               } else if (isNearEnd) {
                 // Near right edge: anchor from end to prevent right overflow
                 insetStart = "auto";
                 insetEnd = `${endPos}%`;
-                widthVal = `${displayedWidth}%`;
               } else if (isNearStart) {
                 // Near left edge while anchoring from end: keep start anchor
                 insetStart = `${startPos}%`;
                 insetEnd = "auto";
-                widthVal = `${displayedWidth}%`;
               } else {
                 // Default: preserve natural placement
                 insetStart = `${startPos}%`;
                 insetEnd = "auto";
-                widthVal = cardWidth === MIN_WIDTH_PERCENT ? undefined : `${displayedWidth}%`;
               }
 
               return (
@@ -301,7 +295,8 @@ export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
                           forceColors[shibuts.forceType] ?? forceColors["אחר"],
                         insetInlineStart: insetStart,
                         insetInlineEnd: insetEnd,
-                        width: widthVal,
+                        width: `${cardWidth}%`,
+                        minWidth: showOpenCards ? `${activeCardWidthPercent}%` : undefined, // Very important - it's use for the opencard effect !
                         top: 0,
                       }}
                     />

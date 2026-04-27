@@ -19,7 +19,6 @@
 }
 
 .activeCard {
-  min-width: 40%;
   min-height: 4.4rem;
   max-height: 4.4rem;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
@@ -122,9 +121,6 @@
   height: 2px;
 }
 
-
-
-
 .activeCard .divDown {
   height: 2.2rem;
   opacity: 1;
@@ -184,7 +180,6 @@
 
 @media (max-width: 1700px) {
   .activeCard {
-    min-width: 60%;
     min-height: 4rem;
     max-height: 4.4rem;
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);

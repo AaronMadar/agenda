@@ -4,76 +4,58 @@ import { EmptyState } from "@/components/shared/EmptyState";
 import { ErrorState } from "@/components/shared/ErrorState";
 import { useShibutzimContext } from "@/contexts/ShibutzimContext";
 import { BudgetResourceCard, type BudgetResource } from "./BudgetResourceCard";
-import type { Shibutz } from "@/types/shibutzim.types";
+import { useNavigate } from "react-router-dom";
+import { useBudgetResources } from "@/hooks/useBudgetResources";
 
-type ItemSummary = {
-  totalQuantity: number;
-  totalCost: number;
-  shibutzim: Shibutz[];
+const headerColors: Record<string, string> = {
+  "תחמושת": "#f28b82",
+  "ימ\"מ": "#fbbc04",
+  "הובלות": "#34a853",
+  "ק\"מ": "#4285f4",
+  "הפשרות": "#b36ec0",
+  "סטיקלייט": "#e91e63",
+  "מאמנים": "#00bcd4",
+
+  "רכב": "#fbbc04",
+  "ציוד": "#34a853",
+  "אחר": "#4285f4",
+  "לוגיסטיקה": "#b36ec0",
+  "רפואה": "#e91e63",
+  "תקשוב": "#00bcd4",
+  "ציוד אישי": "#ff5722",
+  "תחבורה": "#b98877",
+  "הדרכה": "#8cb8ce",
+  "תחזוקה": "#4caf50",
+  "אבטחה": "#bc9393",
 };
 
-type CategorySummary = {
-  totalQuantity: number;
-  totalCost: number;
-  items: Record<string, ItemSummary>;
-};
+const resourceNames: Record<string, string> = {
+  "תחמושת": "ammo",
+  "ימ\"מ": "mm",
+  "הובלות": "transportation",
+  "ק\"מ": "km",
+  "הפשרות": "thawing",
+  "סטיקלייט": "sticklight",
+  "מאמנים": "trainers",
 
-type BudgetResourcesMap = Record<string, CategorySummary>;
+  "רכב": "vehicle",
+  "ציוד": "equipment",
+  "אחר": "other",
+  "לוגיסטיקה": "logistics",
+  "רפואה": "medical",
+  "תקשוב": "it",
+  "ציוד אישי": "personal_equipment",
+  "תחבורה": "transportation",
+  "הדרכה": "training",
+  "תחזוקה": "maintenance",
+  "אבטחה": "security",
+};
 
 export const BudgetResources = () => {
+  const navigate = useNavigate();
   const { shibutzimData, loading } = useShibutzimContext();
+  const budgetResources = useBudgetResources(shibutzimData ?? []);
 
-  // ================= Calculate =================
-  const budgetResources: BudgetResourcesMap = useMemo(() => {
-    if (!shibutzimData) return {};
-
-    const map: BudgetResourcesMap = {};
-
-    for (const shibutz of shibutzimData) {
-      for (const resource of shibutz.resources) {
-        const categoryKey = resource.categoryName;
-
-        if (!map[categoryKey]) {
-          map[categoryKey] = {
-            totalQuantity: 0,
-            totalCost: 0,
-            items: {},
-          };
-        }
-
-        for (const item of resource.items) {
-          const itemKey = item.name;
-
-          if (!map[categoryKey].items[itemKey]) {
-            map[categoryKey].items[itemKey] = {
-              totalQuantity: 0,
-              totalCost: 0,
-              shibutzim: [],
-            };
-          }
-
-          const quantity = item.quantity;
-          const cost = quantity * item.unitCost;
-
-          map[categoryKey].totalQuantity += quantity;
-          map[categoryKey].totalCost += cost;
-
-          const itemSummary = map[categoryKey].items[itemKey];
-
-          itemSummary.totalQuantity += quantity;
-          itemSummary.totalCost += cost;
-
-          if (!itemSummary.shibutzim.includes(shibutz)) {
-            itemSummary.shibutzim.push(shibutz);
-          }
-        }
-      }
-    }
-
-    return map;
-  }, [shibutzimData]);
-
-  // ================= Transform =================
   const resources: BudgetResource[] = useMemo(() => {
     return Object.entries(budgetResources).map(([categoryName, data]) => ({
       name: categoryName,
@@ -99,8 +81,15 @@ export const BudgetResources = () => {
       <h4>משאבים תקציב</h4>
 
       <div className={style.grid}>
-        {resources.map((resource, index) => (
-          <BudgetResourceCard key={index} resource={resource} />
+        {resources.map((resource) => (
+          <BudgetResourceCard
+            key={resource.name}
+            resource={resource}
+            headerColor={headerColors[resource.name]}
+            onClick={() =>
+              navigate(`/details/budget-resources/${resourceNames[resource.name]}`)
+            }
+          />
         ))}
       </div>
     </div>

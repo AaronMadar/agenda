@@ -8,6 +8,8 @@ export interface BudgetResource {
 
 interface BudgetResourceCardProps {
   resource: BudgetResource;
+  headerColor?: string;
+  onClick?: () => void;
 }
 
 const formatNumber = (value: number) => {
@@ -16,10 +18,15 @@ const formatNumber = (value: number) => {
   return value.toString();
 };
 
-export const BudgetResourceCard = ({ resource }: BudgetResourceCardProps) => {
+export const BudgetResourceCard = ({ resource, headerColor, onClick }: BudgetResourceCardProps) => {
   return (
-    <div className={style.card}>
-      <h4 className={style.title}>{resource.name}</h4>
+    <div 
+      className={style.card}
+      onClick={onClick}
+    >
+      <h4 className={style.title} style={{ color: headerColor }}>
+        {resource.name}
+      </h4>
 
       <div className={style.row}>
         <div className={style.block}>

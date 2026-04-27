@@ -5,8 +5,8 @@ import { TreeDropdown } from "@/components/shared/tree-dropdown/TreeDropdown";
 import { SelectTime } from "../gantpage/header/SelectTime";
 import { PopoverTime } from "../gantpage/header/PopoverTime";
 import { MultiSelect } from "./selects/MultiSelect";
-import { useShibutzim } from "@/hooks/useShibutzim";
 import styles from "@/style/components/shared/FiltersPanel.module.css";
+import { useShibutzimContext } from "@/contexts/ShibutzimContext";
 
 export const FiltersPanel = () => {
     const {
@@ -31,7 +31,7 @@ export const FiltersPanel = () => {
       error,
     } = useFilters();
 
-  const {refetchShibutzimData} = useShibutzim();
+  const { refetchShibutzim } = useShibutzimContext();
   const rootUnitId = useFilters(state => state.UnitTreeData?.[0]?.id);
 
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -56,7 +56,7 @@ export const FiltersPanel = () => {
       serviceTypeIds: selectedServiceTypes,
       resourceTypeIds: selectedResourceTypes,
     };
-    refetchShibutzimData(filters);
+    refetchShibutzim(filters);
 
     if (loading) return <div>טוען...</div>;
     if (error) return <div>שגיאה: {error}</div>;

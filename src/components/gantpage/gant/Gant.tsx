@@ -153,8 +153,11 @@ export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
   useEffect(() => {
     const handleResize = () => {
       console.log("window width:", window.innerWidth);
-      if (window.innerWidth < 1300) {
+      if (window.innerWidth < 1700) {
         setIsLittleScreen(true);
+      }
+      else if (window.innerWidth >= 1700) {
+        setIsLittleScreen(false);
       } else {
         setIsLittleScreen(false);
       }
@@ -255,7 +258,6 @@ export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
               // Determine positioning to prevent overflow (0%..100%)
               let insetStart: string | undefined;
               let insetEnd: string | undefined;
-              let widthVal: string | undefined;
 
               const maximalWidth = Math.min(Math.max(cardWidth, activeCardWidthPercent), 100);
 

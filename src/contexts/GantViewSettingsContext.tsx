@@ -24,8 +24,8 @@ export const GantViewSettingsProvider = ({ children }: { children: ReactNode }) 
   const [groupsInAscOrder, setGroupsInAscOrder] = useState(true);
   const [groupByField, setGroupByField] = useState<keyof Shibutz>('location');
   const [isLittleScreen, setIsLittleScreen] = useState(window.innerWidth < 1700);
-  const [activeCardWidthPercent] = useState(isLittleScreen ? 60 : 40);
-
+  
+const activeCardWidthPercent = isLittleScreen ? 60 : 40;
 
 
   return (

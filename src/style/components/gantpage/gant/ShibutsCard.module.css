@@ -127,13 +127,7 @@
     opacity: 1;
   }
 
-  /* .flexRow {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 12px;
-  } */
-
+ 
   .flexRow {
   display: flex;
   align-items: center;

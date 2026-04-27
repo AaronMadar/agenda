@@ -147,10 +147,6 @@ export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
   const { startDate, endDate, shibutzimData, loading } = useShibutzimContext();
   const { groupByField, groupsInAscOrder, setIsLittleScreen, showOpenCards, activeCardWidthPercent } = useViewSettings();
 
-
-
-
-  // ---- 2. Listener taille écran ----
   useEffect(() => {
     const handleResize = () => {
       console.log("window width:", window.innerWidth);

@@ -10,6 +10,11 @@ interface GantViewSettingsContextType {
 
   groupByField: keyof Shibutz;
   setGroupByField: (field: keyof Shibutz) => void;
+
+  isLittleScreen: boolean;
+  setIsLittleScreen: (value: boolean) => void;
+
+  activeCardWidthPercent: number;
 }
 
 const GantViewSettingsContext = createContext<GantViewSettingsContextType | null>(null);
@@ -18,6 +23,10 @@ export const GantViewSettingsProvider = ({ children }: { children: ReactNode }) 
   const [showOpenCards, setShowOpenCards] = useState(false);
   const [groupsInAscOrder, setGroupsInAscOrder] = useState(true);
   const [groupByField, setGroupByField] = useState<keyof Shibutz>('location');
+  const [isLittleScreen, setIsLittleScreen] = useState(window.innerWidth < 1700);
+  
+const activeCardWidthPercent = isLittleScreen ? 60 : 40;
+
 
   return (
     <GantViewSettingsContext.Provider
@@ -28,6 +37,9 @@ export const GantViewSettingsProvider = ({ children }: { children: ReactNode }) 
         setGroupByField,
         groupsInAscOrder,
         setGroupsInAscOrder,
+        isLittleScreen,
+        setIsLittleScreen,
+        activeCardWidthPercent,
       }}
     >
       {children}

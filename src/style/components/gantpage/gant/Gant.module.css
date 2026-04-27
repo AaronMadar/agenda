@@ -2,6 +2,8 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  width: 100%;  
+  min-width: 100%;
   background:
     linear-gradient(
       to left,
@@ -11,8 +13,13 @@
       transparent calc(9rem + 1px)
     ),
     radial-gradient(circle, rgb(49, 53, 58) 0%, rgba(25, 28, 28, 1) 64%);
-  min-height: 0;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.gant-container::-webkit-scrollbar {
+  width: 6px;
+  height: 8px;
 }
 
 .empty {
@@ -24,13 +31,15 @@
   flex-direction: row;
   min-height: 6rem;
   height: auto;
+  width: 100%;
+  box-sizing: border-box;
   align-items: stretch;
   border-bottom: 1.9px solid #606368;
   min-height: 0;
   flex-shrink: 0;
 }
 
-.div-side {
+.div-side { 
   width: 9rem;
   display: flex;
   flex-direction: column;
@@ -45,11 +54,13 @@
 }
 
 .row-content-wrapper {
-  padding: 8px 0;
+  padding: 8px 0.4rem;
   flex: 1;
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  min-width: 0;
   min-height: 0;
 }
 

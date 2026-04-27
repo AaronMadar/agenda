@@ -1,4 +1,4 @@
-import React, { useState, useRef, memo } from "react";
+import React, { useState, useRef, memo, useEffect } from "react";
 import dayjs from "dayjs";
 import { Popover, Tooltip } from "@mui/material";
 
@@ -31,9 +31,10 @@ export const ShibutsCard = memo(function ShibutsCard({
   const [hoveredResource, setHoveredResource] = useState<Resource | null>(null);
   const [isCardActive, setIsCardActive] = useState(false);
 
+  const resourceDivRef = useRef<HTMLDivElement>(null);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const { showOpenCards } = useViewSettings();
+  const { showOpenCards, isLittleScreen, activeCardWidthPercent } = useViewSettings();
 
   const {
     title,
@@ -50,6 +51,23 @@ export const ShibutsCard = memo(function ShibutsCard({
     unitId,
     location,
   } = shibuts;
+
+  /* ---------------- HORIZONTAL SCROLL LOGIC ---------------- */
+
+  useEffect(() => {
+    const resourceDiv = resourceDivRef.current;
+    if (!resourceDiv) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaY) > 0) {
+        e.preventDefault();
+        resourceDiv.scrollLeft += e.deltaY * 0.1;
+      }
+    };
+
+    resourceDiv.addEventListener("wheel", handleWheel, { passive: false });
+    return () => resourceDiv.removeEventListener("wheel", handleWheel);
+  }, []);
 
   /* ---------------- ICON ---------------- */
 
@@ -143,10 +161,17 @@ export const ShibutsCard = memo(function ShibutsCard({
 
   return (
     <div
-      className={`${styles.shibutsCard} ${
-        (isCardActive || showOpenCards) ? styles.activeCard : ""
-      } ${className || ""}`}
-      style={style}
+      className={`${styles.shibutsCard} ${(isCardActive || showOpenCards) ? styles.activeCard : ""
+
+        }
+      
+      ${isLittleScreen ? styles.activecardlittleScreen : ""}
+      ${className || ""}`}
+
+      style={{
+        ...style,
+        ...(isCardActive && { minWidth: `${activeCardWidthPercent}%` })
+      }}
       onMouseEnter={() => setIsCardActive(true)}
       onMouseLeave={handleCardLeave}
     >
@@ -171,7 +196,7 @@ export const ShibutsCard = memo(function ShibutsCard({
 
         <div
           className={`${styles.variationContainer} ${
-            (isCardActive || showOpenCards) ? styles.visible : ""
+            isCardActive || showOpenCards ? styles.visible : ""
           }`}
         >
           <div className={styles.detailsAndPercentage}>
@@ -202,28 +227,33 @@ export const ShibutsCard = memo(function ShibutsCard({
             </Tooltip>
           )}
 
-          {resources?.map((res) => (
-            <div
-              key={res.categoryName}
-              className={styles.divRessource}
-              onMouseEnter={(e) => {
-                clearCloseTimer();
-                setHoveredResource(res);
-                setResourceAnchorEl(e.currentTarget);
-                setTitleAnchorEl(null);
-              }}
-              onMouseLeave={() => delayedClose(setResourceAnchorEl)}
-            >
-              <i
-                className={
-                  iconResources[
+          <div className={styles.resourceDiv} ref={resourceDivRef}>
+            {resources?.map((res) => (
+              <div
+                key={res.categoryName}
+                className={styles.divRessource}
+                style={{ flexShrink: 0 }}
+                onMouseEnter={(e) => {
+                  clearCloseTimer();
+                  setHoveredResource(res);
+                  setResourceAnchorEl(e.currentTarget);
+                  setTitleAnchorEl(null);
+                }}
+                onMouseLeave={() => delayedClose(setResourceAnchorEl)}
+              >
+                <i
+                  className={
+                    iconResources[
                     res.categoryName as keyof typeof iconResources
-                  ] ?? iconResources.default
-                }
-              />
-              <span>{res.categoryName}</span>
-            </div>
-          ))}
+                    ] ?? iconResources.default
+                  }
+                />
+                <span>{res.categoryName}</span>
+              </div>
+
+
+            ))}
+          </div>
         </div>
       </div>
 

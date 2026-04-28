@@ -8,6 +8,10 @@ import ArrowLeft from "./arrow_left.svg?react";
 import Swords from "./Swords.svg?react";
 import RefereeHat from "./referee-hat.svg?react";
 import Hafsharot from "./hafsharot.svg?react";
+import DownloadIcon from "./download_document.svg?react";
+import Search from "./search.svg?react";
+import ArrowDownIcon from "./arrow_down.svg?react";
+import DrillIcon from "./drill.svg?react";
 
 
 export {
@@ -20,5 +24,9 @@ export {
     ArrowLeft,
     Swords,
     RefereeHat,
-    Hafsharot
+    Hafsharot,
+    DownloadIcon,
+    Search,
+    ArrowDownIcon,
+    DrillIcon
 }

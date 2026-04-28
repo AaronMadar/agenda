@@ -14,16 +14,19 @@ import styles from "@/style/components/gantpage/gant/Gant.module.css";
 import { EmptyState } from "@/components/shared/EmptyState";
 
 const MIN_WIDTH_PERCENT = 10;
-const ACTIVE_CARD_MIN_WIDTH_PERCENT = 40;
-
 /* =========================
    HELPERS
 ========================= */
 
-const checkIsNearEnd = (startPos: number, cardWidth: number): boolean => {
-  const maximalWidthPercent = cardWidth > ACTIVE_CARD_MIN_WIDTH_PERCENT ? cardWidth : ACTIVE_CARD_MIN_WIDTH_PERCENT;
+const checkIsNearEnd = (startPos: number, cardWidth: number, activeMinWidth: number): boolean => {
+  const maximalWidthPercent = cardWidth > activeMinWidth ? cardWidth : activeMinWidth;
   return (startPos + maximalWidthPercent) > 100;
 };
+
+const checkIsNearStart = (endPos: number, cardWidth: number, activeMinWidth: number): boolean => {
+  const maximalWidthPercent = cardWidth > activeMinWidth ? cardWidth : activeMinWidth;
+  return endPos + maximalWidthPercent > 100;
+}
 
 const sortEventsByDate = (items: Shibutz[]): Shibutz[] => {
   return [...items].sort(
@@ -77,11 +80,11 @@ const calculateStartPosition = (
   // TODO use the calculation of the days as a parameter, in order not to repeat yourself
   const diffInRangeDays = rangeEnd
     .endOf("day")
-    .diff(rangeStart.startOf("day"), "day");
+    .diff(rangeStart.startOf("day"), "day") + 1;
 
   const totalDays =
     diffInRangeDays <= 15
-      ? diffInRangeDays + 1
+      ? diffInRangeDays
       : rangeEnd.endOf("month").diff(rangeStart.startOf("month"), "day") + 1;
 
   const visualStart = shibutsStart.isBefore(rangeStart) ? rangeStart : shibutsStart;
@@ -90,6 +93,17 @@ const calculateStartPosition = (
 
   return (diff / totalDays) * 100;
 };
+
+const calculateEndPosition = (
+  startpos: number,
+  cardwidth: number,
+
+): number => {
+  const MAXIMAL_WIDTH_SCREEN = 100;
+  // IMPORTANT THIS RETURN THE POSITION IN PERCENTAGE FROM THE END OF THE SCREEN , NOT FROM THE START
+  return MAXIMAL_WIDTH_SCREEN - (startpos + cardwidth);
+};
+
 
 const calculateWidth = (
   shibuts: Shibutz,
@@ -131,7 +145,22 @@ type GantProps = {
 
 export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
   const { startDate, endDate, shibutzimData, loading } = useShibutzimContext();
-  const { groupByField, groupsInAscOrder } = useViewSettings();
+  const { groupByField, groupsInAscOrder, setIsLittleScreen, showOpenCards, activeCardWidthPercent } = useViewSettings();
+
+  useEffect(() => {
+    const handleResize = () => {
+      console.log("window width:", window.innerWidth);
+      if (window.innerWidth < 1700) {
+        setIsLittleScreen(true);
+      }    
+      else {
+        setIsLittleScreen(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const currentYear = dayjs().year();
   const sDate = startDate || dayjs(`${currentYear}-01-01`);
@@ -214,15 +243,36 @@ export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
           <div className={styles["row-content-wrapper"]}>
             {group.shibutzim.map((shibuts) => {
               const startPos = calculateStartPosition(dayjs(shibuts.dateBegin), sDate, eDate);
-              const cardWidth = calculateWidth(shibuts, sDate, eDate);
-              const isNearEnd = checkIsNearEnd(startPos, cardWidth);
+              const cardWidth = calculateWidth(shibuts, sDate, eDate); //minimal width is 10% maximal width is 100%
+              const endPos = calculateEndPosition(startPos, cardWidth);//position by the end not by the start 
+              const isNearEnd = checkIsNearEnd(startPos, cardWidth, activeCardWidthPercent);
+              const isNearStart = checkIsNearStart(endPos, cardWidth, activeCardWidthPercent);
               const isNotLastInRow =
                 group.shibutzim.indexOf(shibuts) !== group.shibutzim.length - 1;
 
-              const exceedsLeftEdge = startPos + cardWidth > 100;
-              const endOffsetPercent = exceedsLeftEdge
-                ? 0
-                : 100 - (startPos + cardWidth);
+              // Determine positioning to prevent overflow (0%..100%)
+              let insetStart: string | undefined;
+              let insetEnd: string | undefined;
+
+              const maximalWidth = Math.min(Math.max(cardWidth, activeCardWidthPercent), 100);
+
+              if (isNearEnd && isNearStart) {
+                // If both edges are near, center card to keep it inside track
+                insetStart = `${Math.max(0, (100 - maximalWidth) / 2)}%`;
+                insetEnd = "auto";
+              } else if (isNearEnd) {
+                // Near right edge: anchor from end to prevent right overflow
+                insetStart = "auto";
+                insetEnd = `${endPos}%`;
+              } else if (isNearStart) {
+                // Near left edge while anchoring from end: keep start anchor
+                insetStart = `${startPos}%`;
+                insetEnd = "auto";
+              } else {
+                // Default: preserve natural placement
+                insetStart = `${startPos}%`;
+                insetEnd = "auto";
+              }
 
               return (
                 <div
@@ -240,11 +290,10 @@ export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
                       style={{
                         backgroundColor:
                           forceColors[shibuts.forceType] ?? forceColors["אחר"],
-                        insetInlineStart: isNearEnd ? "auto" : `${startPos}%`,
-                        insetInlineEnd: isNearEnd
-                          ? `${endOffsetPercent}%`
-                          : "auto",
-                        width: `${cardWidth === MIN_WIDTH_PERCENT ? null : cardWidth}%`,
+                        insetInlineStart: insetStart,
+                        insetInlineEnd: insetEnd,
+                        width: `${cardWidth}%`,
+                        minWidth: showOpenCards ? `${activeCardWidthPercent}%` : undefined, // Very important - it's use for the opencard effect !
                         top: 0,
                       }}
                     />

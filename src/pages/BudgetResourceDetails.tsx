@@ -6,11 +6,13 @@ import style from "@/style/pages/BudgetResourceDetails.module.css";
 import { ArrowRight } from "@/assets/icons";
 import "@/style/index.css";
 import { useShibutzimContext } from "@/contexts/ShibutzimContext";
+import { useFavorites } from "@/hooks/useFavorites";
 
 const resourceLabels: Record<string, string> = {
   ammo: "תחמושת",
   mm: 'ימ"מ',
-  transportation: "הובלות",
+  transportationAAAAAAAAAAAAAA: "הובלות",
+  transportation: "תחבורה",
   km: 'ק"מ',
   thawing: "הפשרות",
   sticklight: "סטיקלייט",
@@ -41,6 +43,8 @@ export const BudgetResourceDetails = () => {
 
   const categoryName = resourceLabels[category || ""];
 
+  const { favorites, toggleFavorite } = useFavorites(`budget-resource-${categoryName}`);
+
   const categoryData = useMemo(() => {
     if (!categoryName) return null;
     return budgetResources[categoryName];
@@ -51,6 +55,7 @@ export const BudgetResourceDetails = () => {
     if (!categoryData) return [];
 
     return Object.entries(categoryData.items).map(([name, data]) => ({
+      id: name,
       name,
       quantity: data.totalQuantity,
       cost: data.totalCost,
@@ -60,6 +65,18 @@ export const BudgetResourceDetails = () => {
   // ================= LEVEL 2 (Shibutzim) =================
   const shibutzimDataInner = useMemo(() => {
     if (!categoryData || !item) return [];
+
+    if (item === "__all__") {
+      const all = Object.values(categoryData.items).flatMap(
+        (itemData: any) => itemData.shibutzim,
+      );
+
+      const unique = Array.from(
+        new Map(all.map((s) => [s.codeShibutz, s])).values(),
+      );
+
+      return unique;
+    }
 
     const itemData = categoryData.items[item];
     if (!itemData) return [];
@@ -71,7 +88,10 @@ export const BudgetResourceDetails = () => {
     return shibutzimDataInner.map((s) => ({
       id: s.codeShibutz,
       name: s.title,
-      date: `${s.dateBegin} - ${s.dateEnd}`,
+      unitId: s.unitId,
+      mesima: s.mesima,
+      dateBegin: s.dateBegin,
+      dateEnd: s.dateEnd,
       directCost: s.directCost,
       location: s.location,
     }));
@@ -93,19 +113,18 @@ export const BudgetResourceDetails = () => {
 
   const itemColumns = [
     { label: "שם", accessor: "name", searchable: true },
-    { label: "כמות", accessor: "quantity", searchable: false, sumable: true },
-    { label: "עלות", accessor: "cost", searchable: false, sumable: true },
+    { label: "כמות", accessor: "quantity", sumable: true },
+    { label: "עלות", accessor: "cost", sumable: true },
   ];
 
   const shibutzColumns = [
+    { label: "קוד שיבוץ", accessor: "id", searchable: true },
     { label: "שם שיבוץ", accessor: "name", searchable: true },
-    { label: "תאריך", accessor: "date", searchable: false },
-    {
-      label: "עלות ישירה",
-      accessor: "directCost",
-      sumable: true,
-      searchable: false,
-    },
+    { label: "יחידה", accessor: "unitId", searchable: true },
+    { label: "משימה", accessor: "mesima", searchable: true },
+    { label: "תאריך התחלה", accessor: "dateBegin" },
+    { label: "תאריך סיום", accessor: "dateEnd" },
+    { label: "עלות ישירה", accessor: "directCost", sumable: true },
     { label: "מיקום", accessor: "location", searchable: true },
   ];
 
@@ -117,13 +136,21 @@ export const BudgetResourceDetails = () => {
 
   const handleRowClick = (row: any) => {
     if (!item) {
-      navigate(`/details/budget-resources/${category}/${row.name}`);
+      if (row.isSum) {
+        navigate(`/details/budget-resources/${category}/__all__`);
+      } else {
+        navigate(`/details/budget-resources/${category}/${row.name}`);
+      }
     }
   };
 
   // ================= HEADER =================
 
-  const title = item ? `${categoryName} / ${item}` : categoryName;
+  const title = item
+    ? item === "__all__"
+      ? `${categoryName} / כל השיבוצים`
+      : `${categoryName} / ${item}`
+    : categoryName;
 
   // ================= RENDER =================
 
@@ -156,14 +183,15 @@ export const BudgetResourceDetails = () => {
           <DashboardTable
             columns={itemColumns}
             data={itemsData}
+            favorites
+            favoriteRows={favorites}
+            onToggleFavorite={toggleFavorite}
+            isDrillable
             onRowClick={handleRowClick}
+            showSum
           />
         ) : (
-          <DashboardTable
-            columns={shibutzColumns}
-            data={shibutzimTableData}
-            isDrillable={false}
-          />
+          <DashboardTable columns={shibutzColumns} data={shibutzimTableData} />
         )}
       </div>
     </div>

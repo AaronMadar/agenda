@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useBudgetResources } from "@/hooks/useBudgetResources";
 import { DashboardTable } from "@/components/dashboard/dashboard-table/DashboardTable";
 import style from "@/style/pages/BudgetResourceDetails.module.css";
@@ -32,7 +32,6 @@ const resourceLabels: Record<string, string> = {
 
 export const BudgetResourceDetails = () => {
   const navigate = useNavigate();
-  //   const location = useLocation();
   const { category, item } = useParams();
 
   const { shibutzimData, loading } = useShibutzimContext();

@@ -5,7 +5,7 @@ import { ErrorState } from "@/components/shared/ErrorState";
 import { useShibutzimContext } from "@/contexts/ShibutzimContext";
 import { BudgetResourceCard, type BudgetResource } from "./BudgetResourceCard";
 import { useNavigate } from "react-router-dom";
-import { useBudgetResources } from "@/hooks/useBudgetResources";
+import { useBudgetResourcesContext } from "@/contexts/BudgetResourcesContext";
 
 const headerColors: Record<string, string> = {
   "תחמושת": "#f28b82",
@@ -54,7 +54,7 @@ const resourceNames: Record<string, string> = {
 export const BudgetResources = () => {
   const navigate = useNavigate();
   const { shibutzimData, loading } = useShibutzimContext();
-  const budgetResources = useBudgetResources(shibutzimData ?? []);
+  const budgetResources = useBudgetResourcesContext();
 
   const resources: BudgetResource[] = useMemo(() => {
     return Object.entries(budgetResources).map(([categoryName, data]) => ({

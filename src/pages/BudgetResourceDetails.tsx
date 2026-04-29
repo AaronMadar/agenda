@@ -1,12 +1,12 @@
 import { useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useBudgetResources } from "@/hooks/useBudgetResources";
 import { DashboardTable } from "@/components/dashboard/dashboard-table/DashboardTable";
 import style from "@/style/pages/BudgetResourceDetails.module.css";
 import { ArrowRight } from "@/assets/icons";
 import "@/style/index.css";
 import { useShibutzimContext } from "@/contexts/ShibutzimContext";
 import { useFavorites } from "@/hooks/useFavorites";
+import { useBudgetResourcesContext } from "@/contexts/BudgetResourcesContext";
 
 const resourceLabels: Record<string, string> = {
   ammo: "תחמושת",
@@ -36,7 +36,7 @@ export const BudgetResourceDetails = () => {
 
   const { shibutzimData, loading } = useShibutzimContext();
 
-  const budgetResources = useBudgetResources(shibutzimData ?? []);
+  const budgetResources = useBudgetResourcesContext();
 
   const isDataReady = shibutzimData && shibutzimData.length > 0;
 

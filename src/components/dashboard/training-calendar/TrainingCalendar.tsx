@@ -156,7 +156,7 @@ export const TrainingCalendar = () => {
                       {dayEvents.map((ev, idx) => {
                         const icon =
                           iconServiceType[
-                            ev.serviceType as ServiceTypeKey
+                          ev.serviceType as ServiceTypeKey
                           ] ?? iconServiceType.default;
 
                         return (
@@ -168,9 +168,13 @@ export const TrainingCalendar = () => {
                             <span>
                               {ev.title}{" "}
                               <span style={{ opacity: 0.6 }}>
-                                ({ev.unitId})
+                                ({ev.unitId}){" "}{"- "}
+                              </span>
+                              <span>
+                                ק"ש : {ev.codeShibutz}
                               </span>
                             </span>
+
                           </div>
                         );
                       })}
@@ -182,7 +186,7 @@ export const TrainingCalendar = () => {
                     {dayEvents.slice(0, 4).map((ev, idx) => {
                       const icon =
                         iconServiceType[
-                          ev.serviceType as ServiceTypeKey
+                        ev.serviceType as ServiceTypeKey
                         ] ?? iconServiceType.default;
 
                       return (

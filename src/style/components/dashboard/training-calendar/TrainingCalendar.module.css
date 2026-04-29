@@ -110,7 +110,7 @@
   position: absolute;
   bottom: calc(100% + 3px);
   right: 0;
-  max-width: 200px;
+  width: auto;
   background: #6D7479;
   color: white;
   border-radius: 6px;
@@ -125,9 +125,11 @@
 
 .tooltipItem {
   display: flex;
+  flex-direction: row;
   align-items: center;
   gap: 6px;
   white-space: nowrap;
+  width: auto;
 }
 
 .topRow .tooltip {

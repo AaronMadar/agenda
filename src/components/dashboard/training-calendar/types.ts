@@ -3,4 +3,5 @@ export type CalendarEvent = {
   title: string;
   unitId: string;
   serviceType: string;
+  codeShibutz: string;
 };

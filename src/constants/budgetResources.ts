@@ -1,82 +1,3 @@
-// export type ResourceConfig = {
-//   key: string;
-//   label: string;
-//   color: string;
-// };
-
-// export const RESOURCE_CONFIG: Record<string, ResourceConfig> = {
-//   "תחמושת": { key: "ammo", label: "תחמושת", color: "#f28b82" },
-//   'ימ"מ': { key: "mm", label: 'ימ"מ', color: "#fbbc04" },
-//   "הובלות": { key: "transportationAAAAAA", label: "הובלות", color: "#34a853" },
-//   'ק"מ': { key: "km", label: 'ק"מ', color: "#4285f4" },
-//   "הפשרות": { key: "thawing", label: "הפשרות", color: "#b36ec0" },
-//   "סטיקלייט": { key: "sticklight", label: "סטיקלייט", color: "#e91e63" },
-//   "מאמנים": { key: "trainers", label: "מאמנים", color: "#00bcd4" },
-
-//   "רכב": { key: "vehicle", label: "רכב", color: "#fbbc04" },
-//   "ציוד": { key: "equipment", label: "ציוד", color: "#34a853" },
-//   "אחר": { key: "other", label: "אחר", color: "#4285f4" },
-//   "לוגיסטיקה": { key: "logistics", label: "לוגיסטיקה", color: "#b36ec0" },
-//   "רפואה": { key: "medical", label: "רפואה", color: "#e91e63" },
-//   "תקשוב": { key: "it", label: "תקשוב", color: "#00bcd4" },
-//   "ציוד אישי": { key: "personal_equipment", label: "ציוד אישי", color: "#ff5722" },
-//   "תחבורה": { key: "transportation", label: "תחבורה", color: "#b98877" },
-//   "הדרכה": { key: "training", label: "הדרכה", color: "#8cb8ce" },
-//   "תחזוקה": { key: "maintenance", label: "תחזוקה", color: "#4caf50" },
-//   "אבטחה": { key: "security", label: "אבטחה", color: "#bc9393" },
-// };
-
-// // ================= LOOKUPS =================
-
-// // עברית -> config
-// export const getResourceConfig = (label?: string) => {
-//   return label ? RESOURCE_CONFIG[label] : undefined;
-// };
-
-// // אנגלית -> config
-// export const RESOURCE_BY_KEY = Object.fromEntries(
-//   Object.values(RESOURCE_CONFIG).map((r) => [r.key, r])
-// );
-
-// export const getResourceByKey = (key?: string) => {
-//   return key ? RESOURCE_BY_KEY[key] : undefined;
-// };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // ================= TYPES =================
 
 export type ResourceConfig = {
@@ -103,11 +24,24 @@ export const RESOURCE_CONFIG: Record<string, ResourceConfig> = {
   "תחמושת": {
     key: "ammo",
     label: "תחמושת",
-    color: "#f28b82",
+    color: "#d1bb95",
     icon: "bi bi-bullseye",
     items: {
-      "כד’ 5.56 מ”מ": "bi bi-record-circle",
-      "רימונים": "bi bi-exclamation-octagon",
+      "כד’ 5.56 מ”מ": "bi bi-dot",
+      "כד’ 7.62 מ”מ": "bi bi-circle-fill",
+      
+      "רימון יד מס’ 20": "bi bi-exclamation-diamond",
+      "רימון יד מס’ 4": "bi bi-exclamation-diamond-fill",
+      "רימון יד מס’ 40": "bi bi-exclamation-octagon",
+      
+      "טיל נ\"ט": "bi bi-rocket",
+      
+      "תותח": "bi bi-bullseye",
+      "מאג": "bi bi-grip-horizontal", 
+      "מקלע": "bi bi-three-dots", 
+      
+      "טנק": "bi bi-truck-front",
+      "מוקש": "bi bi-exclamation-triangle",
     },
   },
 
@@ -115,32 +49,20 @@ export const RESOURCE_CONFIG: Record<string, ResourceConfig> = {
   'ימ"מ': {
     key: "mm",
     label: 'ימ"מ',
-    color: "#fbbc04",
+    color: "#a5daea",
     icon: "bi bi-shield-fill",
   },
 
   // ===== הובלות =====
   "הובלות": {
-    key: "transportationAAAAAA",
-    label: "הובלות",
-    color: "#34a853",
-    icon: "bi bi-truck",
-    items: {
-      "משאיות לוגיסטיות": "bi bi-truck-flatbed",
-    },
-  },
-
-  // ===== תחבורה =====
-  "תחבורה": {
     key: "transportation",
-    label: "תחבורה",
-    color: "#b98877",
+    label: "הובלות",
+    color: "#c2ddb5",
     icon: "bi bi-truck",
     items: {
-      "רכבים": "bi bi-car-front",
-      "אופניים": "bi bi-bicycle",
-      "אוטובוסים": "bi bi-bus-front",
-      "משאיות לוגיסטיות": "bi bi-truck-flatbed",
+      "סמי טריילר": "bi bi-truck",
+      "משאיות": "bi bi-truck-front",
+      "גרר": "bi bi-truck-flatbed",
     },
   },
 
@@ -148,7 +70,7 @@ export const RESOURCE_CONFIG: Record<string, ResourceConfig> = {
   'ק"מ': {
     key: "km",
     label: 'ק"מ',
-    color: "#4285f4",
+    color: "#e5c9bd",
     icon: "bi bi-speedometer2",
   },
 
@@ -156,18 +78,24 @@ export const RESOURCE_CONFIG: Record<string, ResourceConfig> = {
   "הפשרות": {
     key: "thawing",
     label: "הפשרות",
-    color: "#b36ec0",
+    color: "#93a7df",
     icon: "bi bi-thermometer-snow",
+    items: {
+      "הפשרות": "bi bi-thermometer-snow",
+      "אוהלים": "bi bi-tent",
+    },
   },
 
   // ===== סטיקלייט =====
   "סטיקלייט": {
     key: "sticklight",
     label: "סטיקלייט",
-    color: "#e91e63",
+    color: "#d6cfad",
     icon: "bi bi-lightbulb",
     items: {
-      "אמצעי תאורה": "bi bi-lightbulb",
+      "ציוד מטווחים": "bi bi-bullseye",
+      "ציוד אישי": "bi bi-backpack",
+      "תאורה": "bi bi-lightning",
     },
   },
 
@@ -175,104 +103,8 @@ export const RESOURCE_CONFIG: Record<string, ResourceConfig> = {
   "מאמנים": {
     key: "trainers",
     label: "מאמנים",
-    color: "#00bcd4",
+    color: "#f4c8b5",
     icon: "bi bi-person-workspace",
-  },
-
-  // ===== רכב =====
-  "רכב": {
-    key: "vehicle",
-    label: "רכב",
-    color: "#fbbc04",
-    icon: "bi bi-car-front",
-  },
-
-  // ===== ציוד =====
-  "ציוד": {
-    key: "equipment",
-    label: "ציוד",
-    color: "#34a853",
-    icon: "bi bi-tools",
-  },
-
-  // ===== ציוד אישי =====
-  "ציוד אישי": {
-    key: "personal_equipment",
-    label: "ציוד אישי",
-    color: "#ff5722",
-    icon: "bi bi-backpack",
-    items: {
-      "אפודים": "bi bi-shield",
-      "קסדות": "bi bi-helmet-safety",
-    },
-  },
-
-  // ===== לוגיסטיקה =====
-  "לוגיסטיקה": {
-    key: "logistics",
-    label: "לוגיסטיקה",
-    color: "#b36ec0",
-    icon: "bi bi-box-seam",
-    items: {
-      "אוכל": "bi bi-basket2",
-      "מים": "bi bi-droplet",
-      "מיטוט": "bi bi-cloud-moon",
-    },
-  },
-
-  // ===== רפואה =====
-  "רפואה": {
-    key: "medical",
-    label: "רפואה",
-    color: "#e91e63",
-    icon: "bi bi-heart-pulse",
-    items: {
-      "ערכות עזרה ראשונה": "bi bi-bandaid",
-      "תחבושות אישיות": "bi bi-bandaid-fill",
-    },
-  },
-
-  // ===== תקשוב =====
-  "תקשוב": {
-    key: "it",
-    label: "תקשוב",
-    color: "#00bcd4",
-    icon: "bi bi-broadcast-pin",
-  },
-
-  // ===== הדרכה =====
-  "הדרכה": {
-    key: "training",
-    label: "הדרכה",
-    color: "#8cb8ce",
-    icon: "bi bi-journal-text",
-    items: {
-      "חוברות אימון": "bi bi-journal-bookmark",
-      "ציוד מטווחים": "bi bi-bullseye",
-    },
-  },
-
-  // ===== תחזוקה =====
-  "תחזוקה": {
-    key: "maintenance",
-    label: "תחזוקה",
-    color: "#4caf50",
-    icon: "bi bi-wrench-adjustable",
-    items: {
-      "חלקי חילוף לנשק": "bi bi-gear-wide-connected",
-      "שימון וניקוי": "bi bi-droplet-half",
-    },
-  },
-
-  // ===== אבטחה =====
-  "אבטחה": {
-    key: "security",
-    label: "אבטחה",
-    color: "#bc9393",
-    icon: "bi bi-shield-lock",
-    items: {
-      "אמצעי תצפית": "bi bi-binoculars",
-    },
   },
 
   // ===== אחר =====
@@ -315,7 +147,6 @@ export const getResourceLabel = (key?: string) => {
   return RESOURCE_BY_KEY[key ?? ""]?.label ?? DEFAULT_RESOURCE.label;
 };
 
-// אופציונלי (לשלב הבא)
 export const getResourceItemIcon = (label?: string, itemName?: string) => {
   const config = getResourceConfigSafe(label);
   return config.items?.[itemName ?? ""] ?? config.icon;

@@ -8,7 +8,9 @@ import { DetailsPopUp } from "@/components/shared/pop-ups/DetailsPopUp";
 import { KeyValPopUp } from "@/components/shared/pop-ups/KeyValPopUp";
 
 import { Details } from "@/assets/icons";
-import { iconResources, iconServiceType } from "@/constants/icons";
+// import { iconResources, iconServiceType } from "@/constants/icons";
+import { iconServiceType } from "@/constants/icons";
+import { getResourceIcon } from "@/constants/budgetResources";
 import { useViewSettings } from "@/contexts/GantViewSettingsContext";
 import type { Shibutz, Resource } from "@/types/shibutzim.types";
 
@@ -241,17 +243,9 @@ export const ShibutsCard = memo(function ShibutsCard({
                 }}
                 onMouseLeave={() => delayedClose(setResourceAnchorEl)}
               >
-                <i
-                  className={
-                    iconResources[
-                    res.categoryName as keyof typeof iconResources
-                    ] ?? iconResources.default
-                  }
-                />
+                <i className={getResourceIcon(res.categoryName)} />
                 <span>{res.categoryName}</span>
               </div>
-
-
             ))}
           </div>
         </div>
@@ -281,7 +275,7 @@ export const ShibutsCard = memo(function ShibutsCard({
         Boolean(resourceAnchorEl),
         resourceAnchorEl,
         setResourceAnchorEl,
-        <ResourcePopUp resourceDetailsTable={hoveredResource?.items || []} />,
+        <ResourcePopUp resName={hoveredResource?.categoryName} resourceDetailsTable={hoveredResource?.items || []} />,
         { vertical: "bottom", horizontal: "center" },
         { vertical: "top", horizontal: "center" }
       )}

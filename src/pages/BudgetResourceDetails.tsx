@@ -7,28 +7,8 @@ import "@/style/index.css";
 import { useShibutzimContext } from "@/contexts/ShibutzimContext";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useBudgetResourcesContext } from "@/contexts/BudgetResourcesContext";
+import { getResourceLabel } from "@/constants/budgetResources";
 
-const resourceLabels: Record<string, string> = {
-  ammo: "תחמושת",
-  mm: 'ימ"מ',
-  transportationAAAAAAAAAAAAAA: "הובלות",
-  transportation: "תחבורה",
-  km: 'ק"מ',
-  thawing: "הפשרות",
-  sticklight: "סטיקלייט",
-  trainers: "מאמנים",
-
-  vehicle: "רכב",
-  equipment: "ציוד",
-  other: "אחר",
-  logistics: "לוגיסטיקה",
-  medical: "רפואה",
-  it: "תקשוב",
-  personal_equipment: "ציוד אישי",
-  training: "הדרכה",
-  maintenance: "תחזוקה",
-  security: "אבטחה",
-};
 
 export const BudgetResourceDetails = () => {
   const navigate = useNavigate();
@@ -40,7 +20,7 @@ export const BudgetResourceDetails = () => {
 
   const isDataReady = shibutzimData && shibutzimData.length > 0;
 
-  const categoryName = resourceLabels[category || ""];
+  const categoryName = getResourceLabel(category);
 
   const { favorites, toggleFavorite } = useFavorites(`budget-resource-${categoryName}`);
 

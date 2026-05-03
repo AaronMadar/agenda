@@ -294,7 +294,6 @@ export const DashboardTable = ({
 
                     {openColumnSelector && (
                         <DropdownMultiSelect
-                            positionRL={-10}
                             search
                             options={columns.map(c => ({
                                 value: c.accessor,

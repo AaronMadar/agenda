@@ -1,4 +1,7 @@
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useMemo } from "react";
+import Popper from "@mui/material/Popper";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
+
 import { SearchInput } from "./SearchInput";
 import style from "@/style/components/dashboard/dashboard-table/DropdownMultiSelect.module.css";
 
@@ -29,21 +32,25 @@ export const DropdownMultiSelect = ({
     open,
     anchorEl,
     onClose,
-    positionRL
+    positionRL = 0
 }: DropdownMultiSelectProps) => {
     const [searchText, setSearchText] = useState("");
-    const dropdownRef = useRef<HTMLDivElement>(null);
 
     const normalizedOptions: NormalizedOption[] = useMemo(() => {
         if (!options) return [];
 
-        return options.map(opt => {
-            if (typeof opt === "string") {
-                return { value: opt, label: opt };
-            }
-            return opt;
-        });
+        return options.map(opt =>
+            typeof opt === "string"
+                ? { value: opt, label: opt }
+                : opt
+        );
     }, [options]);
+
+    const filteredOptions = useMemo(() => {
+        return normalizedOptions.filter(opt =>
+            opt.label.toLowerCase().includes(searchText.toLowerCase())
+        );
+    }, [normalizedOptions, searchText]);
 
     const toggleOption = (value: string) => {
         if (selectedOptions.includes(value)) {
@@ -53,9 +60,9 @@ export const DropdownMultiSelect = ({
         }
     };
 
-    const allSelected = normalizedOptions.length
-        ? normalizedOptions.every(opt => selectedOptions.includes(opt.value))
-        : false;
+    const allSelected =
+        normalizedOptions.length > 0 &&
+        normalizedOptions.every(opt => selectedOptions.includes(opt.value));
 
     const toggleAll = () => {
         if (!normalizedOptions.length) return;
@@ -67,80 +74,67 @@ export const DropdownMultiSelect = ({
         }
     };
 
-    useEffect(() => {
-        const handleClickOutside = (e: MouseEvent) => {
-            if (
-                dropdownRef.current &&
-                !dropdownRef.current.contains(e.target as Node) &&
-                anchorEl &&
-                !anchorEl.contains(e.target as Node)
-            ) {
-                onClose();
-            }
-        };
-
-        if (open) {
-            document.addEventListener("mousedown", handleClickOutside);
-        }
-
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, [open, anchorEl, onClose]);
-
-    if (!open || !anchorEl) return null;
-
-    const rect = anchorEl.getBoundingClientRect();
-
-    const filteredOptions = normalizedOptions.filter(opt =>
-        opt.label.toLowerCase().includes(searchText.toLowerCase())
-    );
-
     return (
-        <div
-            ref={dropdownRef}
-            className={style.container}
-            style={{
-                position: "fixed",
-                top: rect.bottom + window.scrollY,
-                left: rect.left + window.scrollX + (positionRL || 0),
-                zIndex: 1000
-            }}
+        <Popper
+            open={open}
+            anchorEl={anchorEl}
+            placement="bottom-start"
+            style={{ zIndex: 1000 }}
+            modifiers={[
+                {
+                    name: "offset",
+                    options: {
+                    offset: [positionRL || 0, 0], // [x, y]
+                    },
+                },
+                {
+                    name: "preventOverflow",
+                    options: { boundary: "viewport" }
+                },
+                {
+                    name: "flip",
+                    options: { fallbackPlacements: ["top-start"] }
+                }
+            ]}
         >
-            {search && (
-                <SearchInput
-                    value={searchText}
-                    setValue={setSearchText}
-                    placeholder="חיפוש..."
-                    width="100%"
-                />
-            )}
-
-            <div className={style.optionsList}>
-                {normalizedOptions.length > 0 && (
-                    <label className={style.option}>
-                        <input
-                            type="checkbox"
-                            checked={allSelected}
-                            onChange={toggleAll}
+            <ClickAwayListener onClickAway={onClose}>
+                <div className={style.container}>
+                    {search && (
+                        <SearchInput
+                            value={searchText}
+                            setValue={setSearchText}
+                            placeholder="חיפוש..."
+                            width="100%"
                         />
-                        <span className={style.checkmark}></span>
-                        בחר הכל
-                    </label>
-                )}
+                    )}
 
-                {filteredOptions.map(opt => (
-                    <label key={opt.value} className={style.option}>
-                        <input
-                            type="checkbox"
-                            checked={selectedOptions.includes(opt.value)}
-                            onChange={() => toggleOption(opt.value)}
-                        />
-                        <span className={style.checkmark}></span>
-                        {opt.label}
-                    </label>
-                ))}
-            </div>
-        </div>
+                    <div className={style.optionsList}>
+                        {normalizedOptions.length > 0 && (
+                            <label className={style.option}>
+                                <input
+                                    type="checkbox"
+                                    checked={allSelected}
+                                    onChange={toggleAll}
+                                />
+                                <span className={style.checkmark} />
+                                בחר הכל
+                            </label>
+                        )}
+
+                        {filteredOptions.map(opt => (
+                            <label key={opt.value} className={style.option}>
+                                <input
+                                    type="checkbox"
+                                    checked={selectedOptions.includes(opt.value)}
+                                    onChange={() => toggleOption(opt.value)}
+                                />
+                                <span className={style.checkmark} />
+                                {opt.label}
+                            </label>
+                        ))}
+                    </div>
+                </div>
+            </ClickAwayListener>
+        </Popper>
     );
 };

@@ -157,6 +157,10 @@
     border-bottom: 1px solid #535a5b;
 }
 
+.tableRow:hover {
+    background: rgba(255, 255, 255, 0.02);
+}
+
 /* ================= 5. HEADER & CELLS ================= */
 .columnsHeaders {
     background: #4d5253;

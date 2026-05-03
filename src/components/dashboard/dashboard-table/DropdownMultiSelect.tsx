@@ -1,11 +1,18 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { SearchInput } from "./SearchInput";
 import style from "@/style/components/dashboard/dashboard-table/DropdownMultiSelect.module.css";
+
+type Option = string | { value: string; label: string };
+
+type NormalizedOption = {
+    value: string;
+    label: string;
+};
 
 type DropdownMultiSelectProps = {
     search?: boolean;
     selectedOptions: string[];
-    options?: string[];
+    options?: Option[];
     positionRL?: number;
     onChange: (newSelected: string[]) => void;
 
@@ -27,25 +34,36 @@ export const DropdownMultiSelect = ({
     const [searchText, setSearchText] = useState("");
     const dropdownRef = useRef<HTMLDivElement>(null);
 
-    const toggleOption = (option: string) => {
-        if (selectedOptions.includes(option)) {
-            onChange(selectedOptions.filter(o => o !== option));
+    const normalizedOptions: NormalizedOption[] = useMemo(() => {
+        if (!options) return [];
+
+        return options.map(opt => {
+            if (typeof opt === "string") {
+                return { value: opt, label: opt };
+            }
+            return opt;
+        });
+    }, [options]);
+
+    const toggleOption = (value: string) => {
+        if (selectedOptions.includes(value)) {
+            onChange(selectedOptions.filter(o => o !== value));
         } else {
-            onChange([...selectedOptions, option]);
+            onChange([...selectedOptions, value]);
         }
     };
 
-    const allSelected = options?.length
-        ? options.every(opt => selectedOptions.includes(opt))
+    const allSelected = normalizedOptions.length
+        ? normalizedOptions.every(opt => selectedOptions.includes(opt.value))
         : false;
 
     const toggleAll = () => {
-        if (!options) return;
+        if (!normalizedOptions.length) return;
 
         if (allSelected) {
             onChange([]);
         } else {
-            onChange(options);
+            onChange(normalizedOptions.map(opt => opt.value));
         }
     };
 
@@ -74,6 +92,10 @@ export const DropdownMultiSelect = ({
 
     const rect = anchorEl.getBoundingClientRect();
 
+    const filteredOptions = normalizedOptions.filter(opt =>
+        opt.label.toLowerCase().includes(searchText.toLowerCase())
+    );
+
     return (
         <div
             ref={dropdownRef}
@@ -95,7 +117,7 @@ export const DropdownMultiSelect = ({
             )}
 
             <div className={style.optionsList}>
-                {options && options.length > 0 && (
+                {normalizedOptions.length > 0 && (
                     <label className={style.option}>
                         <input
                             type="checkbox"
@@ -107,21 +129,17 @@ export const DropdownMultiSelect = ({
                     </label>
                 )}
 
-                {options
-                    ?.filter(opt =>
-                        opt.toLowerCase().includes(searchText.toLowerCase())
-                    )
-                    .map(opt => (
-                        <label key={opt} className={style.option}>
-                            <input
-                                type="checkbox"
-                                checked={selectedOptions.includes(opt)}
-                                onChange={() => toggleOption(opt)}
-                            />
-                            <span className={style.checkmark}></span>
-                            {opt}
-                        </label>
-                    ))}
+                {filteredOptions.map(opt => (
+                    <label key={opt.value} className={style.option}>
+                        <input
+                            type="checkbox"
+                            checked={selectedOptions.includes(opt.value)}
+                            onChange={() => toggleOption(opt.value)}
+                        />
+                        <span className={style.checkmark}></span>
+                        {opt.label}
+                    </label>
+                ))}
             </div>
         </div>
     );

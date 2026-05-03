@@ -257,7 +257,10 @@ export const DashboardTable = ({
                         <DropdownMultiSelect
                             positionRL={-10}
                             search
-                            options={columns.map(c => c.accessor)}
+                            options={columns.map(c => ({
+                                value: c.accessor,
+                                label: c.label
+                            }))}
                             selectedOptions={selectedColumns}
                             onChange={(newSelected) => {
                                 if (newSelected.length === 0) return;

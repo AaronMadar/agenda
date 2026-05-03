@@ -176,6 +176,19 @@
     gap: 5px;
 }
 
+.sortIconHolder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+}
+
+.sortIcon {
+    cursor: pointer;
+    height: 26px;
+    transition: transform 0.2s ease;
+}
+
 .columnHeaderContent.searchable {
     cursor: pointer;
 }

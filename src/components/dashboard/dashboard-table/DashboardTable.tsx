@@ -1,6 +1,6 @@
 import { useMemo, useState, useRef, useEffect } from "react";
 import style from "../../../style/components/dashboard/dashboard-table/DashboardTable.module.css";
-import { ArrowDownIcon, DownloadIcon, DrillIcon } from "@/assets/icons";
+import { ArrowDownIcon, DownloadIcon, DrillIcon, SortIcon } from "@/assets/icons";
 import { SearchInput } from "./SearchInput";
 import { DropdownMultiSelect } from "./DropdownMultiSelect";
 
@@ -36,6 +36,12 @@ export const DashboardTable = ({
     const tableBodyRef = useRef<HTMLDivElement>(null);
     const [showOnlyFavorites, setShowOnlyFavorites] = useState(false);
     const [searchText, setSearchText] = useState("");
+
+    // ================= SORT =================
+    const [sortConfig, setSortConfig] = useState<{
+        accessor: string | null;
+        direction: "asc" | "desc" | null;
+    }>({ accessor: null, direction: null });
 
     // ================= COLUMN VISIBILITY =================
     const [openColumnSelector, setOpenColumnSelector] = useState(false);
@@ -73,12 +79,10 @@ export const DashboardTable = ({
 
         let result = data;
 
-        // favorites
         if (showOnlyFavorites) {
             result = result.filter(row => favoriteRows.has(row.id));
         }
 
-        // global search
         if (searchText.trim()) {
             const lowerSearch = searchText.toLowerCase();
 
@@ -91,7 +95,6 @@ export const DashboardTable = ({
             );
         }
 
-        // column filters (חוץ מהעמודה הנוכחית!)
         Object.entries(columnFilters).forEach(([col, values]) => {
             if (!values.length || col === accessor) return;
 
@@ -110,17 +113,16 @@ export const DashboardTable = ({
         );
     };
 
-    // ================= FILTER DATA =================
+    // ================= FILTER + SORT DATA =================
     const displayData = useMemo(() => {
         if (!data) return [];
 
-        let result = data;
+        let result = [...data];
 
         if (showOnlyFavorites) {
             result = result.filter(row => favoriteRows.has(row.id));
         }
 
-        // global search
         if (searchText.trim()) {
             const lowerSearch = searchText.toLowerCase();
 
@@ -133,7 +135,6 @@ export const DashboardTable = ({
             );
         }
 
-        // per-column filters
         Object.entries(columnFilters).forEach(([col, values]) => {
             if (!values.length) return;
 
@@ -142,6 +143,27 @@ export const DashboardTable = ({
             );
         });
 
+        // ===== SORT =====
+        if (sortConfig.accessor && sortConfig.direction) {
+            result.sort((a, b) => {
+                const valA = a[sortConfig.accessor!];
+                const valB = b[sortConfig.accessor!];
+
+                if (valA == null) return 1;
+                if (valB == null) return -1;
+
+                if (!isNaN(valA) && !isNaN(valB)) {
+                    return sortConfig.direction === "asc"
+                        ? Number(valA) - Number(valB)
+                        : Number(valB) - Number(valA);
+                }
+
+                return sortConfig.direction === "asc"
+                    ? String(valA).localeCompare(String(valB))
+                    : String(valB).localeCompare(String(valA));
+            });
+        }
+
         return result;
     }, [
         data,
@@ -149,7 +171,8 @@ export const DashboardTable = ({
         searchText,
         favoriteRows,
         selectedColumnObjects,
-        columnFilters
+        columnFilters,
+        sortConfig
     ]);
 
     const sumColumn = (accessor: string) => {
@@ -164,6 +187,24 @@ export const DashboardTable = ({
         setSearchText("");
         setColumnFilters({});
         setSelectedColumns(columns.map(c => c.accessor));
+
+        // RESET SORT
+        setSortConfig({ accessor: null, direction: null });
+    };
+
+    // ================= SORT CLICK =================
+    const handleSort = (accessor: string) => {
+        setSortConfig(prev => {
+            if (prev.accessor !== accessor) {
+                return { accessor, direction: "asc" };
+            }
+
+            if (prev.direction === "asc") {
+                return { accessor, direction: "desc" };
+            }
+
+            return { accessor: null, direction: null };
+        });
     };
 
     useEffect(() => {
@@ -174,7 +215,6 @@ export const DashboardTable = ({
             const target = e.target as HTMLElement;
 
             if (target.closest('[role="listbox"]')) return;
-
             if (isDropdownOpen) return;
 
             const isInsideTable =
@@ -239,7 +279,6 @@ export const DashboardTable = ({
                     איפוס סינונים
                 </div>
 
-                {/* COLUMN SELECTOR */}
                 <div className={style.chooseColumn}>
                     <div
                         className={style.chooseColumnHeader}
@@ -289,48 +328,76 @@ export const DashboardTable = ({
                             <div className={style.favoriteSpaceHolder}></div>
                         )}
 
-                        {selectedColumnObjects.map((col) => (
-                            <div key={col.accessor} className={style.columnHeader}>
-                                <div
-                                    className={`${style.columnHeaderContent} ${col.searchable ? style.searchable : ""}`}
-                                    onClick={(e) => {
-                                        if (!col.searchable) return;
-                                        setAnchorEl(e.currentTarget);
-                                        setIsDropdownOpen(true);
-                                        setOpenColumnFilter(prev =>
-                                            prev === col.accessor ? null : col.accessor
-                                        );
-                                    }}
-                                >
-                                    <span>{col.label}</span>
+                        {selectedColumnObjects.map((col) => {
+                            const isActive = sortConfig.accessor === col.accessor;
 
-                                    {col.searchable && (
-                                        <ArrowDownIcon className={style.dropdownIcon} />
+                            return (
+                                <div key={col.accessor} className={style.columnHeader}>
+                                    <div
+                                        className={`${style.columnHeaderContent} ${col.searchable ? style.searchable : ""}`}
+                                        onClick={(e) => {
+                                            if (!col.searchable) return;
+                                            setAnchorEl(e.currentTarget);
+                                            setIsDropdownOpen(true);
+                                            setOpenColumnFilter(prev =>
+                                                prev === col.accessor ? null : col.accessor
+                                            );
+                                        }}
+                                    >
+                                        <div 
+                                            className={style.sortIconHolder}
+                                            style={{
+                                                background: isActive ? "rgba(44, 47, 47, 0.18)" : "transparent",
+                                            }}
+                                        >
+                                            <SortIcon
+                                                className={style.sortIcon}
+                                                style={{
+                                                    opacity: isActive ? 1 : 0.4,
+                                                    transform:
+                                                        isActive && sortConfig.direction === "desc"
+                                                            ? "rotate(180deg)"
+                                                            : "rotate(0deg)"
+                                                }}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleSort(col.accessor);
+                                                }}
+                                            />
+                                        </div>
+
+                                        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                                            <span>{col.label}</span>
+
+                                            {col.searchable && (
+                                                <ArrowDownIcon className={style.dropdownIcon} />
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    {openColumnFilter === col.accessor && (
+                                        <DropdownMultiSelect
+                                            positionRL={-70}
+                                            search
+                                            options={getFilteredOptions(col.accessor)}
+                                            selectedOptions={columnFilters[col.accessor] || []}
+                                            onChange={(newSelected) =>
+                                                setColumnFilters(prev => ({
+                                                    ...prev,
+                                                    [col.accessor]: newSelected
+                                                }))
+                                            }
+                                            open={true}
+                                            anchorEl={anchorEl}
+                                            onClose={() => {
+                                                setOpenColumnFilter(null);
+                                                setIsDropdownOpen(false);
+                                            }}
+                                        />
                                     )}
                                 </div>
-
-                                {openColumnFilter === col.accessor && (
-                                    <DropdownMultiSelect
-                                        positionRL={-70}
-                                        search
-                                        options={getFilteredOptions(col.accessor)}
-                                        selectedOptions={columnFilters[col.accessor] || []}
-                                        onChange={(newSelected) =>
-                                            setColumnFilters(prev => ({
-                                                ...prev,
-                                                [col.accessor]: newSelected
-                                            }))
-                                        }
-                                        open={true}
-                                        anchorEl={anchorEl}
-                                        onClose={() => {
-                                            setOpenColumnFilter(null);
-                                            setIsDropdownOpen(false);
-                                        }}
-                                    />
-                                )}
-                            </div>
-                        ))}
+                            );
+                        })}
 
                         {selectedColumns.length > 0 && isDrillable && (
                             <div className={style.drillHolder}>

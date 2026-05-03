@@ -134,75 +134,122 @@ export const TrainingCalendar = () => {
               const isBusy = dayEvents.length > 0;
               const isToday = day.isSame(dayjs(), "day");
               const isOtherMonth = day.month() !== currentMonth.month();
-              const isTopRow = Math.floor(index / 7) === 0;
-              const isLeftColumn = (index + 1) % 7 === 0;
+              // const isTopRow = Math.floor(index / 7) === 0;
+              // const isLeftColumn = (index + 1) % 7 === 0;
 
               const dayClassName = [
                 style.day,
                 isBusy && style.busyDay,
                 isToday && style.isToday,
                 isOtherMonth && style.otherMonth,
-                isTopRow && style.topRow,
-                isLeftColumn && style.leftColumn,
+                // isTopRow && style.topRow,
+                // isLeftColumn && style.leftColumn,
               ]
                 .filter(Boolean)
                 .join(" ");
 
-              return (
-                <div key={dateKey} className={dayClassName}>
-                  {/* Tooltip */}
-                  {isBusy && (
-                    <div className={style.tooltip}>
-                      {dayEvents.map((ev, idx) => {
+              if (isBusy) {
+                return (
+                  <Tooltip
+                    key={dateKey}
+                    title={
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        {dayEvents.map((ev, idx) => {
+                          const icon =
+                            iconServiceType[
+                            ev.serviceType as ServiceTypeKey
+                            ] ?? iconServiceType.default;
+
+                          return (
+                            <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap' }}>
+                              <i
+                                className={icon.className}
+                                style={{ color: icon.color }}
+                              />
+                              <span>
+                                {ev.title}{" "}
+                                <span style={{ opacity: 0.6 }}>
+                                  ({ev.unitId}){" "}{"- "}
+                                </span>
+                                <span>
+                                  ק"ש : {ev.codeShibutz}
+                                </span>
+                              </span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    }
+                    arrow
+                    placement="top"
+                    slotProps={{
+                      tooltip: {
+                        sx: {
+                          backgroundColor: '#6d7479',
+                          color: 'white',
+                          fontSize: '11px',
+                          borderRadius: '6px',
+                          padding: '6px 8px',
+                          zIndex: 20,
+                        }
+                      },
+                      arrow: {
+                        sx: {
+                          color: '#6d7479',
+                        }
+                      }
+                    }}
+                  >
+                    <div className={dayClassName}>
+                      {/* Icons Preview */}
+                      <div className={style.iconsArea}>
+                        {dayEvents.slice(0, 4).map((ev, idx) => {
+                          const icon =
+                            iconServiceType[
+                            ev.serviceType as ServiceTypeKey
+                            ] ?? iconServiceType.default;
+
+                          return (
+                            <i
+                              key={idx}
+                              className={icon.className}
+                              style={{ color: icon.color }}
+                            />
+                          );
+                        })}
+                      </div>
+
+                      {/* Day Number */}
+                      <div className={style.dayNumber}>{day.date()}</div>
+                    </div>
+                  </Tooltip>
+                );
+              } else {
+                return (
+                  <div key={dateKey} className={dayClassName}>
+                    {/* Icons Preview */}
+                    <div className={style.iconsArea}>
+                      {dayEvents.slice(0, 4).map((ev, idx) => {
                         const icon =
                           iconServiceType[
                           ev.serviceType as ServiceTypeKey
                           ] ?? iconServiceType.default;
 
                         return (
-                          <div key={idx} className={style.tooltipItem}>
-                            <i
-                              className={icon.className}
-                              style={{ color: icon.color }}
-                            />
-                            <span>
-                              {ev.title}{" "}
-                              <span style={{ opacity: 0.6 }}>
-                                ({ev.unitId}){" "}{"- "}
-                              </span>
-                              <span>
-                                ק"ש : {ev.codeShibutz}
-                              </span>
-                            </span>
-
-                          </div>
+                          <i
+                            key={idx}
+                            className={icon.className}
+                            style={{ color: icon.color }}
+                          />
                         );
                       })}
                     </div>
-                  )}
 
-                  {/* Icons Preview */}
-                  <div className={style.iconsArea}>
-                    {dayEvents.slice(0, 4).map((ev, idx) => {
-                      const icon =
-                        iconServiceType[
-                        ev.serviceType as ServiceTypeKey
-                        ] ?? iconServiceType.default;
-
-                      return (
-                        <i
-                          key={idx}
-                          className={icon.className}
-                          style={{ color: icon.color }}
-                        />
-                      );
-                    })}
+                    {/* Day Number */}
+                    <div className={style.dayNumber}>{day.date()}</div>
                   </div>
-
-                  {/* Day Number */}
-                  <div className={style.dayNumber}>{day.date()}</div>
-                </div>
-              );
+                );
+              }
             })}
           </div>
         </>

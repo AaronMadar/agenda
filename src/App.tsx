@@ -10,6 +10,7 @@ import { useFilters } from "./stores/filtersStore";
 import { useEffect } from "react";
 import { GantViewSettingsProvider } from "./contexts/GantViewSettingsContext";
 import { BudgetResourceDetails } from "./pages/BudgetResourceDetails";
+import { BudgetResourcesProvider } from "./contexts/BudgetResourcesContext";
 
 dayjs.locale("he");
 dayjs.extend(localeData);
@@ -25,11 +26,13 @@ export default function App() {
   return (
     <GantViewSettingsProvider>
       <ShibutzimProvider>
-        <Routes>
-          <Route path="/" element={<GantPage />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/details/budget-resources/:category/:item?" element={<BudgetResourceDetails />} />
-        </Routes>
+        <BudgetResourcesProvider>
+          <Routes>
+            <Route path="/" element={<GantPage />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/details/budget-resources/:category/:item?" element={<BudgetResourceDetails />} />
+          </Routes>
+        </BudgetResourcesProvider>
       </ShibutzimProvider>
     </GantViewSettingsProvider>
   );

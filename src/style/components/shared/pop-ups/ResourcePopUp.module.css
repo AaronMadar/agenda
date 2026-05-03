@@ -15,6 +15,12 @@
   text-align: center;
 }
 
+.resourceItem {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
 .resourceTable td.resourceItem {
   text-align: right;
 }

@@ -16,6 +16,7 @@ export const extractCalendarEvents = (
         title: sh.title,
         unitId: sh.unitId,
         serviceType: sh.serviceType,
+        codeShibutz: sh.codeShibutz,
       });
 
       current.setDate(current.getDate() + 1);

@@ -346,7 +346,7 @@ export const DashboardTable = ({
                                         <div 
                                             className={style.sortIconHolder}
                                             style={{
-                                                background: isActive ? "rgba(44, 47, 47, 0.18)" : "transparent",
+                                                background: isActive ? "rgba(130, 192, 255, 0.1)" : "transparent",
                                             }}
                                         >
                                             <SortIcon

@@ -12,7 +12,6 @@
 .header {
   display: flex;
   align-items: center;
-  gap: 10px;
 }
 
 .title {
@@ -41,8 +40,15 @@
   flex: 1;
 }
 
+.backButton {
+  display: flex;
+  align-items: center;
+  width: 20px;
+  height: 30px;
+  cursor: pointer;
+}
+
 .backIcon {
   width: 9px;
   height: auto;
-  cursor: pointer;
 }

@@ -436,7 +436,7 @@ export const DashboardTable = ({
                                     {selectedColumnObjects.map((col) => (
                                         <div key={col.accessor} className={style.tableCell}>
                                             <div className={style.cellText}>
-                                                {row[col.accessor]}
+                                                {String(row[col.accessor] ?? "--")}
                                             </div>
                                         </div>
                                     ))}

@@ -13,7 +13,6 @@
   min-height: 0;
 }
 
-/* ===== Header ===== */
 .header {
   display: flex;
   align-items: center;
@@ -60,7 +59,6 @@
   cursor: pointer;
 }
 
-/* ===== Weekdays ===== */
 .weekdays {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -69,7 +67,6 @@
   opacity: 0.7;
 }
 
-/* ===== Grid ===== */
 .grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -77,10 +74,9 @@
   gap: 5px;
   flex: 1;
   min-height: 0;
-  overflow-y: auto;
+  overflow: auto;
 }
 
-/* ===== Day Cell ===== */
 .day {
   position: relative;
   display: flex;
@@ -89,7 +85,7 @@
   border-radius: 10px;
   min-height: 48px;
   height: 100%;
-  background: #484E50;
+  background: #484e50;
   z-index: 1;
 }
 
@@ -105,71 +101,6 @@
   opacity: 0.35;
 }
 
-/* ===== Tooltip ===== */
-.tooltip {
-  position: absolute;
-  bottom: calc(100% + 3px);
-  right: 0;
-  width: auto;
-  background: #6D7479;
-  color: white;
-  border-radius: 6px;
-  padding: 6px 8px;
-  font-size: 11px;
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(5px);
-  transition: opacity 0.3s ease, transform 0.2s ease;
-  z-index: 20;
-}
-
-.tooltipItem {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 6px;
-  white-space: nowrap;
-  width: auto;
-}
-
-.topRow .tooltip {
-  top: calc(100% + 3px);
-  bottom: auto;
-}
-
-.leftColumn .tooltip {
-  left: 0;
-  right: auto;
-}
-
-.day:hover .tooltip {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* ===== Tooltip Arrow ===== */
-.tooltip::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  right: 12px;
-  border-width: 6px;
-  border-style: solid;
-  border-color: #6D7479 transparent transparent transparent;
-}
-
-.topRow .tooltip::after {
-  top: auto;
-  bottom: 100%;
-  border-color: transparent transparent #6D7479 transparent;
-}
-
-.leftColumn .tooltip::after {
-  right: auto;
-  left: 12px;
-}
-
-/* ===== Icons Area ===== */
 .iconsArea {
   flex: 1;
   display: flex;
@@ -183,7 +114,6 @@
   color: inherit;
 }
 
-/* ===== Day Number ===== */
 .dayNumber {
   flex-shrink: 0;
   width: 22px;

@@ -157,6 +157,10 @@
     border-bottom: 1px solid #535a5b;
 }
 
+.tableRow:hover {
+    background: rgba(255, 255, 255, 0.02);
+}
+
 /* ================= 5. HEADER & CELLS ================= */
 .columnsHeaders {
     background: #4d5253;
@@ -170,6 +174,19 @@
     display: flex;
     align-items: center;
     gap: 5px;
+}
+
+.sortIconHolder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+}
+
+.sortIcon {
+    cursor: pointer;
+    height: 26px;
+    transition: transform 0.2s ease;
 }
 
 .columnHeaderContent.searchable {

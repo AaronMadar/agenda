@@ -12,6 +12,7 @@ import DownloadIcon from "./download_document.svg?react";
 import Search from "./search.svg?react";
 import ArrowDownIcon from "./arrow_down.svg?react";
 import DrillIcon from "./drill.svg?react";
+import SortIcon from "./sort-icon.svg?react";
 
 
 export {
@@ -28,5 +29,6 @@ export {
     DownloadIcon,
     Search,
     ArrowDownIcon,
-    DrillIcon
+    DrillIcon,
+    SortIcon
 }

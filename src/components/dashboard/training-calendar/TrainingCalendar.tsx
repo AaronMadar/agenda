@@ -8,10 +8,8 @@ import type { CalendarEvent } from "./types";
 import { MonthPicker } from "./MonthPicker";
 import { ArrowRight, ArrowLeft } from "@/assets/icons";
 import { extractCalendarEvents } from "@/utils/calendar/extractCalendarEvents";
-// import { ErrorState } from "@/components/shared/ErrorState";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { useShibutzimContext } from "@/contexts/ShibutzimContext";
-
 
 export const TrainingCalendar = () => {
   // ================= Context =================
@@ -47,13 +45,79 @@ export const TrainingCalendar = () => {
   // ================= Events By Date =================
   const eventsByDate = useMemo(() => {
     const map: Record<string, CalendarEvent[]> = {};
-
-    events.forEach(ev => {
+    events.forEach((ev) => {
       (map[ev.date] ??= []).push(ev);
     });
-
     return map;
   }, [events]);
+
+  // ================= Helper Renders =================
+  const renderDayCell = (day: Dayjs, dayEvents: CalendarEvent[]) => {
+    const isBusy = dayEvents.length > 0;
+    const isToday = day.isSame(dayjs(), "day");
+    const isOtherMonth = day.month() !== currentMonth.month();
+
+    const dayClassName = [
+      style.day,
+      isBusy && style.busyDay,
+      isToday && style.isToday,
+      isOtherMonth && style.otherMonth,
+    ]
+      .filter(Boolean)
+      .join(" ");
+
+    const iconsData = dayEvents.map((ev) => ({
+      ...ev,
+      iconConfig: iconServiceType[ev.serviceType as ServiceTypeKey] ?? iconServiceType.default,
+    }));
+
+    const tooltipTitle = isBusy ? (
+      <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}
+      className={isOtherMonth ? style.otherMonth : undefined}>
+        {iconsData.map((ev, idx) => (
+          <div key={idx} style={{ display: "flex", alignItems: "center", gap: "6px", whiteSpace: "nowrap" }}>
+            <i className={ev.iconConfig.className} style={{ color: ev.iconConfig.color }} />
+            <span>
+              {ev.title} <span style={{ opacity: 0.6 }}>({ev.unitId}) - </span>
+              <span>ק"ש : {ev.codeShibutz}</span>
+            </span>
+          </div>
+        ))}
+      </div>
+    ) : "";
+
+    return (
+      <Tooltip
+        key={day.format("YYYY-MM-DD")}
+        title={tooltipTitle}
+        arrow
+        placement="top"
+        disableHoverListener={!isBusy}
+        slotProps={{
+          tooltip: {
+            sx: {
+              backgroundColor: "#6d7479",
+              color: "white",
+              fontSize: "11px",
+              borderRadius: "6px",
+              padding: "6px 8px",
+              zIndex: 20,
+            },
+          },
+          arrow: { sx: { color: "#6d7479" } },
+        }}
+      >
+        <div className={dayClassName}>
+          <div className={style.iconsArea}>
+            {iconsData.slice(0, 4).map((ev, idx) => (
+              <i key={idx} className={ev.iconConfig.className} style={{ color: ev.iconConfig.color }} />
+            ))}
+          </div>
+          <div className={style.dayNumber}>{day.date()}</div>
+        </div>
+      </Tooltip>
+    );
+  };
 
   // ================= Render =================
   return (
@@ -63,14 +127,12 @@ export const TrainingCalendar = () => {
         <h4>לוח אימונים</h4>
 
         <div className={style.headerControls}>
-          <button onClick={() => setCurrentMonth(m => m.subtract(1, "month"))}>
+          <button onClick={() => setCurrentMonth((m) => m.subtract(1, "month"))}>
             <ArrowRight style={{ width: 8, height: 30 }} />
           </button>
 
           <div className={style.monthTitleWrapper}>
-            <div className={style.monthTitle}>
-              {currentMonth.format("MMMM YYYY")}
-            </div>
+            <div className={style.monthTitle}>{currentMonth.format("MMMM YYYY")}</div>
 
             <Tooltip
               title="בחירת חודש"
@@ -81,7 +143,7 @@ export const TrainingCalendar = () => {
               <button
                 ref={anchorRef}
                 className={style.openPickerBtn}
-                onClick={() => setPickerOpen(v => !v)}
+                onClick={() => setPickerOpen((v) => !v)}
               >
                 <DateRange sx={{ fontSize: 20 }} />
               </button>
@@ -96,7 +158,7 @@ export const TrainingCalendar = () => {
             />
           </div>
 
-          <button onClick={() => setCurrentMonth(m => m.add(1, "month"))}>
+          <button onClick={() => setCurrentMonth((m) => m.add(1, "month"))}>
             <ArrowLeft style={{ width: 8, height: 30 }} />
           </button>
         </div>
@@ -107,150 +169,17 @@ export const TrainingCalendar = () => {
       {/* ===== States ===== */}
       {loading && <EmptyState message="טוען מידע..." />}
 
-      {/* {!loading && !shibutzimData && (
-        <ErrorState message="לא נטען מידע" />
-      )} */}
-
-      {!loading && shibutzimData && events.length === 0 && (
-        <div>אין אירועים בלוח האימונים</div>
-      )}
-
       {/* ===== Grid ===== */}
-      {!loading && shibutzimData && events.length > 0 && (
+      {!loading && (
         <>
-          {/* ===== Weekdays ===== */}
           <div className={style.weekdays}>
-            {["א", "ב", "ג", "ד", "ה", "ו", "ש"].map(d => (
+            {["א", "ב", "ג", "ד", "ה", "ו", "ש"].map((d) => (
               <div key={d}>{d}</div>
             ))}
           </div>
 
-          {/* ===== Days Grid ===== */}
           <div className={style.grid}>
-            {days.map((day, index) => {
-              const dateKey = day.format("YYYY-MM-DD");
-              const dayEvents = eventsByDate[dateKey] || [];
-
-              const isBusy = dayEvents.length > 0;
-              const isToday = day.isSame(dayjs(), "day");
-              const isOtherMonth = day.month() !== currentMonth.month();
-              // const isTopRow = Math.floor(index / 7) === 0;
-              // const isLeftColumn = (index + 1) % 7 === 0;
-
-              const dayClassName = [
-                style.day,
-                isBusy && style.busyDay,
-                isToday && style.isToday,
-                isOtherMonth && style.otherMonth,
-                // isTopRow && style.topRow,
-                // isLeftColumn && style.leftColumn,
-              ]
-                .filter(Boolean)
-                .join(" ");
-
-              if (isBusy) {
-                return (
-                  <Tooltip
-                    key={dateKey}
-                    title={
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                        {dayEvents.map((ev, idx) => {
-                          const icon =
-                            iconServiceType[
-                            ev.serviceType as ServiceTypeKey
-                            ] ?? iconServiceType.default;
-
-                          return (
-                            <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap' }}>
-                              <i
-                                className={icon.className}
-                                style={{ color: icon.color }}
-                              />
-                              <span>
-                                {ev.title}{" "}
-                                <span style={{ opacity: 0.6 }}>
-                                  ({ev.unitId}){" "}{"- "}
-                                </span>
-                                <span>
-                                  ק"ש : {ev.codeShibutz}
-                                </span>
-                              </span>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    }
-                    arrow
-                    placement="top"
-                    slotProps={{
-                      tooltip: {
-                        sx: {
-                          backgroundColor: '#6d7479',
-                          color: 'white',
-                          fontSize: '11px',
-                          borderRadius: '6px',
-                          padding: '6px 8px',
-                          zIndex: 20,
-                        }
-                      },
-                      arrow: {
-                        sx: {
-                          color: '#6d7479',
-                        }
-                      }
-                    }}
-                  >
-                    <div className={dayClassName}>
-                      {/* Icons Preview */}
-                      <div className={style.iconsArea}>
-                        {dayEvents.slice(0, 4).map((ev, idx) => {
-                          const icon =
-                            iconServiceType[
-                            ev.serviceType as ServiceTypeKey
-                            ] ?? iconServiceType.default;
-
-                          return (
-                            <i
-                              key={idx}
-                              className={icon.className}
-                              style={{ color: icon.color }}
-                            />
-                          );
-                        })}
-                      </div>
-
-                      {/* Day Number */}
-                      <div className={style.dayNumber}>{day.date()}</div>
-                    </div>
-                  </Tooltip>
-                );
-              } else {
-                return (
-                  <div key={dateKey} className={dayClassName}>
-                    {/* Icons Preview */}
-                    <div className={style.iconsArea}>
-                      {dayEvents.slice(0, 4).map((ev, idx) => {
-                        const icon =
-                          iconServiceType[
-                          ev.serviceType as ServiceTypeKey
-                          ] ?? iconServiceType.default;
-
-                        return (
-                          <i
-                            key={idx}
-                            className={icon.className}
-                            style={{ color: icon.color }}
-                          />
-                        );
-                      })}
-                    </div>
-
-                    {/* Day Number */}
-                    <div className={style.dayNumber}>{day.date()}</div>
-                  </div>
-                );
-              }
-            })}
+            {days.map((day) => renderDayCell(day, eventsByDate[day.format("YYYY-MM-DD")] || []))}
           </div>
         </>
       )}

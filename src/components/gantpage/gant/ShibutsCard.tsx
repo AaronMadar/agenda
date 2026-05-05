@@ -7,7 +7,7 @@ import { ResourcePopUp } from "@/components/shared/pop-ups/ResourcePopUp";
 import { DetailsPopUp } from "@/components/shared/pop-ups/DetailsPopUp";
 import { KeyValPopUp } from "@/components/shared/pop-ups/KeyValPopUp";
 
-import { Details } from "@/assets/icons";
+import { Details, ArrowRight, ArrowLeft } from "@/assets/icons";
 // import { iconResources, iconServiceType } from "@/constants/icons";
 import { iconServiceType } from "@/constants/icons";
 import { getResourceIcon } from "@/constants/budgetResources";
@@ -63,7 +63,7 @@ export const ShibutsCard = memo(function ShibutsCard({
     const handleWheel = (e: WheelEvent) => {
       if (Math.abs(e.deltaY) > 0) {
         e.preventDefault();
-        resourceDiv.scrollLeft += e.deltaY * 0.1;
+        resourceDiv.scrollLeft += e.deltaY * 0.4;
       }
     };
 
@@ -116,6 +116,11 @@ export const ShibutsCard = memo(function ShibutsCard({
     closeTimerRef.current = setTimeout(() => {
       setter(null);
     }, 80);
+  };
+
+  const scroll = (amount: number) => {
+    if (!resourceDivRef.current) return;
+    resourceDivRef.current.scrollLeft += amount;
   };
 
   const handleCardLeave = () => {
@@ -229,24 +234,28 @@ export const ShibutsCard = memo(function ShibutsCard({
             </Tooltip>
           )}
 
-          <div className={styles.resourceDiv} ref={resourceDivRef}>
-            {resources?.map((res) => (
-              <div
-                key={res.categoryName}
-                className={styles.divRessource}
-                style={{ flexShrink: 0 }}
-                onMouseEnter={(e) => {
-                  clearCloseTimer();
-                  setHoveredResource(res);
-                  setResourceAnchorEl(e.currentTarget);
-                  setTitleAnchorEl(null);
-                }}
-                onMouseLeave={() => delayedClose(setResourceAnchorEl)}
-              >
-                <i className={getResourceIcon(res.categoryName)} />
-                <span>{res.categoryName}</span>
-              </div>
-            ))}
+          <div className={styles.resourceContainer}>
+            <ArrowRight className={styles.arrow} onClick={() => scroll(-92)}/>
+            <div className={styles.resourceDiv} ref={resourceDivRef}>
+              {resources?.map((res) => (
+                <div
+                  key={res.categoryName}
+                  className={styles.divRessource}
+                  style={{ flexShrink: 0 }}
+                  onMouseEnter={(e) => {
+                    clearCloseTimer();
+                    setHoveredResource(res);
+                    setResourceAnchorEl(e.currentTarget);
+                    setTitleAnchorEl(null);
+                  }}
+                  onMouseLeave={() => delayedClose(setResourceAnchorEl)}
+                >
+                  <i className={getResourceIcon(res.categoryName)} />
+                  <span>{res.categoryName}</span>
+                </div>
+              ))}
+            </div>
+            <ArrowLeft className={styles.arrow} onClick={() => scroll(92)} />
           </div>
         </div>
       </div>

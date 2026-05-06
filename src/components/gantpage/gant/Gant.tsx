@@ -101,7 +101,9 @@ const calculateEndPosition = (
 ): number => {
   const MAXIMAL_WIDTH_SCREEN = 100;
   // IMPORTANT THIS RETURN THE POSITION IN PERCENTAGE FROM THE END OF THE SCREEN , NOT FROM THE START
-  return MAXIMAL_WIDTH_SCREEN - (startpos + cardwidth);
+  const endpos = MAXIMAL_WIDTH_SCREEN - (startpos + cardwidth)
+
+  return endpos < 0 ? 0 : endpos;
 };
 
 
@@ -152,7 +154,7 @@ export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
       console.log("window width:", window.innerWidth);
       if (window.innerWidth < 1700) {
         setIsLittleScreen(true);
-      }    
+      }
       else {
         setIsLittleScreen(false);
       }
@@ -256,23 +258,46 @@ export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
 
               const maximalWidth = Math.min(Math.max(cardWidth, activeCardWidthPercent), 100);
 
-              if (isNearEnd && isNearStart) {
-                // If both edges are near, center card to keep it inside track
-                insetStart = `${Math.max(0, (100 - maximalWidth) / 2)}%`;
-                insetEnd = "auto";
-              } else if (isNearEnd) {
-                // Near right edge: anchor from end to prevent right overflow
-                insetStart = "auto";
-                insetEnd = `${endPos}%`;
-              } else if (isNearStart) {
-                // Near left edge while anchoring from end: keep start anchor
-                insetStart = `${startPos}%`;
-                insetEnd = "auto";
-              } else {
-                // Default: preserve natural placement
-                insetStart = `${startPos}%`;
-                insetEnd = "auto";
+              if (!showOpenCards) {
+                if (isNearEnd && isNearStart) {
+                  // If both edges are near, center card to keep it inside track
+                  insetStart = `${Math.max(0, (100 - maximalWidth) / 2)}%`;
+                  insetEnd = "auto";
+                } else if (isNearEnd) {
+                  // Near right edge: anchor from end to prevent right overflow
+                  insetStart = "auto";
+                  insetEnd = `${endPos}%`;
+                } else if (isNearStart) {
+                  // Near left edge while anchoring from end: keep start anchor
+                  insetStart = `${startPos}%`;
+                  insetEnd = "auto";
+                } else {
+                  // Default: preserve natural placement
+                  insetStart = `${startPos}%`;
+                  insetEnd = "auto";
+                }
               }
+              if (showOpenCards) {
+                if (isNearEnd && isNearStart) {
+                  // If both edges are near, center card to keep it inside track
+                  insetStart = `${Math.max(0, (100 - maximalWidth) / 2)}%`;
+                  insetEnd = "auto";
+                } else if (isNearEnd) {
+                  // Near right edge: anchor from end to prevent right overflow
+                  insetStart = "auto";
+                  insetEnd = `${0}%`;
+                } else if (isNearStart) {
+                  // Near left edge while anchoring from end: keep start anchor
+                  insetStart = `${startPos}%`;
+                  insetEnd = "auto";
+                } else {
+                  // Default: preserve natural placement
+                  insetStart = `${startPos}%`;
+                  insetEnd = "auto";
+                }
+              }
+
+             
 
               return (
                 <div

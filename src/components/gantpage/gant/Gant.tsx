@@ -1,4 +1,4 @@
-import { useMemo, memo, useEffect } from "react";
+import { useMemo, memo, useEffect, useRef } from "react";
 import { Box, Skeleton } from "@mui/material";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -144,6 +144,7 @@ type GantProps = {
 };
 
 export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const { startDate, endDate, shibutzimData, loading } = useShibutzimContext();
   const { groupByField, groupsInAscOrder, setIsLittleScreen, showOpenCards, activeCardWidthPercent } = useViewSettings();
 
@@ -199,114 +200,131 @@ export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
   ========================= */
 
   return (
-    <div className={`${styles["gant-container"]} ${!shibutzimData?.length && !loading ? styles["empty"] : ""}`}>
-      {/* LOADING */}
-      {loading && (
-        <Box sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
-          {[...Array(10)].map((_, i) => (
-            <div>
-              <div className={styles["div-side"]}>
-                <Skeleton width="50%" />
-              </div>
+    <div className={styles.wrapper}>
+      <div className={styles.topFade} />
 
-              <div className={styles["row-content-wrapper"]}>
-                <Skeleton
-                  variant="rounded"
-                  sx={{
-                    position: "absolute",
-                    height: "2.9rem",
-                    borderRadius: "10px",
-                    width: `${15 + ((i * 7) % 20)}%`,
-                    insetInlineStart: `${5 + ((i * 18) % 65)}%`,
-                  }}
-                />
-              </div>
-            </div>
-          ))}
-        </Box>
-      )}
-
-      {/* DATA */}
-      {Object.entries(grouped).map(([groupName, group]) => (
-        <div className={styles["gantrow"]} key={groupName}>
-          {/* SIDEBAR */}
-          <div className={styles["div-side"]}>
-            <div className={styles["sticky-side-header"]}>
-              <div>{groupName}</div>
-              <div style={{ fontSize: "0.8rem", opacity: 0.7 }}>
-                {group.count} שיבוצים
-              </div>
-            </div>
-          </div>
-
-          {/* CONTENT */}
-          <div className={styles["row-content-wrapper"]}>
-            {group.shibutzim.map((shibuts) => {
-              const startPos = calculateStartPosition(dayjs(shibuts.dateBegin), sDate, eDate);
-              const cardWidth = calculateWidth(shibuts, sDate, eDate); //minimal width is 10% maximal width is 100%
-              const endPos = calculateEndPosition(startPos, cardWidth);//position by the end not by the start 
-              const isNearEnd = checkIsNearEnd(startPos, cardWidth, activeCardWidthPercent);
-              const isNearStart = checkIsNearStart(endPos, cardWidth, activeCardWidthPercent);
-              const isNotLastInRow =
-                group.shibutzim.indexOf(shibuts) !== group.shibutzim.length - 1;
-
-              // Determine positioning to prevent overflow (0%..100%)
-              let insetStart: string | undefined;
-              let insetEnd: string | undefined;
-
-              const maximalWidth = Math.min(Math.max(cardWidth, activeCardWidthPercent), 100);
-
-              if (isNearEnd && isNearStart) {
-                // If both edges are near, center card to keep it inside track
-                insetStart = `${Math.max(0, (100 - maximalWidth) / 2)}%`;
-                insetEnd = "auto";
-              } else if (isNearEnd) {
-                // Near right edge: anchor from end to prevent right overflow
-                insetStart = "auto";
-                insetEnd = `${endPos}%`;
-              } else if (isNearStart) {
-                // Near left edge while anchoring from end: keep start anchor
-                insetStart = `${startPos}%`;
-                insetEnd = "auto";
-              } else {
-                // Default: preserve natural placement
-                insetStart = `${startPos}%`;
-                insetEnd = "auto";
-              }
-
-              return (
-                <div
-                  key={shibuts.codeShibutz}
-                  style={{
-                    padding: "0.2rem 0.4rem 2.7rem 0.4rem",
-                    borderBottom: isNotLastInRow
-                      ? "0.1px solid #343434a1"
-                      : undefined,
-                  }}
-                >
-                  <div className={styles["gant-row"]}>
-                    <ShibutsCard
-                      shibuts={shibuts}
-                      style={{
-                        backgroundColor:
-                          forceColors[shibuts.forceType] ?? forceColors["אחר"],
-                        insetInlineStart: insetStart,
-                        insetInlineEnd: insetEnd,
-                        width: `${cardWidth}%`,
-                        minWidth: showOpenCards ? `${activeCardWidthPercent}%` : undefined, // Very important - it's use for the opencard effect !
-                        top: 0,
-                      }}
-                    />
-                  </div>
+      <div ref={containerRef} className={`${styles["gant-container"]} ${!shibutzimData?.length && !loading ? styles["empty"] : ""}`}>
+        {/* LOADING */}
+        {loading && (
+          <Box sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
+            {[...Array(10)].map((_, i) => (
+              <div>
+                <div className={styles["div-side"]}>
+                  <Skeleton width="50%" />
                 </div>
-              );
-            })}
-          </div>
-        </div>
-      ))}
 
-      {/* EMPTY STATE */}
-      {!shibutzimData?.length && !loading && <EmptyState />}
+                <div className={styles["row-content-wrapper"]}>
+                  <Skeleton
+                    variant="rounded"
+                    sx={{
+                      position: "absolute",
+                      height: "2.9rem",
+                      borderRadius: "10px",
+                      width: `${15 + ((i * 7) % 20)}%`,
+                      insetInlineStart: `${5 + ((i * 18) % 65)}%`,
+                    }}
+                  />
+                </div>
+              </div>
+            ))}
+          </Box>
+        )}
+
+        {/* DATA */}
+        {Object.entries(grouped).map(([groupName, group]) => {
+          const isNotLastGroup = Object.keys(grouped).indexOf(groupName) !== Object.keys(grouped).length - 1;
+
+          return (
+          <div 
+            className={styles["gantrow"]} 
+            key={groupName}
+            style={{
+              borderBottom: isNotLastGroup
+                ? "1.9px solid #606368"
+                : undefined,
+            }}
+          >
+            {/* SIDEBAR */}
+            <div className={styles["div-side"]}>
+              <div className={styles["sticky-side-header"]}>
+                <div>{groupName}</div>
+                <div style={{ fontSize: "0.8rem", opacity: 0.7 }}>
+                  {group.count} שיבוצים
+                </div>
+              </div>
+            </div>
+
+            {/* CONTENT */}
+            <div className={styles["row-content-wrapper"]}>
+              {group.shibutzim.map((shibuts) => {
+                const startPos = calculateStartPosition(dayjs(shibuts.dateBegin), sDate, eDate);
+                const cardWidth = calculateWidth(shibuts, sDate, eDate); //minimal width is 10% maximal width is 100%
+                const endPos = calculateEndPosition(startPos, cardWidth);//position by the end not by the start 
+                const isNearEnd = checkIsNearEnd(startPos, cardWidth, activeCardWidthPercent);
+                const isNearStart = checkIsNearStart(endPos, cardWidth, activeCardWidthPercent);
+                const isNotLastInRow =
+                  group.shibutzim.indexOf(shibuts) !== group.shibutzim.length - 1;
+
+                // Determine positioning to prevent overflow (0%..100%)
+                let insetStart: string | undefined;
+                let insetEnd: string | undefined;
+
+                const maximalWidth = Math.min(Math.max(cardWidth, activeCardWidthPercent), 100);
+
+                if (isNearEnd && isNearStart) {
+                  // If both edges are near, center card to keep it inside track
+                  insetStart = `${Math.max(0, (100 - maximalWidth) / 2)}%`;
+                  insetEnd = "auto";
+                } else if (isNearEnd) {
+                  // Near right edge: anchor from end to prevent right overflow
+                  insetStart = "auto";
+                  insetEnd = `${endPos}%`;
+                } else if (isNearStart) {
+                  // Near left edge while anchoring from end: keep start anchor
+                  insetStart = `${startPos}%`;
+                  insetEnd = "auto";
+                } else {
+                  // Default: preserve natural placement
+                  insetStart = `${startPos}%`;
+                  insetEnd = "auto";
+                }
+
+                return (
+                  <div
+                    key={shibuts.codeShibutz}
+                    style={{
+                      padding: "0.2rem 0.4rem 2.6rem 0.4rem",
+                      borderBottom: isNotLastInRow
+                        ? "0.1px solid #343434a1"
+                        : undefined,
+                    }}
+                  >
+                    <div className={styles["gant-row"]}>
+                      <ShibutsCard
+                        shibuts={shibuts}
+                        style={{
+                          backgroundColor:
+                            forceColors[shibuts.forceType] ?? forceColors["אחר"],
+                          insetInlineStart: insetStart,
+                          insetInlineEnd: insetEnd,
+                          width: `${cardWidth}%`,
+                          minWidth: showOpenCards ? `${activeCardWidthPercent}%` : undefined, // Very important - it's use for the opencard effect !
+                          top: 0,
+                        }}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )})}
+
+        {/* EMPTY STATE */}
+        {!shibutzimData?.length && !loading && <EmptyState />}
+      </div>
+
+      <div className={styles.bottomFade} />
     </div>
   );
 });

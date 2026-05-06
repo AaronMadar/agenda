@@ -3,6 +3,8 @@ import style from "../../../style/components/dashboard/dashboard-table/Dashboard
 import { ArrowDownIcon, DownloadIcon, DrillIcon, SortIcon } from "@/assets/icons";
 import { SearchInput } from "./SearchInput";
 import { DropdownMultiSelect } from "./DropdownMultiSelect";
+import { DownloadTablePopUp } from "./DownloadTablePopUp";
+import { Popover } from "@mui/material";
 
 type Column = {
     label: string;
@@ -36,6 +38,7 @@ export const DashboardTable = ({
     const tableBodyRef = useRef<HTMLDivElement>(null);
     const [showOnlyFavorites, setShowOnlyFavorites] = useState(false);
     const [searchText, setSearchText] = useState("");
+    const [downloadAnchorEl, setDownloadAnchorEl] = useState<HTMLElement | SVGElement | null>(null);
 
     // ================= SORT =================
     const [sortConfig, setSortConfig] = useState<{
@@ -54,6 +57,8 @@ export const DashboardTable = ({
     const [columnFilters, setColumnFilters] = useState<Record<string, string[]>>({});
     const [openColumnFilter, setOpenColumnFilter] = useState<string | null>(null);
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+
+    const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -207,6 +212,19 @@ export const DashboardTable = ({
         });
     };
 
+    const closeDownloadDelay = () => {
+        closeTimerRef.current = setTimeout(() => {
+            setDownloadAnchorEl(null);
+        }, 80);
+    };
+
+    const clearCloseTimer = () => {
+        if (closeTimerRef.current) {
+            clearTimeout(closeTimerRef.current);
+            closeTimerRef.current = null;
+        }
+    };
+
     useEffect(() => {
         const tableBody = tableBodyRef.current;
         if (!tableBody) return;
@@ -273,7 +291,42 @@ export const DashboardTable = ({
                     {`מציג ${displayData.length} מתוך ${data?.length || 0} רשומות`}
                 </div>
 
-                <DownloadIcon className={style.csvIcon} />
+                <DownloadIcon 
+                    className={style.csvIcon}
+                    onClick={(e) => {
+                        setDownloadAnchorEl(e.currentTarget);
+                    }}
+                    onMouseLeave={closeDownloadDelay}
+                />
+
+                <Popover
+                    open={!!downloadAnchorEl}
+                    anchorEl={downloadAnchorEl}
+                    anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "center"
+                    }}
+                    transformOrigin={{
+                        vertical: "top",
+                        horizontal: "center"
+                    }}
+                    disableRestoreFocus
+                    sx={{ pointerEvents: "none" }}
+                    slotProps={{
+                        paper: {
+                            onMouseEnter: clearCloseTimer,
+                            onMouseLeave: () => closeDownloadDelay(),
+                            sx: {
+                                pointerEvents: "auto",
+                                backgroundColor: "transparent",
+                                borderRadius: "10px",
+                                overflow: "visible",
+                            },
+                        },
+                    }}
+                >
+                    <DownloadTablePopUp columns={selectedColumnObjects} data={displayData} />
+                </Popover>
 
                 <div className={style.resetFilters} onClick={resetFilters}>
                     איפוס סינונים

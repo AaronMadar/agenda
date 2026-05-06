@@ -185,7 +185,7 @@ export const ShibutsCard = memo(function ShibutsCard({
       {/* ---------- TOP ---------- */}
       <div className={styles.divUp}>
         <div className={styles.iconAndTitle}>
-          <Tooltip title={serviceType} arrow>
+          <Tooltip title={serviceType} arrow placement="top">
             <i className={`icon-card ${icon.className}`} />
           </Tooltip>
 

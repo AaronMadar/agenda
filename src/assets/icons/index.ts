@@ -13,6 +13,9 @@ import Search from "./search.svg?react";
 import ArrowDownIcon from "./arrow_down.svg?react";
 import DrillIcon from "./drill.svg?react";
 import SortIcon from "./sort-icon.svg?react";
+import ExcelIcon from "./excel_icon.svg?react";
+import PdfIcon from "./pdf_icon.svg?react";
+import CsvIcon from "./csv_icon.svg?react";
 
 
 export {
@@ -30,5 +33,8 @@ export {
     Search,
     ArrowDownIcon,
     DrillIcon,
-    SortIcon
+    SortIcon,
+    ExcelIcon,
+    PdfIcon,
+    CsvIcon
 }

@@ -29,27 +29,31 @@ export const BudgetResources = () => {
     return <ErrorState message="לא נטען מידע" />;
   }
 
-  if (!resources.length) {
-    return <EmptyState message="אין משאבים להצגה" />;
-  }
-
   // ================= Render =================
   return (
     <div className={style.budgetResources}>
       <h4>משאבים תקציב</h4>
 
-      <div className={style.grid}>
-        {resources.map((resource) => (
-          <BudgetResourceCard
-            key={resource.name}
-            resource={resource}
-            headerColor={getResourceColor(resource.name)}
-            onClick={() =>
-              navigate(`/details/budget-resources/${getResourceKey(resource.name)}`)
-            }
-          />
-        ))}
-      </div>
+      {!resources.length ?
+        (
+          <div className={style.emptyState}>
+            <EmptyState message="אין משאבים להצגה" />
+          </div>
+        ) : (
+          <div className={style.grid}>
+            {resources.map((resource) => (
+              <BudgetResourceCard
+                key={resource.name}
+                resource={resource}
+                headerColor={getResourceColor(resource.name)}
+                onClick={() =>
+                  navigate(`/details/budget-resources/${getResourceKey(resource.name)}`)
+                }
+              />
+            ))}
+          </div>
+        )
+      }
     </div>
   );
 };

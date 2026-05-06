@@ -137,7 +137,9 @@ export const BudgetResourceDetails = () => {
     <div className={style.page}>
       {/* HEADER */}
       <div className={style.header}>
-        <ArrowRight className={style.backIcon} onClick={handleBack} />
+        <div className={style.backButton} onClick={handleBack}>
+          <ArrowRight className={style.backIcon} />
+        </div>
         <h2 className={style.title}>{title}</h2>
         <div className={style.spacer}></div>
         <div className={style.iconContainer}>

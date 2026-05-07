@@ -213,7 +213,7 @@ export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
                   <Skeleton width="50%" />
                 </div>
 
-                <div className={styles["row-content-wrapper"]}>
+                <div className={styles["row-content-wrapper"]} style={{ marginRight: "9rem"}}>
                   <Skeleton
                     variant="rounded"
                     sx={{

@@ -20,12 +20,14 @@ interface ShibutsCardProps {
   shibuts: Shibutz;
   style?: React.CSSProperties;
   className?: string;
+  translateXActive?: number; 
 }
 
 export const ShibutsCard = memo(function ShibutsCard({
   shibuts,
   style,
   className,
+  translateXActive
 }: ShibutsCardProps) {
   const [detailsAnchorEl, setDetailsAnchorEl] = useState<HTMLElement | null>(null);
   const [resourceAnchorEl, setResourceAnchorEl] = useState<HTMLElement | null>(null);
@@ -177,7 +179,8 @@ export const ShibutsCard = memo(function ShibutsCard({
 
       style={{
         ...style,
-        ...(isCardActive && { minWidth: `${activeCardWidthPercent}%` })
+        ...(isCardActive && { minWidth: `${activeCardWidthPercent}%` }),
+        ...(isCardActive ? { transform: `translateX(${translateXActive}%)` } : {})
       }}
       onMouseEnter={() => setIsCardActive(true)}
       onMouseLeave={handleCardLeave}

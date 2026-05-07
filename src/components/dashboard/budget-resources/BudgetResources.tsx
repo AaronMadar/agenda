@@ -7,7 +7,7 @@ import { BudgetResourceCard, type BudgetResource } from "./BudgetResourceCard";
 import { useNavigate } from "react-router-dom";
 import { useBudgetResourcesContext } from "@/contexts/BudgetResourcesContext";
 import { getResourceKey, getResourceColor } from "@/constants/budgetResources";
-
+import { Loader } from "@/components/shared/Loader";
 
 export const BudgetResources = () => {
   const navigate = useNavigate();
@@ -22,38 +22,36 @@ export const BudgetResources = () => {
     }));
   }, [budgetResources]);
 
-  // ================= States =================
-  if (loading) return <div>Loading...</div>;
-
-  if (!shibutzimData) {
-    return <ErrorState message="לא נטען מידע" />;
-  }
-
-  // ================= Render =================
   return (
     <div className={style.budgetResources}>
       <h4>משאבים תקציב</h4>
 
-      {!resources.length ?
-        (
-          <div className={style.emptyState}>
-            <EmptyState message="אין משאבים להצגה" />
-          </div>
-        ) : (
-          <div className={style.grid}>
-            {resources.map((resource) => (
-              <BudgetResourceCard
-                key={resource.name}
-                resource={resource}
-                headerColor={getResourceColor(resource.name)}
-                onClick={() =>
-                  navigate(`/details/budget-resources/${getResourceKey(resource.name)}`)
-                }
-              />
-            ))}
-          </div>
-        )
-      }
+      {loading ? (
+        <div className={style.emptyState}>
+          <Loader text="טוען משאבים..." />
+        </div>
+      ) : !shibutzimData ? (
+        <div className={style.emptyState}>
+          <ErrorState message="לא נטען מידע" />
+        </div>
+      ) : !resources.length ? (
+        <div className={style.emptyState}>
+          <EmptyState message="אין משאבים להצגה" />
+        </div>
+      ) : (
+        <div className={style.grid}>
+          {resources.map((resource) => (
+            <BudgetResourceCard
+              key={resource.name}
+              resource={resource}
+              headerColor={getResourceColor(resource.name)}
+              onClick={() =>
+                navigate(`/details/budget-resources/${getResourceKey(resource.name)}`)
+              }
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

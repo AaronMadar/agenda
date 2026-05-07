@@ -8,8 +8,8 @@ import type { CalendarEvent } from "./types";
 import { MonthPicker } from "./MonthPicker";
 import { ArrowRight, ArrowLeft } from "@/assets/icons";
 import { extractCalendarEvents } from "@/utils/calendar/extractCalendarEvents";
-import { EmptyState } from "@/components/shared/EmptyState";
 import { useShibutzimContext } from "@/contexts/ShibutzimContext";
+import { Loader } from "@/components/shared/Loader";
 
 export const TrainingCalendar = () => {
   // ================= Context =================
@@ -166,11 +166,11 @@ export const TrainingCalendar = () => {
         <div className={style.spacer} />
       </div>
 
-      {/* ===== States ===== */}
-      {loading && <EmptyState message="טוען מידע..." />}
-
-      {/* ===== Grid ===== */}
-      {!loading && (
+      {loading ? (
+        <div className={style.emptyState}>
+          <Loader text="טוען אימונים..." />
+        </div>
+      ) : (
         <>
           <div className={style.weekdays}>
             {["א", "ב", "ג", "ד", "ה", "ו", "ש"].map((d) => (

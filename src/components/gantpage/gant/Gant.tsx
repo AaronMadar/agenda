@@ -135,8 +135,7 @@ type GantProps = {
 
 export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const { startDate, endDate, shibutzimData } = useShibutzimContext();
-  const loading = true
+  const { startDate, endDate, shibutzimData, loading } = useShibutzimContext();
   const { groupByField, groupsInAscOrder, setIsLittleScreen, showOpenCards, activeCardWidthPercent } = useViewSettings();
 
   useEffect(() => {

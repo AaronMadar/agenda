@@ -51,3 +51,7 @@
   background: rgba(0, 0, 0, 0.55);
   z-index: 1000;
 }
+
+.zoom{
+  zoom: 1.2;
+}

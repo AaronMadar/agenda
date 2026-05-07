@@ -36,7 +36,7 @@ export const BaseBodyCard = ({ children }: BaseBodyCardProps) => {
           </button>
         </Tooltip>
 
-        <div className={style.content}>{children}</div>
+        <div className={`${style.content} ${expanded ? style.zoom : ""}`}>{children}</div>
       </div>
     </>
   );

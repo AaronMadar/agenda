@@ -18,15 +18,6 @@ const MIN_WIDTH_PERCENT = 10;
    HELPERS
 ========================= */
 
-const checkIsNearEnd = (startPos: number, cardWidth: number, activeMinWidth: number): boolean => {
-  const maximalWidthPercent = cardWidth > activeMinWidth ? cardWidth : activeMinWidth;
-  return (startPos + maximalWidthPercent) > 100;
-};
-
-const checkIsNearStart = (endPos: number, cardWidth: number, activeMinWidth: number): boolean => {
-  const maximalWidthPercent = cardWidth > activeMinWidth ? cardWidth : activeMinWidth;
-  return endPos + maximalWidthPercent > 100;
-}
 
 const sortEventsByDate = (items: Shibutz[]): Shibutz[] => {
   return [...items].sort(
@@ -94,16 +85,6 @@ const calculateStartPosition = (
   return (diff / totalDays) * 100;
 };
 
-const calculateEndPosition = (
-  startpos: number,
-  cardwidth: number,
-
-): number => {
-  const MAXIMAL_WIDTH_SCREEN = 100;
-  // IMPORTANT THIS RETURN THE POSITION IN PERCENTAGE FROM THE END OF THE SCREEN , NOT FROM THE START
-  return MAXIMAL_WIDTH_SCREEN - (startpos + cardwidth);
-};
-
 
 const calculateWidth = (
   shibuts: Shibutz,
@@ -135,6 +116,15 @@ const calculateWidth = (
   return width < MIN_WIDTH_PERCENT ? MIN_WIDTH_PERCENT : width;
 };
 
+function proportionToTranslateX(
+  cardWidthPercent: number,
+  percentExit: number
+): number {
+
+  return (percentExit / cardWidthPercent) * 100;
+}
+
+
 /* =========================
    COMPONENT
 ========================= */
@@ -153,7 +143,7 @@ export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
       console.log("window width:", window.innerWidth);
       if (window.innerWidth < 1700) {
         setIsLittleScreen(true);
-      }    
+      }
       else {
         setIsLittleScreen(false);
       }
@@ -235,90 +225,76 @@ export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
           const isNotLastGroup = Object.keys(grouped).indexOf(groupName) !== Object.keys(grouped).length - 1;
 
           return (
-          <div 
-            className={styles["gantrow"]} 
-            key={groupName}
-            style={{
-              borderBottom: isNotLastGroup
-                ? "1.9px solid #606368"
-                : undefined,
-            }}
-          >
-            {/* SIDEBAR */}
-            <div className={styles["div-side"]}>
-              <div className={styles["sticky-side-header"]}>
-                <div>{groupName}</div>
-                <div style={{ fontSize: "0.8rem", opacity: 0.7 }}>
-                  {group.count} שיבוצים
+            <div
+              className={styles["gantrow"]}
+              key={groupName}
+              style={{
+                borderBottom: isNotLastGroup
+                  ? "1.9px solid #606368"
+                  : undefined,
+              }}
+            >
+              {/* SIDEBAR */}
+              <div className={styles["div-side"]}>
+                <div className={styles["sticky-side-header"]}>
+                  <div>{groupName}</div>
+                  <div style={{ fontSize: "0.8rem", opacity: 0.7 }}>
+                    {group.count} שיבוצים
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* CONTENT */}
-            <div className={styles["row-content-wrapper"]}>
-              {group.shibutzim.map((shibuts) => {
-                const startPos = calculateStartPosition(dayjs(shibuts.dateBegin), sDate, eDate);
-                const cardWidth = calculateWidth(shibuts, sDate, eDate); //minimal width is 10% maximal width is 100%
-                const endPos = calculateEndPosition(startPos, cardWidth);//position by the end not by the start 
-                const isNearEnd = checkIsNearEnd(startPos, cardWidth, activeCardWidthPercent);
-                const isNearStart = checkIsNearStart(endPos, cardWidth, activeCardWidthPercent);
-                const isNotLastInRow =
-                  group.shibutzim.indexOf(shibuts) !== group.shibutzim.length - 1;
+              {/* CONTENT */}
+              <div className={styles["row-content-wrapper"]}>
+                {group.shibutzim.map((shibuts) => {
+                  const startPos = calculateStartPosition(dayjs(shibuts.dateBegin), sDate, eDate);
+                  const cardWidth = calculateWidth(shibuts, sDate, eDate); //minimal width is 10% maximal width is 100%
+                  const maximalWidthPercent = cardWidth > activeCardWidthPercent ? cardWidth : activeCardWidthPercent;
 
-                // Determine positioning to prevent overflow (0%..100%)
-                let insetStart: string | undefined;
-                let insetEnd: string | undefined;
+                  const isExitNotActive = startPos + cardWidth > 100;  
+                  const percentExitNotActive = isExitNotActive ? startPos + cardWidth - 100 : 0;
 
-                const maximalWidth = Math.min(Math.max(cardWidth, activeCardWidthPercent), 100);
+                  const isExitActive = startPos + activeCardWidthPercent > 100;
+                  const exitActive = isExitActive ? startPos + activeCardWidthPercent - 100 : 0;
 
-                if (isNearEnd && isNearStart) {
-                  // If both edges are near, center card to keep it inside track
-                  insetStart = `${Math.max(0, (100 - maximalWidth) / 2)}%`;
-                  insetEnd = "auto";
-                } else if (isNearEnd) {
-                  // Near right edge: anchor from end to prevent right overflow
-                  insetStart = "auto";
-                  insetEnd = `${endPos}%`;
-                } else if (isNearStart) {
-                  // Near left edge while anchoring from end: keep start anchor
-                  insetStart = `${startPos}%`;
-                  insetEnd = "auto";
-                } else {
-                  // Default: preserve natural placement
-                  insetStart = `${startPos}%`;
-                  insetEnd = "auto";
-                }
+                  const translateXNonActive = proportionToTranslateX(cardWidth, percentExitNotActive);
+                  const translateXActive = proportionToTranslateX(maximalWidthPercent, exitActive);
+                  const isNotLastInRow =
+                    group.shibutzim.indexOf(shibuts) !== group.shibutzim.length - 1;
 
-                return (
-                  <div
-                    key={shibuts.codeShibutz}
-                    style={{
-                      padding: "0.2rem 0.4rem 2.6rem 0.4rem",
-                      borderBottom: isNotLastInRow
-                        ? "0.1px solid #343434a1"
-                        : undefined,
-                    }}
-                  >
-                    <div className={styles["gant-row"]}>
-                      <ShibutsCard
-                        shibuts={shibuts}
-                        style={{
-                          backgroundColor:
-                            forceColors[shibuts.forceType] ?? forceColors["אחר"],
-                          insetInlineStart: insetStart,
-                          insetInlineEnd: insetEnd,
-                          width: `${cardWidth}%`,
-                          minWidth: showOpenCards ? `${activeCardWidthPercent}%` : undefined, // Very important - it's use for the opencard effect !
-                          top: 0,
-                        }}
-                      />
+
+                  return (
+                    <div
+                      key={shibuts.codeShibutz}
+                      style={{
+                        padding: "0.2rem 0.4rem 2.6rem 0.4rem",
+                        borderBottom: isNotLastInRow
+                          ? "0.1px solid #343434a1"
+                          : undefined,
+                      }}
+                    >
+                      <div className={styles["gant-row"]}>
+                        <ShibutsCard
+                          shibuts={shibuts}
+                          style={{
+                            backgroundColor:
+                              forceColors[shibuts.forceType] ?? forceColors["אחר"],
+                            insetInlineStart: `${startPos}%`,
+                            width: `${cardWidth}%`,
+                            minWidth: showOpenCards ? `${activeCardWidthPercent}%` : undefined, // Very important - it's use for the opencard effect !
+                            top: 0,
+                            transform: `translateX(${showOpenCards ? translateXActive : translateXNonActive}%)`
+                          }}
+                          translateXActive={translateXActive}
+                        />
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
-          </div>
-        )})}
+          )
+        })}
 
         {/* EMPTY STATE */}
         {!shibutzimData?.length && !loading && <EmptyState />}

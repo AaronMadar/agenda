@@ -8,7 +8,6 @@ import { DetailsPopUp } from "@/components/shared/pop-ups/DetailsPopUp";
 import { KeyValPopUp } from "@/components/shared/pop-ups/KeyValPopUp";
 
 import { Details, ArrowRight, ArrowLeft } from "@/assets/icons";
-// import { iconResources, iconServiceType } from "@/constants/icons";
 import { iconServiceType } from "@/constants/icons";
 import { getResourceIcon } from "@/constants/budgetResources";
 import { useViewSettings } from "@/contexts/GantViewSettingsContext";
@@ -20,12 +19,14 @@ interface ShibutsCardProps {
   shibuts: Shibutz;
   style?: React.CSSProperties;
   className?: string;
+  translateXActive?: number; 
 }
 
 export const ShibutsCard = memo(function ShibutsCard({
   shibuts,
   style,
   className,
+  translateXActive
 }: ShibutsCardProps) {
   const [detailsAnchorEl, setDetailsAnchorEl] = useState<HTMLElement | null>(null);
   const [resourceAnchorEl, setResourceAnchorEl] = useState<HTMLElement | null>(null);
@@ -177,7 +178,8 @@ export const ShibutsCard = memo(function ShibutsCard({
 
       style={{
         ...style,
-        ...(isCardActive && { minWidth: `${activeCardWidthPercent}%` })
+        ...(isCardActive && { minWidth: `${activeCardWidthPercent}%` }),
+        ...(isCardActive ? { transform: `translateX(${translateXActive}%)` } : {})
       }}
       onMouseEnter={() => setIsCardActive(true)}
       onMouseLeave={handleCardLeave}

@@ -135,7 +135,8 @@ type GantProps = {
 
 export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const { startDate, endDate, shibutzimData, loading } = useShibutzimContext();
+  const { startDate, endDate, shibutzimData } = useShibutzimContext();
+  const loading = true
   const { groupByField, groupsInAscOrder, setIsLittleScreen, showOpenCards, activeCardWidthPercent } = useViewSettings();
 
   useEffect(() => {
@@ -200,13 +201,14 @@ export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
             {[...Array(10)].map((_, i) => (
               <div>
                 <div className={styles["div-side"]}>
-                  <Skeleton width="50%" />
+                  <Skeleton width="50%" sx={{background: "rgba(88, 88, 88, 0.7)"}} />
                 </div>
 
                 <div className={styles["row-content-wrapper"]} style={{ marginRight: "9rem"}}>
                   <Skeleton
                     variant="rounded"
                     sx={{
+                      background: "rgba(172, 161, 161, 0.1)",
                       position: "absolute",
                       height: "2.9rem",
                       borderRadius: "10px",

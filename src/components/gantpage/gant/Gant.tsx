@@ -18,15 +18,6 @@ const MIN_WIDTH_PERCENT = 10;
    HELPERS
 ========================= */
 
-const checkIsNearEnd = (startPos: number, cardWidth: number, activeMinWidth: number): boolean => {
-  const maximalWidthPercent = cardWidth > activeMinWidth ? cardWidth : activeMinWidth;
-  return (startPos + maximalWidthPercent) > 100;
-};
-
-const checkIsNearStart = (endPos: number, cardWidth: number, activeMinWidth: number): boolean => {
-  const maximalWidthPercent = cardWidth > activeMinWidth ? cardWidth : activeMinWidth;
-  return endPos + maximalWidthPercent > 100;
-}
 
 const sortEventsByDate = (items: Shibutz[]): Shibutz[] => {
   return [...items].sort(
@@ -93,8 +84,6 @@ const calculateStartPosition = (
 
   return (diff / totalDays) * 100;
 };
-
-
 
 
 const calculateWidth = (
@@ -263,42 +252,15 @@ export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
                   const maximalWidthPercent = cardWidth > activeCardWidthPercent ? cardWidth : activeCardWidthPercent;
 
                   const isExitNotActive = startPos + cardWidth > 100;  
-                  const exitNotActive = isExitNotActive ? startPos + cardWidth - 100 : 0;
+                  const percentExitNotActive = isExitNotActive ? startPos + cardWidth - 100 : 0;
 
                   const isExitActive = startPos + activeCardWidthPercent > 100;
                   const exitActive = isExitActive ? startPos + activeCardWidthPercent - 100 : 0;
 
-                  const translateXNonActive = proportionToTranslateX(cardWidth, exitNotActive);
+                  const translateXNonActive = proportionToTranslateX(cardWidth, percentExitNotActive);
                   const translateXActive = proportionToTranslateX(maximalWidthPercent, exitActive);
-
-                  
-
-                  // if (isExitNotActive) {
-                  //   console.log("isExitNotActive" , isExitNotActive);
-                  //   console.log("startPos" , startPos);
-                  //   console.log("cardWidth" , cardWidth);
-                  //   console.log("exitNotActive" , exitNotActive);
-                  //   console.log("--------------");
-                    
-                    
-                  // }
-                 
-
-                  // if (isExitActive ){
-                  //   console.log("isExitActive" , isExitActive);
-                  //   console.log("startPos" , startPos);
-                  //   console.log("activeCardWidthPercent" , activeCardWidthPercent);
-                  //   console.log("exitActive" , exitActive);
-                  //   console.log("--------------");
-                  // }
-
-
-
                   const isNotLastInRow =
                     group.shibutzim.indexOf(shibuts) !== group.shibutzim.length - 1;
-
-
-
 
 
                   return (

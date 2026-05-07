@@ -8,7 +8,6 @@ import { DetailsPopUp } from "@/components/shared/pop-ups/DetailsPopUp";
 import { KeyValPopUp } from "@/components/shared/pop-ups/KeyValPopUp";
 
 import { Details, ArrowRight, ArrowLeft } from "@/assets/icons";
-// import { iconResources, iconServiceType } from "@/constants/icons";
 import { iconServiceType } from "@/constants/icons";
 import { getResourceIcon } from "@/constants/budgetResources";
 import { useViewSettings } from "@/contexts/GantViewSettingsContext";

@@ -3,7 +3,7 @@ import style from "@/style/components/dashboard/reports/Reports.module.css";
 import { getReports } from "@/api/dashboard.api";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { ErrorState } from "@/components/shared/ErrorState";
-import { Loader } from "@/components/shared/Loader";
+import { LoaderCircle } from "@/components/shared/loading/LoaderCircle";
 
 export const Reports = () => {
   const [reports, setReports] = useState<string[] | null>(null);
@@ -32,7 +32,7 @@ export const Reports = () => {
 
       {loading ? (
         <div className={style.emptyState}>
-          <Loader text="טוען דיווחים..." />
+          <LoaderCircle text="טוען דיווחים..." />
         </div>
       ) : error ? (
         <div className={style.emptyState}>

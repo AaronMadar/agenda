@@ -361,3 +361,16 @@
     background: rgba(255, 255, 255, 0.02);
     border-top: 1px solid #535a5b;
 }
+
+.emptyTable {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex: 1;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.emptyIcon {
+  color: rgba(255, 255, 255, 0.6);
+}

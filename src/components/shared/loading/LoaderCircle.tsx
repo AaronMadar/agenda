@@ -1,4 +1,4 @@
-import style from "@/style/components/shared/Loader.module.css";
+import style from "@/style/components/shared/loading/LoaderCircle.module.css";
 
 type LoaderProps = {
   size?: number;
@@ -6,7 +6,7 @@ type LoaderProps = {
   fullHeight?: boolean;
 };
 
-export const Loader = ({
+export const LoaderCircle = ({
   size = 46,
   text,
   fullHeight = false,

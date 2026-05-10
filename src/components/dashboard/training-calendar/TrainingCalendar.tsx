@@ -9,7 +9,7 @@ import { MonthPicker } from "./MonthPicker";
 import { ArrowRight, ArrowLeft } from "@/assets/icons";
 import { extractCalendarEvents } from "@/utils/calendar/extractCalendarEvents";
 import { useShibutzimContext } from "@/contexts/ShibutzimContext";
-import { Loader } from "@/components/shared/Loader";
+import { LoaderCircle } from "@/components/shared/loading/LoaderCircle";
 
 export const TrainingCalendar = () => {
   // ================= Context =================
@@ -168,7 +168,7 @@ export const TrainingCalendar = () => {
 
       {loading ? (
         <div className={style.emptyState}>
-          <Loader text="טוען אימונים..." />
+          <LoaderCircle text="טוען אימונים..." />
         </div>
       ) : (
         <>

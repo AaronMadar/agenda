@@ -124,3 +124,12 @@
   font-weight: 400;
   color: #b6b8b9;
 }
+
+.emptyState {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+  width: 100%;
+  flex: 1;
+}

@@ -27,3 +27,12 @@
 .item:last-child {
     border-bottom: none;
 }
+
+.emptyState {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+  width: 100%;
+  flex: 1;
+}

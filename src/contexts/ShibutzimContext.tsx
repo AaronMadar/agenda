@@ -55,11 +55,18 @@ export const ShibutzimProvider = ({
     try {
       setLoading(true);
 
-      const defaultFrom = dayjs().startOf("year").format("YYYY-MM-DD");
-      const defaultTo = dayjs().endOf("year").format("YYYY-MM-DD");
+      const defaultFromDayjs = dayjs().startOf("year")
+      const defaultToDayjs = dayjs().endOf("year")
 
-      const fromDate = from ?? defaultFrom;
-      const toDate = to ?? defaultTo;
+      setShibutzimData([])
+      setStartDate(defaultFromDayjs);
+      setEndDate(defaultToDayjs);
+
+      const defaultFromStr = defaultFromDayjs.format("YYYY-MM-DD");
+      const defaultToStr = defaultToDayjs.format("YYYY-MM-DD");
+
+      const fromDate = from ?? defaultFromStr;
+      const toDate = to ?? defaultToStr;
 
       const finalUnitIds = unitIds ?? (rootUnitId ? [rootUnitId] : null);
 

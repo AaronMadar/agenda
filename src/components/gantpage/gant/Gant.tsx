@@ -131,9 +131,10 @@ function proportionToTranslateX(
 
 type GantProps = {
   setForceDisplayed: (forceTypes: string[]) => void;
+  searchTerm: string
 };
 
-export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
+export const Gant = memo(function Gant({ setForceDisplayed, searchTerm }: GantProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const { startDate, endDate, shibutzimData, loading } = useShibutzimContext();
   const { groupByField, groupsInAscOrder, setIsLittleScreen, showOpenCards, activeCardWidthPercent } = useViewSettings();
@@ -185,6 +186,58 @@ export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
     return enrichGroups(raw);
   }, [shibutzimData, groupByField, groupsInAscOrder]);
 
+
+  const displayedGrouped = useMemo(() => {
+    if (!searchTerm.trim()) return grouped;
+
+    const lowerSearch = searchTerm.toLowerCase().trim();
+
+    return Object.entries(grouped).reduce<
+      Record<string, { count: number; shibutzim: Shibutz[] }>
+    >((acc, [groupName, group]) => {
+
+      const filteredShibutzim = group.shibutzim.filter((shibutz) => {
+
+        // resources searchable text
+        const resourcesText =
+          shibutz.resources
+            ?.map((resource) => {
+              const itemsNames = resource.items
+                .map((item) => item.name)
+                .join(" ");
+
+              return `
+              ${resource.categoryName}
+              ${itemsNames}
+            `;
+            })
+            .join(" ") || "";
+
+        // all searchable content
+        const searchableText = `
+        ${shibutz.title}
+        ${shibutz.codeShibutz}
+        ${shibutz.mesima}
+        ${shibutz.serviceType}
+        ${shibutz.forceType}
+        ${shibutz.location}
+        ${resourcesText}
+      `.toLowerCase();
+
+        return searchableText.includes(lowerSearch);
+      });
+
+      // remove empty groups
+      if (filteredShibutzim.length > 0) {
+        acc[groupName] = {
+          count: filteredShibutzim.length,
+          shibutzim: filteredShibutzim,
+        };
+      }
+
+      return acc;
+    }, {});
+  }, [grouped, searchTerm]);
   /* =========================
      RENDER
   ========================= */
@@ -193,7 +246,7 @@ export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
     <div className={styles.wrapper}>
       <div className={styles.topFade} />
 
-      <div ref={containerRef} className={`${styles["gant-container"]} ${!shibutzimData?.length && !loading ? styles["empty"] : ""}`}>
+      <div ref={containerRef} className={`${styles["gant-container"]} ${(!loading && (shibutzimData?.length === 0 || Object.keys(displayedGrouped).length === 0)) ? styles["empty"] : ""}`}>
         {/* LOADING */}
         {loading && (
           <Box sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
@@ -221,8 +274,8 @@ export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
         )}
 
         {/* DATA */}
-        {Object.entries(grouped).map(([groupName, group]) => {
-          const isNotLastGroup = Object.keys(grouped).indexOf(groupName) !== Object.keys(grouped).length - 1;
+        {Object.entries(displayedGrouped).map(([groupName, group]) => {
+          const isNotLastGroup = Object.keys(displayedGrouped).indexOf(groupName) !== Object.keys(displayedGrouped).length - 1;
 
           return (
             <div
@@ -251,7 +304,7 @@ export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
                   const cardWidth = calculateWidth(shibuts, sDate, eDate); //minimal width is 10% maximal width is 100%
                   const maximalWidthPercent = cardWidth > activeCardWidthPercent ? cardWidth : activeCardWidthPercent;
 
-                  const isExitNotActive = startPos + cardWidth > 100;  
+                  const isExitNotActive = startPos + cardWidth > 100;
                   const percentExitNotActive = isExitNotActive ? startPos + cardWidth - 100 : 0;
 
                   const isExitActive = startPos + activeCardWidthPercent > 100;
@@ -297,7 +350,9 @@ export const Gant = memo(function Gant({ setForceDisplayed }: GantProps) {
         })}
 
         {/* EMPTY STATE */}
-        {!shibutzimData?.length && !loading && <EmptyState />}
+        {!loading && (shibutzimData?.length === 0 || Object.keys(displayedGrouped).length === 0) && (
+          <EmptyState />
+        )}
       </div>
 
       <div className={styles.bottomFade} />

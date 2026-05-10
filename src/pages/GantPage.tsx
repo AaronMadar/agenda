@@ -4,7 +4,7 @@ import { Header } from "@/components/gantpage/header/Header";
 import "@/style/index.css"
 import styles from "@/style/pages/GantPage.module.css"
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { LegendPopup } from "@/components/gantpage/gant/LegendPopup";
 import TimeLineHeader from "@/components/gantpage/TimeLineHeader";
 import { SearchBar } from "@/components/shared/SearchBar";
@@ -20,24 +20,38 @@ export function GantPage() {
     setIsLegendOpen(prev => !prev);
   }, []);
 
- const toggleSearch = useCallback(() => {
-  setIsSearchOpen(prev => {
-    const nextState = !prev;
-    if (!nextState) {
-      setSearchTerm("");
-    }
-    return nextState;
-  });
-}, []);
+  const toggleSearch = useCallback(() => {
+    setIsSearchOpen(prev => {
+      const nextState = !prev;
+      if (!nextState) {
+        setSearchTerm("");
+      }
+      return nextState;
+    });
+  }, []);
 
   const handleCloseSearch = useCallback(() => {
     setSearchTerm("");
     setIsSearchOpen(false);
   }, []);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'f') {
+        e.preventDefault();
+        toggleSearch();
+      }
+    };   
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [toggleSearch]);
+
+
   return (
     <div className={styles["gantpage-container"]}>
-      <Header onMapClick={toggleLegend} toggleSearch={toggleSearch} handleCloseSearch={handleCloseSearch}  />
+      <Header onMapClick={toggleLegend} toggleSearch={toggleSearch} handleCloseSearch={handleCloseSearch} />
 
       <TimeLineHeader />
 

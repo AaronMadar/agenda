@@ -3,7 +3,7 @@ import { Dayjs } from 'dayjs';
 import { useMemo } from "react";
 import styles from "@/style/components/gantpage/TimeLineHeader.module.css"
 
-export default function TimeLineHeader() {
+export default function TimeLineHeader({ countDisplayed }: { countDisplayed: number }) {
     const { startDate, endDate , shibutzimData } = useShibutzimContext();
 
     const generateTicks = (start: Dayjs | null, end: Dayjs | null): string[] => {
@@ -38,7 +38,7 @@ export default function TimeLineHeader() {
             {/* LEFT TOP CORNER */}
             <div className={styles["div-side"]}>
                 <div style={{ fontSize: "0.9rem", opacity: 0.8, marginTop: 2 }}>
-                    סה"כ שיבוצים: {totalCount}
+                    סה"כ שיבוצים: {countDisplayed}/{totalCount}
                 </div>
             </div>
 

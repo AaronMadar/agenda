@@ -132,9 +132,10 @@ function proportionToTranslateX(
 type GantProps = {
   setForceDisplayed: (forceTypes: string[]) => void;
   searchTerm: string
+  setCountDisplayed: (count: number) => void
 };
 
-export const Gant = memo(function Gant({ setForceDisplayed, searchTerm }: GantProps) {
+export const Gant = memo(function Gant({ setForceDisplayed, searchTerm, setCountDisplayed }: GantProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const { startDate, endDate, shibutzimData, loading } = useShibutzimContext();
   const { groupByField, groupsInAscOrder, setIsLittleScreen, showOpenCards, activeCardWidthPercent } = useViewSettings();
@@ -238,6 +239,15 @@ export const Gant = memo(function Gant({ setForceDisplayed, searchTerm }: GantPr
       return acc;
     }, {});
   }, [grouped, searchTerm]);
+
+  const countDisplayed = useMemo(()=> {
+    return Object.values(displayedGrouped).reduce((acc, group) => acc + group.count, 0);
+    
+  },[displayedGrouped])
+
+  useEffect(() => {
+    setCountDisplayed(countDisplayed);
+  }, [countDisplayed]);
   /* =========================
      RENDER
   ========================= */
@@ -295,7 +305,7 @@ export const Gant = memo(function Gant({ setForceDisplayed, searchTerm }: GantPr
                   <div style={{ fontSize: "0.8rem", opacity: 0.7 }}>
                     {group.count} שיבוצים
                   </div>
-                </div>
+                </div>    
               </div>
 
               {/* CONTENT */}

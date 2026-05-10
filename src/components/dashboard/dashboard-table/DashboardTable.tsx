@@ -5,6 +5,7 @@ import { SearchInput } from "./SearchInput";
 import { DropdownMultiSelect } from "./DropdownMultiSelect";
 import { DownloadTablePopUp } from "./DownloadTablePopUp";
 import { Popover } from "@mui/material";
+import { Inbox } from "lucide-react";
 
 type Column = {
     label: string;
@@ -459,54 +460,63 @@ export const DashboardTable = ({
                     </div>
 
                     {/* ROWS */}
-                    <div className={style.rows}>
-                        {selectedColumns.length > 0 && displayData.map((row, rowIndex) => {
-                            const hasBottomBorder = showSum || rowIndex !== displayData.length - 1;
+                    {displayData.length < 1 ? (
+                        <div className={style.emptyTable}>
+                            <Inbox className={style.emptyIcon}/>
+                            <div>
+                                אין מה להציג
+                            </div>
+                        </div>
+                    ) : (
+                        <div className={style.rows}>
+                            {selectedColumns.length > 0 && displayData.map((row, rowIndex) => {
+                                const hasBottomBorder = showSum || rowIndex !== displayData.length - 1;
 
-                            return (
-                                <div
-                                    key={rowIndex}
-                                    className={style.tableRow}
-                                    style={{
-                                        borderBottom: hasBottomBorder
-                                            ? "1px solid #535a5b"
-                                            : "none"
-                                    }}
-                                >
-                                    {favorites && (
-                                        <label className={style.favoriteCheckbox}>
-                                            <input
-                                                type="checkbox"
-                                                checked={favoriteRows.has(row.id)}
-                                                onChange={() =>
-                                                    onToggleFavorite?.(row.id)
-                                                }
-                                            />
-                                            <span className={style.favoriteMark}></span>
-                                        </label>
-                                    )}
+                                return (
+                                    <div
+                                        key={rowIndex}
+                                        className={style.tableRow}
+                                        style={{
+                                            borderBottom: hasBottomBorder
+                                                ? "1px solid #535a5b"
+                                                : "none"
+                                        }}
+                                    >
+                                        {favorites && (
+                                            <label className={style.favoriteCheckbox}>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={favoriteRows.has(row.id)}
+                                                    onChange={() =>
+                                                        onToggleFavorite?.(row.id)
+                                                    }
+                                                />
+                                                <span className={style.favoriteMark}></span>
+                                            </label>
+                                        )}
 
-                                    {selectedColumnObjects.map((col) => (
-                                        <div key={col.accessor} className={style.tableCell}>
-                                            <div className={style.cellText}>
-                                                {String(row[col.accessor] ?? "--")}
+                                        {selectedColumnObjects.map((col) => (
+                                            <div key={col.accessor} className={style.tableCell}>
+                                                <div className={style.cellText}>
+                                                    {String(row[col.accessor] ?? "--")}
+                                                </div>
                                             </div>
-                                        </div>
-                                    ))}
+                                        ))}
 
-                                    {isDrillable && (
-                                        <div 
-                                            className={style.drillHolder} 
-                                            title="פירוט נוסף"
-                                            onClick={() => onRowClick?.(row)}
-                                        >
-                                            <DrillIcon className={style.drillIcon} />
-                                        </div>
-                                    )}
-                                </div>
-                            );
-                        })}
-                    </div>
+                                        {isDrillable && (
+                                            <div 
+                                                className={style.drillHolder} 
+                                                title="פירוט נוסף"
+                                                onClick={() => onRowClick?.(row)}
+                                            >
+                                                <DrillIcon className={style.drillIcon} />
+                                            </div>
+                                        )}
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    )}
 
                     {/* SUM */}
                     {showSum && (

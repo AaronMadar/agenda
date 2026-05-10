@@ -8,24 +8,28 @@ import { useShibutzimContext } from "@/contexts/ShibutzimContext";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useBudgetResourcesContext } from "@/contexts/BudgetResourcesContext";
 import { getResourceLabel } from "@/constants/budgetResources";
+import { LoadingOverlay } from "@/components/shared/loading/LoadingOverlay";
+import { ErrorState } from "@/components/shared/ErrorState";
 
 
 export const BudgetResourceDetails = () => {
   const navigate = useNavigate();
+
   const { category, item } = useParams();
 
-  const { shibutzimData, loading } = useShibutzimContext();
+  const { loading } = useShibutzimContext();
 
   const budgetResources = useBudgetResourcesContext();
-
-  const isDataReady = shibutzimData && shibutzimData.length > 0;
 
   const categoryName = getResourceLabel(category);
 
   const { favorites, toggleFavorite } = useFavorites(`budget-resource-${categoryName}`);
 
+  const isOverviewPage = !item;
+
   const categoryData = useMemo(() => {
     if (!categoryName) return null;
+
     return budgetResources[categoryName];
   }, [budgetResources, categoryName]);
 
@@ -43,7 +47,7 @@ export const BudgetResourceDetails = () => {
 
   // ================= LEVEL 2 (Shibutzim) =================
   const shibutzimDataInner = useMemo(() => {
-    if (!categoryData || !item) return [];
+    if (!categoryData || isOverviewPage) return [];
 
     if (item === "__all__") {
       const all = Object.values(categoryData.items).flatMap(
@@ -76,17 +80,11 @@ export const BudgetResourceDetails = () => {
     }));
   }, [shibutzimDataInner]);
 
-  if (loading || !isDataReady) {
-    return <div>Loading...</div>;
-  }
+  // ================= TABLE DATA =================
 
-  if (!categoryName) {
-    return <div>קטגוריה לא תקינה</div>;
-  }
-
-  if (!categoryData) {
-    return <div>אין נתונים לקטגוריה</div>;
-  }
+  const tableData = item
+    ? shibutzimTableData
+    : itemsData;
 
   // ================= TABLE CONFIG =================
 
@@ -107,6 +105,10 @@ export const BudgetResourceDetails = () => {
     { label: "מיקום", accessor: "location", searchable: true },
   ];
 
+  const tableColumnsConfig = isOverviewPage
+    ? itemColumns
+    : shibutzColumns;
+
   // ================= NAVIGATION =================
 
   const handleBack = () => {
@@ -114,7 +116,7 @@ export const BudgetResourceDetails = () => {
   };
 
   const handleRowClick = (row: any) => {
-    if (!item) {
+    if (isOverviewPage) {
       if (row.isSum) {
         navigate(`/details/budget-resources/${category}/__all__`);
       } else {
@@ -160,19 +162,26 @@ export const BudgetResourceDetails = () => {
 
       {/* TABLE */}
       <div className={style.tableContainer}>
-        {!item ? (
-          <DashboardTable
-            columns={itemColumns}
-            data={itemsData}
-            favorites
-            favoriteRows={favorites}
-            onToggleFavorite={toggleFavorite}
-            isDrillable
-            onRowClick={handleRowClick}
-            showSum
-          />
+        {!categoryName ? (
+          <div className={style.emptyState}>
+            <ErrorState message={"קטגוריה לא תקינה"} />
+          </div>
         ) : (
-          <DashboardTable columns={shibutzColumns} data={shibutzimTableData} />
+          <LoadingOverlay loading={loading}>
+            <DashboardTable
+              columns={tableColumnsConfig}
+              data={tableData}
+
+              favorites={isOverviewPage}
+              favoriteRows={isOverviewPage ? favorites : undefined}
+              onToggleFavorite={isOverviewPage ? toggleFavorite : undefined}
+
+              isDrillable={isOverviewPage}
+              onRowClick={isOverviewPage ? handleRowClick : undefined}
+
+              showSum={isOverviewPage}
+            />
+          </LoadingOverlay>
         )}
       </div>
     </div>

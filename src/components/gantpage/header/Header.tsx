@@ -8,6 +8,8 @@ import { ViewSettingsPopover } from './view-settings/ViewSettingsPopover';
 
 interface HeaderProps {
     onMapClick: () => void
+    toggleSearch: () => void
+    handleCloseSearch: () => void
 }
 
 const handlePrint = () => {
@@ -41,7 +43,7 @@ const handleClickCamera = async () => {
     link.click(); 
 };
 
-export const Header = memo(({ onMapClick }: HeaderProps) => {
+export const Header = memo(({ onMapClick, toggleSearch , handleCloseSearch }: HeaderProps) => {
     const [settingsAnchorEl, setSettingsAnchorEl] = useState<HTMLElement | null>(null);
 
     const handleOpenSettings = (event: React.MouseEvent<HTMLElement>) => {
@@ -73,7 +75,7 @@ export const Header = memo(({ onMapClick }: HeaderProps) => {
                         <i className={`bi bi-bell ${styles["little"]} ${styles["header-icon"]}`} />
                     </Tooltip>
                     <Tooltip title="חיפוש" arrow>
-                        <i className={`bi bi-search ${styles["little"]} ${styles["header-icon"]}`} />
+                        <i className={`bi bi-search ${styles["little"]} ${styles["header-icon"]}`} onClick={toggleSearch} />
                     </Tooltip>
                 </div>
 

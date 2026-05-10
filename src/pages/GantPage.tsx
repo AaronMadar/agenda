@@ -4,32 +4,79 @@ import { Header } from "@/components/gantpage/header/Header";
 import "@/style/index.css"
 import styles from "@/style/pages/GantPage.module.css"
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { LegendPopup } from "@/components/gantpage/gant/LegendPopup";
 import TimeLineHeader from "@/components/gantpage/TimeLineHeader";
+import { SearchBar } from "@/components/shared/SearchBar";
 
 
 export function GantPage() {
-    const [isLegendOpen, setIsLegendOpen] = useState<boolean>(false);
-    const [forceDisplayed , setForceDisplayed] = useState<string[]>([])
+  const [isLegendOpen, setIsLegendOpen] = useState<boolean>(false);
+  const [forceDisplayed, setForceDisplayed] = useState<string[]>([])
+  const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
-    const toggleLegend = useCallback(() => {
-        setIsLegendOpen(prev => !prev);
-    }, []);
+  const toggleLegend = useCallback(() => {
+    setIsLegendOpen(prev => !prev);
+  }, []);
 
-    return (
-        <div className={styles["gantpage-container"]}>
-            <Header onMapClick={toggleLegend} />
-            <TimeLineHeader />
-            
-            <Gant setForceDisplayed={setForceDisplayed} />
+  const toggleSearch = useCallback(() => {
+    setIsSearchOpen(prev => {
+      const nextState = !prev;
+      if (!nextState) {
+        setSearchTerm("");
+      }
+      return nextState;
+    });
+  }, []);
 
-            {isLegendOpen && (
-                <LegendPopup 
-                    onClose={() => setIsLegendOpen(false)} 
-                    forceDisplayed={forceDisplayed} 
-                />
-            )}
+  const handleCloseSearch = useCallback(() => {
+    setSearchTerm("");
+    setIsSearchOpen(false);
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'f') {
+        e.preventDefault();
+        toggleSearch();
+      }
+    };   
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [toggleSearch]);
+
+
+  return (
+    <div className={styles["gantpage-container"]}>
+      <Header onMapClick={toggleLegend} toggleSearch={toggleSearch} handleCloseSearch={handleCloseSearch} />
+
+      <TimeLineHeader />
+
+      <Gant
+        setForceDisplayed={setForceDisplayed}
+        searchTerm={searchTerm}
+      />
+
+      {isLegendOpen && (
+        <LegendPopup
+          onClose={() => setIsLegendOpen(false)}
+          forceDisplayed={forceDisplayed}
+        />
+      )}
+
+      {isSearchOpen && (
+        <div className={styles.searchWrapper}>
+          <SearchBar
+            value={searchTerm}
+            onChange={setSearchTerm}
+            onClose={() => setIsSearchOpen(false)}
+            placeholder="חיפוש קוד שיבוץ , פריטים.."
+          />
         </div>
-    );
+      )}
+    </div>
+  );
 }

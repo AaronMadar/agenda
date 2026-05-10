@@ -15,6 +15,7 @@ export function GantPage() {
   const [forceDisplayed, setForceDisplayed] = useState<string[]>([])
   const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [countDisplayed, setCountDisplayed] = useState<number>(0);
 
   const toggleLegend = useCallback(() => {
     setIsLegendOpen(prev => !prev);
@@ -35,6 +36,7 @@ export function GantPage() {
     setIsSearchOpen(false);
   }, []);
 
+  //TO PERMET TO REPLACE THE CTRL F OF CHROME BY OUR SEARCHBAR
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'f') {
@@ -53,11 +55,12 @@ export function GantPage() {
     <div className={styles["gantpage-container"]}>
       <Header onMapClick={toggleLegend} toggleSearch={toggleSearch} handleCloseSearch={handleCloseSearch} />
 
-      <TimeLineHeader />
+      <TimeLineHeader countDisplayed={countDisplayed} />
 
       <Gant
         setForceDisplayed={setForceDisplayed}
         searchTerm={searchTerm}
+        setCountDisplayed={setCountDisplayed}
       />
 
       {isLegendOpen && (

@@ -39,7 +39,7 @@ export function GantPage() {
   //TO PERMET TO REPLACE THE CTRL F OF CHROME BY OUR SEARCHBAR
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'f'  || e.key.toLowerCase() === 'כ') {
+      if ((e.ctrlKey || e.metaKey) &&( e.key.toLowerCase() === 'f'  || e.key.toLowerCase() === 'כ')) {
         e.preventDefault();
         toggleSearch();
       } 

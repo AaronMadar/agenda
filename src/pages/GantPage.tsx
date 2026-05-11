@@ -39,16 +39,20 @@ export function GantPage() {
   //TO PERMET TO REPLACE THE CTRL F OF CHROME BY OUR SEARCHBAR
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && (e.key.toLowerCase() === 'f' || e.key.toLowerCase() === 'כ')) {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'f'  || e.key.toLowerCase() === 'כ') {
         e.preventDefault();
         toggleSearch();
+      } 
+      else if (e.key.toLowerCase() === 'escape') {
+        e.preventDefault();
+        handleCloseSearch();
       }
-    };   
-
+    };
+  
     window.addEventListener("keydown", handleKeyDown);
-
+  
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [toggleSearch]);
+  }, [toggleSearch, handleCloseSearch]);
 
 
   return (

@@ -94,7 +94,7 @@
 /* ===== Scroll area ===== */
 .dropdownContent {
   max-height: clamp(180px, 35vh, 300px);
-  overflow-y: auto;
+  overflow: auto;
 }
 
 /* ===== Footer ===== */

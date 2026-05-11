@@ -77,8 +77,7 @@ export const TreeDropdown = ({
   };
 
   const handleReset = () => {
-    const newSelection = rootValue ? new Set([rootValue]) : new Set<string>();
-    setTempSelected(newSelection);
+    setTempSelected(new Set());
   };
 
   return (

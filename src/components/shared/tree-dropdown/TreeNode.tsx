@@ -2,6 +2,7 @@ import { useState } from "react";
 import CheckIcon from "@mui/icons-material/Check";
 import type { TreeNodeData } from "./types";
 import style from "@/style/components/shared/tree-dropdown/TreeNode.module.css";
+import { ArrowLeft } from "@/assets/icons";
 
 interface TreeNodeProps {
   node: TreeNodeData;
@@ -20,6 +21,7 @@ export const TreeNode = ({
 }: TreeNodeProps) => {
   const [open, setOpen] = useState(false);
   const hasChildren = (node.children?.length ?? 0) > 0;
+  const indent = level * 9;
 
   const isChecked = ancestorChecked || selectedIds.has(node.id);
 
@@ -33,7 +35,10 @@ export const TreeNode = ({
       <li className={style.nodeItem}>
         <div
           className={style.nodeContent}
-          style={{ backgroundColor: getBackgroundColor() }}
+          style={{ 
+            backgroundColor: getBackgroundColor(),
+            paddingRight: indent + 12,
+           }}
         >
           {hasChildren ? (
             <button
@@ -43,7 +48,7 @@ export const TreeNode = ({
               }}
               className={style.toggleButton}
             >
-              {open ? "−" : "+"}
+              <ArrowLeft className={`${style.arrow} ${open ? style.arrowOpen : ""}`}/>
             </button>
           ) : (
             <span className={style.spacer} />
@@ -61,21 +66,26 @@ export const TreeNode = ({
           )}
         </div>
       </li>
-
-      {open && hasChildren && (
-        <>
-          {node.children!.map((child) => (
-            <TreeNode
-              key={child.id}
-              node={child}
-              onToggle={onToggle}
-              selectedIds={selectedIds}
-              ancestorChecked={isChecked}
-              level={level + 1}
-            />
-          ))}
-        </>
-      )}
+      
+      <div
+        className={`${style.childrenWrapper} ${
+          open ? style.childrenOpen : ""
+        }`}
+      >
+        <div className={style.childrenInner}>
+          {hasChildren &&
+            node.children!.map((child) => (
+              <TreeNode
+                key={child.id}
+                node={child}
+                onToggle={onToggle}
+                selectedIds={selectedIds}
+                ancestorChecked={isChecked}
+                level={level + 1}
+              />
+            ))}
+        </div>
+      </div>
     </>
   );
 };

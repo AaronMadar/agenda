@@ -66,21 +66,26 @@ export const TreeNode = ({
           )}
         </div>
       </li>
-
-      {open && hasChildren && (
-        <>
-          {node.children!.map((child) => (
-            <TreeNode
-              key={child.id}
-              node={child}
-              onToggle={onToggle}
-              selectedIds={selectedIds}
-              ancestorChecked={isChecked}
-              level={level + 1}
-            />
-          ))}
-        </>
-      )}
+      
+      <div
+        className={`${style.childrenWrapper} ${
+          open ? style.childrenOpen : ""
+        }`}
+      >
+        <div className={style.childrenInner}>
+          {hasChildren &&
+            node.children!.map((child) => (
+              <TreeNode
+                key={child.id}
+                node={child}
+                onToggle={onToggle}
+                selectedIds={selectedIds}
+                ancestorChecked={isChecked}
+                level={level + 1}
+              />
+            ))}
+        </div>
+      </div>
     </>
   );
 };

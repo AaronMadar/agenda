@@ -68,3 +68,27 @@
 .arrowOpen {
   transform: rotate(-90deg);
 }
+
+.childrenWrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+
+  opacity: 0;
+  transform: translateY(-4px);
+
+  transition:
+    grid-template-rows 0.28s ease,
+    opacity 0.4s ease,
+    transform 0.2s ease;
+}
+
+.childrenOpen {
+  grid-template-rows: 1fr;
+
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.childrenInner {
+  overflow: hidden;
+}

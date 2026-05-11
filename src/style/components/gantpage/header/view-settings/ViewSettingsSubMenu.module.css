@@ -1,0 +1,14 @@
+.option {
+    margin: 2px 0;
+    padding: 3px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.option:hover {
+    background: rgba(96, 126, 173, 0.3);
+}
+
+.option.active {
+    background: #646869;
+}

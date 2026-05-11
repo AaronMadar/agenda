@@ -8,6 +8,7 @@ export interface ShibutzimRes {
 
 export interface Shibutz {
     title: string;
+    domain: string;
     codeShibutz: string;
     directCost: number;
     costOfItems: number;

@@ -6,4 +6,5 @@ export const GROUP_BY_OPTIONS = [
   { value: "forceType", label: "סוג כח" },
   { value: "mesima", label: "משימה" },
   { value: "serviceType", label: "סוג שירות" },
+  { value: "domain", label: "תחום" },
 ] satisfies { value: keyof Shibutz; label: string }[];

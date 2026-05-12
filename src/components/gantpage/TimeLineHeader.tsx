@@ -1,28 +1,48 @@
 import { useShibutzimContext } from "@/contexts/ShibutzimContext";
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { useMemo } from "react";
 import styles from "@/style/components/gantpage/TimeLineHeader.module.css"
+import { TicIcon } from "@/assets/icons";
 
 export default function TimeLineHeader({ countDisplayed }: { countDisplayed: number }) {
     const { startDate, endDate , shibutzimData } = useShibutzimContext();
 
-    const generateTicks = (start: Dayjs | null, end: Dayjs | null): string[] => {
-        if (!start || !end) return []
-        const ticks: string[] = [];
+    const generateTicks = (start: Dayjs | null, end: Dayjs | null) => {
+        if (!start || !end) return [];
+
+        const ticks: { label: string; isToday: boolean }[] = [];
         const diffInDays = end.diff(start, 'day');
+
+        const today = dayjs();
+
         if (diffInDays <= 15) {
             let current = start.clone();
+
             while (!current.isAfter(end.add(1, 'day'))) {
-                ticks.push(current.format('D MMM'));
+                const isToday = current.isSame(today, 'day');
+
+                ticks.push({
+                    label: current.format('D MMM'),
+                    isToday
+                });
+
                 current = current.add(1, 'day');
             }
         } else {
-            let current = start.startOf('month');   
+            let current = start.startOf('month');
+
             while (!current.isAfter(end.add(1, 'month'))) {
-                ticks.push(current.format('MMM'));
+                const isToday = current.isSame(today, 'month');
+
+                ticks.push({
+                    label: current.format('MMM - YY'),
+                    isToday
+                });
+
                 current = current.add(1, 'month');
             }
         }
+
         return ticks;
     };
 
@@ -44,10 +64,13 @@ export default function TimeLineHeader({ countDisplayed }: { countDisplayed: num
 
             {/* TICKS */}
             <div className={styles["ticks-container"]}>
-                {dates.map((date, i) => (
-                    <div className={styles["timeline-tick"]} key={i}>
-                        <span className={styles["tick-label"]}>{date}</span>
-                        <i className={`bi bi-caret-up-fill ${styles["arrow-icon"]}`}></i>
+                {dates.map((item, i) => (
+                    <div
+                        key={i}
+                        className={`${styles["timeline-tick"]} ${item.isToday ? styles.today : ""}`}
+                    >
+                        <span className={styles["tick-label"]}>{item.label}</span>
+                        <TicIcon className={styles["arrow-icon"]}/>
                     </div>
                 ))}
             </div>

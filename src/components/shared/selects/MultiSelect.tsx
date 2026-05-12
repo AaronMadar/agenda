@@ -60,7 +60,7 @@ export function MultiSelect({
                 איפוס
               </button>
               <button className={styles.confirmButton} onClick={() => close()}>
-                סגור
+                אישור
               </button>
             </div>
           </div>

@@ -65,7 +65,7 @@ export const TreeDropdown = ({
             <div className={style.footer}>
               <div className={style.footerButtons}>
                 <button className={style.resetButton} onClick={() => onChange([])}>איפוס</button>
-                <button className={style.confirmButton} onClick={() => setOpen(false)}>סגור</button>
+                <button className={style.confirmButton} onClick={() => setOpen(false)}>אישור</button>
               </div>
             </div>
           </div>

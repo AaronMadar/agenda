@@ -18,6 +18,7 @@
   display: flex;
   gap: clamp(0px, 0.6vw, 13px);
   align-items: center;
+  padding: 0 10px;
 }
 
 @media (max-width: 1023px) {
@@ -39,8 +40,17 @@
   }
 }
 
+.spacer {
+  width: 20px;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+}
+
 .button {
-  background: #525252;
+  background: transparent;
   border: 1px solid #686868;
   border-radius: 999px;
   padding: 6px 10px;
@@ -48,14 +58,27 @@
   color: #efeded;
   font-size: 0.85rem;
   transition: 0.2s;
+  text-wrap: nowrap;
 }
 
 .button:hover {
-  background: #4a4a4a;
+  background: rgb(68, 63, 63);
   border: 1px solid #585858;
 }
 
 .button:active {
-  background: #3c3c3c;
+  background: rgb(49, 46, 46);
   border: 1px solid #5c5c5c;
+}
+
+.filterBtn {
+  background: #4487bb;
+}
+
+.filterBtn:hover {
+  background: #3d627e;
+}
+
+.filterBtn:active {
+  background: #425a6d;
 }

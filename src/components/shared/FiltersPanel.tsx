@@ -65,14 +65,6 @@ export const FiltersPanel = () => {
   return (
     <>
       <div className={styles["control-panel"]}>
-        <button className={styles["button"]} onClick={handleApplyFilters}>
-          בצע סינון
-        </button>
-
-        <button className={styles["button"]} onClick={handleResetFilters}>
-          איפוס סינונים
-        </button>
-
         <TreeDropdown
           data={UnitTreeData}
           value={selectedUnitIds}
@@ -108,6 +100,19 @@ export const FiltersPanel = () => {
             onClick={handleOpenPopover}
           />
         </Tooltip>
+
+        <div className={styles.spacer} />
+
+        <div className={styles.buttons}>
+          <button className={`${styles.button} ${styles.filterBtn}`} onClick={handleApplyFilters}>
+            בצע סינון
+          </button>
+
+          <button className={styles.button} onClick={handleResetFilters}>
+            איפוס סינונים
+          </button>
+        </div>
+
       </div>
       <i
         className={`${styles["control-panel-icon"]} bi bi-calendar4-range ${styles["header-icon"]}`}

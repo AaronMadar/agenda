@@ -1,159 +1,306 @@
 import { useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+
 import { DashboardTable } from "@/components/dashboard/dashboard-table/DashboardTable";
-import style from "@/style/pages/BudgetResourceDetails.module.css";
-import { ArrowRight } from "@/assets/icons";
-import "@/style/index.css";
-import { useShibutzimContext } from "@/contexts/ShibutzimContext";
-import { useFavorites } from "@/hooks/useFavorites";
-import { useBudgetResourcesContext } from "@/contexts/BudgetResourcesContext";
-import { getResourceLabel } from "@/constants/budgetResources";
 import { LoadingOverlay } from "@/components/shared/loading/LoadingOverlay";
 import { ErrorState } from "@/components/shared/ErrorState";
 
+import { useShibutzimContext } from "@/contexts/ShibutzimContext";
+import { useBudgetResourcesContext } from "@/contexts/BudgetResourcesContext";
+
+import { useFavorites } from "@/hooks/useFavorites";
+
+import { getResourceLabel } from "@/constants/budgetResources";
+
+import { detailsPagesRegistry, type DetailsPageType } from "./details-pages/registry";
+
+import { mapShibutzToTableRow } from "./details-pages/mappers/mapShibutzToTableRow";
+
+import { ArrowRight } from "@/assets/icons";
+
+import style from "@/style/pages/BudgetResourceDetails.module.css";
+import "@/style/index.css";
+
+// ======================================================
+// COMPONENT
+// ======================================================
 
 export const BudgetResourceDetails = () => {
   const navigate = useNavigate();
 
-  const { category, item } = useParams();
+  const { type, category, item } = useParams();
 
-  const { loading } = useShibutzimContext();
+  const { loading, shibutzimData } = useShibutzimContext();
 
   const budgetResources = useBudgetResourcesContext();
 
-  const categoryName = getResourceLabel(category);
-
-  const { favorites, toggleFavorite } = useFavorites(`budget-resource-${categoryName}`);
-
   const isOverviewPage = !item;
 
-  const categoryData = useMemo(() => {
+  // ======================================================
+  // FAVORITES
+  // ======================================================
+
+  const { favorites, toggleFavorite } =
+    useFavorites(
+      `details-${type}-${category}`,
+    );
+
+  // ======================================================
+  // BUDGET RESOURCES
+  // ======================================================
+
+  const categoryName = getResourceLabel(category);
+
+  const budgetCategoryData = useMemo(() => {
     if (!categoryName) return null;
 
     return budgetResources[categoryName];
   }, [budgetResources, categoryName]);
 
-  // ================= LEVEL 1 (Items) =================
-  const itemsData = useMemo(() => {
-    if (!categoryData) return [];
+  // ======================================================
+  // BUDGET ITEMS DATA
+  // ======================================================
 
-    return Object.entries(categoryData.items).map(([name, data]) => ({
+  const budgetItemsData = useMemo(() => {
+    if (!budgetCategoryData) return [];
+
+    return Object.entries(
+      budgetCategoryData.items,
+    ).map(([name, data]) => ({
       id: name,
       name,
       quantity: data.totalQuantity,
       cost: data.totalCost,
     }));
-  }, [categoryData]);
+  }, [budgetCategoryData]);
 
-  // ================= LEVEL 2 (Shibutzim) =================
-  const shibutzimDataInner = useMemo(() => {
-    if (!categoryData || isOverviewPage) return [];
+  // ======================================================
+  // BUDGET SHIBUTZIM DATA
+  // ======================================================
 
-    if (item === "__all__") {
-      const all = Object.values(categoryData.items).flatMap(
-        (itemData: any) => itemData.shibutzim,
-      );
-
-      const unique = Array.from(
-        new Map(all.map((s) => [s.codeShibutz, s])).values(),
-      );
-
-      return unique;
+  const budgetShibutzimData = useMemo(() => {
+    if (
+      !budgetCategoryData ||
+      isOverviewPage
+    ) {
+      return [];
     }
 
-    const itemData = categoryData.items[item];
-    if (!itemData) return [];
+    // ================= ALL =================
 
-    return itemData.shibutzim;
-  }, [categoryData, item]);
+    if (item === "__all__") {
+      const all = Object.values(
+        budgetCategoryData.items,
+      ).flatMap(
+        (itemData: any) =>
+          itemData.shibutzim,
+      );
 
-  const shibutzimTableData = useMemo(() => {
-    return shibutzimDataInner.map((s) => ({
-      id: s.codeShibutz,
-      name: s.title,
-      unitId: s.unitId,
-      mesima: s.mesima,
-      dateBegin: s.dateBegin,
-      dateEnd: s.dateEnd,
-      directCost: s.directCost,
-      location: s.location,
-    }));
-  }, [shibutzimDataInner]);
+      return Array.from(
+        new Map(
+          all.map((s) => [
+            s.codeShibutz,
+            s,
+          ]),
+        ).values(),
+      );
+    }
 
-  // ================= TABLE DATA =================
+    // ================= SINGLE ITEM =================
 
-  const tableData = item
-    ? shibutzimTableData
-    : itemsData;
+    const itemData = budgetCategoryData.items[item!];
 
-  // ================= TABLE CONFIG =================
+    return itemData?.shibutzim ?? [];
+  }, [
+    budgetCategoryData,
+    item,
+    isOverviewPage,
+  ]);
 
-  const itemColumns = [
-    { label: "שם", accessor: "name", searchable: true },
-    { label: "כמות", accessor: "quantity", sumable: true },
-    { label: "עלות", accessor: "cost", sumable: true },
-  ];
+  const budgetShibutzimTableData = useMemo(() => {
+      return budgetShibutzimData.map(
+        mapShibutzToTableRow,
+      );
+    }, [budgetShibutzimData]);
 
-  const shibutzColumns = [
-    { label: "קוד שיבוץ", accessor: "id", searchable: true },
-    { label: "שם שיבוץ", accessor: "name", searchable: true },
-    { label: "יחידה", accessor: "unitId", searchable: true },
-    { label: "משימה", accessor: "mesima", searchable: true },
-    { label: "תאריך התחלה", accessor: "dateBegin" },
-    { label: "תאריך סיום", accessor: "dateEnd" },
-    { label: "עלות ישירה", accessor: "directCost", sumable: true },
-    { label: "מיקום", accessor: "location", searchable: true },
-  ];
+  // ======================================================
+  // QUANTITY & COST DATA
+  // ======================================================
 
-  const tableColumnsConfig = isOverviewPage
-    ? itemColumns
-    : shibutzColumns;
+  const quantityAndCostData = useMemo(() => {
+    const trainings =
+      shibutzimData?.filter(
+        (s) => s.domain === "אימון",
+      ) ?? [];
 
-  // ================= NAVIGATION =================
+    const courses =
+      shibutzimData?.filter(
+        (s) => s.domain === "הכשרה",
+      ) ?? [];
+
+    return {
+      "training-quantity": {
+        title: "כמות אימונים",
+
+        data: trainings.map(
+          mapShibutzToTableRow,
+        ),
+      },
+
+      "training-cost": {
+        title: "עלות אימונים",
+
+        data: trainings.map(
+          mapShibutzToTableRow,
+        ),
+      },
+
+      "course-quantity": {
+        title: "כמות הכשרות",
+
+        data: courses.map(
+          mapShibutzToTableRow,
+        ),
+      },
+
+      "course-cost": {
+        title: "עלות הכשרות",
+
+        data: courses.map(
+          mapShibutzToTableRow,
+        ),
+      },
+    };
+  }, [shibutzimData]);
+
+  // ======================================================
+  // PAGE
+  // ======================================================
+
+  const page = useMemo(() => {
+    if (!type) return null;
+
+    const pageType =
+      type as DetailsPageType;
+
+    const pageBuilder =
+      detailsPagesRegistry[pageType];
+
+    if (!pageBuilder) return null;
+
+    // =========================
+    // QUANTITY COST PAGE DATA
+    // =========================
+
+    const quantityCostPageData =
+      category
+        ? quantityAndCostData[
+            category as keyof typeof quantityAndCostData
+          ]
+        : null;
+
+    if (!type || !category) {
+      return null;
+    }
+
+    return pageBuilder({
+      type,
+      category,
+      item,
+
+      navigate,
+
+      isOverviewPage,
+
+      favorites,
+      toggleFavorite,
+
+      categoryName,
+
+      budgetItemsData,
+      budgetShibutzimTableData,
+
+      quantityAndCostData,
+
+      pageData: quantityCostPageData,
+    });
+  }, [
+    type,
+    category,
+    item,
+
+    navigate,
+
+    isOverviewPage,
+
+    favorites,
+    toggleFavorite,
+
+    categoryName,
+
+    budgetItemsData,
+    budgetShibutzimTableData,
+
+    quantityAndCostData,
+  ]);
+
+  // ======================================================
+  // HANDLERS
+  // ======================================================
 
   const handleBack = () => {
     navigate(-1);
   };
 
-  const handleRowClick = (row: any) => {
-    if (isOverviewPage) {
-      if (row.isSum) {
-        navigate(`/details/budget-resources/${category}/__all__`);
-      } else {
-        navigate(`/details/budget-resources/${category}/${row.name}`);
-      }
-    }
-  };
+  // ======================================================
+  // INVALID PAGE
+  // ======================================================
 
-  // ================= HEADER =================
+  if (!page) {
+    return (
+      <div className={style.page}>
+        <div className={style.emptyState}>
+          <ErrorState message="עמוד לא תקין" />
+        </div>
+      </div>
+    );
+  }
 
-  const title = item
-    ? item === "__all__"
-      ? `${categoryName} / כל השיבוצים`
-      : `${categoryName} / ${item}`
-    : categoryName;
-
-  // ================= RENDER =================
+  // ======================================================
+  // RENDER
+  // ======================================================
 
   return (
     <div className={style.page}>
       {/* HEADER */}
+
       <div className={style.header}>
-        <div className={style.backButton} onClick={handleBack}>
-          <ArrowRight className={style.backIcon} />
+        <div
+          className={style.backButton}
+          onClick={handleBack}
+        >
+          <ArrowRight
+            className={style.backIcon}
+          />
         </div>
-        <h2 className={style.title}>{title}</h2>
+
+        <h2 className={style.title}>
+          {page.title}
+        </h2>
+
         <div className={style.spacer}></div>
+
         <div className={style.iconContainer}>
           <img
             src="/dashboard-image-gray.png"
-            alt="Dashboard Image"
+            alt="Dashboard"
             className={style.iconImage}
             onClick={() => navigate("/")}
           />
+
           <img
             src="/dashboard-image-blue.png"
-            alt="Dashboard Image"
+            alt="Dashboard"
             className={style.iconImage}
             onClick={() => navigate("/")}
           />
@@ -161,28 +308,32 @@ export const BudgetResourceDetails = () => {
       </div>
 
       {/* TABLE */}
+
       <div className={style.tableContainer}>
-        {!categoryName ? (
-          <div className={style.emptyState}>
-            <ErrorState message={"קטגוריה לא תקינה"} />
-          </div>
-        ) : (
-          <LoadingOverlay loading={loading}>
-            <DashboardTable
-              columns={tableColumnsConfig}
-              data={tableData}
-
-              favorites={isOverviewPage}
-              favoriteRows={isOverviewPage ? favorites : undefined}
-              onToggleFavorite={isOverviewPage ? toggleFavorite : undefined}
-
-              isDrillable={isOverviewPage}
-              onRowClick={isOverviewPage ? handleRowClick : undefined}
-
-              showSum={isOverviewPage}
-            />
-          </LoadingOverlay>
-        )}
+        <LoadingOverlay loading={loading}>
+          <DashboardTable
+            columns={page.columns}
+            data={page.data}
+            favorites={page.favorites}
+            favoriteRows={
+              page.favorites
+                ? favorites
+                : undefined
+            }
+            onToggleFavorite={
+              page.favorites
+                ? toggleFavorite
+                : undefined
+            }
+            isDrillable={
+              page.isDrillable
+            }
+            onRowClick={
+              page.onRowClick
+            }
+            showSum={page.showSum}
+          />
+        </LoadingOverlay>
       </div>
     </div>
   );

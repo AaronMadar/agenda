@@ -1,17 +1,15 @@
 import style from "@/style/components/dashboard/quantity-and-cost/QuantityCostCard.module.css";
 import { Swords, RefereeHat } from "@/assets/icons";
+import { LoaderCircle } from "@/components/shared/loading/LoaderCircle";
 
 interface QuantityCostCardProps {
   title: string;
-  value: number;
-  total?: number;
-  isMoney?: boolean;
+  total: number;
+  loading: boolean;
   onClick?: () => void;
 }
 
-const formatValue = (value: number, isMoney?: boolean) => {
-  if (!isMoney) return value.toString();
-
+const formatValue = (value: number) => {
   if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(1)}M`;
   if (value >= 1_000) return `${(value / 1_000).toFixed(1)}K`;
 
@@ -20,9 +18,8 @@ const formatValue = (value: number, isMoney?: boolean) => {
 
 export const QuantityCostCard = ({
   title,
-  value,
   total,
-  isMoney,
+  loading,
   onClick
 }: QuantityCostCardProps) => {
   const isTraining = title.includes("אימונים");
@@ -43,26 +40,14 @@ export const QuantityCostCard = ({
         <div className={style.textBox}>
           <div className={style.title}>{title}</div>
 
-          {isMoney && (
-            <div className={style.moneyValue}>
-              {formatValue(value, true)}
-            </div>
-          )}
-
-          {!isMoney && (
+          {loading ? (
+            <LoaderCircle size={20}/>
+          ) : (
             <div className={style.value}>
-              <div className={style.valueOnly}>
-                {total ? `${formatValue(value)}` : formatValue(value)}
-              </div>
-              /
-              <div className={style.total}>
-                {formatValue(total!)}
-              </div>
-
+                {formatValue(total)}
             </div>
           )}
         </div>
-
       </div>
     </div>
   );

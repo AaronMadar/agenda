@@ -20,26 +20,14 @@ export const TreeDropdown = ({
   onChange,
   placeholder = "בחר ערך",
   label,
-  rootValue,
 }: TreeDropdownProps) => {
   const [open, setOpen] = useState(false);
-  const [tempSelected, setTempSelected] = useState<Set<string>>(
-    new Set(value)
-  );
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setTempSelected(new Set(value));
-  }, [value]);
-
-  useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        wrapperRef.current &&
-        !wrapperRef.current.contains(event.target as Node)
-      ) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
         setOpen(false);
-        setTempSelected(new Set(value));
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -47,79 +35,37 @@ export const TreeDropdown = ({
   }, [value]);
 
   const handleToggle = (node: TreeNodeData) => {
-    setTempSelected((prev) => toggleNode(prev, data, node.id));
+    const nextSelection = toggleNode(new Set(value || []), data, node.id);
+    onChange(Array.from(nextSelection));
   };
 
   const getDisplayText = () => {
-    if (tempSelected.size === 0) return placeholder;
-    const labels = [...tempSelected].map((id) => getNodeLabel(data, id) ?? id);
+    if (!value || value.length === 0) return placeholder;
+    const labels = value.map((id) => getNodeLabel(data, id) ?? id);
     if (labels.length <= 2) return labels.join(", ");
     return `${placeholder} [${labels.length}]`;
-  };
-
-  const handleConfirm = () => {
-    let selectedItems: string[];
-
-    if (tempSelected.size) {
-      selectedItems = Array.from(tempSelected);
-    } else if (value?.length) {
-      selectedItems = value;
-      setTempSelected(new Set(value));
-    } else if (rootValue) {
-      selectedItems = [rootValue];
-      setTempSelected(new Set([rootValue]));
-    } else {
-      selectedItems = [];
-    }
-
-    onChange(selectedItems);
-    setOpen(false);
-  };
-
-  const handleReset = () => {
-    setTempSelected(new Set());
   };
 
   return (
     <div className={style.wrapper} ref={wrapperRef}>
       {label && <span className={style.label}>{label}</span>}
-
       <div className={style.container}>
-        <div
-          onClick={() => setOpen((prev) => !prev)}
-          className={style.trigger}
-        >
-          <span
-            className={`${style.selectedText} ${
-              tempSelected.size === 0 ? style.placeholder : ""
-            }`}
-          >
+        <div onClick={() => setOpen((prev) => !prev)} className={style.trigger}>
+          <span className={`${style.selectedText} ${(!value || value.length === 0) ? style.placeholder : ""}`}>
             {getDisplayText()}
           </span>
-
-          <ExpandMoreIcon
-            className={`${style.arrow} ${open ? style.arrowUp : style.arrowDown}`}
-          />
+          <ExpandMoreIcon className={`${style.arrow} ${open ? style.arrowUp : style.arrowDown}`} />
         </div>
 
         {open && (
           <div className={style.dropdown}>
             <div className={style.dropdownContent}>
-              <TreeSelect
-                data={data}
-                selectedIds={tempSelected}
-                onToggle={handleToggle}
-              />
+              <TreeSelect data={data} selectedIds={new Set(value || [])} onToggle={handleToggle} />
             </div>
-
             <div className={style.footer}>
               <div className={style.footerButtons}>
-                <button className={style.resetButton} onClick={handleReset}>
-                  איפוס
-                </button>
-                <button className={style.confirmButton} onClick={handleConfirm}>
-                  אישור
-                </button>
+                <button className={style.resetButton} onClick={() => onChange([])}>איפוס</button>
+                <button className={style.confirmButton} onClick={() => setOpen(false)}>סגור</button>
               </div>
             </div>
           </div>

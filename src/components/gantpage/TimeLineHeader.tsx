@@ -10,7 +10,11 @@ export default function TimeLineHeader({ countDisplayed }: { countDisplayed: num
     const generateTicks = (start: Dayjs | null, end: Dayjs | null) => {
         if (!start || !end) return [];
 
-        const ticks: { label: string; isToday: boolean }[] = [];
+        const ticks: {
+            label: string;
+            yearBadge?: string;
+            isToday: boolean;
+        }[] = [];
         const diffInDays = end.diff(start, 'day');
         const today = dayjs();
 
@@ -24,10 +28,12 @@ export default function TimeLineHeader({ countDisplayed }: { countDisplayed: num
                 let currentYear = current.year();
                 let yearHasChanged = currentYear !== previousYear;
 
-                let YearBadge = isFirstTick || yearHasChanged ? currentYear.toString() : "";
 
                 ticks.push({
-                    label: current.format(`D MMM ${YearBadge}`).trim(),
+                    label: current.format('D MMM'),
+                    yearBadge: isFirstTick || yearHasChanged
+                        ? currentYear.toString()
+                        : undefined,
                     isToday: current.isSame(today, 'day')
                 });
 
@@ -42,10 +48,12 @@ export default function TimeLineHeader({ countDisplayed }: { countDisplayed: num
                 let currentYear = current.year();
                 let yearHasChanged = currentYear !== previousYear;
 
-                let YearBadge = isFirstTick || yearHasChanged ? currentYear.toString() : "";
 
                 ticks.push({
-                    label: current.format(`MMM ${YearBadge}`).trim(),
+                    label: current.format('MMM'),
+                    yearBadge: isFirstTick || yearHasChanged
+                        ? currentYear.toString()
+                        : undefined,
                     isToday: current.isSame(today, 'month')
                 });
 
@@ -80,7 +88,12 @@ export default function TimeLineHeader({ countDisplayed }: { countDisplayed: num
                         key={i}
                         className={`${styles["timeline-tick"]} ${item.isToday ? styles.today : ""}`}
                     >
-                        <span className={styles["tick-label"]}>{item.label}</span>
+                        <span className={styles["tick-label"]}>{item.label + " "}
+                            {item.yearBadge && (
+                                <span className={styles["year-badge"]}>
+                                    {item.yearBadge}
+                                </span>)}
+                        </span>
                         <TicIcon className={styles["arrow-icon"]} />
                     </div>
                 ))}

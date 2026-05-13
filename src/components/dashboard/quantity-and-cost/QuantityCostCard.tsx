@@ -43,9 +43,7 @@ export const QuantityCostCard = ({
           {loading ? (
             <LoaderCircle size={20}/>
           ) : (
-            <div className={style.value}>
-                {formatValue(total)}
-            </div>
+            <div>{formatValue(total)}</div>
           )}
         </div>
       </div>

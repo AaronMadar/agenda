@@ -30,7 +30,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<GantPage />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/details/budget-resources/:category/:item?" element={<BudgetResourceDetails />} />
+            <Route path="/details/:type/:category/:item?" element={<BudgetResourceDetails />} />
           </Routes>
         </BudgetResourcesProvider>
       </ShibutzimProvider>

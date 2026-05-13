@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import style from "@/style/components/dashboard/quantity-and-cost/QuantityAndCost.module.css";
 import { QuantityCostCard } from "./QuantityCostCard";
-import { EmptyState } from "@/components/shared/EmptyState";
 import { useShibutzimContext } from "@/contexts/ShibutzimContext";
 import { useNavigate } from "react-router-dom"
 
@@ -12,25 +11,23 @@ export const QuantityAndCost = () => {
   const { shibutzimData, loading } = useShibutzimContext();
 
   const summary = useMemo(() => {
-    if (!shibutzimData) return null;
-
     let trainingCount = 0;
     let trainingCost = 0;
     let courseCount = 0;
     let courseCost = 0;
 
-    shibutzimData.forEach(item => {
-      const isTraining = item.serviceType === "אימון";
-      const isCourse = item.serviceType === "הכשרה";
+    shibutzimData?.forEach(sh => {
+      const isTraining = sh.domain === "אימון";
+      const isCourse = sh.domain === "הכשרה";
 
       if (isTraining) {
         trainingCount++;
-        trainingCost += item.directCost + item.costOfItems;
+        trainingCost += sh.directCost + sh.costOfItems;
       }
 
       if (isCourse) {
         courseCount++;
-        courseCost += item.directCost + item.costOfItems;
+        courseCost += sh.directCost + sh.costOfItems;
       }
     });
 
@@ -42,37 +39,34 @@ export const QuantityAndCost = () => {
     };
   }, [shibutzimData]);
 
-  if (loading) return <div>Loading...</div>;
-  if (!shibutzimData || shibutzimData.length === 0) return <EmptyState message="אין נתוני כמות ועלות להצגה" />;
-
   return (
     <div className={style.quantityAndCostGrid}>
       <QuantityCostCard
+        loading={loading}
         title="כמות אימונים"
-        value={60}
-        total={300}
-        onClick={() => navigate("/details/training-quantity")}
+        total={summary.trainingCount}
+        onClick={() => navigate("/details/quantity-cost/training-quantity")}
       />
 
       <QuantityCostCard
+        loading={loading}
         title="עלות אימונים"
-        value={1_200_000}
-        isMoney
-        onClick={() => navigate("/details/training-cost")}
+        total={summary.trainingCost}
+        onClick={() => navigate("/details/quantity-cost/training-cost")}
       />
 
       <QuantityCostCard
+        loading={loading}
         title="כמות הכשרות"
-        value={120}
-        total={300}
-        onClick={() => navigate("/details/course-quantity")}
+        total={summary.courseCount}
+        onClick={() => navigate("/details/quantity-cost/course-quantity")}
       />
 
       <QuantityCostCard
+        loading={loading}
         title="עלות הכשרות"
-        value={summary?.courseCost || 0}
-        isMoney
-        onClick={() => navigate("/details/course-cost")}
+        total={summary.courseCost}
+        onClick={() => navigate("/details/quantity-cost/course-cost")}
       />
     </div>
   );

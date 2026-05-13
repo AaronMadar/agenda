@@ -1,6 +1,7 @@
 import { Popover } from "@mui/material";
 import { SecondaryPopUp } from "../../../shared/pop-ups/SecondaryPopUp";
 import { ViewSettingsDivider } from "./ViewSettingsDivider";
+import styles from "@/style/components/gantpage/header/view-settings/ViewSettingsSubMenu.module.css"
 
 type Option<T> = {
   value: T;
@@ -54,14 +55,8 @@ export const ViewSettingsSubMenu = <T extends string>({
         {options.map((opt, index) => (
           <div key={opt.value}>
             <div
+              className={`${styles.option} ${opt.value === value ? styles.active : ""}`}
               onClick={() => onSelect(opt.value)}
-              style={{
-                padding: "6px 10px",
-                cursor: "pointer",
-                borderRadius: "8px",
-                backgroundColor:
-                  opt.value === value ? "#646869" : "transparent",
-              }}
             >
               {opt.label}
             </div>

@@ -27,12 +27,15 @@ export const TreeDropdown = ({
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
-        setOpen(false);
+        setOpen(false);   
+        if ((!value || value.length === 0) && data?.length > 0) {
+        onChange([data[0].id]);
+      }
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [value]);
+  }, [value,data,onChange]);
 
   const handleToggle = (node: TreeNodeData) => {
     const nextSelection = toggleNode(new Set(value || []), data, node.id);

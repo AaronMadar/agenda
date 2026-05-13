@@ -65,3 +65,11 @@
     color: #8fceff;
     font-weight: 600;
 }
+
+.year-badge {
+   color: #87c9ff;
+   background-color: rgba(243, 247, 248, 0.178);
+   border-radius: 9px;
+   padding: 2px 6px;
+    font-weight: 600;
+}

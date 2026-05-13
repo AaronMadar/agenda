@@ -5,47 +5,58 @@ import styles from "@/style/components/gantpage/TimeLineHeader.module.css"
 import { TicIcon } from "@/assets/icons";
 
 export default function TimeLineHeader({ countDisplayed }: { countDisplayed: number }) {
-    const { startDate, endDate , shibutzimData } = useShibutzimContext();
+    const { startDate, endDate, shibutzimData } = useShibutzimContext();
 
     const generateTicks = (start: Dayjs | null, end: Dayjs | null) => {
         if (!start || !end) return [];
 
         const ticks: { label: string; isToday: boolean }[] = [];
         const diffInDays = end.diff(start, 'day');
-
         const today = dayjs();
+
+        let isFirstTick = true;
+        let previousYear = start.year();
 
         if (diffInDays <= 15) {
             let current = start.clone();
 
             while (!current.isAfter(end.add(1, 'day'))) {
-                const isToday = current.isSame(today, 'day');
+                let currentYear = current.year();
+                let yearHasChanged = currentYear !== previousYear;
+
+                let YearBadge = isFirstTick || yearHasChanged ? currentYear.toString() : "";
 
                 ticks.push({
-                    label: current.format('D MMM'),
-                    isToday
+                    label: current.format(`D MMM ${YearBadge}`).trim(),
+                    isToday: current.isSame(today, 'day')
                 });
 
+                previousYear = currentYear;
                 current = current.add(1, 'day');
+                isFirstTick = false;
             }
         } else {
             let current = start.startOf('month');
 
             while (!current.isAfter(end.add(1, 'month'))) {
-                const isToday = current.isSame(today, 'month');
+                let currentYear = current.year();
+                let yearHasChanged = currentYear !== previousYear;
+
+                let YearBadge = isFirstTick || yearHasChanged ? currentYear.toString() : "";
 
                 ticks.push({
-                    label: current.format('MMM - YY'),
-                    isToday
+                    label: current.format(`MMM ${YearBadge}`).trim(),
+                    isToday: current.isSame(today, 'month')
                 });
 
+                previousYear = currentYear;
                 current = current.add(1, 'month');
+                isFirstTick = false;
             }
         }
 
         return ticks;
     };
-
     const dates = useMemo(() => generateTicks(startDate, endDate), [startDate, endDate]);
 
     const totalCount = useMemo(() => {
@@ -70,7 +81,7 @@ export default function TimeLineHeader({ countDisplayed }: { countDisplayed: num
                         className={`${styles["timeline-tick"]} ${item.isToday ? styles.today : ""}`}
                     >
                         <span className={styles["tick-label"]}>{item.label}</span>
-                        <TicIcon className={styles["arrow-icon"]}/>
+                        <TicIcon className={styles["arrow-icon"]} />
                     </div>
                 ))}
             </div>

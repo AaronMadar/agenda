@@ -1,6 +1,6 @@
-import { BaseSelect } from "./BaseSelect";
-import styles from "@/style/components/shared/Select.module.css";
+import styles from '@/style/components/shared/Select.module.css';
 
+import { BaseSelect } from './BaseSelect';
 
 interface SingleSelectProps {
   options: string[];
@@ -15,7 +15,7 @@ export function SingleSelect({
   value,
   onChange,
   label,
-  placeholder = "בחר ערך",
+  placeholder = 'בחר ערך',
 }: SingleSelectProps) {
   return (
     <BaseSelect

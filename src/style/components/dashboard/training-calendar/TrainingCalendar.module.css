@@ -1,4 +1,4 @@
-.trainingCalendar{
+.trainingCalendar {
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -39,7 +39,7 @@
 }
 
 .monthTitleWrapper {
-  background-color: #484E50;
+  background-color: #484e50;
   border-radius: 7px;
   padding: 5px;
   position: relative;

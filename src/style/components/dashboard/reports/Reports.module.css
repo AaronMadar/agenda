@@ -1,4 +1,4 @@
-.reports{
+.reports {
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -6,26 +6,26 @@
 }
 
 .list {
-    list-style: disc inside;
-    padding-inline-start: clamp(12px, 4%, 20px);
-    margin: 0;
-    overflow-y: auto;
-    min-width: 0;
-    max-height: 100%;
+  list-style: disc inside;
+  padding-inline-start: clamp(12px, 4%, 20px);
+  margin: 0;
+  overflow-y: auto;
+  min-width: 0;
+  max-height: 100%;
 }
 
 .item {
-    padding: clamp(4px, 1.5vw, 8px) 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    word-break: break-word;
+  padding: clamp(4px, 1.5vw, 8px) 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  word-break: break-word;
 }
 
 .item:hover {
-    background-color: rgba(255,255,255,0.05);
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
 .item:last-child {
-    border-bottom: none;
+  border-bottom: none;
 }
 
 .emptyState {

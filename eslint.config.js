@@ -26,6 +26,8 @@ export default defineConfig([
       'unused-imports': unusedImports,
     },
     rules: {
+      'react-refresh/only-export-components': 'off',
+
       'simple-import-sort/imports': 'error',
       'simple-import-sort/exports': 'error',
 

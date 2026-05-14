@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState, useLayoutEffect } from "react";
-import type { RefObject } from "react";
-import { Tooltip } from "@mui/material";
-import { createPortal } from "react-dom";
-import dayjs from "dayjs";
-import { Check, Today } from "@mui/icons-material";
-import style from "@/style/components/dashboard/training-calendar/monthPicker.module.css";
+import { Check, Today } from '@mui/icons-material';
+import { Tooltip } from '@mui/material';
+import dayjs from 'dayjs';
+import type { RefObject } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
+
+import style from '@/style/components/dashboard/training-calendar/monthPicker.module.css';
 
 interface MonthPickerProps {
   value: dayjs.Dayjs;
@@ -53,10 +54,10 @@ export const MonthPicker = ({
     if (open) {
       requestAnimationFrame(() => {
         activeMonthRef.current?.scrollIntoView({
-          block: "nearest",
+          block: 'nearest',
         });
         activeYearRef.current?.scrollIntoView({
-          block: "nearest",
+          block: 'nearest',
         });
       });
     }
@@ -68,8 +69,8 @@ export const MonthPicker = ({
         onClose();
       }
     };
-    if (open) document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
+    if (open) document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
   }, [open, onClose]);
 
   if (!open) return null;
@@ -82,13 +83,13 @@ export const MonthPicker = ({
       ref={ref}
       className={`${style.monthPicker} ${coords.isUp ? style.up : style.down}`}
       style={{
-        position: "fixed",
+        position: 'fixed',
         top: `${coords.top}px`,
         left: `${coords.left}px`,
         transform: coords.isUp
-          ? "translate(-100%, calc(-100% - 8px))"
-          : "translateX(-100%)",
-        marginTop: coords.isUp ? "0" : "8px",
+          ? 'translate(-100%, calc(-100% - 8px))'
+          : 'translateX(-100%)',
+        marginTop: coords.isUp ? '0' : '8px',
       }}
     >
       <div className={style.btns}>
@@ -141,9 +142,7 @@ export const MonthPicker = ({
             <div
               key={m}
               ref={i === tempMonth ? activeMonthRef : null}
-              className={`${style.item} ${
-                i === tempMonth ? style.active : ""
-              }`}
+              className={`${style.item} ${i === tempMonth ? style.active : ''}`}
               onClick={() => setTempMonth(i)}
             >
               {m}
@@ -156,9 +155,7 @@ export const MonthPicker = ({
             <div
               key={y}
               ref={y === tempYear ? activeYearRef : null}
-              className={`${style.item} ${
-                y === tempYear ? style.active : ""
-              }`}
+              className={`${style.item} ${y === tempYear ? style.active : ''}`}
               onClick={() => setTempYear(y)}
             >
               {y}

@@ -9,11 +9,11 @@ export const ViewSettingsItem = ({
     <div
       onClick={onClick}
       style={{
-        display: "flex",
-        borderRadius: "8px",
-        cursor: onClick ? "pointer" : "default",
-        width: "100%",
-        height: "40px",
+        display: 'flex',
+        borderRadius: '8px',
+        cursor: onClick ? 'pointer' : 'default',
+        width: '100%',
+        height: '40px',
       }}
     >
       {children}

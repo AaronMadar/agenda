@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 export const useFavorites = (key: string) => {
   const [favorites, setFavorites] = useState<Set<number>>(() => {
@@ -7,14 +7,16 @@ export const useFavorites = (key: string) => {
   });
 
   const toggleFavorite = (id: number) => {
-    setFavorites(prev => {
+    setFavorites((prev) => {
       const newSet = new Set(prev);
-      newSet.has(id) ? newSet.delete(id) : newSet.add(id);
 
-      localStorage.setItem(
-        `favorites_${key}`,
-        JSON.stringify([...newSet])
-      );
+      if (newSet.has(id)) {
+        newSet.delete(id);
+      } else {
+        newSet.add(id);
+      }
+
+      localStorage.setItem(`favorites_${key}`, JSON.stringify([...newSet]));
 
       return newSet;
     });

@@ -1,6 +1,7 @@
-import { useState, type ReactNode } from "react";
-import { Tooltip } from "@mui/material";
-import style from "@/style/components/dashboard/BaseBodyCard.module.css";
+import { Tooltip } from '@mui/material';
+import { type ReactNode, useState } from 'react';
+
+import style from '@/style/components/dashboard/BaseBodyCard.module.css';
 
 type BaseBodyCardProps = {
   children: ReactNode;
@@ -16,10 +17,10 @@ export const BaseBodyCard = ({ children }: BaseBodyCardProps) => {
       )}
 
       <div
-        className={`${style.basicBodyCard} ${expanded ? style.expanded : ""}`}
+        className={`${style.basicBodyCard} ${expanded ? style.expanded : ''}`}
       >
         <Tooltip
-          title={expanded ? "סגור": "הרחב"}
+          title={expanded ? 'סגור' : 'הרחב'}
           arrow
           placement="top"
           slotProps={{
@@ -32,11 +33,13 @@ export const BaseBodyCard = ({ children }: BaseBodyCardProps) => {
             className={style.expandBtn}
             onClick={() => setExpanded(!expanded)}
           >
-            {expanded ? "✕" : "⛶"}
+            {expanded ? '✕' : '⛶'}
           </button>
         </Tooltip>
 
-        <div className={`${style.content} ${expanded ? style.zoom : ""}`}>{children}</div>
+        <div className={`${style.content} ${expanded ? style.zoom : ''}`}>
+          {children}
+        </div>
       </div>
     </>
   );

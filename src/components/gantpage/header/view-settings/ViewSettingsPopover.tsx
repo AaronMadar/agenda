@@ -1,6 +1,7 @@
-import { Popover } from "@mui/material";
-import { SecondaryPopUp } from "../../../shared/pop-ups/SecondaryPopUp";
-import { ViewSettingsList } from "./ViewSettingsList";
+import { Popover } from '@mui/material';
+
+import { SecondaryPopUp } from '../../../shared/pop-ups/SecondaryPopUp';
+import { ViewSettingsList } from './ViewSettingsList';
 
 interface Props {
   anchorEl: HTMLElement | null;
@@ -16,14 +17,14 @@ export const ViewSettingsPopover = ({ anchorEl, onClose }: Props) => {
       anchorEl={anchorEl}
       onClose={onClose}
       disableRestoreFocus
-      anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
       slotProps={{
         paper: {
           sx: {
-            pointerEvents: "auto",
-            backgroundColor: "transparent",
-            borderRadius: "10px",
-            overflow: "visible",
+            pointerEvents: 'auto',
+            backgroundColor: 'transparent',
+            borderRadius: '10px',
+            overflow: 'visible',
           },
         },
       }}

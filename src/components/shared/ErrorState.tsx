@@ -1,10 +1,12 @@
-import style from "@/style/components/shared/ErrorState.module.css";
+import style from '@/style/components/shared/ErrorState.module.css';
 
 interface ErrorStateProps {
   message?: string;
 }
 
-export const ErrorState = ({ message = "אירעה שגיאה בטעינת הנתונים" }: ErrorStateProps) => {
+export const ErrorState = ({
+  message = 'אירעה שגיאה בטעינת הנתונים',
+}: ErrorStateProps) => {
   return (
     <div className={style.errorState}>
       <img

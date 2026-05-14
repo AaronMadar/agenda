@@ -1,8 +1,7 @@
-import type { DetailsPageConfig } from "../../types";
-import { budgetItemsColumns } from "./budgetItemsTable";
-import { budgetShibutzimColumns } from "./budgetShibutzimTable";
-
-import type { CreateBudgetResourcesPageParams } from "./types";
+import type { DetailsPageConfig } from '../../types';
+import { budgetItemsColumns } from './budgetItemsTable';
+import { budgetShibutzimColumns } from './budgetShibutzimTable';
+import type { CreateBudgetResourcesPageParams } from './types';
 
 export const createBudgetResourcesPage = ({
   category,
@@ -15,9 +14,9 @@ export const createBudgetResourcesPage = ({
 }: CreateBudgetResourcesPageParams): DetailsPageConfig => {
   if (isOverviewPage) {
     return {
-      type: "items",
+      type: 'items',
       title: item
-        ? item === "__all__"
+        ? item === '__all__'
           ? `${categoryName} / כל השיבוצים`
           : `${categoryName} / ${item}`
         : categoryName,
@@ -32,18 +31,18 @@ export const createBudgetResourcesPage = ({
 
       onRowClick: (row) => {
         navigate(
-            row.isSum
-                ? `/details/budget-resources/${category}/__all__`
-                : `/details/budget-resources/${category}/${row.name}`,
+          row.isSum
+            ? `/details/budget-resources/${category}/__all__`
+            : `/details/budget-resources/${category}/${row.name}`,
         );
       },
     };
   }
 
   return {
-    type: "shibutzim",
+    type: 'shibutzim',
     title: item
-      ? item === "__all__"
+      ? item === '__all__'
         ? `${categoryName} / כל השיבוצים`
         : `${categoryName} / ${item}`
       : categoryName,

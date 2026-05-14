@@ -1,5 +1,6 @@
-import { Switch } from "@mui/material";
-import { ViewSettingsItem } from "./ViewSettingsItem";
+import { Switch } from '@mui/material';
+
+import { ViewSettingsItem } from './ViewSettingsItem';
 
 export const ViewSettingsToggle = ({
   label,
@@ -14,11 +15,11 @@ export const ViewSettingsToggle = ({
     <ViewSettingsItem>
       <div
         style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          gap: "20px",
-          width: "100%",
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '20px',
+          width: '100%',
         }}
       >
         <span>{label}</span>

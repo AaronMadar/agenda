@@ -1,5 +1,5 @@
-import type { CalendarEvent } from "@/components/dashboard/training-calendar/types";
-import type { Shibutz } from "@/types/shibutzim.types";
+import type { CalendarEvent } from '@/components/dashboard/training-calendar/types';
+import type { Shibutz } from '@/types/shibutzim.types';
 
 export const extractCalendarEvents = (
   shibutzim: Shibutz[],
@@ -7,7 +7,7 @@ export const extractCalendarEvents = (
   const events: CalendarEvent[] = [];
 
   shibutzim.forEach((sh) => {
-    let current = new Date(sh.dateBegin);
+    const current = new Date(sh.dateBegin);
     const end = new Date(sh.dateEnd);
 
     while (current <= end) {

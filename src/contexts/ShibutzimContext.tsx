@@ -1,9 +1,16 @@
-import { createContext, useContext, useState, useEffect } from "react";
-import { Dayjs } from "dayjs";
-import dayjs from "dayjs";
-import type { Shibutz } from "@/types/shibutzim.types";
-import { getShibutzimData } from "@/api/gant.api";
-import { useFilters } from "@/stores/filtersStore";
+import dayjs from 'dayjs';
+import { Dayjs } from 'dayjs';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
+
+import { getShibutzimData } from '@/api/gant.api';
+import { useFilters } from '@/stores/filtersStore';
+import type { Shibutz } from '@/types/shibutzim.types';
 
 type ShibutzimContextType = {
   startDate: Dayjs | null;
@@ -37,58 +44,61 @@ export const ShibutzimProvider = ({
   const [shibutzimData, setShibutzimData] = useState<Shibutz[] | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const rootUnitId = useFilters(state => state.UnitTreeData?.[0]?.id);
+  const rootUnitId = useFilters((state) => state.UnitTreeData?.[0]?.id);
 
-  const refetchShibutzim = async ({
-    from,
-    to,
-    unitIds,
-    serviceTypeIds,
-    resourceTypeIds,
-  }: {
-    from?: string | null;
-    to?: string | null;
-    unitIds?: string[] | null;
-    serviceTypeIds?: string[] | null;
-    resourceTypeIds?: string[] | null;
-  } = {}) => {
-    try {
-      setLoading(true);
+  const refetchShibutzim = useCallback(
+    async ({
+      from,
+      to,
+      unitIds,
+      serviceTypeIds,
+      resourceTypeIds,
+    }: {
+      from?: string | null;
+      to?: string | null;
+      unitIds?: string[] | null;
+      serviceTypeIds?: string[] | null;
+      resourceTypeIds?: string[] | null;
+    } = {}) => {
+      try {
+        setLoading(true);
 
-      const defaultFromDayjs = dayjs().startOf("year")
-      const defaultToDayjs = dayjs().endOf("year")
+        const defaultFromDayjs = dayjs().startOf('year');
+        const defaultToDayjs = dayjs().endOf('year');
 
-      setShibutzimData([])
-      setStartDate(defaultFromDayjs);
-      setEndDate(defaultToDayjs);
+        setShibutzimData([]);
+        setStartDate(defaultFromDayjs);
+        setEndDate(defaultToDayjs);
 
-      const defaultFromStr = defaultFromDayjs.format("YYYY-MM-DD");
-      const defaultToStr = defaultToDayjs.format("YYYY-MM-DD");
+        const defaultFromStr = defaultFromDayjs.format('YYYY-MM-DD');
+        const defaultToStr = defaultToDayjs.format('YYYY-MM-DD');
 
-      const fromDate = from ?? defaultFromStr;
-      const toDate = to ?? defaultToStr;
+        const fromDate = from ?? defaultFromStr;
+        const toDate = to ?? defaultToStr;
 
-      const finalUnitIds = unitIds ?? (rootUnitId ? [rootUnitId] : null);
+        const finalUnitIds = unitIds ?? (rootUnitId ? [rootUnitId] : null);
 
-      if (!finalUnitIds?.length) return;
+        if (!finalUnitIds?.length) return;
 
-      const response = await getShibutzimData(
-        fromDate,
-        toDate,
-        finalUnitIds,
-        serviceTypeIds,
-        resourceTypeIds
-      );
+        const response = await getShibutzimData(
+          fromDate,
+          toDate,
+          finalUnitIds,
+          serviceTypeIds,
+          resourceTypeIds,
+        );
 
-      setShibutzimData(response.shibutzim);
-      setStartDate(dayjs(response.period.start));
-      setEndDate(dayjs(response.period.end));
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+        setShibutzimData(response.shibutzim);
+        setStartDate(dayjs(response.period.start));
+        setEndDate(dayjs(response.period.end));
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [rootUnitId],
+  );
 
   useEffect(() => {
     if (!rootUnitId) return;
@@ -96,7 +106,7 @@ export const ShibutzimProvider = ({
     refetchShibutzim({
       unitIds: [rootUnitId],
     });
-  }, [rootUnitId]);
+  }, [rootUnitId, refetchShibutzim]);
 
   return (
     <ShibutzimContext.Provider
@@ -121,7 +131,9 @@ export const useShibutzimContext = () => {
   const context = useContext(ShibutzimContext);
 
   if (!context) {
-    throw new Error("useShibutzimContext must be used inside ShibutzimProvider");
+    throw new Error(
+      'useShibutzimContext must be used inside ShibutzimProvider',
+    );
   }
 
   return context;

@@ -1,10 +1,10 @@
-import style from "@/style/components/dashboard/DashboardBody.module.css";
+import style from '@/style/components/dashboard/DashboardBody.module.css';
 
-import { BaseBodyCard } from "./BaseBodyCard";
-import { QuantityAndCost } from "./quantity-and-cost/QuantityAndCost";
-import { BudgetResources } from "./budget-resources/BudgetResources";
-import { TrainingCalendar } from "./training-calendar/TrainingCalendar";
-import { Reports } from "./reports/Reports";
+import { BaseBodyCard } from './BaseBodyCard';
+import { BudgetResources } from './budget-resources/BudgetResources';
+import { QuantityAndCost } from './quantity-and-cost/QuantityAndCost';
+import { Reports } from './reports/Reports';
+import { TrainingCalendar } from './training-calendar/TrainingCalendar';
 
 export const DashboardBody = () => {
   return (

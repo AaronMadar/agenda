@@ -6,7 +6,11 @@
   display: flex;
   gap: 20px;
   flex-direction: column;
-  background: radial-gradient(circle, rgba(46, 53, 66, 1) 0%, rgba(25, 28, 28, 1) 64%);
+  background: radial-gradient(
+    circle,
+    rgba(46, 53, 66, 1) 0%,
+    rgba(25, 28, 28, 1) 64%
+  );
 }
 
 .header {

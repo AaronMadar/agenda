@@ -1,7 +1,9 @@
-import { Popover } from "@mui/material";
-import { SecondaryPopUp } from "../../../shared/pop-ups/SecondaryPopUp";
-import { ViewSettingsDivider } from "./ViewSettingsDivider";
-import styles from "@/style/components/gantpage/header/view-settings/ViewSettingsSubMenu.module.css"
+import { Popover } from '@mui/material';
+
+import styles from '@/style/components/gantpage/header/view-settings/ViewSettingsSubMenu.module.css';
+
+import { SecondaryPopUp } from '../../../shared/pop-ups/SecondaryPopUp';
+import { ViewSettingsDivider } from './ViewSettingsDivider';
 
 type Option<T> = {
   value: T;
@@ -28,25 +30,25 @@ export const ViewSettingsSubMenu = <T extends string>({
   clearCloseTimer,
   delayedClose,
 }: Props<T>) => {
-  const open = Boolean(anchorEl) && activeSelect === "groupBy";
+  const open = Boolean(anchorEl) && activeSelect === 'groupBy';
 
   return (
     <Popover
       open={open}
       anchorEl={anchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "left" }}
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
+      anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       disableRestoreFocus
-      sx={{ pointerEvents: "none" }}
+      sx={{ pointerEvents: 'none' }}
       slotProps={{
         paper: {
           onMouseEnter: clearCloseTimer,
           onMouseLeave: delayedClose,
           sx: {
-            pointerEvents: "auto",
-            backgroundColor: "transparent",
-            borderRadius: "10px",
-            overflow: "visible",
+            pointerEvents: 'auto',
+            backgroundColor: 'transparent',
+            borderRadius: '10px',
+            overflow: 'visible',
           },
         },
       }}
@@ -55,7 +57,7 @@ export const ViewSettingsSubMenu = <T extends string>({
         {options.map((opt, index) => (
           <div key={opt.value}>
             <div
-              className={`${styles.option} ${opt.value === value ? styles.active : ""}`}
+              className={`${styles.option} ${opt.value === value ? styles.active : ''}`}
               onClick={() => onSelect(opt.value)}
             >
               {opt.label}

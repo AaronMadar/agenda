@@ -1,7 +1,7 @@
-import type { DetailsPageConfig } from "../../../details-pages/types";
-import { quantityColumns } from "./quantityTable";
-import { costColumns } from "./costTable";
-import type { CreateQuantityCostPageParams } from "./types";
+import type { DetailsPageConfig } from '../../../details-pages/types';
+import { costColumns } from './costTable';
+import { quantityColumns } from './quantityTable';
+import type { CreateQuantityCostPageParams } from './types';
 
 export const createQuantityCostPage = ({
   category,
@@ -11,15 +11,13 @@ export const createQuantityCostPage = ({
     return null;
   }
 
-  const isQuantity = category.includes("quantity");
+  const isQuantity = category.includes('quantity');
 
   return {
-    type: "shibutzim",
+    type: 'shibutzim',
     title: pageData.title,
 
-    columns: isQuantity
-      ? quantityColumns
-      : costColumns,
+    columns: isQuantity ? quantityColumns : costColumns,
 
     data: pageData.data,
   };

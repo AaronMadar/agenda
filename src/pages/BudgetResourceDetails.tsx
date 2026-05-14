@@ -1,25 +1,21 @@
-import { useMemo } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useMemo } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
-import { DashboardTable } from "@/components/dashboard/dashboard-table/DashboardTable";
-import { LoadingOverlay } from "@/components/shared/loading/LoadingOverlay";
-import { ErrorState } from "@/components/shared/ErrorState";
+import { ArrowRight } from '@/assets/icons';
+import { DashboardTable } from '@/components/dashboard/dashboard-table/DashboardTable';
+import { ErrorState } from '@/components/shared/ErrorState';
+import { LoadingOverlay } from '@/components/shared/loading/LoadingOverlay';
+import { getResourceLabel } from '@/constants/budgetResources';
+import { useBudgetResourcesContext } from '@/contexts/BudgetResourcesContext';
+import { useShibutzimContext } from '@/contexts/ShibutzimContext';
+import { useFavorites } from '@/hooks/useFavorites';
+import style from '@/style/pages/BudgetResourceDetails.module.css';
 
-import { useShibutzimContext } from "@/contexts/ShibutzimContext";
-import { useBudgetResourcesContext } from "@/contexts/BudgetResourcesContext";
-
-import { useFavorites } from "@/hooks/useFavorites";
-
-import { getResourceLabel } from "@/constants/budgetResources";
-
-import { detailsPagesRegistry, type DetailsPageType } from "./details-pages/registry";
-
-import { mapShibutzToTableRow } from "./details-pages/mappers/mapShibutzToTableRow";
-
-import { ArrowRight } from "@/assets/icons";
-
-import style from "@/style/pages/BudgetResourceDetails.module.css";
-import "@/style/index.css";
+import { mapShibutzToTableRow } from './details-pages/mappers/mapShibutzToTableRow';
+import {
+  detailsPagesRegistry,
+  type DetailsPageType,
+} from './details-pages/registry';
 
 // ======================================================
 // COMPONENT
@@ -40,10 +36,9 @@ export const BudgetResourceDetails = () => {
   // FAVORITES
   // ======================================================
 
-  const { favorites, toggleFavorite } =
-    useFavorites(
-      `details-${type}-${category}`,
-    );
+  const { favorites, toggleFavorite } = useFavorites(
+    `details-${type}-${category}`,
+  );
 
   // ======================================================
   // BUDGET RESOURCES
@@ -64,9 +59,7 @@ export const BudgetResourceDetails = () => {
   const budgetItemsData = useMemo(() => {
     if (!budgetCategoryData) return [];
 
-    return Object.entries(
-      budgetCategoryData.items,
-    ).map(([name, data]) => ({
+    return Object.entries(budgetCategoryData.items).map(([name, data]) => ({
       id: name,
       name,
       quantity: data.totalQuantity,
@@ -79,31 +72,18 @@ export const BudgetResourceDetails = () => {
   // ======================================================
 
   const budgetShibutzimData = useMemo(() => {
-    if (
-      !budgetCategoryData ||
-      isOverviewPage
-    ) {
+    if (!budgetCategoryData || isOverviewPage) {
       return [];
     }
 
     // ================= ALL =================
 
-    if (item === "__all__") {
-      const all = Object.values(
-        budgetCategoryData.items,
-      ).flatMap(
-        (itemData: any) =>
-          itemData.shibutzim,
+    if (item === '__all__') {
+      const all = Object.values(budgetCategoryData.items).flatMap(
+        (itemData: any) => itemData.shibutzim,
       );
 
-      return Array.from(
-        new Map(
-          all.map((s) => [
-            s.codeShibutz,
-            s,
-          ]),
-        ).values(),
-      );
+      return Array.from(new Map(all.map((s) => [s.codeShibutz, s])).values());
     }
 
     // ================= SINGLE ITEM =================
@@ -111,64 +91,44 @@ export const BudgetResourceDetails = () => {
     const itemData = budgetCategoryData.items[item!];
 
     return itemData?.shibutzim ?? [];
-  }, [
-    budgetCategoryData,
-    item,
-    isOverviewPage,
-  ]);
+  }, [budgetCategoryData, item, isOverviewPage]);
 
   const budgetShibutzimTableData = useMemo(() => {
-      return budgetShibutzimData.map(
-        mapShibutzToTableRow,
-      );
-    }, [budgetShibutzimData]);
+    return budgetShibutzimData.map(mapShibutzToTableRow);
+  }, [budgetShibutzimData]);
 
   // ======================================================
   // QUANTITY & COST DATA
   // ======================================================
 
   const quantityAndCostData = useMemo(() => {
-    const trainings =
-      shibutzimData?.filter(
-        (s) => s.domain === "אימון",
-      ) ?? [];
+    const trainings = shibutzimData?.filter((s) => s.domain === 'אימון') ?? [];
 
-    const courses =
-      shibutzimData?.filter(
-        (s) => s.domain === "הכשרה",
-      ) ?? [];
+    const courses = shibutzimData?.filter((s) => s.domain === 'הכשרה') ?? [];
 
     return {
-      "training-quantity": {
-        title: "כמות אימונים",
+      'training-quantity': {
+        title: 'כמות אימונים',
 
-        data: trainings.map(
-          mapShibutzToTableRow,
-        ),
+        data: trainings.map(mapShibutzToTableRow),
       },
 
-      "training-cost": {
-        title: "עלות אימונים",
+      'training-cost': {
+        title: 'עלות אימונים',
 
-        data: trainings.map(
-          mapShibutzToTableRow,
-        ),
+        data: trainings.map(mapShibutzToTableRow),
       },
 
-      "course-quantity": {
-        title: "כמות הכשרות",
+      'course-quantity': {
+        title: 'כמות הכשרות',
 
-        data: courses.map(
-          mapShibutzToTableRow,
-        ),
+        data: courses.map(mapShibutzToTableRow),
       },
 
-      "course-cost": {
-        title: "עלות הכשרות",
+      'course-cost': {
+        title: 'עלות הכשרות',
 
-        data: courses.map(
-          mapShibutzToTableRow,
-        ),
+        data: courses.map(mapShibutzToTableRow),
       },
     };
   }, [shibutzimData]);
@@ -180,11 +140,9 @@ export const BudgetResourceDetails = () => {
   const page = useMemo(() => {
     if (!type) return null;
 
-    const pageType =
-      type as DetailsPageType;
+    const pageType = type as DetailsPageType;
 
-    const pageBuilder =
-      detailsPagesRegistry[pageType];
+    const pageBuilder = detailsPagesRegistry[pageType];
 
     if (!pageBuilder) return null;
 
@@ -192,12 +150,9 @@ export const BudgetResourceDetails = () => {
     // QUANTITY COST PAGE DATA
     // =========================
 
-    const quantityCostPageData =
-      category
-        ? quantityAndCostData[
-            category as keyof typeof quantityAndCostData
-          ]
-        : null;
+    const quantityCostPageData = category
+      ? quantityAndCostData[category as keyof typeof quantityAndCostData]
+      : null;
 
     if (!type || !category) {
       return null;
@@ -275,18 +230,11 @@ export const BudgetResourceDetails = () => {
       {/* HEADER */}
 
       <div className={style.header}>
-        <div
-          className={style.backButton}
-          onClick={handleBack}
-        >
-          <ArrowRight
-            className={style.backIcon}
-          />
+        <div className={style.backButton} onClick={handleBack}>
+          <ArrowRight className={style.backIcon} />
         </div>
 
-        <h2 className={style.title}>
-          {page.title}
-        </h2>
+        <h2 className={style.title}>{page.title}</h2>
 
         <div className={style.spacer}></div>
 
@@ -295,14 +243,14 @@ export const BudgetResourceDetails = () => {
             src="/dashboard-image-gray.png"
             alt="Dashboard"
             className={style.iconImage}
-            onClick={() => navigate("/")}
+            onClick={() => navigate('/')}
           />
 
           <img
             src="/dashboard-image-blue.png"
             alt="Dashboard"
             className={style.iconImage}
-            onClick={() => navigate("/")}
+            onClick={() => navigate('/')}
           />
         </div>
       </div>
@@ -315,22 +263,10 @@ export const BudgetResourceDetails = () => {
             columns={page.columns}
             data={page.data}
             favorites={page.favorites}
-            favoriteRows={
-              page.favorites
-                ? favorites
-                : undefined
-            }
-            onToggleFavorite={
-              page.favorites
-                ? toggleFavorite
-                : undefined
-            }
-            isDrillable={
-              page.isDrillable
-            }
-            onRowClick={
-              page.onRowClick
-            }
+            favoriteRows={page.favorites ? favorites : undefined}
+            onToggleFavorite={page.favorites ? toggleFavorite : undefined}
+            isDrillable={page.isDrillable}
+            onRowClick={page.onRowClick}
             showSum={page.showSum}
           />
         </LoadingOverlay>

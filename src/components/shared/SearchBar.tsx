@@ -1,6 +1,7 @@
-import { Search } from "@/assets/icons";
-import style from "@/style/components/shared/SearchBar.module.css";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
+
+import { Search } from '@/assets/icons';
+import style from '@/style/components/shared/SearchBar.module.css';
 
 type SearchBarProps = {
   value: string;
@@ -14,7 +15,7 @@ export const SearchBar = ({
   value,
   onChange,
   onClose,
-  placeholder = "Search...",
+  placeholder = 'Search...',
   autoFocus = true,
 }: SearchBarProps) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -41,7 +42,7 @@ export const SearchBar = ({
         type="button"
         className={style.close}
         onClick={() => {
-          onChange("");
+          onChange('');
           onClose?.();
         }}
       >

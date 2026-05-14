@@ -1,17 +1,24 @@
-import { httpClient } from "./httpClient";
-import type { TreeNodeData } from "@/components/shared/tree-dropdown/types";
+import type { TreeNodeData } from '@/components/shared/tree-dropdown/types';
+
+import { httpClient } from './httpClient';
 
 export const getUnitsTree = async (idSoldier: string) => {
-  const { data } = await httpClient.get<TreeNodeData[]>(`/filters/units-tree/${idSoldier}`);
+  const { data } = await httpClient.get<TreeNodeData[]>(
+    `/filters/units-tree/${idSoldier}`,
+  );
   return data;
 };
 
 export const getServiceTypes = async () => {
-  const { data } = await httpClient.get<{ id: string; name: string }[]>("/filters/service-types");
-  return data;  
+  const { data } = await httpClient.get<{ id: string; name: string }[]>(
+    '/filters/service-types',
+  );
+  return data;
 };
 
 export const getResourceTypes = async () => {
-  const { data } = await httpClient.get<{ id: string; name: string }[]>("/filters/resource-types");
+  const { data } = await httpClient.get<{ id: string; name: string }[]>(
+    '/filters/resource-types',
+  );
   return data;
 };

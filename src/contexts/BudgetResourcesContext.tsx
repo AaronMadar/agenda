@@ -1,7 +1,8 @@
-import { createContext, useContext, useMemo } from "react";
-import type { ReactNode } from "react";
-import type { Shibutz } from "@/types/shibutzim.types";
-import { useShibutzimContext } from "@/contexts/ShibutzimContext";
+import type { ReactNode } from 'react';
+import { createContext, useContext, useMemo } from 'react';
+
+import { useShibutzimContext } from '@/contexts/ShibutzimContext';
+import type { Shibutz } from '@/types/shibutzim.types';
 
 // ================= TYPES =================
 
@@ -107,7 +108,7 @@ export const useBudgetResourcesContext = () => {
 
   if (!context) {
     throw new Error(
-      "useBudgetResourcesContext must be used within BudgetResourcesProvider",
+      'useBudgetResourcesContext must be used within BudgetResourcesProvider',
     );
   }
 

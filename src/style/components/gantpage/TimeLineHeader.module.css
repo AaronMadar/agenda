@@ -4,18 +4,15 @@
   height: 4rem;
   width: 100%;
   border-bottom: 1.9px solid #606368;
-  background: linear-gradient(
-    to left,
-    #4b4a4a 9rem,
-    rgb(99, 98, 98) 9rem,
-    rgb(99, 98, 98) calc(9rem + 1px),
-    transparent calc(9rem + 1px)
-  ),
-  radial-gradient(  
-    circle,
-    rgb(34, 36, 37) 0%,
-    rgba(25, 28, 28, 1) 64%
-  );
+  background:
+    linear-gradient(
+      to left,
+      #4b4a4a 9rem,
+      rgb(99, 98, 98) 9rem,
+      rgb(99, 98, 98) calc(9rem + 1px),
+      transparent calc(9rem + 1px)
+    ),
+    radial-gradient(circle, rgb(34, 36, 37) 0%, rgba(25, 28, 28, 1) 64%);
 }
 
 .div-side {
@@ -36,7 +33,7 @@
   justify-content: space-between;
   height: 100%;
   position: relative;
-  align-items: flex-end; 
+  align-items: flex-end;
   padding-right: 0.3rem;
   background-color: rgba(0, 0, 0, 0.15);
   padding: 0 0.4rem;
@@ -62,14 +59,14 @@
 }
 
 .today {
-    color: #8fceff;
-    font-weight: 600;
+  color: #8fceff;
+  font-weight: 600;
 }
 
 .year-badge {
-   color: #87c9ff;
-   background-color: rgba(243, 247, 248, 0.178);
-   border-radius: 9px;
-   padding: 2px 6px;
-    font-weight: 600;
+  color: #87c9ff;
+  background-color: rgba(243, 247, 248, 0.178);
+  border-radius: 9px;
+  padding: 2px 6px;
+  font-weight: 600;
 }

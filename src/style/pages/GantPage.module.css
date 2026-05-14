@@ -1,11 +1,11 @@
 .gantpage-container {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    min-width: 100%;
-    padding: 0;
-    margin: 0;
-}   
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  min-width: 100%;
+  padding: 0;
+  margin: 0;
+}
 
 .searchWrapper {
   position: fixed;

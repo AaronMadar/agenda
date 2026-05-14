@@ -1,4 +1,4 @@
-import style from "@/style/components/shared/loading/LoaderCircle.module.css";
+import style from '@/style/components/shared/loading/LoaderCircle.module.css';
 
 type LoaderProps = {
   size?: number;
@@ -13,15 +13,13 @@ export const LoaderCircle = ({
 }: LoaderProps) => {
   return (
     <div
-      className={`${style.loaderWrapper} ${
-        fullHeight ? style.fullHeight : ""
-      }`}
+      className={`${style.loaderWrapper} ${fullHeight ? style.fullHeight : ''}`}
     >
       <div
         className={style.loader}
         style={
           {
-            "--size": `${size}px`,
+            '--size': `${size}px`,
           } as React.CSSProperties
         }
       >

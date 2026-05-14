@@ -1,8 +1,10 @@
-import { useState } from "react";
-import CheckIcon from "@mui/icons-material/Check";
-import type { TreeNodeData } from "./types";
-import style from "@/style/components/shared/tree-dropdown/TreeNode.module.css";
-import { ArrowLeft } from "@/assets/icons";
+import CheckIcon from '@mui/icons-material/Check';
+import { useState } from 'react';
+
+import { ArrowLeft } from '@/assets/icons';
+import style from '@/style/components/shared/tree-dropdown/TreeNode.module.css';
+
+import type { TreeNodeData } from './types';
 
 interface TreeNodeProps {
   node: TreeNodeData;
@@ -35,10 +37,10 @@ export const TreeNode = ({
       <li className={style.nodeItem}>
         <div
           className={style.nodeContent}
-          style={{ 
+          style={{
             backgroundColor: getBackgroundColor(),
             paddingRight: indent + 12,
-           }}
+          }}
         >
           {hasChildren ? (
             <button
@@ -48,16 +50,15 @@ export const TreeNode = ({
               }}
               className={style.toggleButton}
             >
-              <ArrowLeft className={`${style.arrow} ${open ? style.arrowOpen : ""}`}/>
+              <ArrowLeft
+                className={`${style.arrow} ${open ? style.arrowOpen : ''}`}
+              />
             </button>
           ) : (
             <span className={style.spacer} />
           )}
 
-          <span
-            onClick={() => onToggle(node)}
-            className={style.label}
-          >
+          <span onClick={() => onToggle(node)} className={style.label}>
             {node.label}
           </span>
 
@@ -66,11 +67,9 @@ export const TreeNode = ({
           )}
         </div>
       </li>
-      
+
       <div
-        className={`${style.childrenWrapper} ${
-          open ? style.childrenOpen : ""
-        }`}
+        className={`${style.childrenWrapper} ${open ? style.childrenOpen : ''}`}
       >
         <div className={style.childrenInner}>
           {hasChildren &&

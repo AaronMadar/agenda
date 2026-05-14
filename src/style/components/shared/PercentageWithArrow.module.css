@@ -5,13 +5,13 @@
   border-radius: 5px;
   cursor: pointer;
 
-  color: #00FF6F;
+  color: #00ff6f;
   background-color: rgba(90, 105, 89, 0.2);
   font-size: clamp(0.8rem, 1.5vw, 1rem);
 }
 
 .minus {
-  color: #F97373;
+  color: #f97373;
   background-color: rgba(118, 97, 97, 0.2);
 }
 
@@ -21,15 +21,15 @@
 }
 
 .gantMode {
-  background-color: #D9FCED;
-  border-radius: 4px; 
-  color: #18BF60;
+  background-color: #d9fced;
+  border-radius: 4px;
+  color: #18bf60;
   box-shadow: 0 2px 4px rgba(24, 191, 96, 0.25);
 }
 
 .minus.gantMode {
-  background-color: #FFEAEB;
-  border-radius: 4px; 
-  color: #DE4040;
+  background-color: #ffeaeb;
+  border-radius: 4px;
+  color: #de4040;
   box-shadow: 0 2px 4px rgba(222, 64, 64, 0.25);
 }

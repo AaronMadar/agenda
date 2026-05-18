@@ -1,63 +1,65 @@
-import { Gant } from "@/components/gantpage/gant/Gant";
-import { Header } from "@/components/gantpage/header/Header";
+import { useCallback, useEffect, useState } from 'react';
 
-import "@/style/index.css"
-import styles from "@/style/pages/GantPage.module.css"
-
-import { useCallback, useEffect, useState } from "react";
-import { LegendPopup } from "@/components/gantpage/gant/LegendPopup";
-import TimeLineHeader from "@/components/gantpage/TimeLineHeader";
-import { SearchBar } from "@/components/shared/SearchBar";
-
+import { Gant } from '@/components/gantpage/gant/Gant';
+import { LegendPopup } from '@/components/gantpage/gant/LegendPopup';
+import { Header } from '@/components/gantpage/header/Header';
+import TimeLineHeader from '@/components/gantpage/TimeLineHeader';
+import { SearchBar } from '@/components/shared/SearchBar';
+import styles from '@/style/pages/GantPage.module.css';
 
 export function GantPage() {
   const [isLegendOpen, setIsLegendOpen] = useState<boolean>(false);
-  const [forceDisplayed, setForceDisplayed] = useState<string[]>([])
+  const [forceDisplayed, setForceDisplayed] = useState<string[]>([]);
   const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
-  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState<string>('');
   const [countDisplayed, setCountDisplayed] = useState<number>(0);
 
   const toggleLegend = useCallback(() => {
-    setIsLegendOpen(prev => !prev);
+    setIsLegendOpen((prev) => !prev);
   }, []);
 
   const toggleSearch = useCallback(() => {
-    setIsSearchOpen(prev => {
+    setIsSearchOpen((prev) => {
       const nextState = !prev;
       if (!nextState) {
-        setSearchTerm("");
+        setSearchTerm('');
       }
       return nextState;
     });
   }, []);
 
   const handleCloseSearch = useCallback(() => {
-    setSearchTerm("");
+    setSearchTerm('');
     setIsSearchOpen(false);
   }, []);
 
   //TO PERMET TO REPLACE THE CTRL F OF CHROME BY OUR SEARCHBAR
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) &&( e.key.toLowerCase() === 'f'  || e.key.toLowerCase() === 'כ')) {
+      if (
+        (e.ctrlKey || e.metaKey) &&
+        (e.key.toLowerCase() === 'f' || e.key.toLowerCase() === 'כ')
+      ) {
         e.preventDefault();
         toggleSearch();
-      } 
-      else if (e.key.toLowerCase() === 'escape') {
+      } else if (e.key.toLowerCase() === 'escape') {
         e.preventDefault();
         handleCloseSearch();
       }
     };
-  
-    window.addEventListener("keydown", handleKeyDown);
-  
-    return () => window.removeEventListener("keydown", handleKeyDown);
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [toggleSearch, handleCloseSearch]);
 
-
   return (
-    <div className={styles["gantpage-container"]}>
-      <Header onMapClick={toggleLegend} toggleSearch={toggleSearch} handleCloseSearch={handleCloseSearch} />
+    <div className={styles['gantpage-container']}>
+      <Header
+        onMapClick={toggleLegend}
+        toggleSearch={toggleSearch}
+        handleCloseSearch={handleCloseSearch}
+      />
 
       <TimeLineHeader countDisplayed={countDisplayed} />
 

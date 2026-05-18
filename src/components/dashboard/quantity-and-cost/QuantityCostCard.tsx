@@ -1,6 +1,6 @@
-import style from "@/style/components/dashboard/quantity-and-cost/QuantityCostCard.module.css";
-import { Swords, RefereeHat } from "@/assets/icons";
-import { LoaderCircle } from "@/components/shared/loading/LoaderCircle";
+import { RefereeHat, Swords } from '@/assets/icons';
+import { LoaderCircle } from '@/components/shared/loading/LoaderCircle';
+import style from '@/style/components/dashboard/quantity-and-cost/QuantityCostCard.module.css';
 
 interface QuantityCostCardProps {
   title: string;
@@ -20,15 +20,14 @@ export const QuantityCostCard = ({
   title,
   total,
   loading,
-  onClick
+  onClick,
 }: QuantityCostCardProps) => {
-  const isTraining = title.includes("אימונים");
-  const isAmount = title.includes("עלות");
+  const isTraining = title.includes('אימונים');
+  const isAmount = title.includes('עלות');
 
   return (
     <div className={style.containerWrapper} onClick={onClick}>
       <div className={style.content}>
-
         <div className={`${style.iconBox} ${isAmount ? style.amount : ''}`}>
           {isTraining ? (
             <Swords className={style.icon} />
@@ -41,7 +40,7 @@ export const QuantityCostCard = ({
           <div className={style.title}>{title}</div>
 
           {loading ? (
-            <LoaderCircle size={20}/>
+            <LoaderCircle size={20} />
           ) : (
             <div>{formatValue(total)}</div>
           )}

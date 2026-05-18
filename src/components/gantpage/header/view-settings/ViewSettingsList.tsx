@@ -1,10 +1,12 @@
-import { useRef, useState } from "react";
-import { ViewSettingsDivider } from "./ViewSettingsDivider";
-import { ViewSettingsSelect } from "./ViewSettingsSelect";
-import { ViewSettingsToggle } from "./ViewSettingsToggle";
-import { ViewSettingsSubMenu } from "./ViewSettingsSubMenu";
-import { useViewSettings } from "@/contexts/GantViewSettingsContext";
-import { GROUP_BY_OPTIONS } from "@/constants/viewSettings.constants";
+import { useRef, useState } from 'react';
+
+import { GROUP_BY_OPTIONS } from '@/constants/viewSettings.constants';
+import { useViewSettings } from '@/contexts/GantViewSettingsContext';
+
+import { ViewSettingsDivider } from './ViewSettingsDivider';
+import { ViewSettingsSelect } from './ViewSettingsSelect';
+import { ViewSettingsSubMenu } from './ViewSettingsSubMenu';
+import { ViewSettingsToggle } from './ViewSettingsToggle';
 
 export const ViewSettingsList = () => {
   const {

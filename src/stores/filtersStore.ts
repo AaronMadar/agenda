@@ -1,6 +1,11 @@
-import { create } from "zustand";
-import type { TreeNodeData } from "@/components/shared/tree-dropdown/types";
-import { getUnitsTree, getServiceTypes, getResourceTypes } from "@/api/filters.api";
+import { create } from 'zustand';
+
+import {
+  getResourceTypes,
+  getServiceTypes,
+  getUnitsTree,
+} from '@/api/filters.api';
+import type { TreeNodeData } from '@/components/shared/tree-dropdown/types';
 
 // Option types
 export type UnitTypeOption = string;
@@ -38,7 +43,7 @@ export type FiltersState = {
   setSelectedResourceTypes: (values: ResourceTypeOption[] | null) => void;
   setPeriodView: (value: string) => void;
   setPeriodDate: (value: PeriodDateType) => void;
-  loadFiltersData: (idSoldier: string) => Promise<void>; 
+  loadFiltersData: (idSoldier: string) => Promise<void>;
 };
 
 export const useFilters = create<FiltersState>((set, get) => ({
@@ -53,7 +58,7 @@ export const useFilters = create<FiltersState>((set, get) => ({
   selectedResourceTypes: null,
 
   currentYear: new Date().getFullYear(),
-  periodView: `כל ${new Date().getFullYear()}`, 
+  periodView: `כל ${new Date().getFullYear()}`,
   periodDate: { start: null, end: null },
 
   loading: true,
@@ -85,7 +90,7 @@ export const useFilters = create<FiltersState>((set, get) => ({
         error: null,
       });
     } catch (err) {
-      set({ error: err instanceof Error ? err.message : "Unknown error" });
+      set({ error: err instanceof Error ? err.message : 'Unknown error' });
       console.error(err);
     } finally {
       set({ loading: false });

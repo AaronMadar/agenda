@@ -1,12 +1,14 @@
-import { useMemo } from "react";
-import style from "@/style/components/dashboard/budget-resources/BudgetResources.module.css";
-import { EmptyState } from "@/components/shared/EmptyState";
-import { useShibutzimContext } from "@/contexts/ShibutzimContext";
-import { BudgetResourceCard, type BudgetResource } from "./BudgetResourceCard";
-import { useNavigate } from "react-router-dom";
-import { useBudgetResourcesContext } from "@/contexts/BudgetResourcesContext";
-import { getResourceKey, getResourceColor } from "@/constants/budgetResources";
-import { LoaderCircle } from "@/components/shared/loading/LoaderCircle";
+import { useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { EmptyState } from '@/components/shared/EmptyState';
+import { LoaderCircle } from '@/components/shared/loading/LoaderCircle';
+import { getResourceColor, getResourceKey } from '@/constants/budgetResources';
+import { useBudgetResourcesContext } from '@/contexts/BudgetResourcesContext';
+import { useShibutzimContext } from '@/contexts/ShibutzimContext';
+import style from '@/style/components/dashboard/budget-resources/BudgetResources.module.css';
+
+import { type BudgetResource, BudgetResourceCard } from './BudgetResourceCard';
 
 export const BudgetResources = () => {
   const navigate = useNavigate();
@@ -41,7 +43,9 @@ export const BudgetResources = () => {
               resource={resource}
               headerColor={getResourceColor(resource.name)}
               onClick={() =>
-                navigate(`/details/budget-resources/${getResourceKey(resource.name)}`)
+                navigate(
+                  `/details/budget-resources/${getResourceKey(resource.name)}`,
+                )
               }
             />
           ))}

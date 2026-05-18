@@ -1,5 +1,4 @@
 .header {
- 
   background-color: #4b4a4a;
   color: #efeded;
   padding-left: 0.4rem;
@@ -37,7 +36,7 @@
   color: #42adff;
 
   width: 40px;
-  height: 40px ;
+  height: 40px;
 
   display: inline-flex;
   align-items: center;
@@ -45,13 +44,14 @@
 
   cursor: pointer;
   border-radius: 50%;
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .little {
-font-size: 1.2rem;
+  font-size: 1.2rem;
 }
-
 
 .control-icon {
   display: none;
@@ -80,40 +80,35 @@ font-size: 1.2rem;
   cursor: pointer;
 }
 
-
-
 @media (max-width: 1023px) {
+  .header-actions {
+    display: none;
+  }
 
-.header-actions {
-  display: none;
-}
+  .control-icon {
+    display: flex;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition:
+      background-color 0.2s ease,
+      transform 0.2s ease;
+  }
 
-.control-icon {
-  display: flex;
-  margin-left: 2rem;
-  margin-right: 2rem;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.2s ease;
-}
+  .control-icon:hover {
+    background-color: rgba(197, 194, 194, 0.1);
+  }
 
-.control-icon:hover {
-  background-color: rgba(197, 194, 194, 0.1);
-}
+  .header {
+    height: 3.5rem;
 
-.header {
-
-
-  height: 3.5rem;
-
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-
-}
-
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
 }

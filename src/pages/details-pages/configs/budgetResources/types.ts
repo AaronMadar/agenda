@@ -1,5 +1,5 @@
-import type { CommonShibutzRow } from "../../columns/types";
-import type { BaseDetailsPageParams } from "../../types";
+import type { CommonShibutzRow } from '../../columns/types';
+import type { BaseDetailsPageParams } from '../../types';
 
 export type ItemsTableRow = {
   name: string;
@@ -9,15 +9,14 @@ export type ItemsTableRow = {
   isSum?: boolean;
 };
 
-export type CreateBudgetResourcesPageParams =
-  BaseDetailsPageParams & {
-    category: string;
+export type CreateBudgetResourcesPageParams = BaseDetailsPageParams & {
+  category: string;
 
-    categoryName: string;
+  categoryName: string;
 
-    isOverviewPage: boolean;
+  isOverviewPage: boolean;
 
-    budgetItemsData: ItemsTableRow[];
+  budgetItemsData: ItemsTableRow[];
 
-    budgetShibutzimTableData: CommonShibutzRow[];
-  };
+  budgetShibutzimTableData: CommonShibutzRow[];
+};

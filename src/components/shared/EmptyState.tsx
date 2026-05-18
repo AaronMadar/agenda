@@ -1,10 +1,12 @@
-import style from "@/style/components/shared/EmptyState.module.css";
+import style from '@/style/components/shared/EmptyState.module.css';
 
 interface EmptyStateProps {
   message?: string;
 }
 
-export const EmptyState = ({ message = "אין נתונים להצגה" }: EmptyStateProps) => {
+export const EmptyState = ({
+  message = 'אין נתונים להצגה',
+}: EmptyStateProps) => {
   return (
     <div className={style.emptyState}>
       <img

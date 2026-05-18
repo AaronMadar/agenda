@@ -1,5 +1,12 @@
-import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
-import type { Shibutz } from "@/types/shibutzim.types";
+import {
+  createContext,
+  type ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
+
+import type { Shibutz } from '@/types/shibutzim.types';
 
 interface GantViewSettingsContextType {
   showOpenCards: boolean;
@@ -26,37 +33,44 @@ const getFromStorage = <T,>(key: string, defaultValue: T): T => {
   }
 };
 
-const GantViewSettingsContext = createContext<GantViewSettingsContextType | null>(null);
+const GantViewSettingsContext =
+  createContext<GantViewSettingsContextType | null>(null);
 
-export const GantViewSettingsProvider = ({ children }: { children: ReactNode }) => {
-  const [showOpenCards, setShowOpenCards] = useState(
-    () => getFromStorage("showOpenCards", false)
+export const GantViewSettingsProvider = ({
+  children,
+}: {
+  children: ReactNode;
+}) => {
+  const [showOpenCards, setShowOpenCards] = useState(() =>
+    getFromStorage('showOpenCards', false),
   );
 
-  const [groupsInAscOrder, setGroupsInAscOrder] = useState(
-    () => getFromStorage("groupsInAscOrder", true)
+  const [groupsInAscOrder, setGroupsInAscOrder] = useState(() =>
+    getFromStorage('groupsInAscOrder', true),
   );
 
-  const [groupByField, setGroupByField] = useState<keyof Shibutz>(
-    () => getFromStorage("groupByField", "location")
+  const [groupByField, setGroupByField] = useState<keyof Shibutz>(() =>
+    getFromStorage('groupByField', 'location'),
   );
 
-  const [isLittleScreen, setIsLittleScreen] = useState(window.innerWidth < 1700);
+  const [isLittleScreen, setIsLittleScreen] = useState(
+    window.innerWidth < 1700,
+  );
 
   const activeCardWidthPercent = isLittleScreen ? 60 : 40;
 
   /* ---------- SAVE TO LOCAL STORAGE ---------- */
 
   useEffect(() => {
-    localStorage.setItem("showOpenCards", JSON.stringify(showOpenCards));
+    localStorage.setItem('showOpenCards', JSON.stringify(showOpenCards));
   }, [showOpenCards]);
 
   useEffect(() => {
-    localStorage.setItem("groupsInAscOrder", JSON.stringify(groupsInAscOrder));
+    localStorage.setItem('groupsInAscOrder', JSON.stringify(groupsInAscOrder));
   }, [groupsInAscOrder]);
 
   useEffect(() => {
-    localStorage.setItem("groupByField", JSON.stringify(groupByField));
+    localStorage.setItem('groupByField', JSON.stringify(groupByField));
   }, [groupByField]);
 
   return (
@@ -81,7 +95,7 @@ export const GantViewSettingsProvider = ({ children }: { children: ReactNode }) 
 export const useViewSettings = () => {
   const context = useContext(GantViewSettingsContext);
   if (!context) {
-    throw new Error("useViewSettings must be used inside ViewSettingsProvider");
+    throw new Error('useViewSettings must be used inside ViewSettingsProvider');
   }
   return context;
 };

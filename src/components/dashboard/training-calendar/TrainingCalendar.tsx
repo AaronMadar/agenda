@@ -1,15 +1,17 @@
-import { useMemo, useState, useRef } from "react";
-import dayjs, { Dayjs } from "dayjs";
-import { Tooltip } from "@mui/material";
-import { DateRange } from "@mui/icons-material";
-import style from "@/style/components/dashboard/training-calendar/TrainingCalendar.module.css";
-import { iconServiceType, type ServiceTypeKey } from "@/constants/icons";
-import type { CalendarEvent } from "./types";
-import { MonthPicker } from "./MonthPicker";
-import { ArrowRight, ArrowLeft } from "@/assets/icons";
-import { extractCalendarEvents } from "@/utils/calendar/extractCalendarEvents";
-import { useShibutzimContext } from "@/contexts/ShibutzimContext";
-import { LoaderCircle } from "@/components/shared/loading/LoaderCircle";
+import { DateRange } from '@mui/icons-material';
+import { Tooltip } from '@mui/material';
+import dayjs, { Dayjs } from 'dayjs';
+import { useMemo, useRef, useState } from 'react';
+
+import { ArrowLeft, ArrowRight } from '@/assets/icons';
+import { LoaderCircle } from '@/components/shared/loading/LoaderCircle';
+import { iconServiceType, type ServiceTypeKey } from '@/constants/icons';
+import { useShibutzimContext } from '@/contexts/ShibutzimContext';
+import style from '@/style/components/dashboard/training-calendar/TrainingCalendar.module.css';
+import { extractCalendarEvents } from '@/utils/calendar/extractCalendarEvents';
+
+import { MonthPicker } from './MonthPicker';
+import type { CalendarEvent } from './types';
 
 export const TrainingCalendar = () => {
   // ================= Context =================
@@ -28,15 +30,15 @@ export const TrainingCalendar = () => {
 
   // ================= Calendar Days =================
   const days = useMemo(() => {
-    const start = currentMonth.startOf("month").startOf("week");
-    const end = currentMonth.endOf("month").endOf("week");
+    const start = currentMonth.startOf('month').startOf('week');
+    const end = currentMonth.endOf('month').endOf('week');
 
     const result: Dayjs[] = [];
     let d = start;
 
-    while (d.isBefore(end) || d.isSame(end, "day")) {
+    while (d.isBefore(end) || d.isSame(end, 'day')) {
       result.push(d);
-      d = d.add(1, "day");
+      d = d.add(1, 'day');
     }
 
     return result;
@@ -54,7 +56,7 @@ export const TrainingCalendar = () => {
   // ================= Helper Renders =================
   const renderDayCell = (day: Dayjs, dayEvents: CalendarEvent[]) => {
     const isBusy = dayEvents.length > 0;
-    const isToday = day.isSame(dayjs(), "day");
+    const isToday = day.isSame(dayjs(), 'day');
     const isOtherMonth = day.month() !== currentMonth.month();
 
     const dayClassName = [
@@ -64,19 +66,34 @@ export const TrainingCalendar = () => {
       isOtherMonth && style.otherMonth,
     ]
       .filter(Boolean)
-      .join(" ");
+      .join(' ');
 
     const iconsData = dayEvents.map((ev) => ({
       ...ev,
-      iconConfig: iconServiceType[ev.serviceType as ServiceTypeKey] ?? iconServiceType.default,
+      iconConfig:
+        iconServiceType[ev.serviceType as ServiceTypeKey] ??
+        iconServiceType.default,
     }));
 
     const tooltipTitle = isBusy ? (
-      <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}
-      className={isOtherMonth ? style.otherMonth : undefined}>
+      <div
+        style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}
+        className={isOtherMonth ? style.otherMonth : undefined}
+      >
         {iconsData.map((ev, idx) => (
-          <div key={idx} style={{ display: "flex", alignItems: "center", gap: "6px", whiteSpace: "nowrap" }}>
-            <i className={ev.iconConfig.className} style={{ color: ev.iconConfig.color }} />
+          <div
+            key={idx}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            <i
+              className={ev.iconConfig.className}
+              style={{ color: ev.iconConfig.color }}
+            />
             <span>
               {ev.title} <span style={{ opacity: 0.6 }}>({ev.unitId}) - </span>
               <span>ק"ש : {ev.codeShibutz}</span>
@@ -84,11 +101,13 @@ export const TrainingCalendar = () => {
           </div>
         ))}
       </div>
-    ) : "";
+    ) : (
+      ''
+    );
 
     return (
       <Tooltip
-        key={day.format("YYYY-MM-DD")}
+        key={day.format('YYYY-MM-DD')}
         title={tooltipTitle}
         arrow
         placement="top"
@@ -96,21 +115,25 @@ export const TrainingCalendar = () => {
         slotProps={{
           tooltip: {
             sx: {
-              backgroundColor: "#6d7479",
-              color: "white",
-              fontSize: "11px",
-              borderRadius: "6px",
-              padding: "6px 8px",
+              backgroundColor: '#6d7479',
+              color: 'white',
+              fontSize: '11px',
+              borderRadius: '6px',
+              padding: '6px 8px',
               zIndex: 20,
             },
           },
-          arrow: { sx: { color: "#6d7479" } },
+          arrow: { sx: { color: '#6d7479' } },
         }}
       >
         <div className={dayClassName}>
           <div className={style.iconsArea}>
             {iconsData.slice(0, 4).map((ev, idx) => (
-              <i key={idx} className={ev.iconConfig.className} style={{ color: ev.iconConfig.color }} />
+              <i
+                key={idx}
+                className={ev.iconConfig.className}
+                style={{ color: ev.iconConfig.color }}
+              />
             ))}
           </div>
           <div className={style.dayNumber}>{day.date()}</div>
@@ -127,12 +150,16 @@ export const TrainingCalendar = () => {
         <h4>לוח אימונים</h4>
 
         <div className={style.headerControls}>
-          <button onClick={() => setCurrentMonth((m) => m.subtract(1, "month"))}>
+          <button
+            onClick={() => setCurrentMonth((m) => m.subtract(1, 'month'))}
+          >
             <ArrowRight style={{ width: 8, height: 30 }} />
           </button>
 
           <div className={style.monthTitleWrapper}>
-            <div className={style.monthTitle}>{currentMonth.format("MMMM YYYY")}</div>
+            <div className={style.monthTitle}>
+              {currentMonth.format('MMMM YYYY')}
+            </div>
 
             <Tooltip
               title="בחירת חודש"
@@ -158,7 +185,7 @@ export const TrainingCalendar = () => {
             />
           </div>
 
-          <button onClick={() => setCurrentMonth((m) => m.add(1, "month"))}>
+          <button onClick={() => setCurrentMonth((m) => m.add(1, 'month'))}>
             <ArrowLeft style={{ width: 8, height: 30 }} />
           </button>
         </div>
@@ -173,13 +200,15 @@ export const TrainingCalendar = () => {
       ) : (
         <>
           <div className={style.weekdays}>
-            {["א", "ב", "ג", "ד", "ה", "ו", "ש"].map((d) => (
+            {['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ש'].map((d) => (
               <div key={d}>{d}</div>
             ))}
           </div>
 
           <div className={style.grid}>
-            {days.map((day) => renderDayCell(day, eventsByDate[day.format("YYYY-MM-DD")] || []))}
+            {days.map((day) =>
+              renderDayCell(day, eventsByDate[day.format('YYYY-MM-DD')] || []),
+            )}
           </div>
         </>
       )}

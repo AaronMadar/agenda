@@ -6,7 +6,7 @@
   background: #3d3c3c;
   border-radius: 10px;
   border: 1px solid #525252;
-  z-index: 10000; 
+  z-index: 10000;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
   pointer-events: all;
 }
@@ -55,7 +55,7 @@
 }
 
 .item:hover {
-  background: #484e50 ;
+  background: #484e50;
 }
 
 .active,

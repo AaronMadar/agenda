@@ -1,6 +1,8 @@
-import { useNavigate } from "react-router-dom";
-import style from "@/style/components/dashboard/DashboardHeader.module.css";
-import { FiltersPanel } from "../shared/FiltersPanel";
+import { useNavigate } from 'react-router-dom';
+
+import style from '@/style/components/dashboard/DashboardHeader.module.css';
+
+import { FiltersPanel } from '../shared/FiltersPanel';
 export const DashboardHeader = () => {
   const navigate = useNavigate();
 
@@ -13,13 +15,13 @@ export const DashboardHeader = () => {
           src="/dashboard-image-gray.png"
           alt="Dashboard Image"
           className={style.iconImage}
-          onClick={() => navigate("/")}
+          onClick={() => navigate('/')}
         />
         <img
           src="/dashboard-image-blue.png"
           alt="Dashboard Image"
           className={style.iconImage}
-          onClick={() => navigate("/")}
+          onClick={() => navigate('/')}
         />
       </div>
     </div>

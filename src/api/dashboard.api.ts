@@ -1,6 +1,6 @@
-import { httpClient } from "./httpClient";
-import type { Resource } from "@/components/shared/resourceCard.types";
+import type { Resource } from '@/components/shared/resourceCard.types';
 
+import { httpClient } from './httpClient';
 
 const get = async <T>(url: string): Promise<T> => {
   const { data } = await httpClient.get(url);
@@ -8,10 +8,10 @@ const get = async <T>(url: string): Promise<T> => {
 };
 
 export const getQuantityAndCost = (): Promise<Resource[]> =>
-  get<Resource[]>("/dashboard/quantity-and-cost");
+  get<Resource[]>('/dashboard/quantity-and-cost');
 
 export const getResources = (): Promise<Resource[]> =>
-  get<Resource[]>("/dashboard/resources");
+  get<Resource[]>('/dashboard/resources');
 
 export const getReports = (): Promise<string[]> =>
-  get<string[]>("/dashboard/reports");
+  get<string[]>('/dashboard/reports');

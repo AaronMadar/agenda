@@ -1,8 +1,8 @@
 .popUpWrapper {
-    background-color: #44494C;
-    padding: 10px 20px;
-    border-radius: 8px;
-    border: 1px solid #828282;
-    color: white;
-    z-index: 10001;
+  background-color: #44494c;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: 1px solid #828282;
+  color: white;
+  z-index: 10001;
 }

@@ -1,7 +1,8 @@
-import TrendingUpIcon from "@mui/icons-material/TrendingUp";
-import TrendingDownIcon from "@mui/icons-material/TrendingDown";
-import style from "@/style/components/shared/PercentageWithArrow.module.css";
-import { Tooltip } from "@mui/material";
+import TrendingDownIcon from '@mui/icons-material/TrendingDown';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import { Tooltip } from '@mui/material';
+
+import style from '@/style/components/shared/PercentageWithArrow.module.css';
 
 interface PercentageWithArrowProps {
   value: number;
@@ -13,7 +14,9 @@ export const PercentageWithArrow = ({
   gantMode = false,
 }: PercentageWithArrowProps) => {
   const isNegative = value < 0;
-  const toolTipMsg = isNegative ? "ירידה לעומת שנה שעברה" : "עלייה לעומת שנה שעברה";
+  const toolTipMsg = isNegative
+    ? 'ירידה לעומת שנה שעברה'
+    : 'עלייה לעומת שנה שעברה';
 
   return (
     <Tooltip
@@ -27,7 +30,7 @@ export const PercentageWithArrow = ({
       }}
     >
       <div
-        className={`${style.percentage} ${isNegative ? style.minus : ""} ${gantMode ? style.gantMode : ""}`}
+        className={`${style.percentage} ${isNegative ? style.minus : ''} ${gantMode ? style.gantMode : ''}`}
       >
         {isNegative ? <TrendingDownIcon /> : <TrendingUpIcon />}
         {Math.abs(value)}%

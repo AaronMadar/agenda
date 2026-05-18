@@ -1,3 +1,3 @@
-import { commonShibutzColumns } from "../../../details-pages/columns/commonShibutzColumns";
+import { commonShibutzColumns } from '../../../details-pages/columns/commonShibutzColumns';
 
-export const quantityColumns = commonShibutzColumns
+export const quantityColumns = commonShibutzColumns;

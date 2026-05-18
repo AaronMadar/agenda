@@ -1,4 +1,4 @@
-import styles from "@/style/components/shared/loading/LoadingOverlay.module.css";
+import styles from '@/style/components/shared/loading/LoadingOverlay.module.css';
 
 type Props = {
   loading: boolean;

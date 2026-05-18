@@ -1,25 +1,28 @@
-import { Routes, Route } from "react-router-dom";
-import dayjs from "dayjs";
-import "dayjs/locale/he";
-import localeData from "dayjs/plugin/localeData";
+import '@/style/index.css';
+import 'dayjs/locale/he';
 
-import { ShibutzimProvider } from "@/contexts/ShibutzimContext";
-import { GantPage } from "@/pages/GantPage";
-import { Dashboard } from "@/pages/Dashboard";
-import { useFilters } from "./stores/filtersStore";
-import { useEffect } from "react";
-import { GantViewSettingsProvider } from "./contexts/GantViewSettingsContext";
-import { BudgetResourceDetails } from "./pages/BudgetResourceDetails";
-import { BudgetResourcesProvider } from "./contexts/BudgetResourcesContext";
+import dayjs from 'dayjs';
+import localeData from 'dayjs/plugin/localeData';
+import { useEffect } from 'react';
+import { Route, Routes } from 'react-router-dom';
 
-dayjs.locale("he");
+import { ShibutzimProvider } from '@/contexts/ShibutzimContext';
+import { Dashboard } from '@/pages/Dashboard';
+import { GantPage } from '@/pages/GantPage';
+
+import { BudgetResourcesProvider } from './contexts/BudgetResourcesContext';
+import { GantViewSettingsProvider } from './contexts/GantViewSettingsContext';
+import { BudgetResourceDetails } from './pages/BudgetResourceDetails';
+import { useFilters } from './stores/filtersStore';
+
+dayjs.locale('he');
 dayjs.extend(localeData);
 
 export default function App() {
   const loadFiltersData = useFilters((state) => state.loadFiltersData);
 
   useEffect(() => {
-    const currentIdSoldier = "s12345";
+    const currentIdSoldier = 's12345';
     loadFiltersData(currentIdSoldier);
   }, []);
 
@@ -30,7 +33,10 @@ export default function App() {
           <Routes>
             <Route path="/" element={<GantPage />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/details/:type/:category/:item?" element={<BudgetResourceDetails />} />
+            <Route
+              path="/details/:type/:category/:item?"
+              element={<BudgetResourceDetails />}
+            />
           </Routes>
         </BudgetResourcesProvider>
       </ShibutzimProvider>

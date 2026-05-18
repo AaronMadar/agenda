@@ -1,10 +1,11 @@
-import type { CommonShibutzRow } from "./columns/types";
-import type { ItemsTableRow } from "./configs/budgetResources/types";
-import type { NavigateFunction } from "react-router-dom";
+import type { NavigateFunction } from 'react-router-dom';
+
+import type { CommonShibutzRow } from './columns/types';
+import type { ItemsTableRow } from './configs/budgetResources/types';
 
 export type TableColumn<T> = {
   label: string;
-  accessor: keyof T; 
+  accessor: keyof T;
   searchable?: boolean;
   sumable?: boolean;
 };
@@ -18,22 +19,20 @@ type BaseConfig = {
 };
 
 type BudgetItemsConfig = BaseConfig & {
-  type: "items";
+  type: 'items';
   columns: TableColumn<ItemsTableRow>[];
   data: ItemsTableRow[];
   onRowClick?: (row: ItemsTableRow) => void;
 };
 
 type BudgetShibutzimConfig = BaseConfig & {
-  type: "shibutzim";
+  type: 'shibutzim';
   columns: TableColumn<CommonShibutzRow>[];
   data: CommonShibutzRow[];
   onRowClick?: (row: CommonShibutzRow) => void;
 };
 
-export type DetailsPageConfig =
-  | BudgetItemsConfig
-  | BudgetShibutzimConfig;
+export type DetailsPageConfig = BudgetItemsConfig | BudgetShibutzimConfig;
 
 export type BaseDetailsPageParams = {
   type?: string;

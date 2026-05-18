@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
-import style from "@/style/components/dashboard/reports/Reports.module.css";
-import { getReports } from "@/api/dashboard.api";
-import { EmptyState } from "@/components/shared/EmptyState";
-import { ErrorState } from "@/components/shared/ErrorState";
-import { LoaderCircle } from "@/components/shared/loading/LoaderCircle";
+import { useEffect, useState } from 'react';
+
+import { getReports } from '@/api/dashboard.api';
+import { EmptyState } from '@/components/shared/EmptyState';
+import { ErrorState } from '@/components/shared/ErrorState';
+import { LoaderCircle } from '@/components/shared/loading/LoaderCircle';
+import style from '@/style/components/dashboard/reports/Reports.module.css';
 
 export const Reports = () => {
   const [reports, setReports] = useState<string[] | null>(null);
@@ -16,8 +17,8 @@ export const Reports = () => {
         const data = await getReports();
         setReports(data);
       } catch (err) {
-        console.error("Failed to load reports", err);
-        setError("Failed to load reports");
+        console.error('Failed to load reports', err);
+        setError('Failed to load reports');
       } finally {
         setLoading(false);
       }

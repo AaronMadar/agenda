@@ -1,6 +1,6 @@
-import { TreeNode } from "./TreeNode";
-import type { TreeNodeData } from "./types";
-import styles from "../../../style/components/shared/tree-dropdown/TreeSelect.module.css"
+import styles from '../../../style/components/shared/tree-dropdown/TreeSelect.module.css';
+import { TreeNode } from './TreeNode';
+import type { TreeNodeData } from './types';
 
 interface TreeSelectProps {
   data: TreeNodeData[];
@@ -8,7 +8,11 @@ interface TreeSelectProps {
   onToggle: (node: TreeNodeData) => void;
 }
 
-export const TreeSelect = ({ data, selectedIds, onToggle }: TreeSelectProps) => {
+export const TreeSelect = ({
+  data,
+  selectedIds,
+  onToggle,
+}: TreeSelectProps) => {
   return (
     <ul className={styles.tree}>
       {data.map((root) => (

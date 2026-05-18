@@ -1,9 +1,11 @@
-import { useState, useRef, useEffect } from "react";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { TreeSelect } from "./TreeSelect";
-import style from "@/style/components/shared/tree-dropdown/TreeDropdown.module.css";
-import type { TreeNodeData } from "./types";
-import { toggleNode, getNodeLabel } from "./treeUtils";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { useEffect, useRef, useState } from 'react';
+
+import style from '@/style/components/shared/tree-dropdown/TreeDropdown.module.css';
+
+import { TreeSelect } from './TreeSelect';
+import { getNodeLabel, toggleNode } from './treeUtils';
+import type { TreeNodeData } from './types';
 
 interface TreeDropdownProps {
   data: TreeNodeData[];
@@ -18,7 +20,7 @@ export const TreeDropdown = ({
   data,
   value,
   onChange,
-  placeholder = "בחר ערך",
+  placeholder = 'בחר ערך',
   label,
 }: TreeDropdownProps) => {
   const [open, setOpen] = useState(false);
@@ -26,16 +28,19 @@ export const TreeDropdown = ({
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
-        setOpen(false);   
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.target as Node)
+      ) {
+        setOpen(false);
         if ((!value || value.length === 0) && data?.length > 0) {
-        onChange([data[0].id]);
-      }
+          onChange([data[0].id]);
+        }
       }
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [value,data,onChange]);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [value, data, onChange]);
 
   const handleToggle = (node: TreeNodeData) => {
     const nextSelection = toggleNode(new Set(value || []), data, node.id);
@@ -45,7 +50,7 @@ export const TreeDropdown = ({
   const getDisplayText = () => {
     if (!value || value.length === 0) return placeholder;
     const labels = value.map((id) => getNodeLabel(data, id) ?? id);
-    if (labels.length <= 2) return labels.join(", ");
+    if (labels.length <= 2) return labels.join(', ');
     return `${placeholder} [${labels.length}]`;
   };
 
@@ -54,21 +59,39 @@ export const TreeDropdown = ({
       {label && <span className={style.label}>{label}</span>}
       <div className={style.container}>
         <div onClick={() => setOpen((prev) => !prev)} className={style.trigger}>
-          <span className={`${style.selectedText} ${(!value || value.length === 0) ? style.placeholder : ""}`}>
+          <span
+            className={`${style.selectedText} ${!value || value.length === 0 ? style.placeholder : ''}`}
+          >
             {getDisplayText()}
           </span>
-          <ExpandMoreIcon className={`${style.arrow} ${open ? style.arrowUp : style.arrowDown}`} />
+          <ExpandMoreIcon
+            className={`${style.arrow} ${open ? style.arrowUp : style.arrowDown}`}
+          />
         </div>
 
         {open && (
           <div className={style.dropdown}>
             <div className={style.dropdownContent}>
-              <TreeSelect data={data} selectedIds={new Set(value || [])} onToggle={handleToggle} />
+              <TreeSelect
+                data={data}
+                selectedIds={new Set(value || [])}
+                onToggle={handleToggle}
+              />
             </div>
             <div className={style.footer}>
               <div className={style.footerButtons}>
-                <button className={style.resetButton} onClick={() => onChange([])}>איפוס</button>
-                <button className={style.confirmButton} onClick={() => setOpen(false)}>אישור</button>
+                <button
+                  className={style.resetButton}
+                  onClick={() => onChange([])}
+                >
+                  איפוס
+                </button>
+                <button
+                  className={style.confirmButton}
+                  onClick={() => setOpen(false)}
+                >
+                  אישור
+                </button>
               </div>
             </div>
           </div>

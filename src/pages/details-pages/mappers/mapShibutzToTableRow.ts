@@ -1,5 +1,4 @@
-import { type Shibutz } from "@/types/shibutzim.types";
-
+import { type Shibutz } from '@/types/shibutzim.types';
 
 export const mapShibutzToTableRow = (s: Shibutz) => ({
   id: s.codeShibutz,

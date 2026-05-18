@@ -1,4 +1,4 @@
-import { ViewSettingsItem } from "./ViewSettingsItem";
+import { ViewSettingsItem } from './ViewSettingsItem';
 
 type Option<T> = {
   value: T;
@@ -40,18 +40,16 @@ export const ViewSettingsSelect = <T extends string>({
         }}
         onMouseLeave={delayedClose}
         style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          gap: "20px",
-          width: "100%",
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '20px',
+          width: '100%',
         }}
       >
         <div>{label}</div>
 
-        <div style={{ opacity: 0.6 }}>
-          {selectedOption?.label}
-        </div>
+        <div style={{ opacity: 0.6 }}>{selectedOption?.label}</div>
 
         <i className="bi bi-chevron-left" />
       </div>

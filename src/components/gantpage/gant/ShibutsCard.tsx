@@ -1,35 +1,37 @@
-import React, { useState, useRef, memo, useEffect } from "react";
-import dayjs from "dayjs";
-import { Popover, Tooltip } from "@mui/material";
+import { Popover, Tooltip } from '@mui/material';
+import dayjs from 'dayjs';
+import React, { memo, useEffect, useRef, useState } from 'react';
 
-import { PercentageWithArrow } from "@/components/shared/PercentageWithArrow";
-import { ResourcePopUp } from "@/components/shared/pop-ups/ResourcePopUp";
-import { DetailsPopUp } from "@/components/shared/pop-ups/DetailsPopUp";
-import { KeyValPopUp } from "@/components/shared/pop-ups/KeyValPopUp";
-
-import { Details, ArrowRight, ArrowLeft } from "@/assets/icons";
-import { iconServiceType } from "@/constants/icons";
-import { getResourceIcon } from "@/constants/budgetResources";
-import { useViewSettings } from "@/contexts/GantViewSettingsContext";
-import type { Shibutz, Resource } from "@/types/shibutzim.types";
-
-import styles from "@/style/components/gantpage/gant/ShibutsCard.module.css";
+import { ArrowLeft, ArrowRight, Details } from '@/assets/icons';
+import { PercentageWithArrow } from '@/components/shared/PercentageWithArrow';
+import { DetailsPopUp } from '@/components/shared/pop-ups/DetailsPopUp';
+import { KeyValPopUp } from '@/components/shared/pop-ups/KeyValPopUp';
+import { ResourcePopUp } from '@/components/shared/pop-ups/ResourcePopUp';
+import { getResourceIcon } from '@/constants/budgetResources';
+import { iconServiceType } from '@/constants/icons';
+import { useViewSettings } from '@/contexts/GantViewSettingsContext';
+import styles from '@/style/components/gantpage/gant/ShibutsCard.module.css';
+import type { Resource, Shibutz } from '@/types/shibutzim.types';
 
 interface ShibutsCardProps {
   shibuts: Shibutz;
   style?: React.CSSProperties;
   className?: string;
-  translateXActive?: number; 
+  translateXActive?: number;
 }
 
 export const ShibutsCard = memo(function ShibutsCard({
   shibuts,
   style,
   className,
-  translateXActive
+  translateXActive,
 }: ShibutsCardProps) {
-  const [detailsAnchorEl, setDetailsAnchorEl] = useState<HTMLElement | null>(null);
-  const [resourceAnchorEl, setResourceAnchorEl] = useState<HTMLElement | null>(null);
+  const [detailsAnchorEl, setDetailsAnchorEl] = useState<HTMLElement | null>(
+    null,
+  );
+  const [resourceAnchorEl, setResourceAnchorEl] = useState<HTMLElement | null>(
+    null,
+  );
   const [titleAnchorEl, setTitleAnchorEl] = useState<HTMLElement | null>(null);
   const [hoveredResource, setHoveredResource] = useState<Resource | null>(null);
   const [isCardActive, setIsCardActive] = useState(false);
@@ -37,7 +39,8 @@ export const ShibutsCard = memo(function ShibutsCard({
   const resourceDivRef = useRef<HTMLDivElement>(null);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const { showOpenCards, isLittleScreen, activeCardWidthPercent } = useViewSettings();
+  const { showOpenCards, isLittleScreen, activeCardWidthPercent } =
+    useViewSettings();
 
   const {
     title,
@@ -68,8 +71,8 @@ export const ShibutsCard = memo(function ShibutsCard({
       }
     };
 
-    resourceDiv.addEventListener("wheel", handleWheel, { passive: false });
-    return () => resourceDiv.removeEventListener("wheel", handleWheel);
+    resourceDiv.addEventListener('wheel', handleWheel, { passive: false });
+    return () => resourceDiv.removeEventListener('wheel', handleWheel);
   }, []);
 
   /* ---------------- ICON ---------------- */
@@ -80,26 +83,26 @@ export const ShibutsCard = memo(function ShibutsCard({
 
   /* ---------------- DATES ---------------- */
 
-  const formattedBegin = dateBegin ? dayjs(dateBegin).format("D MMM") : "";
-  const formattedEnd = dateEnd ? dayjs(dateEnd).format("D MMM") : "";
+  const formattedBegin = dateBegin ? dayjs(dateBegin).format('D MMM') : '';
+  const formattedEnd = dateEnd ? dayjs(dateEnd).format('D MMM') : '';
 
   const amountOfDays =
     dateBegin && dateEnd
-      ? dayjs(dateEnd).diff(dayjs(dateBegin), "day") + 1
+      ? dayjs(dateEnd).diff(dayjs(dateBegin), 'day') + 1
       : null;
 
   /* ---------------- METADATA ---------------- */
 
   const metadataShibuts = [
-    { key: "קוד שיבוץ", value: codeShibutz },
-    { key: "יחידה", value: unitId },
-    { key: "מיקום", value: location },
-    { key: "משימה", value: mesima },
-    { key: "סוג שירות", value: serviceType },
-    { key: "תיאור שירות", value: forceType },
-    { key: "עלות ישיר", value: String(directCost) },
-    { key: "עלות פריטי", value: String(costOfItems) },
-    { key: "משך", value: amountOfDays ? `${amountOfDays} ימים` : "-" },
+    { key: 'קוד שיבוץ', value: codeShibutz },
+    { key: 'יחידה', value: unitId },
+    { key: 'מיקום', value: location },
+    { key: 'משימה', value: mesima },
+    { key: 'סוג שירות', value: serviceType },
+    { key: 'תיאור שירות', value: forceType },
+    { key: 'עלות ישיר', value: String(directCost) },
+    { key: 'עלות פריטי', value: String(costOfItems) },
+    { key: 'משך', value: amountOfDays ? `${amountOfDays} ימים` : '-' },
   ];
 
   /* ---------------- HOVER LOGIC ---------------- */
@@ -112,7 +115,7 @@ export const ShibutsCard = memo(function ShibutsCard({
   };
 
   const delayedClose = (
-    setter: React.Dispatch<React.SetStateAction<HTMLElement | null>>
+    setter: React.Dispatch<React.SetStateAction<HTMLElement | null>>,
   ) => {
     closeTimerRef.current = setTimeout(() => {
       setter(null);
@@ -139,7 +142,7 @@ export const ShibutsCard = memo(function ShibutsCard({
     setAnchor: React.Dispatch<React.SetStateAction<HTMLElement | null>>,
     children: React.ReactNode,
     anchorOrigin: any,
-    transformOrigin: any
+    transformOrigin: any,
   ) => (
     <Popover
       open={open}
@@ -147,16 +150,16 @@ export const ShibutsCard = memo(function ShibutsCard({
       anchorOrigin={anchorOrigin}
       transformOrigin={transformOrigin}
       disableRestoreFocus
-      sx={{ pointerEvents: "none" }}
+      sx={{ pointerEvents: 'none' }}
       slotProps={{
         paper: {
           onMouseEnter: clearCloseTimer,
           onMouseLeave: () => delayedClose(setAnchor),
           sx: {
-            pointerEvents: "auto",
-            backgroundColor: "transparent",
-            borderRadius: "10px",
-            overflow: "visible",
+            pointerEvents: 'auto',
+            backgroundColor: 'transparent',
+            borderRadius: '10px',
+            overflow: 'visible',
           },
         },
       }}
@@ -169,17 +172,18 @@ export const ShibutsCard = memo(function ShibutsCard({
 
   return (
     <div
-      className={`${styles.shibutsCard} ${(isCardActive || showOpenCards) ? styles.activeCard : ""
-
-        }
+      className={`${styles.shibutsCard} ${
+        isCardActive || showOpenCards ? styles.activeCard : ''
+      }
       
-      ${isLittleScreen ? styles.activecardlittleScreen : ""}
-      ${className || ""}`}
-
+      ${isLittleScreen ? styles.activecardlittleScreen : ''}
+      ${className || ''}`}
       style={{
         ...style,
         ...(isCardActive && { minWidth: `${activeCardWidthPercent}%` }),
-        ...(isCardActive ? { transform: `translateX(${translateXActive}%)` } : {})
+        ...(isCardActive
+          ? { transform: `translateX(${translateXActive}%)` }
+          : {}),
       }}
       onMouseEnter={() => setIsCardActive(true)}
       onMouseLeave={handleCardLeave}
@@ -205,7 +209,7 @@ export const ShibutsCard = memo(function ShibutsCard({
 
         <div
           className={`${styles.variationContainer} ${
-            isCardActive || showOpenCards ? styles.visible : ""
+            isCardActive || showOpenCards ? styles.visible : ''
           }`}
         >
           <div className={styles.detailsAndPercentage}>
@@ -226,7 +230,10 @@ export const ShibutsCard = memo(function ShibutsCard({
       </div>
 
       {/* ---------- BOTTOM ---------- */}
-      <div className={styles.divDown} style={{ opacity: (isCardActive || showOpenCards) ? 1 : 0 }}>
+      <div
+        className={styles.divDown}
+        style={{ opacity: isCardActive || showOpenCards ? 1 : 0 }}
+      >
         <div className={styles.flexRow}>
           {formattedBegin && formattedEnd && (
             <Tooltip title={`${amountOfDays} ימים`} arrow>
@@ -237,7 +244,7 @@ export const ShibutsCard = memo(function ShibutsCard({
           )}
 
           <div className={styles.resourceContainer}>
-            <ArrowRight className={styles.arrow} onClick={() => scroll(-92)}/>
+            <ArrowRight className={styles.arrow} onClick={() => scroll(-92)} />
             <div className={styles.resourceDiv} ref={resourceDivRef}>
               {resources?.map((res) => (
                 <div
@@ -269,8 +276,8 @@ export const ShibutsCard = memo(function ShibutsCard({
         detailsAnchorEl,
         setDetailsAnchorEl,
         <DetailsPopUp />,
-        { vertical: "top", horizontal: "center" },
-        { vertical: "bottom", horizontal: "center" }
+        { vertical: 'top', horizontal: 'center' },
+        { vertical: 'bottom', horizontal: 'center' },
       )}
 
       {renderPopover(
@@ -278,17 +285,20 @@ export const ShibutsCard = memo(function ShibutsCard({
         titleAnchorEl,
         setTitleAnchorEl,
         <KeyValPopUp header={title} keyValues={metadataShibuts} />,
-        { vertical: "top", horizontal: "center" },
-        { vertical: "bottom", horizontal: "center" }
+        { vertical: 'top', horizontal: 'center' },
+        { vertical: 'bottom', horizontal: 'center' },
       )}
 
       {renderPopover(
         Boolean(resourceAnchorEl),
         resourceAnchorEl,
         setResourceAnchorEl,
-        <ResourcePopUp resName={hoveredResource?.categoryName} resourceDetailsTable={hoveredResource?.items || []} />,
-        { vertical: "bottom", horizontal: "center" },
-        { vertical: "top", horizontal: "center" }
+        <ResourcePopUp
+          resName={hoveredResource?.categoryName}
+          resourceDetailsTable={hoveredResource?.items || []}
+        />,
+        { vertical: 'bottom', horizontal: 'center' },
+        { vertical: 'top', horizontal: 'center' },
       )}
     </div>
   );

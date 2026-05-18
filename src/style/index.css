@@ -1,12 +1,14 @@
-* , html,
-body  {
+*,
+html,
+body {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-html ,body{
+html,
+body {
   width: 100vw;
 }
 
@@ -32,12 +34,10 @@ html ,body{
 }
 
 ::-webkit-scrollbar-corner {
-    background: #3e4344;
+  background: #3e4344;
 }
 
 ::selection {
   background: rgba(255, 255, 255, 0.25);
   color: white;
 }
-
-

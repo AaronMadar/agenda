@@ -1,16 +1,36 @@
-import { useFilters } from "@/stores/filtersStore";
-import { SingleSelect } from "@/components/shared/selects/SingleSelect";
+import { SingleSelect } from '@/components/shared/selects/SingleSelect';
+import { useFilters } from '@/stores/filtersStore';
 
 export function SelectTime() {
   const year = new Date().getFullYear();
   const { periodView, setPeriodView, setPeriodDate } = useFilters();
 
   const options = [
-    { label: `ינו' - מרץ' ${year}`, start: `${year}-01-01`, end: `${year}-03-31` },
-    { label: `אפר' - יוני' ${year}`, start: `${year}-04-01`, end: `${year}-06-30` },
-    { label: `יולי'- ספט' ${year}`, start: `${year}-07-01`, end: `${year}-09-30` },
-    { label: `אוק'- דצמ' ${year}`, start: `${year}-10-01`, end: `${year}-12-31` },
-    { label: `חצי-ראשון ${year}`, start: `${year}-01-01`, end: `${year}-06-30` },
+    {
+      label: `ינו' - מרץ' ${year}`,
+      start: `${year}-01-01`,
+      end: `${year}-03-31`,
+    },
+    {
+      label: `אפר' - יוני' ${year}`,
+      start: `${year}-04-01`,
+      end: `${year}-06-30`,
+    },
+    {
+      label: `יולי'- ספט' ${year}`,
+      start: `${year}-07-01`,
+      end: `${year}-09-30`,
+    },
+    {
+      label: `אוק'- דצמ' ${year}`,
+      start: `${year}-10-01`,
+      end: `${year}-12-31`,
+    },
+    {
+      label: `חצי-ראשון ${year}`,
+      start: `${year}-01-01`,
+      end: `${year}-06-30`,
+    },
     { label: `חצי-שני ${year}`, start: `${year}-07-01`, end: `${year}-12-31` },
     { label: `כל ${year}`, start: `${year}-01-01`, end: `${year}-12-31` },
   ];

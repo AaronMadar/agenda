@@ -1,38 +1,40 @@
-import { useState } from "react";
-import { Tooltip } from "@mui/material";
-import { useFilters } from "@/stores/filtersStore";
-import { TreeDropdown } from "@/components/shared/tree-dropdown/TreeDropdown";
-import { SelectTime } from "../gantpage/header/SelectTime";
-import { PopoverTime } from "../gantpage/header/PopoverTime";
-import { MultiSelect } from "./selects/MultiSelect";
-import styles from "@/style/components/shared/FiltersPanel.module.css";
-import { useShibutzimContext } from "@/contexts/ShibutzimContext";
+import { Tooltip } from '@mui/material';
+import { useState } from 'react';
+
+import { TreeDropdown } from '@/components/shared/tree-dropdown/TreeDropdown';
+import { useShibutzimContext } from '@/contexts/ShibutzimContext';
+import { useFilters } from '@/stores/filtersStore';
+import styles from '@/style/components/shared/FiltersPanel.module.css';
+
+import { PopoverTime } from '../gantpage/header/PopoverTime';
+import { SelectTime } from '../gantpage/header/SelectTime';
+import { MultiSelect } from './selects/MultiSelect';
 
 export const FiltersPanel = () => {
-    const {
-      UnitTreeData,
-      selectedUnitIds,
-      setSelectedUnitIds,
+  const {
+    UnitTreeData,
+    selectedUnitIds,
+    setSelectedUnitIds,
 
-      serviceTypes,
-      selectedServiceTypes,
-      setSelectedServiceTypes,
+    serviceTypes,
+    selectedServiceTypes,
+    setSelectedServiceTypes,
 
-      resourceTypes,
-      selectedResourceTypes,
-      setSelectedResourceTypes,
+    resourceTypes,
+    selectedResourceTypes,
+    setSelectedResourceTypes,
 
-      currentYear,
-      periodDate,
-      setPeriodDate,
-      setPeriodView,
+    currentYear,
+    periodDate,
+    setPeriodDate,
+    setPeriodView,
 
-      loading,
-      error,
-    } = useFilters();
+    loading,
+    error,
+  } = useFilters();
 
   const { refetchShibutzim } = useShibutzimContext();
-  const rootUnitId = useFilters(state => state.UnitTreeData?.[0]?.id);
+  const rootUnitId = useFilters((state) => state.UnitTreeData?.[0]?.id);
 
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
@@ -41,7 +43,7 @@ export const FiltersPanel = () => {
   };
 
   const handleResetFilters = () => {
-    setPeriodDate({start: null, end: null})
+    setPeriodDate({ start: null, end: null });
     setPeriodView(`כל ${currentYear}`);
     setSelectedUnitIds([rootUnitId]);
     setSelectedServiceTypes(null);
@@ -64,7 +66,7 @@ export const FiltersPanel = () => {
 
   return (
     <>
-      <div className={styles["control-panel"]}>
+      <div className={styles['control-panel']}>
         <TreeDropdown
           data={UnitTreeData}
           value={selectedUnitIds}
@@ -96,7 +98,7 @@ export const FiltersPanel = () => {
         <PopoverTime anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
         <Tooltip title="תאריך" arrow>
           <i
-            className={`bi bi-calendar-date ${styles["time-icon"]}`}
+            className={`bi bi-calendar-date ${styles['time-icon']}`}
             onClick={handleOpenPopover}
           />
         </Tooltip>
@@ -104,7 +106,10 @@ export const FiltersPanel = () => {
         <div className={styles.spacer} />
 
         <div className={styles.buttons}>
-          <button className={`${styles.button} ${styles.filterBtn}`} onClick={handleApplyFilters}>
+          <button
+            className={`${styles.button} ${styles.filterBtn}`}
+            onClick={handleApplyFilters}
+          >
             בצע סינון
           </button>
 
@@ -112,10 +117,9 @@ export const FiltersPanel = () => {
             איפוס סינונים
           </button>
         </div>
-
       </div>
       <i
-        className={`${styles["control-panel-icon"]} bi bi-calendar4-range ${styles["header-icon"]}`}
+        className={`${styles['control-panel-icon']} bi bi-calendar4-range ${styles['header-icon']}`}
       />
     </>
   );

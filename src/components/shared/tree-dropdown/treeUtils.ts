@@ -1,8 +1,8 @@
-import type { TreeNodeData } from "./types";
+import type { TreeNodeData } from './types';
 
 export function findPath(
   data: TreeNodeData[],
-  targetId: string
+  targetId: string,
 ): TreeNodeData[] | null {
   for (const node of data) {
     if (node.id === targetId) return [node];
@@ -27,7 +27,7 @@ export function getAllDescendantIds(node: TreeNodeData): string[] {
 export function toggleNode(
   selectedIds: Set<string>,
   data: TreeNodeData[],
-  nodeId: string
+  nodeId: string,
 ): Set<string> {
   const path = findPath(data, nodeId);
   if (!path) return selectedIds;
@@ -63,10 +63,7 @@ export function toggleNode(
   return newSelected;
 }
 
-export function getNodeLabel(
-  data: TreeNodeData[],
-  id: string
-): string | null {
+export function getNodeLabel(data: TreeNodeData[], id: string): string | null {
   for (const node of data) {
     if (node.id === id) return node.label;
     if (node.children?.length) {

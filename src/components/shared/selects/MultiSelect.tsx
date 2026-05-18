@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
-import CheckIcon from "@mui/icons-material/Check";
-import { BaseSelect } from "./BaseSelect";
-import styles from "@/style/components/shared/Select.module.css";
+import CheckIcon from '@mui/icons-material/Check';
+
+import styles from '@/style/components/shared/Select.module.css';
+
+import { BaseSelect } from './BaseSelect';
 
 interface MultiSelectProps {
   options: { id: string; name: string }[];
@@ -14,7 +15,7 @@ export function MultiSelect({
   options,
   value = [],
   onChange,
-  placeholder = "בחר ערכים",
+  placeholder = 'בחר ערכים',
 }: MultiSelectProps) {
   const toggleOption = (optionId: string) => {
     const newValue = value.includes(optionId)
@@ -25,7 +26,11 @@ export function MultiSelect({
 
   const getDisplayText = () => {
     if (value.length === 0) return placeholder;
-    if (value.length <= 2) return options.filter(o => value.includes(o.id)).map(o => o.name).join(", ");
+    if (value.length <= 2)
+      return options
+        .filter((o) => value.includes(o.id))
+        .map((o) => o.name)
+        .join(', ');
     return `${placeholder} [${value.length}]`;
   };
 
@@ -56,7 +61,10 @@ export function MultiSelect({
 
           <div className={styles.footer}>
             <div className={styles.footerButtons}>
-              <button className={styles.resetButton} onClick={() => onChange([])}>
+              <button
+                className={styles.resetButton}
+                onClick={() => onChange([])}
+              >
                 איפוס
               </button>
               <button className={styles.confirmButton} onClick={() => close()}>
